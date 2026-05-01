@@ -4,6 +4,7 @@ import Latex from './Latex.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import VSubSwConstruction from './VSubSwConstruction.jsx';
 import AppendixSection from './AppendixSection.jsx';
+import AppendixTheoremBlock from './AppendixTheoremBlock.jsx';
 import EditorialCallout from './EditorialCallout.jsx';
 import SectionReferenceLink from './SectionReferenceLink.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
@@ -1667,6 +1668,33 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((caseIdx) => {
                   const labelSlot = appendixSection7.slots[`case${caseIdx}Label`];
                   const bodySlot = appendixSection7.slots[`case${caseIdx}`];
+                  // V3.1 §46 demo migration: B.1 uses the new 4-field
+                  // AppendixTheoremBlock template (Condition / Claim /
+                  // Reason / Main-page shortcut) with anchor link + copy
+                  // button. Other cases stay on the legacy paragraph layout
+                  // for incremental migration; B.1 proves the new template
+                  // composes cleanly with the existing kicker eyebrow.
+                  if (caseIdx === 1) {
+                    const conditionText = bodySlot[0].text.replace(/^Condition\.\s*/, '');
+                    const claimText = bodySlot[1].text.replace(/^Claim\.\s*/, '');
+                    const reasonText = bodySlot[2].text.replace(/^Intuition\.\s*/, '');
+                    return (
+                      <li key={`appendix-7-case-${caseIdx}`} className="space-y-2">
+                        <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                          {renderAppendixSingleBlock(labelSlot, 0, {
+                            slotKey: `appendix-section7-case${caseIdx}-label`,
+                          })}
+                        </div>
+                        <AppendixTheoremBlock
+                          anchorId="appendix-b-1"
+                          condition={conditionText}
+                          claim={claimText}
+                          reason={reasonText}
+                          mainPageShortcut="Trivial group: $\alpha_a = |X_a|$, the raw assignment count."
+                        />
+                      </li>
+                    );
+                  }
                   return (
                     <li key={`appendix-7-case-${caseIdx}`} className="space-y-2">
                       <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
