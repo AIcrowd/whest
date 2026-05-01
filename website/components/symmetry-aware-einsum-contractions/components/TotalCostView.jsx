@@ -644,6 +644,43 @@ function SupportingMetric({ label, value, valueClassName, valueStyle, formula, d
   );
 }
 
+// ---------------------------------------------------------------------------
+// CountAnnouncer — V3.1 §C50 accessibility cross-cut.
+//
+// Off-screen (sr-only) aria-live region that announces dimension/μ/α/total
+// changes whenever the dimension knob updates the cost values. Debounced
+// ~500ms so rapid slider motion doesn't flood the screen reader. Uses
+// `aria-live="polite"` so the announcement does not interrupt other speech.
+// ---------------------------------------------------------------------------
+function CountAnnouncer({ dimensionN, mu, alpha, total }) {
+  const [message, setMessage] = useState('');
+  const targetRef = useRef({ dimensionN, mu, alpha, total });
+  targetRef.current = { dimensionN, mu, alpha, total };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const t = targetRef.current;
+      // Template includes the literal "Dimension updated to n=" prefix that
+      // tests assert against. Numbers are localized for human readability.
+      const next = `Dimension updated to n=${t.dimensionN}. Mu = ${Number(t.mu).toLocaleString()}, alpha = ${Number(t.alpha).toLocaleString()}, total = ${Number(t.total).toLocaleString()}.`;
+      setMessage(next);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [dimensionN, mu, alpha, total]);
+
+  return (
+    <div
+      data-testid="total-cost-aria-live"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      className="sr-only"
+    >
+      {message}
+    </div>
+  );
+}
+
 function EditorialComparisonSpread({ topMetrics, supportingMetrics, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   return (
     <div className="section5-editorial-spread mx-auto max-w-[44rem] bg-white px-[6px] py-[6px] text-center">
@@ -783,6 +820,9 @@ export default function TotalCostView({
 
   return (
     <div className="space-y-8" style={sectionFiveThemeCssVars}>
+      {/* §C50 accessibility — off-screen announcer for screen-reader users. */}
+      <CountAnnouncer dimensionN={dimensionN} mu={mu} alpha={alpha} total={totalCost} />
+
       <ComponentRecap components={components} />
 
       <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />

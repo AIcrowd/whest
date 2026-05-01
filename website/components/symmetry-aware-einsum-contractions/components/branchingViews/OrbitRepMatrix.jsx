@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Latex from '../Latex.jsx';
 import {
   derivePreReps,
@@ -10,6 +10,24 @@ import {
   SQUARE_FRAME,
   FIXED_CANVAS_HEIGHT,
 } from './orbitRepMatrixLayout.js';
+
+// V3.1 §C50 (reduced motion). Mirrors the matchMedia listener used by
+// TwoQuotientSchematic: read once at mount, then update via the `change`
+// event so we react to OS-level toggles. SSR-safe (`window` guard).
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e) => setReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return reduced;
+}
 
 // Token palette anchored to design-system colors_and_type.css.
 // `cellGrid` is near-invisible by design — the grid is a structural hint, not chrome.
@@ -58,6 +76,17 @@ function OrbitRepMatrix({
   // per hover — that's what makes hover feel instant on big matrices.
   const hoverRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(SQUARE_FRAME);
+  // V3.1 §C50 (reduced motion). The canvas paint pipeline (BASE + PAINT
+  // overlay) does not animate — it imperatively repaints with `fillRect` /
+  // `strokeRect` calls and `drawImage`, so there is nothing on the canvas
+  // itself to suppress. The reduced-motion flag therefore only gates CSS
+  // transitions on the DOM overlay (focus reveal + axis-label color fade).
+  const reducedMotion = useReducedMotion();
+  // V3.1 §C50 (keyboard navigation). Focused cell tracked alongside hover so
+  // arrow-key + Enter/Space + Escape can drive the same overlay/floating-card
+  // pipeline as mouse hover. Hover continues to win when both are active.
+  const [focusedCell, setFocusedCell] = useState({ row: 0, col: 0 });
+  const [overlayHasFocus, setOverlayHasFocus] = useState(false);
 
   const reps = useMemo(() => derivePreReps(orbitRows), [orbitRows]);
   const cells = useMemo(() => deriveCells(orbitRows, reps), [orbitRows, reps]);
@@ -296,6 +325,45 @@ function OrbitRepMatrix({
     if (onHoverChange) onHoverChange(null);
   }
 
+  // V3.1 §C50 (keyboard navigation). Arrow keys move the focused cell;
+  // Enter/Space pin the floating detail card to that cell (parent owns
+  // `hover` state, so we mimic mouse pin via `onHoverChange`); Escape clears.
+  // Coordinates default to the focused cell's screen position so the floating
+  // card flips correctly even when keyboard-driven.
+  const numRows = orbitRows.length;
+  const numCols = reps.length;
+  const handleKeyDown = useCallback((e) => {
+    if (numRows === 0 || numCols === 0) return;
+    let nextRow = focusedCell.row;
+    let nextCol = focusedCell.col;
+    switch (e.key) {
+      case 'ArrowLeft':  nextCol = Math.max(0, focusedCell.col - 1); break;
+      case 'ArrowRight': nextCol = Math.min(numCols - 1, focusedCell.col + 1); break;
+      case 'ArrowUp':    nextRow = Math.max(0, focusedCell.row - 1); break;
+      case 'ArrowDown':  nextRow = Math.min(numRows - 1, focusedCell.row + 1); break;
+      case 'Enter':
+      case ' ': {
+        e.preventDefault();
+        const canvas = canvasRef.current;
+        if (canvas && onHoverChange) {
+          const rect = canvas.getBoundingClientRect();
+          const clickX = rect.left + (focusedCell.col + 0.5) * layout.cellWidth;
+          const clickY = rect.top + (focusedCell.row + 0.5) * layout.cellHeight;
+          onHoverChange({ row: focusedCell.row, col: focusedCell.col, clickX, clickY });
+        }
+        return;
+      }
+      case 'Escape':
+        e.preventDefault();
+        if (onHoverChange) onHoverChange(null);
+        return;
+      default:
+        return;
+    }
+    e.preventDefault();
+    setFocusedCell({ row: nextRow, col: nextCol });
+  }, [focusedCell, numRows, numCols, layout.cellWidth, layout.cellHeight, onHoverChange]);
+
   if (orbitRows.length === 0) {
     return (
       <div
@@ -389,7 +457,7 @@ function OrbitRepMatrix({
                 writingMode: 'vertical-rl',
                 transform: 'rotate(180deg)',
                 color: yAxisHighlighted ? '#F0524D' : '#9AA0A0',
-                transition: 'color 120ms ease-out',
+                transition: reducedMotion ? 'none' : 'color 120ms ease-out',
               }}
               className={`flex items-center justify-center text-[10px] font-medium tracking-[0.04em] font-sans${yAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}
               data-testid="orbit-rep-matrix-y-axis-label"
@@ -498,7 +566,9 @@ function OrbitRepMatrix({
                   The canvas's PAINT stage already draws the strong-coral FILL on the
                   focused cell (instant for clarity); this overlay layers a 2px coral
                   border on top with a 120ms opacity transition and 80ms position
-                  transition so the eye sees a smooth "lock-on" rather than a snap. */}
+                  transition so the eye sees a smooth "lock-on" rather than a snap.
+                  V3.1 §C50: under prefers-reduced-motion, we drop the transitions
+                  so the overlay snaps in place without easing. */}
               <div
                 data-testid="orbit-rep-matrix-focus-overlay"
                 aria-hidden="true"
@@ -513,9 +583,74 @@ function OrbitRepMatrix({
                   border: '2px solid #F0524D',
                   borderRadius: 2,
                   opacity: hover ? 1 : 0,
-                  transition: 'opacity 120ms cubic-bezier(0.4, 0, 0.2, 1), top 80ms cubic-bezier(0.4, 0, 0.2, 1), left 80ms cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: reducedMotion
+                    ? 'none'
+                    : 'opacity 120ms cubic-bezier(0.4, 0, 0.2, 1), top 80ms cubic-bezier(0.4, 0, 0.2, 1), left 80ms cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               />
+              {/* V3.1 §C50 (keyboard nav). Focusable overlay — receives Tab focus
+                  and arrow-key events. Layered above the canvas with
+                  pointer-events:none so mouse hover still hits the canvas's
+                  onMouseMove handler underneath. The 2px dashed coral border
+                  visualizes the focused cell when the overlay holds focus. */}
+              <div
+                data-testid="orbit-rep-matrix-keyboard-overlay"
+                tabIndex={0}
+                role="grid"
+                aria-label="Output orbit O × representative Q matrix. Use arrow keys to navigate, Enter to pin a cell, Escape to clear pin."
+                aria-rowcount={numRows}
+                aria-colcount={numCols}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setOverlayHasFocus(true)}
+                onBlur={() => setOverlayHasFocus(false)}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  pointerEvents: 'none',
+                  outline: 'none',
+                }}
+              >
+                {/* Dashed focus rect rendered only when the overlay has focus
+                    (separate from the hover pin so mouse + keyboard layer
+                    cleanly). Drawn as a positioned div so we don't have to
+                    re-enter the canvas paint pipeline. */}
+                {overlayHasFocus && layout.cellWidth > 0 && layout.cellHeight > 0 && (
+                  <div
+                    data-testid="orbit-rep-matrix-keyboard-focus-rect"
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      top: focusedCell.row * layout.cellHeight,
+                      left: focusedCell.col * layout.cellWidth,
+                      width: layout.cellWidth,
+                      height: layout.cellHeight,
+                      boxSizing: 'border-box',
+                      border: '2px dashed var(--coral, #F0524D)',
+                      borderRadius: 2,
+                      pointerEvents: 'none',
+                      transition: reducedMotion ? 'none' : 'top 80ms ease-out, left 80ms ease-out',
+                    }}
+                  />
+                )}
+              </div>
+              {/* SR-only aria-live announcer that tracks keyboard focus position.
+                  Polite so it doesn't interrupt; not visible on screen. */}
+              <div
+                data-testid="orbit-rep-matrix-focus-announcer"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="sr-only"
+                style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}
+              >
+                {overlayHasFocus
+                  ? `Row ${focusedCell.row} column ${focusedCell.col}. ${
+                      cells[focusedCell.row]?.[focusedCell.col] !== null && cells[focusedCell.row]?.[focusedCell.col] !== undefined
+                        ? `${cells[focusedCell.row][focusedCell.col]} incidence${cells[focusedCell.row][focusedCell.col] === 1 ? '' : 's'}.`
+                        : 'Empty cell.'
+                    }`
+                  : ''}
+              </div>
             </div>
 
             {/* X tick gutter — labels + 4px hairline tick marks flush to the canvas
@@ -573,7 +708,7 @@ function OrbitRepMatrix({
               style={{
                 gridColumn: 3, gridRow: 3,
                 color: xAxisHighlighted ? '#F0524D' : '#9AA0A0',
-                transition: 'color 120ms ease-out',
+                transition: reducedMotion ? 'none' : 'color 120ms ease-out',
               }}
               className={`text-center text-[10px] font-medium tracking-[0.04em] font-sans pt-1${xAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}
               data-testid="orbit-rep-matrix-x-axis-label"

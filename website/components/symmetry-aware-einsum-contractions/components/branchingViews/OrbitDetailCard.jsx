@@ -27,10 +27,10 @@ const FLOAT_PADDING = 12;
 const CARD_W = 440;
 const CARD_H = 480;
 
-// TODO(mobile): floating mode currently has no tap-outside dismiss. Esc +
-// IntersectionObserver cover desktop and scroll-out cases; touch users
-// dismiss via the × button only. Plan defers mobile gestures to a
-// follow-up — see plan §"Open follow-ups".
+// Floating mode dismiss surface (V3.1 §C50 cross-cutting accessibility):
+//   - Esc keystroke (desktop)
+//   - IntersectionObserver auto-dismiss when the matrix scrolls offscreen
+//   - pointerdown outside the card (touch + mouse) — see useEffect below
 
 function membersProjectingTo(orbit, repTuple, componentInfo) {
   if (!orbit?.orbitTuples || !componentInfo) return [];
@@ -93,6 +93,24 @@ function OrbitDetailCard({
     observer.observe(matrixRef.current);
     return () => observer.disconnect();
   }, [mode, active, matrixRef]);
+
+  // Pointer-outside dismiss (V3.1 §C50 — closes the C50 mobile-tap audit gap).
+  // Listens on `pointerdown` (not `click`) so it fires before any nested
+  // interactive element receives the event, AND so a touch tap dismisses the
+  // card without first needing a synthesized click. The cell that opened the
+  // card is not affected: by the time this listener registers (after the card
+  // mounts), that cell's pointerdown has already fired.
+  useEffect(() => {
+    if (mode !== 'floating' || !active) return undefined;
+    const onPointerDown = (e) => {
+      const card = cardRef.current;
+      if (!card) return;
+      if (e.target instanceof Node && card.contains(e.target)) return;
+      onDismissRef.current();
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, [mode, active]);
 
   // Compute floating position when hover changes (and on window resize).
   // Writes el.style imperatively — no React state, no double render per hover.

@@ -281,8 +281,10 @@ test('OrbitRepMatrix renders an eased CSS overlay over the focused cell (not jus
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   // The CSS-overlay div for the focused cell.
   assert.match(src, /data-testid="orbit-rep-matrix-focus-overlay"/);
-  // Transition on opacity for the eased reveal.
-  assert.match(src, /transition:\s*['"]opacity 120ms/);
+  // Transition on opacity for the eased reveal. C50 a11y wraps the
+  // transition in a reducedMotion ternary, so the string lives inside the
+  // ternary rather than at the start of `transition:`.
+  assert.match(src, /['"]opacity 120ms/);
 });
 
 test('OrbitRepMatrix paints a 1px depth lip on filled cells (subtle Apple-style depth)', () => {
