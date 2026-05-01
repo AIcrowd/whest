@@ -1,4 +1,5 @@
 import BipartiteGraph from './BipartiteGraph.jsx';
+import { LabelInteractionGraph } from './ComponentView.jsx';
 
 export default {
   title: 'Section4/BipartiteGraph',
@@ -110,4 +111,92 @@ export const Disconnected = {
     variableColors: {},
     highlightedLabels: new Set(),
   },
+};
+
+// ---------------------------------------------------------------------------
+// Story 4 (C20 Gap 2): LabelInteractionGraph — toggle "certified factors"
+//   Shows the certified-independent-factors view (default, V3.1 §C20).
+//   Exercises Gap 2: the 2-button toggle and Gap 1: hull visual encoding.
+// ---------------------------------------------------------------------------
+export const LIGCertifiedFactors = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 280 }}>
+      <div style={{ marginBottom: 8, fontSize: 12, color: '#5D5F60' }}>
+        LabelInteractionGraph — certified factors view (default)
+      </div>
+      <LabelInteractionGraph
+        allLabels={['i', 'j', 'k', 'l']}
+        vLabels={['i', 'k']}
+        interactionGraph={{
+          edges: [
+            [0, 1, 0], // i–j via σ0
+            [2, 3, 0], // k–l via σ0 (same generator, disjoint cycle → multi-cycle-glued)
+          ],
+          components: [[0, 1, 2, 3]],
+        }}
+        components={null}
+        fullGenerators={null}
+      />
+    </div>
+  ),
+  name: 'LIG — certified factors (gap 2)',
+};
+
+// ---------------------------------------------------------------------------
+// Story 5 (C20 Gap 3): LabelInteractionGraph — hover-component bus
+//   Passes activeComponentId to show coral outline on hull.
+// ---------------------------------------------------------------------------
+export const LIGHoveredComponent = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 280 }}>
+      <div style={{ marginBottom: 8, fontSize: 12, color: '#5D5F60' }}>
+        LabelInteractionGraph — hull highlighted via activeComponentId prop
+      </div>
+      <LabelInteractionGraph
+        allLabels={['i', 'j', 'k', 'l']}
+        vLabels={['i', 'k']}
+        interactionGraph={{
+          edges: [
+            [0, 1, 0],
+            [2, 3, 0],
+          ],
+          components: [[0, 1, 2, 3]],
+        }}
+        components={null}
+        fullGenerators={null}
+        activeComponentId="i,j,k,l"
+        onActiveComponentHoverChange={() => {}}
+      />
+    </div>
+  ),
+  name: 'LIG — hovered component (gap 3)',
+};
+
+// ---------------------------------------------------------------------------
+// Story 6 (C20 Gap 1): LabelInteractionGraph — generator support mode
+//   Shows the "generator supports" toggle with dashed inner stroke for
+//   multi-cycle-glued factor (σ=(i j)(k l) — labels i,k have no direct edge).
+// ---------------------------------------------------------------------------
+export const LIGGeneratorSupports = {
+  render: () => (
+    <div style={{ padding: 24, maxWidth: 280 }}>
+      <div style={{ marginBottom: 8, fontSize: 12, color: '#5D5F60' }}>
+        LabelInteractionGraph — generator-support mode, click "generator supports"
+      </div>
+      <LabelInteractionGraph
+        allLabels={['i', 'j', 'k', 'l']}
+        vLabels={['i', 'k']}
+        interactionGraph={{
+          edges: [
+            [0, 1, 0], // i–j (cycle 1 of σ=(i j)(k l))
+            [2, 3, 0], // k–l (cycle 2 of σ=(i j)(k l))
+          ],
+          components: [[0, 1, 2, 3]], // one factor via generator-support union-find
+        }}
+        components={null}
+        fullGenerators={null}
+      />
+    </div>
+  ),
+  name: 'LIG — generator supports (gap 1)',
 };

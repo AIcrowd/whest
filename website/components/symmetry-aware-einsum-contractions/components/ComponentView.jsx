@@ -8,6 +8,70 @@ import InlineMathText from './InlineMathText.jsx';
 import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design-system token map (mirrors tokens.css tier 1 + 3A)
+   ───────────────────────────────────────────────────────────────────────────── */
+const TOKEN = {
+  coral:      'var(--coral)',
+  coralLight: 'var(--coral-light)',
+  gray900:    'var(--gray-900)',
+  gray600:    'var(--gray-600)',
+  gray400:    'var(--gray-400)',
+  gray300:    'var(--gray-200)',   // border token used as "gray-300" equivalent
+  gray200:    'var(--gray-200)',
+  gray100:    'var(--gray-100)',
+  white:      'var(--white)',
+  einV:       'var(--ein-v)',
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Reduced-motion helper (matches TwoQuotientSchematic.jsx pattern)
+   ───────────────────────────────────────────────────────────────────────────── */
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e) => setReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return reduced;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Heuristic: "is this factor multi-cycle-glued?"
+   A factor is considered multi-cycle-glued (i.e., merged via generator-support
+   rather than direct cycle adjacency) if it contains labels that have NO direct
+   edge between them in the interaction-graph edge list.  Specifically: a factor
+   with k≥3 labels where at least one pair of labels shares no edge is multi-
+   cycle-glued.  This is safe because the engine only groups labels that have a
+   common generator in their support — a single cycle would introduce an edge
+   between every pair of labels it moves.  Multiple disjoint cycles on the same
+   generator (e.g., σ=(i j)(k l)) produce a factor {i,j,k,l} but no
+   cycle-adjacency edge between i/k, i/l, j/k, or j/l.
+   ───────────────────────────────────────────────────────────────────────────── */
+function isMultiCycleGlued(indices, edges) {
+  if (indices.length < 3) return false;
+  const pairSet = new Set();
+  for (const [a, b] of edges) {
+    const key = a < b ? `${a}:${b}` : `${b}:${a}`;
+    pairSet.add(key);
+  }
+  for (let i = 0; i < indices.length; i++) {
+    for (let j = i + 1; j < indices.length; j++) {
+      const key = indices[i] < indices[j]
+        ? `${indices[i]}:${indices[j]}`
+        : `${indices[j]}:${indices[i]}`;
+      if (!pairSet.has(key)) return true;
+    }
+  }
+  return false;
+}
+
 const GRAPH_SIZE = 220;
 const CENTER = GRAPH_SIZE / 2;
 const ORBIT_R = 80;
@@ -59,7 +123,16 @@ export function LabelInteractionGraph({
   components: richComponents = null,
   fullGenerators = null,
   onHover = null,
+  // Hover-component bus (Gap 3 — V3.1 §C20)
+  activeComponentId = null,
+  onActiveComponentHoverChange = null,
 }) {
+  // View toggle (Gap 2 — V3.1 §C20)
+  // 'certified' = show certified independent factors (default, V3.1-preferred)
+  // 'generator' = show generator-support coupling (cycle-adjacency edges visible)
+  const [viewMode, setViewMode] = useState('certified');
+  const reducedMotion = usePrefersReducedMotion();
+
   const explorerThemeId = getActiveExplorerThemeId();
   const COLOR_V = explorerThemeColor(explorerThemeId, 'hero');
   const COLOR_W = explorerThemeColor(explorerThemeId, 'summedSide');
@@ -86,11 +159,18 @@ export function LabelInteractionGraph({
       (richComponents ?? graphComponents).map((entry, compIdx) => {
         const indices = Array.isArray(entry) ? entry : entry?.indices ?? [];
         const hasFreeLabel = indices.some((idx) => vSet.has(allLabels[idx]));
+        // Detect generator-support coupling (Gap 1 — V3.1 §C20).
+        // A factor is "multi-cycle-glued" when its labels were merged by a
+        // generator whose support spans multiple disjoint cycles (e.g.,
+        // σ=(i j)(k l)), not by cycle adjacency alone.  See isMultiCycleGlued
+        // for the heuristic.
+        const multiCycleGlued = isMultiCycleGlued(indices, uniqueEdges);
         if (Array.isArray(entry)) {
           return {
             indices,
             color: hasFreeLabel ? FREE_HULL_COLOR : SUMMED_HULL_COLOR,
             comp: null,
+            multiCycleGlued,
           };
         }
         const leafId = compLeafId(entry);
@@ -99,9 +179,10 @@ export function LabelInteractionGraph({
           indices,
           color: hasFreeLabel ? FREE_HULL_COLOR : (presentation?.color ?? SUMMED_HULL_COLOR),
           comp: entry,
+          multiCycleGlued,
         };
       }),
-    [richComponents, graphComponents, vSet, allLabels, FREE_HULL_COLOR, SUMMED_HULL_COLOR],
+    [richComponents, graphComponents, vSet, allLabels, FREE_HULL_COLOR, SUMMED_HULL_COLOR, uniqueEdges],
   );
 
   // Label index -> rich component (used inside node tooltips).
@@ -166,8 +247,9 @@ export function LabelInteractionGraph({
       hoveredKeyRef.current = null;
       setHovered(null);
       if (onHover) onHover(null);
+      if (onActiveComponentHoverChange) onActiveComponentHoverChange(null);
     }, 80);
-  }, [cancelHide, onHover]);
+  }, [cancelHide, onHover, onActiveComponentHoverChange]);
 
   const openTooltip = useCallback(
     (target, rect) => {
@@ -182,8 +264,18 @@ export function LabelInteractionGraph({
       setHovered(target);
       setTooltipPos(computeGraphTooltipPos(rect));
       if (onHover) onHover(buildHoverPayload(target));
+      // Hover-component bus (Gap 3 — V3.1 §C20): emit component ID on hull hover.
+      if (onActiveComponentHoverChange) {
+        if (target.kind === 'hull') {
+          const hull = hullData[target.idx];
+          const compId = hull?.comp?.labels?.join(',') ?? `comp-${target.idx}`;
+          onActiveComponentHoverChange(compId);
+        } else {
+          onActiveComponentHoverChange(null);
+        }
+      }
     },
-    [cancelHide, onHover, buildHoverPayload],
+    [cancelHide, onHover, buildHoverPayload, onActiveComponentHoverChange, hullData],
   );
 
   useEffect(() => () => cancelHide(), [cancelHide]);
@@ -198,6 +290,7 @@ export function LabelInteractionGraph({
       hoveredKeyRef.current = null;
       setHovered(null);
       if (onHover) onHover(null);
+      if (onActiveComponentHoverChange) onActiveComponentHoverChange(null);
     };
     const dismissOnEscape = (event) => {
       if (event.key === 'Escape') dismiss();
@@ -222,7 +315,7 @@ export function LabelInteractionGraph({
       window.removeEventListener('pointerdown', dismissIfOutside);
       window.removeEventListener('blur', dismiss);
     };
-  }, [hovered, cancelHide, onHover]);
+  }, [hovered, cancelHide, onHover, onActiveComponentHoverChange]);
 
   const tooltipContent = useMemo(() => {
     if (!hovered) return null;
@@ -343,38 +436,134 @@ export function LabelInteractionGraph({
     return null;
   }, [hovered, allLabels, vSet, labelToComp, uniqueEdges, fullGenerators, hullData]);
 
+  // Derive component ID for the active hover (used to apply coral outline).
+  const getCompId = useCallback(
+    (compIdx) => {
+      const hull = hullData[compIdx];
+      return hull?.comp?.labels?.join(',') ?? `comp-${compIdx}`;
+    },
+    [hullData],
+  );
+
   if (n === 0) return null;
 
   return (
     <>
+      {/* ── Gap 2: Toggle button group (V3.1 §C20) ─────────────────────────── */}
+      <div
+        role="group"
+        aria-label="Label interaction graph view mode"
+        style={{
+          display: 'flex',
+          gap: '6px',
+          marginBottom: '10px',
+          flexWrap: 'wrap',
+        }}
+      >
+        {[
+          { id: 'certified', label: 'certified factors' },
+          { id: 'generator', label: 'generator supports' },
+        ].map(({ id, label }) => {
+          const active = viewMode === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              aria-pressed={active}
+              onClick={() => setViewMode(id)}
+              style={{
+                padding: '3px 10px',
+                fontSize: '11px',
+                fontWeight: active ? 600 : 400,
+                fontFamily: "'Inter', sans-serif",
+                borderRadius: '5px',
+                border: `1.5px solid ${active ? TOKEN.coral : TOKEN.gray300}`,
+                background: active ? TOKEN.coralLight : TOKEN.white,
+                color: active ? TOKEN.coral : TOKEN.gray600,
+                cursor: 'pointer',
+                transition: reducedMotion
+                  ? 'none'
+                  : 'background 0.15s ease, color 0.15s ease, border-color 0.15s ease',
+              }}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
       <svg
         ref={wrapRef}
         className="w-full max-w-[220px]"
         viewBox={`0 0 ${GRAPH_SIZE} ${GRAPH_SIZE}`}
         aria-label="Label interaction graph"
       >
+        {/* ── Gap 1 + 3: Hulls with generator-support visual + hover-bus ─── */}
         {hullData.map((hull, compIdx) => {
           if (hull.indices.length <= 1) return null;
           const points = hull.indices.map((idx) => positions[idx]);
+          const compId = getCompId(compIdx);
+          const isHoveredComp = activeComponentId === compId;
+
+          // Gap 1 — Visual encoding for generator-support coupling:
+          //   solid stroke  → single-cycle adjacency (cycle connects every pair)
+          //   dashed stroke → multi-cycle-glued (e.g., σ=(i j)(k l): i,k have
+          //                   no direct cycle-adjacency edge but are in one factor)
+          // In 'certified' mode only the factor outline is shown (no edge clutter).
+          // In 'generator' mode the dashed inner stroke makes coupling explicit.
+          const isMultiGlued = hull.multiCycleGlued;
+          const strokeDasharray = isMultiGlued ? '4 3' : 'none';
+
           return (
-            <polygon
-              key={`comp-${compIdx}`}
-              points={points.map((point) => `${point.x},${point.y}`).join(' ')}
-              fill={hull.color}
-              fillOpacity={0.08}
-              stroke={hull.color}
-              strokeDasharray="4 3"
-              strokeOpacity={0.55}
-              style={{ cursor: 'help' }}
-              onMouseEnter={(e) =>
-                openTooltip({ kind: 'hull', idx: compIdx }, e.currentTarget.getBoundingClientRect())
-              }
-              onMouseLeave={hideTooltip}
-            />
+            <g key={`comp-${compIdx}`}>
+              {/* Main hull fill */}
+              <polygon
+                points={points.map((point) => `${point.x},${point.y}`).join(' ')}
+                fill={hull.color}
+                fillOpacity={isHoveredComp ? 0.16 : 0.08}
+                stroke={isHoveredComp ? TOKEN.coral : hull.color}
+                strokeWidth={isHoveredComp ? 2 : 1}
+                strokeDasharray={strokeDasharray}
+                strokeOpacity={0.55}
+                tabIndex={0}
+                role="button"
+                aria-label={`Component hull ${compIdx + 1}${isMultiGlued ? ' — generator-support coupling' : ''}`}
+                style={{
+                  cursor: 'help',
+                  outline: 'none',
+                  transition: reducedMotion
+                    ? 'none'
+                    : 'fill-opacity 0.18s ease, stroke 0.18s ease',
+                }}
+                onMouseEnter={(e) =>
+                  openTooltip({ kind: 'hull', idx: compIdx }, e.currentTarget.getBoundingClientRect())
+                }
+                onMouseLeave={hideTooltip}
+                onFocus={(e) =>
+                  openTooltip({ kind: 'hull', idx: compIdx }, e.currentTarget.getBoundingClientRect())
+                }
+                onBlur={hideTooltip}
+              />
+              {/* Gap 1: extra dashed inner stroke visible in 'generator' mode
+                  to highlight multi-cycle-glued coupling explicitly. */}
+              {viewMode === 'generator' && isMultiGlued && (
+                <polygon
+                  points={points.map((point) => `${point.x},${point.y}`).join(' ')}
+                  fill="none"
+                  stroke={hull.color}
+                  strokeWidth={1.5}
+                  strokeDasharray="3 4"
+                  strokeOpacity={0.75}
+                  pointerEvents="none"
+                  aria-hidden="true"
+                />
+              )}
+            </g>
           );
         })}
 
-        {uniqueEdges.map(([a, b], edgeIdx) => {
+        {/* ── Edges — hidden in 'certified' mode, shown in 'generator' mode ── */}
+        {viewMode === 'generator' && uniqueEdges.map(([a, b], edgeIdx) => {
           const pa = positions[a];
           const pb = positions[b];
           if (!pa || !pb) return null;

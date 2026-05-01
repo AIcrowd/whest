@@ -134,6 +134,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
   // α-method hover state (Behavior 3 — C01): StickyBar emits method id on
   // badge hover; classification tree reads this to spotlight the matching leaf.
   const [activeAlphaMethodHover, setActiveAlphaMethodHover] = useState(null);
+  // Hover-component bus (Gap 3 — V3.1 §C20): LabelInteractionGraph emits
+  // activeComponentId on hull hover; future C29 classification tree subscribes.
+  const [activeComponentId, setActiveComponentId] = useState(null);
   const [exprModalOpen, setExprModalOpen] = useState(false);
   const [isThemeDockVisible, setIsThemeDockVisible] = useState(false);
   const appendixReturnHashRef = useRef(APPENDIX_RETURN_HASH);
@@ -680,6 +683,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         components={componentData?.components ?? null}
                         fullGenerators={group?.fullGenerators ?? []}
                         onHover={handleGraphHover}
+                        activeComponentId={activeComponentId}
+                        onActiveComponentHoverChange={setActiveComponentId}
                       />
                     </div>
                     <div className="mt-4">
