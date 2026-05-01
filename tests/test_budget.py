@@ -670,7 +670,7 @@ def test_call_numpy_returns_fn_result_and_records_duration():
                 self._np_duration = 0.0
 
         fake = _FakeTimer()
-        b._current_op_timer = fake
+        b._current_op_timer = fake  # type: ignore[assignment]
         try:
             _call_numpy(_time.sleep, 0.01)
         finally:

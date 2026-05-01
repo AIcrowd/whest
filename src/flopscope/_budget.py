@@ -6,7 +6,7 @@ import functools
 import threading
 import time
 import weakref
-from typing import Literal, NamedTuple
+from typing import Any, Literal, NamedTuple
 
 from flopscope.errors import BudgetExhaustedError
 
@@ -114,7 +114,7 @@ class _OpTimer:
         return False
 
 
-def _call_numpy(fn, *args, **kwargs):
+def _call_numpy(fn: Any, *args: Any, **kwargs: Any) -> Any:
     """Invoke a numpy callable, attributing only its wall time to tracked_time.
 
     All numpy calls inside counted-op wrappers MUST go through this helper so
@@ -124,6 +124,10 @@ def _call_numpy(fn, *args, **kwargs):
     Reports the call's duration to the active _OpTimer (via
     budget._current_op_timer). When no timer is active (e.g. helper called
     from a non-counted code path), it is a transparent passthrough.
+
+    Annotated as ``Any -> Any`` to match the existing untyped-internal-helper
+    convention used by ``_call_with_optional_out``. Wrappers' explicit return
+    annotations carry the public type contract.
     """
     t0 = time.perf_counter()
     try:
