@@ -410,7 +410,6 @@ class BudgetContext:
         wall_time, tracked_time, overhead_time, untracked_time = _timing_summary(
             wall_time, self._total_tracked_time, self._total_flopscope_overhead_time
         )
-        del overhead_time  # exposed via summary_dict in Task 5
 
         result = {
             "flop_budget": self._flop_budget,
@@ -419,6 +418,7 @@ class BudgetContext:
             "operations": _summarize_operations(self._op_log),
             "wall_time_s": wall_time,
             "tracked_time_s": tracked_time,
+            "flopscope_overhead_time_s": overhead_time,
             "untracked_time_s": untracked_time,
         }
         if by_namespace:

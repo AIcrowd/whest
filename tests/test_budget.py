@@ -617,3 +617,16 @@ def test_timing_summary_subtracts_overhead():
 
     wall, tracked, overhead, untracked = _timing_summary(10.0, 7.0, 3.0 + 1e-13)
     assert untracked == 0.0
+
+
+def test_summary_dict_includes_flopscope_overhead_time_s():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+        )
+    d = b.summary_dict()
+    assert "flopscope_overhead_time_s" in d
+    assert d["flopscope_overhead_time_s"] is not None
+    assert d["flopscope_overhead_time_s"] >= 0
