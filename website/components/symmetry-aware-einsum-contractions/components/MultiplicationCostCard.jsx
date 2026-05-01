@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
@@ -105,7 +105,137 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
   );
 }
 
-export default function MultiplicationCostCard({ components = [] }) {
+// ─── Burnside Card (V3.1 §10) ─────────────────────────────────────────
+//
+// One row per element g of the per-component group G_a, showing:
+//   - Group element (cycle notation on labels L_a, identity rendered as "e")
+//   - Label cycles  (full cyclic form including 1-cycles, on label names)
+//   - Fixed assignments  (∏ over each cycle of n_{label}, since all labels
+//                          in a cycle must take the same value to be fixed)
+//   - Contribution  (the same product, displayed numerically once sizes
+//                    are known — this is what the Burnside sum averages)
+//
+// Below the table: M_a = (1/|G_a|) Σ_g |Fix(g)|.
+//
+// Hover writes the cycle's labels to the shared hoveredLabels bus. No dense
+// grid exists yet (TODO: highlight grid cells for hovered element once a
+// dense-grid view lands in this card).
+function BurnsideTable({
+  comp,
+  testIdSuffix = '',
+  onHoveredLabelsChange = null,
+}) {
+  const elements = comp?.elements ?? [];
+  const labels = comp?.labels ?? [];
+  const sizes = comp?.sizes ?? [];
+  const groupOrder = elements.length || 1;
+
+  const rows = useMemo(() => elements.map((g, idx) => {
+    const cycles = g.fullCyclicForm();
+    // Cycle as labels (for display + hover bus payload).
+    const cycleLabels = cycles.map((c) => c.map((i) => labels[i]));
+    // Cycle notation: identity → "e"; 1-cycles dropped (sympy convention).
+    const movedCycles = cycleLabels.filter((c) => c.length > 1);
+    const elementText = movedCycles.length === 0
+      ? 'e'
+      : movedCycles.map((c) => `(${c.join(' ')})`).join('');
+    // Full cycle text including 1-cycles, e.g. "(i j)(k)".
+    const fullCycleText = cycleLabels.map((c) => `(${c.join(' ')})`).join('');
+    // Fixed-assignments factor list, e.g. ["n_i n_k"] — one factor per cycle.
+    // All labels in a cycle must agree, so the cycle contributes n_{first}.
+    const factors = cycles.map((c) => labels[c[0]]);
+    const fixedSymbolic = factors.length === 0
+      ? '1'
+      : factors.map((lbl) => `n_{${lbl}}`).join(' \\cdot ');
+    // Numeric fixed count (uses comp.sizes).
+    const fixedNumeric = cycles.reduce((acc, c) => acc * (sizes[c[0]] ?? 1), 1);
+    // Flat label set on this row (for the hover bus).
+    const flatLabels = cycleLabels.flat();
+    return {
+      idx,
+      elementText,
+      fullCycleText,
+      fixedSymbolic,
+      fixedNumeric,
+      flatLabels,
+    };
+  }), [elements, labels, sizes]);
+
+  const burnsideTotal = rows.reduce((acc, r) => acc + r.fixedNumeric, 0);
+  const burnsideAverage = burnsideTotal / groupOrder;
+
+  if (elements.length === 0) return null;
+
+  const writeHover = (set) => {
+    if (typeof onHoveredLabelsChange === 'function') {
+      onHoveredLabelsChange(set);
+    }
+  };
+
+  const testId = testIdSuffix ? `burnside-table-${testIdSuffix}` : 'burnside-table';
+
+  return (
+    <div className="mt-3 rounded-md border border-stone-200 bg-white">
+      <div className="flex items-center justify-between gap-2 border-b border-stone-200 px-3 py-2">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Burnside Table
+        </span>
+        <span
+          className="cursor-help text-[11px] text-stone-500"
+          title="Burnside counts products, not updates."
+          aria-label="Burnside counts products, not updates."
+          tabIndex={0}
+          role="note"
+        >
+          (?)
+        </span>
+      </div>
+      <table
+        data-testid={testId}
+        className="w-full border-collapse text-left text-[12px]"
+      >
+        <thead>
+          <tr className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <th className="px-3 py-1.5 font-semibold">Group element</th>
+            <th className="px-3 py-1.5 font-semibold">Label cycles</th>
+            <th className="px-3 py-1.5 font-semibold">Fixed assignments</th>
+            <th className="px-3 py-1.5 text-right font-semibold">Contribution</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr
+              key={`burnside-row-${row.idx}`}
+              className="border-t border-stone-100 cursor-pointer transition-colors hover:bg-stone-50 focus:bg-stone-50 focus:outline-none"
+              tabIndex={0}
+              onMouseEnter={() => writeHover(new Set(row.flatLabels))}
+              onMouseLeave={() => writeHover(null)}
+              onFocus={() => writeHover(new Set(row.flatLabels))}
+              onBlur={() => writeHover(null)}
+            >
+              <td className="px-3 py-1.5 font-mono">{row.elementText}</td>
+              <td className="px-3 py-1.5 font-mono text-stone-700">{row.fullCycleText}</td>
+              <td className="px-3 py-1.5">
+                <Latex math={row.fixedSymbolic} />
+              </td>
+              <td className="px-3 py-1.5 text-right font-mono text-stone-900">
+                {row.fixedNumeric.toLocaleString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="border-t border-stone-200 px-3 py-2">
+        <Latex
+          math={String.raw`M_a \;=\; \frac{1}{|G_a|}\,\sum_{g \in G_a}\,|\mathrm{Fix}(g)| \;=\; ${burnsideAverage.toLocaleString()}`}
+          display
+        />
+      </div>
+    </div>
+  );
+}
+
+export default function MultiplicationCostCard({ components = [], onHoveredLabelsChange = null }) {
   const formulaRef = useRef(null);
   const [anchorRect, setAnchorRect] = useState(null);
   const hideTimerRef = useRef(null);
@@ -190,37 +320,44 @@ export default function MultiplicationCostCard({ components = [] }) {
           </div>
           {components.map((comp, i) => {
             const orbits = comp.multiplicationCount ?? comp.multiplication?.count ?? null;
+            const hasGroupAction = Array.isArray(comp.elements) && comp.elements.length > 0;
             return (
-              <div
-                key={`mult-${i}`}
-                className="flex items-center gap-2 text-xs"
-              >
-                <CaseBadge
-                  regimeId={comp.accumulation?.regimeId ?? comp.shape}
-                  size="xs"
-                  variant="pill"
-                />
-                <span className="flex flex-1 flex-wrap items-center gap-1.5">
-                  {(comp.labels?.length ? comp.labels : ['∅']).map((label) => {
-                    if (label === '∅') {
+              <React.Fragment key={`mult-${i}`}>
+                <div className="flex items-center gap-2 text-xs">
+                  <CaseBadge
+                    regimeId={comp.accumulation?.regimeId ?? comp.shape}
+                    size="xs"
+                    variant="pill"
+                  />
+                  <span className="flex flex-1 flex-wrap items-center gap-1.5">
+                    {(comp.labels?.length ? comp.labels : ['∅']).map((label) => {
+                      if (label === '∅') {
+                        return (
+                          <span key={`empty-${i}`} className="text-gray-500">
+                            ∅
+                          </span>
+                        );
+                      }
+                      const role = (comp.va ?? []).includes(label) ? 'v' : 'w';
                       return (
-                        <span key={`empty-${i}`} className="text-gray-500">
-                          ∅
-                        </span>
+                        <RoleBadge key={`mult-${i}-${label}`} role={role}>
+                          {label}
+                        </RoleBadge>
                       );
-                    }
-                    const role = (comp.va ?? []).includes(label) ? 'v' : 'w';
-                    return (
-                      <RoleBadge key={`mult-${i}-${label}`} role={role}>
-                        {label}
-                      </RoleBadge>
-                    );
-                  })}
-                </span>
-                <span className="ml-auto font-mono text-gray-900">
-                  <Latex math={`M_a = ${orbits != null ? orbits.toLocaleString() : '\\text{—}'}`} />
-                </span>
-              </div>
+                    })}
+                  </span>
+                  <span className="ml-auto font-mono text-gray-900">
+                    <Latex math={`M_a = ${orbits != null ? orbits.toLocaleString() : '\\text{—}'}`} />
+                  </span>
+                </div>
+                {hasGroupAction && (
+                  <BurnsideTable
+                    comp={comp}
+                    testIdSuffix={String(i)}
+                    onHoveredLabelsChange={onHoveredLabelsChange}
+                  />
+                )}
+              </React.Fragment>
             );
           })}
         </div>
