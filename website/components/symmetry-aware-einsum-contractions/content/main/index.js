@@ -1,7 +1,11 @@
 export { default as mainPreamble } from './preamble.js';
-export { default as mainSection1 } from './section1.js';
-export { default as mainSection2 } from './section2.js';
-export { default as mainSection3 } from './section3.js';
-export { default as mainSection4 } from './section4.js';
-export { default as mainPartitionCounting } from './partitionCounting.js';
-export { default as mainSection5 } from './section5.js';
+export { default as mainEinsumGlance } from './einsumGlance.js';
+export { default as mainProductSymmetry } from './productSymmetry.js';
+export { default as mainProjection } from './projection.js';
+export { default as mainRowsCols } from './rowsCols.js';
+export { default as mainComponentFactorization } from './componentFactorization.js';
+export { default as mainCertification } from './certification.js';
+export { default as mainCountingShortcuts } from './countingShortcuts.js';
+export { default as mainTypedPartition } from './typedPartition.js';
+export { default as mainAssembleCost } from './assembleCost.js';
+export { default as mainAppendixTransition } from './appendixTransition.js';

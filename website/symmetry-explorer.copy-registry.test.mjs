@@ -92,8 +92,9 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
 
   assert.match(index, /export\s+const\s+contentRegistry\s*=\s*\{/);
   assert.match(mainIndex, /export \{ default as mainPreamble \} from '\.\/preamble\.js';/);
-  assert.match(mainIndex, /export \{ default as mainSection5 \} from '\.\/section5\.js';/);
-  for (const [group, section, binding] of expectedMappings) {
+  assert.match(mainIndex, /export \{ default as mainAssembleCost \} from '\.\/assembleCost\.js';/);
+  // Appendix mappings remain in index.ts
+  for (const [group, section, binding] of expectedMappings.filter(([g]) => g === 'appendix')) {
     assert.match(
       index,
       new RegExp(`${group}:\\s*\\{[\\s\\S]*?\\b${section}:\\s*${binding}\\b`),
@@ -101,13 +102,21 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
     );
   }
 
-  const modules = [
+  const mainModules = [
     'main/preamble.js',
-    'main/section1.js',
-    'main/section2.js',
-    'main/section3.js',
-    'main/section4.js',
-    'main/section5.js',
+    'main/einsumGlance.js',
+    'main/productSymmetry.js',
+    'main/projection.js',
+    'main/rowsCols.js',
+    'main/componentFactorization.js',
+    'main/certification.js',
+    'main/countingShortcuts.js',
+    'main/typedPartition.js',
+    'main/assembleCost.js',
+    'main/appendixTransition.js',
+  ];
+
+  const appendixModules = [
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -115,6 +124,8 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
     'appendix/section5.ts',
     'appendix/section6.ts',
   ];
+
+  const modules = [...mainModules, ...appendixModules];
 
   for (const relativePath of modules) {
     const source = read(relativePath);
@@ -131,11 +142,16 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
 test('content registry does not wrap inline math in markdown code ticks', () => {
   const modules = [
     'main/preamble.js',
-    'main/section1.js',
-    'main/section2.js',
-    'main/section3.js',
-    'main/section4.js',
-    'main/section5.js',
+    'main/einsumGlance.js',
+    'main/productSymmetry.js',
+    'main/projection.js',
+    'main/rowsCols.js',
+    'main/componentFactorization.js',
+    'main/certification.js',
+    'main/countingShortcuts.js',
+    'main/typedPartition.js',
+    'main/assembleCost.js',
+    'main/appendixTransition.js',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -188,9 +204,9 @@ test('appendix section 6 explains the unified output-orbit accumulation count', 
 test('copy modules use canonical notation keys for pointwise and formal groups', () => {
   const modules = [
     'main/preamble.js',
-    'main/section3.js',
-    'main/section4.js',
-    'main/section5.js',
+    'main/certification.js',
+    'main/rowsCols.js',
+    'main/assembleCost.js',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -224,11 +240,16 @@ test('COPY_MAP documents the copy surface and the JSX-owned exceptions', () => {
 
   assert.match(copyMap, /^# Copy Map$/m);
   assertMapped('main/preamble.js', 'AlgorithmAtAGlance.jsx');
-  assertMapped('main/section1.js', 'explorerNarrative.js');
-  assertMapped('main/section2.js', 'explorerNarrative.js');
-  assertMapped('main/section3.js', 'explorerNarrative.js');
-  assertMapped('main/section4.js', 'explorerNarrative.js');
-  assertMapped('main/section5.js', 'explorerNarrative.js');
+  assertMapped('main/einsumGlance.js', 'explorerNarrative.js');
+  assertMapped('main/productSymmetry.js', 'explorerNarrative.js');
+  assertMapped('main/projection.js', 'explorerNarrative.js');
+  assertMapped('main/rowsCols.js', 'explorerNarrative.js');
+  assertMapped('main/componentFactorization.js', 'explorerNarrative.js');
+  assertMapped('main/certification.js', 'explorerNarrative.js');
+  assertMapped('main/countingShortcuts.js', 'explorerNarrative.js');
+  assertMapped('main/typedPartition.js', 'explorerNarrative.js');
+  assertMapped('main/assembleCost.js', 'explorerNarrative.js');
+  assertMapped('main/appendixTransition.js', 'explorerNarrative.js');
   assertMapped('appendix/section1.ts', 'ExpressionLevelModal.jsx');
   assertMapped('appendix/section2.ts', 'ExpressionLevelModal.jsx');
   assertMapped('appendix/section3.ts', 'ExpressionLevelModal.jsx');

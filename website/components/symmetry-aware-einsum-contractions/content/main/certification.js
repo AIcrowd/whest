@@ -1,6 +1,6 @@
 const p = (text) => ({ kind: 'paragraph', text });
 
-const section3 = {
+const certification = {
   title: 'Certify the Pointwise Symmetry Group',
   deck: 'Which candidate relabelings preserve the summand itself?',
   slots: {
@@ -15,4 +15,4 @@ const section3 = {
   },
 };
 
-export default section3;
+export default certification;

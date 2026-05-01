@@ -10,15 +10,15 @@ const read = (...parts) => readFileSync(root(...parts), 'utf-8');
 
 test('main copy distinguishes M, μ, and α', () => {
   const preamble = read('components/symmetry-aware-einsum-contractions/content/main/preamble.js');
-  const section4 = read('components/symmetry-aware-einsum-contractions/content/main/section4.js');
+  const rowsCols = read('components/symmetry-aware-einsum-contractions/content/main/rowsCols.js');
   const total = read('components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');
 
   assert.match(preamble, /\$M\$ \(product-orbit representatives\)/);
   assert.match(preamble, /\\mu = \(k-1\)M/);
-  // Section 4 now uses the unified output-orbit formulation
+  // rowsCols (§4 Rows and Columns) uses the unified output-orbit formulation
   // α = #{(O,Q) ∈ X/G_pt × Y/H : π_V(O) ∩ Q ≠ ∅} with H = Stab_{G_pt}(V)|_V.
-  assert.match(section4, /\\\\alpha = \\\\#\\\\\{\(O, Q\) \\\\in X\/G_\{\\\\text\{pt\}\}/);
-  assert.match(section4, /\\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)/);
+  assert.match(rowsCols, /\\\\alpha = \\\\#\\\\\{\(O, Q\) \\\\in X\/G_\{\\\\text\{pt\}\}/);
+  assert.match(rowsCols, /\\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)/);
   assert.match(total, /let \$M_a\$ be the number of product orbits/);
 });
 

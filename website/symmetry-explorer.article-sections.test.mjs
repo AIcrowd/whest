@@ -35,14 +35,14 @@ test('EXPLORER_ACTS sources main-page copy from registry modules', () => {
     'utf-8',
   );
 
-  assert.match(src, /import\s+\{[\s\S]*mainSection1[\s\S]*mainSection5[\s\S]*\}\s+from\s+'\.\.\/content\/main\/index\.js'/);
+  assert.match(src, /import\s+\{[\s\S]*mainEinsumGlance[\s\S]*mainAppendixTransition[\s\S]*\}\s+from\s+'\.\.\/content\/main\/index\.js'/);
   assert.match(src, /const getParagraphTexts = \(blocks = \[\]\) => blocks/);
   assert.match(src, /filter\(\(\{ kind \}\) => kind === 'paragraph'\)/);
-  assert.match(src, /heading:\s*mainSection1\.title/);
-  assert.match(src, /question:\s*mainSection1\.deck/);
-  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainSection1\.slots\.intro\)/);
-  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainSection2\.slots\.intro\)/);
-  assert.match(src, /produces:\s*getFirstParagraphText\(mainSection1\.slots\.produces\)/);
+  assert.match(src, /heading:\s*mainEinsumGlance\.title/);
+  assert.match(src, /question:\s*mainEinsumGlance\.deck/);
+  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainEinsumGlance\.slots\.intro\)/);
+  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainProductSymmetry\.slots\.intro\)/);
+  assert.match(src, /produces:\s*getFirstParagraphText\(mainEinsumGlance\.slots\.produces\)/);
   assert.doesNotMatch(src, /The first step is to fix the mathematical object/);
   assert.doesNotMatch(src, /Once the contraction is fixed, we forget the numerical entries/);
 });

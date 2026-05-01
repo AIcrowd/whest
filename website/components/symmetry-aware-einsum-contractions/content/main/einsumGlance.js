@@ -1,6 +1,6 @@
 const p = (text) => ({ kind: 'paragraph', text });
 
-const section1 = {
+const einsumGlance = {
   title: 'Einsum at a Glance',
   deck: 'What computation are we counting?',
   slots: {
@@ -15,4 +15,4 @@ const section1 = {
   },
 };
 
-export default section1;
+export default einsumGlance;

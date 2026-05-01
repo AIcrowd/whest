@@ -11,27 +11,34 @@ import {
   pickTopVisibleAct,
 } from './components/symmetry-aware-einsum-contractions/lib/activeAct.js';
 
-test('EXPLORER_ACTS defines the six narrative acts in the updated story order', () => {
+test('EXPLORER_ACTS defines the ten narrative acts in the V3.1 story order', () => {
   assert.deepEqual(
     EXPLORER_ACTS.map(({ id, navTitle, heading }) => ({ id, navTitle, heading })),
     [
-      { id: 'setup', navTitle: 'Set Up', heading: 'Einsum at a Glance' },
-      { id: 'structure', navTitle: 'See Structure', heading: 'Product Symmetry' },
-      { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Certify the Pointwise Symmetry Group' },
-      { id: 'decompose', navTitle: 'Decompose Action', heading: 'Count Product Orbits and Output Projections' },
-      { id: 'partition-counting', navTitle: 'Partition Counting', heading: 'Typed Partition Counting' },
-      { id: 'cost-savings', navTitle: 'Cost Savings', heading: 'Assemble the Direct Cost Model' },
+      { id: 'einsum-glance', navTitle: 'Einsum at a Glance', heading: 'Einsum at a Glance' },
+      { id: 'product-symmetry', navTitle: 'Product Symmetry', heading: 'Product Symmetry' },
+      { id: 'projection', navTitle: 'Projection', heading: 'Projection' },
+      { id: 'rows-cols', navTitle: 'Rows and Columns', heading: 'Rows and Columns' },
+      { id: 'component-factorization', navTitle: 'Component Factorization', heading: 'Component Factorization' },
+      { id: 'certification', navTitle: 'Certification', heading: 'Certify the Pointwise Symmetry Group' },
+      { id: 'counting-shortcuts', navTitle: 'Counting Shortcuts', heading: 'Counting Shortcuts' },
+      { id: 'typed-partition', navTitle: 'Partition Counting', heading: 'Typed Partition Counting' },
+      { id: 'assemble-cost', navTitle: 'Assemble the Cost', heading: 'Assemble the Direct Cost Model' },
+      { id: 'appendix-transition', navTitle: 'Appendix', heading: 'Appendix Transition' },
     ],
   );
 });
 
-test('Acts 1 through 5 ask algorithmic questions rather than product-tour questions', () => {
+test('Acts ask algorithmic questions matched to V3.1 sections', () => {
   assert.match(EXPLORER_ACTS[0].question, /what computation are we counting/i);
   assert.match(EXPLORER_ACTS[1].question, /what can be multiplied once/i);
-  assert.match(EXPLORER_ACTS[2].question, /preserve the summand itself/i);
-  assert.match(EXPLORER_ACTS[3].question, /pointwise group become multiplication and accumulation cost/i);
-  assert.match(EXPLORER_ACTS[4].question, /typed equality patterns/i);
-  assert.match(EXPLORER_ACTS[5].question, /final direct-event cost of the symmetry-aware computation/i);
+  assert.match(EXPLORER_ACTS[2].question, /O.*Q.*incidence/i);
+  assert.match(EXPLORER_ACTS[3].question, /G.*pt.*rows/i);
+  assert.match(EXPLORER_ACTS[4].question, /factor independently/i);
+  assert.match(EXPLORER_ACTS[5].question, /preserve the summand itself/i);
+  assert.match(EXPLORER_ACTS[6].question, /classification tree/i);
+  assert.match(EXPLORER_ACTS[7].question, /typed equality patterns/i);
+  assert.match(EXPLORER_ACTS[8].question, /final direct-event cost of the symmetry-aware computation/i);
 });
 
 test('Acts 1 through 5 expose introParagraphs and no longer expose paired-callout copy fields', () => {
@@ -53,14 +60,14 @@ test('EXPLORER_ACTS no longer carries legacy paired-callout compatibility fields
       assert.equal(legacyField in act, false, `did not expect ${legacyField} on ${act.id}`);
     }
   }
-  // §6 cost-savings is the only act without intro/produces fields.
-  assert.equal('supportingSentence' in EXPLORER_ACTS[5], false);
+  // §9 assemble-cost (index 8) is the act without intro/produces fields.
+  assert.equal('supportingSentence' in EXPLORER_ACTS[8], false);
 });
 
 test('approved mathematically safer prose appears in the narrative data', () => {
   const section2 = [...EXPLORER_ACTS[1].introParagraphs, EXPLORER_ACTS[1].produces].join(' ');
-  const section3 = EXPLORER_ACTS[2].introParagraphs.join(' ');
-  const section4 = EXPLORER_ACTS[3].introParagraphs.join(' ');
+  const section3 = EXPLORER_ACTS[5].introParagraphs.join(' '); // §6 Certification (was old §3)
+  const section4 = EXPLORER_ACTS[3].introParagraphs.join(' '); // §4 Rows and Columns (was old §4)
 
   assert.match(section2, /forget numerical entries and keep only incidence/i);
   assert.match(section2, /operand-axis classes/i);

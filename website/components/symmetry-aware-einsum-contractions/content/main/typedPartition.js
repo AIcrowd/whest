@@ -1,6 +1,6 @@
 const p = (text) => ({ kind: 'paragraph', text });
 
-const partitionCounting = {
+const typedPartition = {
   title: 'Typed Partition Counting',
   deck: 'Compressing the accumulation count $\\alpha$ by typed equality patterns.',
   slots: {
@@ -14,4 +14,4 @@ const partitionCounting = {
   },
 };
 
-export default partitionCounting;
+export default typedPartition;

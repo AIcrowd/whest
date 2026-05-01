@@ -51,7 +51,7 @@ const DEFAULT_EXAMPLE_IDX = Math.max(0, EXAMPLES.findIndex((example) => example.
 const DEFAULT_DIMENSION_N = 5;
 const APPENDIX_ROOT_HASH = '#appendix';
 const APPENDIX_SECTION_HASH_PREFIX = '#appendix-section-';
-const APPENDIX_RETURN_HASH = '#cost-savings';
+const APPENDIX_RETURN_HASH = '#assemble-cost';
 
 function isAppendixHash(hash = '') {
   return hash === APPENDIX_ROOT_HASH || hash.startsWith(APPENDIX_SECTION_HASH_PREFIX);
@@ -121,7 +121,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [selectedSigmaPairIndex, setSelectedSigmaPairIndex] = useState(null);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
   const [isDirty, setIsDirty] = useState(false);
-  // Cross-highlight payload emitted by the Act-4 Interaction Graph on hover.
+  // Cross-highlight payload emitted by the Certification section Interaction Graph on hover.
   // `labels` → halo those characters in the StickyBar einsum equation;
   // `leafKeys` → spotlight matching leaves in the DecisionLadder.
   const [graphHover, setGraphHover] = useState(null);
@@ -445,7 +445,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
             />
             <main className="min-w-0 flex-1">
               <div className="flex flex-col">
+
+            {/* §1 Einsum at a Glance — id: einsum-glance, backward alias: setup */}
             <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
+              {/* Backward-compat anchor alias */}
+              <span id="setup" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
               <ExplorerSectionCard
                 eyebrow={<SectionEyebrow n={1} anchorId={EXPLORER_ACTS[0].id} />}
                 title={EXPLORER_ACTS[0].heading}
@@ -477,7 +481,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
             {/* Only render pipeline sections when we have results */}
             {analysis && example && (
               <>
+                {/* §2 Product Symmetry — id: product-symmetry, backward alias: structure */}
                 <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-24">
+                  {/* Backward-compat anchor alias */}
+                  <span id="structure" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={2} anchorId={EXPLORER_ACTS[1].id} />}
                     title={EXPLORER_ACTS[1].heading}
@@ -515,7 +522,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   </ExplorerSectionCard>
                 </section>
 
+                {/* §3 Projection — id: projection, backward alias: decompose */}
+                {/* Hero: O→Q incidence matrix via ComponentCostView (contains BranchingDemo) */}
                 <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
+                  {/* Backward-compat anchor alias */}
+                  <span id="decompose" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={3} anchorId={EXPLORER_ACTS[2].id} />}
                     title={EXPLORER_ACTS[2].heading}
@@ -524,6 +535,80 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[2].introParagraphs} />
+                    <div className="mt-6">
+                      <ComponentCostView
+                        componentData={componentData}
+                        costModel={cost}
+                        dimensionN={dimensionN}
+                        numTerms={normalizedExample?.subscripts?.length ?? 1}
+                        allLabels={group.allLabels}
+                        vLabels={group.vLabels}
+                        fullGenerators={group.fullGenerators}
+                        selectedOrbitIdx={resolvedSelectedOrbitIdx}
+                        onSelectOrbit={setSelectedOrbitIdx}
+                        onGraphHover={handleGraphHover}
+                        spotlightLeafIds={spotlightLeafSet}
+                        expressionInfo={normalizedExample ? {
+                          subscripts: normalizedExample.subscripts ?? [],
+                          output: normalizedExample.output ?? '',
+                          operandNames: (normalizedExample.expression?.operandNames ?? '')
+                            .split(',')
+                            .map((s) => s.trim())
+                            .filter(Boolean),
+                        } : null}
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
+                    </div>
+                  </ExplorerSectionCard>
+                </section>
+
+                {/* §4 Rows and Columns — id: rows-cols, no backward alias */}
+                <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow={<SectionEyebrow n={4} anchorId={EXPLORER_ACTS[3].id} />}
+                    title={EXPLORER_ACTS[3].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[3].question}</InlineMathText>}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[3].introParagraphs} />
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
+                    </div>
+                  </ExplorerSectionCard>
+                </section>
+
+                {/* §5 Component Factorization — id: component-factorization, no backward alias */}
+                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
+                    title={EXPLORER_ACTS[4].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[4].introParagraphs} />
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
+                    </div>
+                  </ExplorerSectionCard>
+                </section>
+
+                {/* §6 Certification — id: certification, backward alias: proof */}
+                {/* Sigma-loop / wreath structure / certification UI */}
+                <section id={EXPLORER_ACTS[5].id} className="mb-12 scroll-mt-24">
+                  {/* Backward-compat anchor alias */}
+                  <span id="proof" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
+                  <ExplorerSectionCard
+                    eyebrow={<SectionEyebrow n={6} anchorId={EXPLORER_ACTS[5].id} />}
+                    title={EXPLORER_ACTS[5].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[5].question}</InlineMathText>}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[5].introParagraphs} />
                     {/* Wreath structure renders full-width — the enumeration target the σ-loop walks over. */}
                     <div id="wreath-structure" className="mt-6 flex flex-col gap-2 scroll-mt-24">
                       <ExplorerSubsectionHeader anchorId="wreath-structure" labelText="Wreath structure">
@@ -583,59 +668,39 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </NarrativeCallout>
                     </div>
                     <div className="mt-4">
-                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[5].produces}</NarrativeCallout>
                     </div>
                   </ExplorerSectionCard>
                 </section>
 
-                <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
+                {/* §7 Counting Shortcuts — id: counting-shortcuts, no backward alias */}
+                <section id={EXPLORER_ACTS[6].id} className="mb-12 scroll-mt-24">
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={4} anchorId={EXPLORER_ACTS[3].id} />}
-                    title={EXPLORER_ACTS[3].heading}
-                    description={<InlineMathText>{EXPLORER_ACTS[3].question}</InlineMathText>}
+                    eyebrow={<SectionEyebrow n={7} anchorId={EXPLORER_ACTS[6].id} />}
+                    title={EXPLORER_ACTS[6].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[6].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[3].introParagraphs} />
-                    <div className="mt-6">
-                      <ComponentCostView
-                        componentData={componentData}
-                        costModel={cost}
-                        dimensionN={dimensionN}
-                        numTerms={normalizedExample?.subscripts?.length ?? 1}
-                        allLabels={group.allLabels}
-                        vLabels={group.vLabels}
-                        fullGenerators={group.fullGenerators}
-                        selectedOrbitIdx={resolvedSelectedOrbitIdx}
-                        onSelectOrbit={setSelectedOrbitIdx}
-                        onGraphHover={handleGraphHover}
-                        spotlightLeafIds={spotlightLeafSet}
-                        expressionInfo={normalizedExample ? {
-                          subscripts: normalizedExample.subscripts ?? [],
-                          output: normalizedExample.output ?? '',
-                          operandNames: (normalizedExample.expression?.operandNames ?? '')
-                            .split(',')
-                            .map((s) => s.trim())
-                            .filter(Boolean),
-                        } : null}
-                      />
-                    </div>
-
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[6].introParagraphs} />
                     <div className="mt-4">
-                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[6].produces}</NarrativeCallout>
                     </div>
                   </ExplorerSectionCard>
                 </section>
 
-                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
+                {/* §8 Typed Partition Counting — id: typed-partition, backward alias: partition-counting */}
+                <section id={EXPLORER_ACTS[7].id} className="mb-12 scroll-mt-24">
+                  {/* Backward-compat anchor alias */}
+                  <span id="partition-counting" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
-                    title={EXPLORER_ACTS[4].heading}
-                    description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
+                    eyebrow={<SectionEyebrow n={8} anchorId={EXPLORER_ACTS[7].id} />}
+                    title={EXPLORER_ACTS[7].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[7].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[4].introParagraphs} />
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[7].introParagraphs} />
                     <div className="mt-6">
                       <TypedPartitionDemo
                         componentData={componentData}
@@ -643,16 +708,19 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       />
                     </div>
                     <div className="mt-4">
-                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[7].produces}</NarrativeCallout>
                     </div>
                   </ExplorerSectionCard>
                 </section>
 
-                <section id={EXPLORER_ACTS[5].id} className="mb-12 scroll-mt-24">
+                {/* §9 Assemble the Cost — id: assemble-cost, backward alias: cost-savings */}
+                <section id={EXPLORER_ACTS[8].id} className="mb-12 scroll-mt-24">
+                  {/* Backward-compat anchor alias */}
+                  <span id="cost-savings" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={6} anchorId={EXPLORER_ACTS[5].id} />}
-                    title={EXPLORER_ACTS[5].heading}
-                    description={<InlineMathText>{EXPLORER_ACTS[5].question}</InlineMathText>}
+                    eyebrow={<SectionEyebrow n={9} anchorId={EXPLORER_ACTS[8].id} />}
+                    title={EXPLORER_ACTS[8].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[8].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
@@ -679,6 +747,22 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         The cost above uses <Latex math={notationLatex('g_pointwise')} /> on product assignments and <Latex math={notationLatex('h_output')} /> on stored output representatives, where <Latex math={String.raw`H = \mathrm{Stab}_{G_{\text{pt}}}(V)|_V`} />. The completed expression can have a larger formal symmetry <Latex math={String.raw`G_{\text{f}} = H \times \prod_d S(W_d)`} />. Its dummy-label factor acts after summation and must not be used to remove pre-summation product or update events.
                       </span>
                     </button>
+                  </ExplorerSectionCard>
+                </section>
+
+                {/* §10 Appendix Transition — id: appendix-transition, no backward alias */}
+                <section id={EXPLORER_ACTS[9].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow={<SectionEyebrow n={10} anchorId={EXPLORER_ACTS[9].id} />}
+                    title={EXPLORER_ACTS[9].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[9].question}</InlineMathText>}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[9].introParagraphs} />
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[9].produces}</NarrativeCallout>
+                    </div>
                   </ExplorerSectionCard>
                 </section>
               </>

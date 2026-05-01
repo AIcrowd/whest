@@ -15,9 +15,9 @@ test('main narrative uses output representatives, not output-bin updates', () =>
     'components/MentalFrameworkCode.jsx',
     'components/TotalCostView.jsx',
     'content/main/preamble.js',
-    'content/main/section3.js',
-    'content/main/section4.js',
-    'content/main/section5.js',
+    'content/main/certification.js',
+    'content/main/rowsCols.js',
+    'content/main/assembleCost.js',
   ];
   const joined = files.map(read).join('\n');
 

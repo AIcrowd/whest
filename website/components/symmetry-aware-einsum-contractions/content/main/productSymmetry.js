@@ -1,6 +1,6 @@
 const p = (text) => ({ kind: 'paragraph', text });
 
-const section2 = {
+const productSymmetry = {
   title: 'Product Symmetry',
   deck: 'What can be multiplied once?',
   slots: {
@@ -14,4 +14,4 @@ const section2 = {
   },
 };
 
-export default section2;
+export default productSymmetry;

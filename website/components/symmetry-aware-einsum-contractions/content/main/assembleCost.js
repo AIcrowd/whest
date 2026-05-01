@@ -1,7 +1,7 @@
 const p = (text) => ({ kind: 'paragraph', text });
 const l = (text) => ({ kind: 'label', text });
 
-const section5 = {
+const assembleCost = {
   title: 'Assemble the Direct Cost Model',
   deck: 'What is the final direct-event cost of the symmetry-aware computation?',
   slots: {
@@ -15,4 +15,4 @@ const section5 = {
   },
 };
 
-export default section5;
+export default assembleCost;
