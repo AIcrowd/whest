@@ -16,6 +16,7 @@ import appendixSection4 from '../content/appendix/section4.ts';
 import appendixSection5 from '../content/appendix/section5.ts';
 import appendixSection6 from '../content/appendix/section6.ts';
 import appendixSection7 from '../content/appendix/section7.ts';
+import appendixSection8 from '../content/appendix/section8.ts';
 import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
@@ -1770,6 +1771,111 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                   themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                 })}
               </p>
+            </div>
+          </AppendixSection>
+
+          {/* V3.1 Appendix E — Scope, assumptions, and non-goals. Closes the
+              appendix tier with the explicit cost-model contract: what the
+              reported number is (Total = μ + α), what is assumed, what is
+              excluded, and what "exact" means. Mounted last so it serves as
+              the canonical landing place for "what does this number mean?"
+              questions raised by anything earlier in the modal. */}
+          <AppendixSection
+            n={8}
+            label="Appendix E"
+            anchorId="appendix-section-8"
+            title={appendixSection8.title}
+            deckClassName="max-w-none"
+            deck={
+              <InlineMathText>
+                {normalizeAppendixDisplayText(appendixSection8.deck)}
+              </InlineMathText>
+            }
+          >
+            <div className={APPENDIX_ARTICLE_LANE_CLASS}>
+              {renderAppendixSlot(appendixSection8.slots.intro).map((content, index) => (
+                <p key={`appendix-8-intro-${index}`} className={APPENDIX_PROSE_CLASS}>
+                  {content}
+                </p>
+              ))}
+
+              {/* E.1 — Cost model. */}
+              <div className="mt-6 space-y-2">
+                <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                  {renderAppendixSingleBlock(appendixSection8.slots.costModelLabel, 0, {
+                    slotKey: 'appendix-section8-costModel-label',
+                  })}
+                </div>
+                {appendixSection8.slots.costModel.map((_, blockIdx) => (
+                  <p key={`appendix-8-costModel-${blockIdx}`} className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection8.slots.costModel, blockIdx, {
+                      slotKey: 'appendix-section8-costModel',
+                    })}
+                  </p>
+                ))}
+              </div>
+
+              {/* E.2 — Included assumptions (headed list). */}
+              <div className="mt-6 space-y-2">
+                <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                  {renderAppendixSingleBlock(appendixSection8.slots.includedAssumptionsLabel, 0, {
+                    slotKey: 'appendix-section8-includedAssumptions-label',
+                  })}
+                </div>
+                <p className={APPENDIX_PROSE_CLASS}>
+                  {renderAppendixSingleBlock(appendixSection8.slots.includedAssumptionsLead, 0, {
+                    slotKey: 'appendix-section8-includedAssumptions-lead',
+                  })}
+                </p>
+                <ul className="ml-6 list-disc space-y-1.5">
+                  {appendixSection8.slots.includedAssumptions.map((_, blockIdx) => (
+                    <li key={`appendix-8-includedAssumptions-${blockIdx}`} className={APPENDIX_PROSE_CLASS}>
+                      {renderAppendixSingleBlock(appendixSection8.slots.includedAssumptions, blockIdx, {
+                        slotKey: 'appendix-section8-includedAssumptions',
+                      })}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* E.3 — Excluded phenomena (headed list). */}
+              <div className="mt-6 space-y-2">
+                <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                  {renderAppendixSingleBlock(appendixSection8.slots.excludedPhenomenaLabel, 0, {
+                    slotKey: 'appendix-section8-excludedPhenomena-label',
+                  })}
+                </div>
+                <p className={APPENDIX_PROSE_CLASS}>
+                  {renderAppendixSingleBlock(appendixSection8.slots.excludedPhenomenaLead, 0, {
+                    slotKey: 'appendix-section8-excludedPhenomena-lead',
+                  })}
+                </p>
+                <ul className="ml-6 list-disc space-y-1.5">
+                  {appendixSection8.slots.excludedPhenomena.map((_, blockIdx) => (
+                    <li key={`appendix-8-excludedPhenomena-${blockIdx}`} className={APPENDIX_PROSE_CLASS}>
+                      {renderAppendixSingleBlock(appendixSection8.slots.excludedPhenomena, blockIdx, {
+                        slotKey: 'appendix-section8-excludedPhenomena',
+                      })}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* E.4 — Exactness contract. */}
+              <div className="mt-6 space-y-2">
+                <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                  {renderAppendixSingleBlock(appendixSection8.slots.exactnessContractLabel, 0, {
+                    slotKey: 'appendix-section8-exactnessContract-label',
+                  })}
+                </div>
+                {appendixSection8.slots.exactnessContract.map((_, blockIdx) => (
+                  <p key={`appendix-8-exactnessContract-${blockIdx}`} className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection8.slots.exactnessContract, blockIdx, {
+                      slotKey: 'appendix-section8-exactnessContract',
+                    })}
+                  </p>
+                ))}
+              </div>
             </div>
           </AppendixSection>
         </div>
