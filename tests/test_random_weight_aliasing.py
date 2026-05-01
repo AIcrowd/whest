@@ -78,3 +78,22 @@ class TestCoverage:
             f"Distribution method-level ops with surprising 1.0 weight "
             f"(should alias to ~16 via fallback): {unresolved}"
         )
+
+
+class TestOutlierExplicitEntries:
+    """The 3 method-level ops without direct module-level analogs are pinned in JSON."""
+
+    def test_multivariate_hypergeometric_pinned(self):
+        load_weights()
+        # Pinned to closest-analog (random.hypergeometric, 16.0)
+        assert get_weight("random.Generator.multivariate_hypergeometric") == 16.0
+
+    def test_permuted_pinned(self):
+        load_weights()
+        # Pinned to closest-analog (random.permutation, 1.0)
+        assert get_weight("random.Generator.permuted") == 1.0
+
+    def test_tomaxint_pinned(self):
+        load_weights()
+        # Pinned to closest-analog (random.randint, 1.0)
+        assert get_weight("random.RandomState.tomaxint") == 1.0
