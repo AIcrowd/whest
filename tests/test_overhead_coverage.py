@@ -120,7 +120,7 @@ def _direct_numpy_calls_inside_with_deduct(path: Path) -> list[tuple[int, str]]:
 def test_every_direct_numpy_call_in_wrapper_uses_call_numpy():
     """Every numpy invocation inside `with budget.deduct(...):` must go through
     `_call_numpy(np_fn, ...)` so its wall time is correctly attributed to
-    tracked_time. Direct `_np.X(...)` is rejected."""
+    flopscope backend time. Direct `_np.X(...)` is rejected."""
     bad: list[str] = []
     for path in SRC_ROOT.rglob("*.py"):
         if path.name.startswith("test_"):

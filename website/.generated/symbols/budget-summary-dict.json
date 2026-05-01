@@ -156,7 +156,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "\"tracked_time_s\""
+                      "text": "\"flopscope_backend_time_s\""
                     },
                     {
                       "kind": "text",
@@ -164,11 +164,19 @@
                     },
                     {
                       "kind": "code",
-                      "text": "\"untracked_time_s\""
+                      "text": "\"flopscope_overhead_time_s\""
                     },
                     {
                       "kind": "text",
-                      "text": ", and optionally\n"
+                      "text": ",\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"residual_wall_time_s\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", and optionally "
                     },
                     {
                       "kind": "code",
@@ -176,7 +184,7 @@
                     },
                     {
                       "kind": "text",
-                      "text": " with exact attribution buckets."
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
@@ -230,7 +238,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "\"tracked_time_s\""
+                  "text": "\"flopscope_backend_time_s\""
                 },
                 {
                   "kind": "text",
@@ -238,11 +246,19 @@
                 },
                 {
                   "kind": "code",
-                  "text": "\"untracked_time_s\""
+                  "text": "\"flopscope_overhead_time_s\""
                 },
                 {
                   "kind": "text",
-                  "text": ", and optionally\n"
+                  "text": ",\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "\"residual_wall_time_s\""
+                },
+                {
+                  "kind": "text",
+                  "text": ", and optionally "
                 },
                 {
                   "kind": "code",
@@ -250,7 +266,7 @@
                 },
                 {
                   "kind": "text",
-                  "text": " with exact attribution buckets."
+                  "text": "."
                 }
               ],
               "name": "",
@@ -299,7 +315,7 @@
             },
             {
               "kind": "output",
-              "text": "['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']"
+              "text": "['flop_budget', 'flops_remaining', 'flops_used', 'flopscope_backend_time_s', 'flopscope_overhead_time_s', 'operations', 'residual_wall_time_s', 'wall_time_s']"
             }
           ],
           "type": "doctest_block"
@@ -320,7 +336,7 @@
   "related_guides": [],
   "signature": "flops.budget_summary_dict(by_namespace: 'bool' = False) -> 'dict'",
   "slug": "budget-summary-dict",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L682",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L916",
   "status_note": "",
   "summary": "Return aggregated budget data across all recorded contexts.",
   "upstream_source_url": ""

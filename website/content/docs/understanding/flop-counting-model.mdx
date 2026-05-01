@@ -358,7 +358,7 @@ with flops.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
 
 Namespaces are hierarchical and exact per operation. `flops.namespace("precompute")` inside `namespace="predict"` records operations as `predict.precompute`, and nested scopes append dotted segments such as `predict.fallback.sampling`.
 
-Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `flops.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `flops.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `flops.budget_summary_dict(by_namespace=True)`, return the same exact buckets keyed by the full namespace path or `None` for unlabeled operations.
+Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `flops.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `flops.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `flops.budget_summary_dict(by_namespace=True)`, return namespace buckets keyed by the full namespace path or `None` for unlabeled operations. Namespace buckets include namespace-attributable FLOPs, calls, operations, `flopscope_backend_time_s`, and `flopscope_overhead_time_s`; context-level wall and residual wall time stay on the top-level summary.
 
 ```python
 data = budget.summary_dict(by_namespace=True)

@@ -233,11 +233,11 @@
                     },
                     {
                       "kind": "text",
-                      "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                      "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is attributed\nto "
                     },
                     {
                       "kind": "code",
-                      "text": "untracked_time"
+                      "text": "flopscope_overhead_time"
                     },
                     {
                       "kind": "text",
@@ -283,11 +283,11 @@
                 },
                 {
                   "kind": "text",
-                  "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                  "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is attributed\nto "
                 },
                 {
                   "kind": "code",
-                  "text": "untracked_time"
+                  "text": "flopscope_overhead_time"
                 },
                 {
                   "kind": "text",

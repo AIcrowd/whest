@@ -97,16 +97,17 @@ flopscope FLOP Budget Summary [solver]
   Remaining:                 49,933,952  (99.9%)
 
   By namespace:
-    solver                         66,048  (100.0%)  [3 calls]  0.000s
+    solver                         66,048  (100.0%)  [3 calls]  Backend 0.000s  Overhead 0.000s
 
   By operation:
     einsum                     65,536  ( 99.2%)  [1 call]
     exp                           256  (  0.4%)  [1 call]
     sum                           256  (  0.4%)  [1 call]
 
-  Wall time:             ...s
-  Tracked time:          ...s  ( ...%)
-  Untracked time:        ...s  ( ...%)
+  Total Wall Time:       ...s
+  Flopscope Backend:     ...s  ( ...%)
+  Flopscope Overhead:    ...s  ( ...%)
+  Residual Wall Time:    ...s  ( ...%)
 
   By operation (time):
     einsum                 ...s  ( ...%)  [1 call]
@@ -119,7 +120,7 @@ Key things to look for:
 - **Budget / Used / Remaining:** the top rows show the explicit competition budget, current spend, and remaining headroom
 - **By namespace:** `solver` is the root prefix, and nested scopes show up as dotted paths like `solver.precompute`. Use `budget.summary(by_namespace=True)` for the current context or `flops.budget_summary(by_namespace=True)` for the accumulated session/global view
 - **By operation:** this toy pass is dominated by the single `einsum`; `exp` and `sum` are tiny by comparison
-- **Wall / tracked / flopscope overhead / untracked time:** wall time is total elapsed time for the context. Tracked time is time spent inside the inner NumPy calls being counted. Flopscope overhead is time spent in flopscope's own dispatch code (wrapper preambles, FLOP cost computation, view-casts, post-call wrapping, `maybe_check_nan_inf` when opted in). Untracked time is genuinely everything else (user Python between ops, sleeps, GC pauses). The decomposition is exact: `wall_time = tracked_time + flopscope_overhead_time + untracked_time`
+- **Wall / backend / flopscope overhead / residual time:** wall time is total elapsed time for the context. Flopscope backend time is spent inside the underlying NumPy / BLAS / LAPACK calls being counted. Flopscope overhead is spent in flopscope's own dispatch code (wrapper preambles, FLOP cost computation, view-casts, post-call wrapping, `maybe_check_nan_inf` when opted in). Residual wall time is the measured remainder outside backend calls and flopscope overhead (user Python between ops, sleeps, GC pauses). The decomposition is exact: `wall_time_s = flopscope_backend_time_s + flopscope_overhead_time_s + residual_wall_time_s`
 - **Flat default:** the default summary stays flat unless you opt into `by_namespace=True`
 
 For programmatic access, use `flops.budget_summary_dict()`:

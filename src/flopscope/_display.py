@@ -68,7 +68,7 @@ def _format_budget_summary_text(
         lines += ["", "  By namespace:"]
         for namespace, bucket in _sorted_namespace_rows(data["by_namespace"]):
             lines.append(
-                f"    {_namespace_label(namespace):<24} {_format_flops(bucket['flops_used']):>12}  ({_pct(bucket['flops_used'], data['flops_used']):>6})  [{_call_label(bucket['calls'])}]  {bucket['tracked_time_s']:.3f}s"
+                f"    {_namespace_label(namespace):<24} {_format_flops(bucket['flops_used']):>12}  ({_pct(bucket['flops_used'], data['flops_used']):>6})  [{_call_label(bucket['calls'])}]  Backend {bucket['flopscope_backend_time_s']:.3f}s  Overhead {bucket['flopscope_overhead_time_s']:.3f}s"
             )
 
     ops = data.get("operations", {})
@@ -82,30 +82,30 @@ def _format_budget_summary_text(
             )
 
     wall_time = data.get("wall_time_s")
-    tracked_time = data.get("tracked_time_s", 0.0)
+    backend_time = data.get("flopscope_backend_time_s", 0.0)
     overhead_time = data.get("flopscope_overhead_time_s", 0.0)
-    untracked_time = data.get("untracked_time_s")
-    if wall_time is not None and untracked_time is not None:
+    residual_wall_time = data.get("residual_wall_time_s")
+    if wall_time is not None and residual_wall_time is not None:
         lines += [
             "",
-            f"  Wall time:           {wall_time:.3f}s",
-            f"  Tracked time:        {tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})",
-            f"  Flopscope overhead:  {overhead_time:.3f}s  ({_pct(overhead_time, wall_time)})",
-            f"  Untracked time:      {untracked_time:.3f}s  ({_pct(untracked_time, wall_time)})",
+            f"  Total Wall Time:     {wall_time:.3f}s",
+            f"  Flopscope Backend:   {backend_time:.3f}s  ({_pct(backend_time, wall_time)})",
+            f"  Flopscope Overhead:  {overhead_time:.3f}s  ({_pct(overhead_time, wall_time)})",
+            f"  Residual Wall Time:  {residual_wall_time:.3f}s  ({_pct(residual_wall_time, wall_time)})",
         ]
 
-    op_durations = {
-        op_name: op_info["duration"]
+    op_backend_times = {
+        op_name: op_info["flopscope_backend_time_s"]
         for op_name, op_info in ops.items()
-        if op_info.get("duration", 0.0) > 0
+        if op_info.get("flopscope_backend_time_s", 0.0) > 0
     }
-    if tracked_time > 0 and op_durations:
+    if backend_time > 0 and op_backend_times:
         lines += ["", "  By operation (time):"]
-        for op_name, duration in sorted(
-            op_durations.items(), key=lambda item: -item[1]
+        for op_name, op_backend_time in sorted(
+            op_backend_times.items(), key=lambda item: -item[1]
         ):
             lines.append(
-                f"    {op_name:<20} {duration:.3f}s  ({_pct(duration, tracked_time):>6})  [{_call_label(ops[op_name]['calls'])}]"
+                f"    {op_name:<20} {op_backend_time:.3f}s  ({_pct(op_backend_time, backend_time):>6})  [{_call_label(ops[op_name]['calls'])}]"
             )
 
     return "\n".join(lines)
@@ -175,18 +175,21 @@ def _rich_namespace_table(label: str, ns_data: dict, color: str):
     table.add_column("Operation", style="dim")
     table.add_column("FLOPs", justify="right")
     table.add_column("%", justify="right")
-    table.add_column("Time", justify="right", style="dim")
+    table.add_column("Backend", justify="right", style="dim")
+    table.add_column("Overhead", justify="right", style="dim")
     table.add_column("Calls", justify="right", style="dim")
 
     ops = ns_data.get("operations", {})
     total = ns_data.get("flop_budget", ns_data.get("flops_used", 0))
     for op_name, op_info in sorted(ops.items(), key=lambda item: -item[1]["flop_cost"]):
-        dur = op_info.get("duration", 0.0)
+        backend = op_info.get("flopscope_backend_time_s", 0.0)
+        overhead = op_info.get("flopscope_overhead_time_s", 0.0)
         table.add_row(
             op_name,
             _format_flops(op_info["flop_cost"]),
             _pct(op_info["flop_cost"], total),
-            f"{dur:.3f}s" if dur > 0 else "",
+            f"{backend:.3f}s" if backend > 0 else "",
+            f"{overhead:.3f}s" if overhead > 0 else "",
             _call_label(op_info["calls"]),
         )
 
@@ -197,12 +200,14 @@ def _rich_namespace_table(label: str, ns_data: dict, color: str):
         Text(_pct(ns_data.get("flops_used", 0), total), style=color),
         "",
         "",
+        "",
     )
     if "flop_budget" in ns_data:
         remaining = ns_data["flop_budget"] - ns_data.get("flops_used", 0)
         table.add_row(
             Text("Remaining", style="bold"),
             Text(_format_flops(remaining), style="bold"),
+            "",
             "",
             "",
             "",
@@ -240,29 +245,30 @@ def _rich_totals_table(data: dict):
         )
 
     wall_time = data.get("wall_time_s")
-    tracked_time = data.get("tracked_time_s", 0.0)
+    backend_time = data.get("flopscope_backend_time_s", 0.0)
     overhead_time = data.get("flopscope_overhead_time_s", 0.0)
-    untracked_time = data.get("untracked_time_s")
-    if wall_time is not None and untracked_time is not None:
+    residual_wall_time = data.get("residual_wall_time_s")
+    if wall_time is not None and residual_wall_time is not None:
         table.add_section()
-        table.add_row("Wall time", f"{wall_time:.3f}s")
+        table.add_row("Total Wall Time", f"{wall_time:.3f}s")
         table.add_row(
-            "Tracked",
+            "Flopscope Backend",
             Text(
-                f"{tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})", style="dim"
+                f"{backend_time:.3f}s  ({_pct(backend_time, wall_time)})",
+                style="dim",
             ),
         )
         table.add_row(
-            "Flopscope overhead",
+            "Flopscope Overhead",
             Text(
                 f"{overhead_time:.3f}s  ({_pct(overhead_time, wall_time)})",
                 style="dim",
             ),
         )
         table.add_row(
-            "Untracked",
+            "Residual Wall Time",
             Text(
-                f"{untracked_time:.3f}s  ({_pct(untracked_time, wall_time)})",
+                f"{residual_wall_time:.3f}s  ({_pct(residual_wall_time, wall_time)})",
                 style="dim",
             ),
         )
@@ -284,7 +290,8 @@ def _rich_attribution_table(by_ns: dict[str | None, dict], total_flops_used: int
     table.add_column("FLOPs", justify="right")
     table.add_column("%", justify="right")
     table.add_column("Calls", justify="right")
-    table.add_column("Tracked", justify="right")
+    table.add_column("Backend", justify="right")
+    table.add_column("Overhead", justify="right")
 
     for namespace, bucket in _sorted_namespace_rows(by_ns):
         table.add_row(
@@ -292,7 +299,8 @@ def _rich_attribution_table(by_ns: dict[str | None, dict], total_flops_used: int
             _format_flops(bucket["flops_used"]),
             _pct(bucket["flops_used"], total_flops_used),
             str(bucket["calls"]),
-            f"{bucket['tracked_time_s']:.3f}s",
+            f"{bucket['flopscope_backend_time_s']:.3f}s",
+            f"{bucket['flopscope_overhead_time_s']:.3f}s",
         )
 
     return table
@@ -311,16 +319,19 @@ def _rich_operations_table(ops: dict[str, dict], total_flops_used: int):
     table.add_column("Operation", style="dim")
     table.add_column("FLOPs", justify="right")
     table.add_column("%", justify="right")
-    table.add_column("Time", justify="right", style="dim")
+    table.add_column("Backend", justify="right", style="dim")
+    table.add_column("Overhead", justify="right", style="dim")
     table.add_column("Calls", justify="right", style="dim")
 
     for op_name, op_info in sorted(ops.items(), key=lambda item: -item[1]["flop_cost"]):
-        duration = op_info.get("duration", 0.0)
+        backend = op_info.get("flopscope_backend_time_s", 0.0)
+        overhead = op_info.get("flopscope_overhead_time_s", 0.0)
         table.add_row(
             op_name,
             _format_flops(op_info["flop_cost"]),
             _pct(op_info["flop_cost"], total_flops_used),
-            f"{duration:.3f}s" if duration > 0 else "",
+            f"{backend:.3f}s" if backend > 0 else "",
+            f"{overhead:.3f}s" if overhead > 0 else "",
             _call_label(op_info["calls"]),
         )
 

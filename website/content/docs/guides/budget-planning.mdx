@@ -129,11 +129,11 @@ When the time limit is exceeded, Flopscope raises `TimeExhaustedError` at the ne
 operation boundary. The summary exposes four timing views that decompose wall time exactly:
 
 - `wall_time_s`: total elapsed time for the context
-- `tracked_time_s`: time spent inside the inner NumPy calls being counted
+- `flopscope_backend_time_s`: time spent inside the underlying NumPy / BLAS / LAPACK backend calls being counted
 - `flopscope_overhead_time_s`: time spent in flopscope's own dispatch code (wrapper preambles, FLOP cost computation, view-casts, post-call wrapping, `maybe_check_nan_inf` when opted in via `flopscope.configure(check_nan_inf=True)`)
-- `untracked_time_s`: genuinely everything else (user Python between ops, `time.sleep`, GC pauses, un-instrumented numpy)
+- `residual_wall_time_s`: the measured wall-clock remainder outside backend calls and flopscope overhead (user Python between ops, `time.sleep`, GC pauses, un-instrumented numpy)
 
-The identity `wall_time_s = tracked_time_s + flopscope_overhead_time_s + untracked_time_s` holds within numerical tolerance.
+The identity `wall_time_s = flopscope_backend_time_s + flopscope_overhead_time_s + residual_wall_time_s` holds within numerical tolerance.
 
 Use `budget.summary()` when you want the current context's timings, and
 `flops.budget_summary()` when you want the accumulated session/global view.
@@ -157,6 +157,9 @@ Each `OpRecord` contains:
 | `shapes` | Tuple of input shapes |
 | `flop_cost` | FLOP cost of this single call |
 | `cumulative` | Running total after this call |
+| `flopscope_context_start_offset_s` | Seconds from the active `BudgetContext` start to when this operation was recorded |
+| `flopscope_backend_duration_s` | Seconds spent in the underlying backend call for this operation |
+| `flopscope_overhead_duration_s` | Seconds of flopscope wrapper/accounting overhead attributed to this operation |
 
 Look for the operation where `cumulative` jumps sharply -- that is your most expensive call.
 

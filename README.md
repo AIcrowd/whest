@@ -137,18 +137,12 @@ with flops.BudgetContext(flop_budget=10**8, wall_time_limit_s=5.0) as budget:
 
     print(budget.summary())   # current context summary
 
-flops.budget_summary()           # session/global summary
+flops.budget_summary()           # accumulated session/global summary
 ```
 
 ```
-
-`wall_time_limit_s` starts when the context is entered and is checked before
-and after each counted NumPy call. If the limit is exceeded, flopscope raises
-`TimeExhaustedError` with the operation name, elapsed time, and configured
-limit. Use `budget.summary()` for the current context and
-`flops.budget_summary()` when you want the accumulated session/global view.
 flopscope FLOP Budget Summary
-=========================
+=============================
   Total budget:     100,000,000
   Used:                 984,321  (1.0%)
   Remaining:         99,015,679  (99.0%)
@@ -159,6 +153,11 @@ flopscope FLOP Budget Summary
     einsum                327,680  ( 33.3%)  [5 calls]
     maximum                 1,024  (  0.1%)  [4 calls]
     sqrt                        1  (  0.0%)  [1 call]
+
+  Total Wall Time:     ...s
+  Flopscope Backend:   ...s  (...%)
+  Flopscope Overhead:  ...s  (...%)
+  Residual Wall Time:  ...s  (...%)
 ```
 
 ### Plan Your Budget Before Executing

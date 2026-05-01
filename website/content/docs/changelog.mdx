@@ -88,9 +88,11 @@ title: Changelog
   The deadline is checked both before and after each numpy call (cooperative
   enforcement). The entry banner shows the time limit when set.
 
-- **Per-operation duration tracking.** Every operation now records its wall-clock
-  duration in `OpRecord.duration`. The budget summary (both plain-text and Rich)
-  shows wall time, tracked/untracked breakdown, and per-operation timing. Use
+- **Timing attribution.** Every operation now records its backend duration in
+  `flopscope_backend_duration_s` and its attributed flopscope overhead in
+  `flopscope_overhead_duration_s`. The budget summary (both
+  plain-text and Rich) shows `wall_time_s`, `flopscope_backend_time_s`,
+  `flopscope_overhead_time_s`, and `residual_wall_time_s`. Use
   `budget.summary()` or `flops.budget_summary()` to see the timing data.
 
 - **`TimeExhaustedError`** added to both the core library and the client package.
