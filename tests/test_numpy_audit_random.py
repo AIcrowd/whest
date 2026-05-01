@@ -75,6 +75,15 @@ class TestDocsGenSmoke:
         assert m.display_type_for_category("free_random_method") == "free"
         assert m.display_type_for_category("counted_random_method") == "counted"
 
+    def test_display_type_preserves_pre_t8_strings(self):
+        """Issue #18 follow-up: T8 must not regress display_type for blacklisted/counted_custom."""
+        m = self._load_generator()
+        # These returns existed pre-T8 and are baked into website JSON artifacts;
+        # changing them would break the UI's category-badge rendering.
+        assert m.display_type_for_category("blacklisted") == "blocked"
+        assert m.display_type_for_category("counted_custom") == "custom"
+        assert m.display_type_for_category("totally_unknown") == "custom"  # catch-all
+
     def test_cost_for_op_uses_per_formula_label(self):
         m = self._load_generator()
         plain, _ = m.cost_for_op("random.Generator.shuffle", "counted_random_method")

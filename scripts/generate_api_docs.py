@@ -808,14 +808,12 @@ def canonical_api_href(import_path: str) -> str:
 def display_type_for_category(category: str) -> str:
     """Return the UI display type for a registry category."""
     if category == "blacklisted":
-        return "blacklisted"
+        return "blocked"
     if category == "free" or category == "free_random_method":
         return "free"
-    if category == "counted_custom":
-        return "counted_custom"
-    if category.startswith("counted_"):
+    if category.startswith("counted_") and category != "counted_custom":
         return "counted"
-    return category
+    return "custom"
 
 
 def flopscope_ref(name: str, module: str) -> str:
