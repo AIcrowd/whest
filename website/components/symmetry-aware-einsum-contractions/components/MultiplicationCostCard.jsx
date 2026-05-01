@@ -190,10 +190,11 @@ function BurnsideTable({
           (?)
         </span>
       </div>
-      <table
-        data-testid={testId}
-        className="w-full border-collapse text-left text-[12px]"
-      >
+      <div className="overflow-x-auto">
+        <table
+          data-testid={testId}
+          className="w-full border-collapse text-left text-[12px]"
+        >
         <thead>
           <tr className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <th className="px-3 py-1.5 font-semibold">Group element</th>
@@ -224,7 +225,8 @@ function BurnsideTable({
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
       <div className="border-t border-stone-200 px-3 py-2">
         <Latex
           math={String.raw`M_a \;=\; \frac{1}{|G_a|}\,\sum_{g \in G_a}\,|\mathrm{Fix}(g)| \;=\; ${burnsideAverage.toLocaleString()}`}

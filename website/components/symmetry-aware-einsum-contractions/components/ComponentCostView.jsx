@@ -541,7 +541,7 @@ export default function ComponentCostView({
       </div>
 
       {/* ROW 2 — μ vs α-hard (the right contrast) */}
-      <div id="two-cost-cards" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
+      <div id="two-cost-cards" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <MultiplicationCostCard
           components={components.map((comp) => ({
             ...comp,

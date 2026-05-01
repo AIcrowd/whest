@@ -122,7 +122,7 @@ test('Major two-column explorer layouts use the shared faint center divider trea
   assert.match(appSrc, /editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2/);
   assert.match(appSrc, /editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2/);
   assert.match(atAGlanceSrc, /editorial-two-col-divider-lg grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-10/);
-  assert.match(componentCostSrc, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2/);
+  assert.match(componentCostSrc, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid grid-cols-1 gap-6 lg:grid-cols-2/);
   assert.match(stylesSrc, /\.editorial-two-col-divider-md::before/);
   assert.match(stylesSrc, /\.editorial-two-col-divider-lg::before/);
   assert.match(stylesSrc, /\.editorial-two-col-divider-lg-inset::before/);

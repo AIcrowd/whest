@@ -49,8 +49,8 @@ test('AccumulationHardCard exports a default React component with shared support
 
 test('ComponentCostView uses the shared support prose tier under subsection headers', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
-  assert.match(src, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2/);
-  assert.match(src, /id="two-cost-cards"[\s\S]*?className="[^"]*grid gap-6 lg:grid-cols-2[^"]*"/);
+  assert.match(src, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid grid-cols-1 gap-6 lg:grid-cols-2/);
+  assert.match(src, /id="two-cost-cards"[\s\S]*?className="[^"]*grid grid-cols-1 gap-6 lg:grid-cols-2[^"]*"/);
   assert.match(src, /<MultiplicationCostCard/);
   assert.match(src, /<AccumulationHardCard/);
 });
