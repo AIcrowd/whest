@@ -2396,8 +2396,8 @@ REGISTRY: dict[str, dict] = {
     "random.Generator.permutation": {
         "category": "counted_random_method",
         "module": "numpy.random",
-        "cost_formula": "numel(output)",
-        "notes": "Random permutation; cost = numel(output).",
+        "cost_formula": "shape[axis]",
+        "notes": "Random permutation; cost = shape[axis] (Fisher-Yates draws).",
     },
     "random.Generator.permuted": {
         "category": "counted_random_method",
@@ -2432,8 +2432,8 @@ REGISTRY: dict[str, dict] = {
     "random.Generator.shuffle": {
         "category": "counted_random_method",
         "module": "numpy.random",
-        "cost_formula": "numel(input)",
-        "notes": "In-place shuffle; cost from input array size.",
+        "cost_formula": "shape[axis]",
+        "notes": "In-place shuffle; cost = shape[axis] (Fisher-Yates draws).",
     },
     "random.Generator.standard_cauchy": {
         "category": "counted_random_method",
@@ -2656,8 +2656,8 @@ REGISTRY: dict[str, dict] = {
     "random.RandomState.permutation": {
         "category": "counted_random_method",
         "module": "numpy.random",
-        "cost_formula": "numel(output)",
-        "notes": "Legacy permutation; cost = numel(output).",
+        "cost_formula": "shape[axis]",
+        "notes": "Legacy permutation; cost = shape[axis] (Fisher-Yates draws). RandomState has no axis kwarg; defaults to 0.",
     },
     "random.RandomState.poisson": {
         "category": "counted_random_method",
@@ -2716,8 +2716,8 @@ REGISTRY: dict[str, dict] = {
     "random.RandomState.shuffle": {
         "category": "counted_random_method",
         "module": "numpy.random",
-        "cost_formula": "numel(input)",
-        "notes": "Legacy in-place shuffle; cost from input array size.",
+        "cost_formula": "shape[axis]",
+        "notes": "Legacy in-place shuffle; cost = shape[axis] (Fisher-Yates draws). RandomState has no axis kwarg; defaults to 0.",
     },
     "random.RandomState.standard_cauchy": {
         "category": "counted_random_method",
