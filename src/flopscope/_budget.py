@@ -282,6 +282,7 @@ def _summarize_by_namespace(op_log: list[OpRecord]) -> dict[str | None, dict]:
                 "flops_used": 0,
                 "calls": 0,
                 "tracked_time_s": 0.0,
+                "flopscope_overhead_time_s": 0.0,
                 "operations": {},
             },
         )
@@ -289,6 +290,8 @@ def _summarize_by_namespace(op_log: list[OpRecord]) -> dict[str | None, dict]:
         bucket["calls"] += 1
         if op.duration is not None:
             bucket["tracked_time_s"] += op.duration
+        if op.flopscope_overhead is not None:
+            bucket["flopscope_overhead_time_s"] += op.flopscope_overhead
         _update_operation_summary(bucket["operations"], op)
     return by_namespace
 

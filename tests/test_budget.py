@@ -742,3 +742,19 @@ def test_namespace_scope_charges_push_pop_to_overhead():
             pass
         # Push + pop are tiny but non-zero
         assert b.flopscope_overhead_time > baseline
+
+
+def test_per_namespace_summary_includes_flopscope_overhead():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        with b.deduct("x", flop_cost=1, subscripts=None, shapes=()):
+            pass
+        with flopscope.namespace("ns"):
+            with b.deduct("y", flop_cost=1, subscripts=None, shapes=()):
+                pass
+    d = b.summary_dict(by_namespace=True)
+    assert "flopscope_overhead_time_s" in d["by_namespace"][None]
+    assert "flopscope_overhead_time_s" in d["by_namespace"]["ns"]
+    assert d["by_namespace"][None]["flopscope_overhead_time_s"] >= 0
+    assert d["by_namespace"]["ns"]["flopscope_overhead_time_s"] >= 0
