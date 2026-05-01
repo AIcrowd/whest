@@ -110,7 +110,38 @@ def _reconstruct_counted_random_state(state: tuple) -> _CountedRandomState:
 
 
 class _CountedGenerator(_np.random.Generator):
-    """numpy Generator subclass with FLOP-counted sampler methods."""
+    """numpy ``Generator`` subclass with FLOP-counted sampler methods.
+
+    Each sampler method (``standard_normal``, ``normal``, ``uniform``,
+    ``integers``, ``choice``, ``shuffle``, ``permutation``, ``bytes``, ...)
+    deducts FLOPs from the active ``BudgetContext`` and returns
+    ``FlopscopeArray``. Free attribute access (``bit_generator``, ``spawn``)
+    is allowed; anything else raises ``UnsupportedFunctionError``.
+
+    Construct via :func:`flopscope.numpy.random.default_rng` (canonical) or by
+    passing a ``BitGenerator`` directly: ``Generator(np.random.PCG64(42))``.
+
+    Examples
+    --------
+    >>> import flopscope.numpy as fnp
+    >>> from flopscope import BudgetContext
+    >>> rng = fnp.random.default_rng(42)
+    >>> with BudgetContext(flop_budget=10**6):
+    ...     x = rng.standard_normal((10,))
+    >>> type(x).__name__
+    'FlopscopeArray'
+
+    Pickle / ``copy`` round-trips preserve counting:
+
+    >>> import pickle
+    >>> revived = pickle.loads(pickle.dumps(rng))
+    >>> isinstance(revived, type(rng))
+    True
+
+    See Also
+    --------
+    fnp.random.default_rng : canonical constructor.
+    """
 
     _COUNTED: ClassVar[frozenset[str]] = frozenset()
     _FREE: ClassVar[frozenset[str]] = frozenset()
@@ -141,7 +172,32 @@ class _CountedGenerator(_np.random.Generator):
 
 
 class _CountedRandomState(_np.random.RandomState):
-    """numpy RandomState subclass with FLOP-counted sampler methods."""
+    """numpy legacy ``RandomState`` subclass with FLOP-counted sampler methods.
+
+    Mirrors :class:`_CountedGenerator` for the legacy API: each sampler
+    (``randn``, ``normal``, ``uniform``, ``randint``, ``choice``,
+    ``shuffle``, ``permutation``, ``bytes``, ...) deducts FLOPs from the
+    active ``BudgetContext`` and returns ``FlopscopeArray``. Free methods
+    (``seed``, ``get_state``, ``set_state``) pass through; everything else
+    raises ``UnsupportedFunctionError``.
+
+    Modern code should prefer :func:`flopscope.numpy.random.default_rng`;
+    use this only when porting code that relies on the legacy API.
+
+    Examples
+    --------
+    >>> import flopscope.numpy as fnp
+    >>> from flopscope import BudgetContext
+    >>> rs = fnp.random.RandomState(42)
+    >>> with BudgetContext(flop_budget=10**6):
+    ...     z = rs.randn(10)
+    >>> type(z).__name__
+    'FlopscopeArray'
+
+    See Also
+    --------
+    fnp.random.default_rng : canonical (modern) RNG constructor.
+    """
 
     _COUNTED: ClassVar[frozenset[str]] = frozenset()
     _FREE: ClassVar[frozenset[str]] = frozenset()

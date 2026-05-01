@@ -149,10 +149,72 @@ def _counted_dims_sampler(
 
 
 def default_rng(seed: Any = None) -> _CountedGenerator:
-    """Construct a flopscope-counted Generator. Cost: 0 FLOPs.
+    """Construct a flopscope-counted ``Generator`` (canonical entry point).
 
-    The returned Generator's sampler methods deduct FLOPs from the active
-    BudgetContext and return ``FlopscopeArray``. See issue #18.
+    The returned object is a subclass of ``numpy.random.Generator``. Its
+    sampler methods (``standard_normal``, ``normal``, ``uniform``,
+    ``integers``, ``choice``, ``shuffle``, ...) deduct FLOPs from the active
+    ``BudgetContext`` and return ``FlopscopeArray``. The constructor itself
+    costs 0 FLOPs.
+
+    Parameters
+    ----------
+    seed : int, sequence of int, ``SeedSequence``, ``BitGenerator``, or None
+        Same semantics as ``numpy.random.default_rng``.
+
+    Returns
+    -------
+    _CountedGenerator
+        A counted ``Generator`` subclass. ``isinstance(rng, np.random.Generator)``
+        holds, so it works anywhere a numpy ``Generator`` is expected.
+
+    Examples
+    --------
+    Basic usage::
+
+        import flopscope.numpy as fnp
+        from flopscope import BudgetContext
+
+        with BudgetContext(flop_budget=10_000) as b:
+            rng = fnp.random.default_rng(42)
+            x = rng.standard_normal((100,))
+        # b.flops_used == 1600 under empirical weights (100 × weight=16)
+        # type(x).__name__ == 'FlopscopeArray'
+
+    Pickle / copy round-trips preserve counting::
+
+        import pickle
+        rng = fnp.random.default_rng(42)
+        revived = pickle.loads(pickle.dumps(rng))
+        with BudgetContext(flop_budget=10_000):
+            revived.standard_normal(10)   # still counted
+
+    Spawn returns counted children for parallel work::
+
+        rng = fnp.random.default_rng(42)
+        for child in rng.spawn(4):
+            with BudgetContext(flop_budget=10_000):
+                child.standard_normal(100)  # each child is independently counted
+
+    Cross-API parity: same physical op, same FLOPs::
+
+        # Under empirical weights, all three charge 1600 FLOPs:
+        with BudgetContext() as b: fnp.random.randn(100)
+        with BudgetContext() as b: fnp.random.default_rng(0).standard_normal(100)
+        with BudgetContext() as b: fnp.random.RandomState(0).randn(100)
+
+    See Also
+    --------
+    fnp.random.RandomState : Counted legacy ``RandomState`` subclass.
+    fnp.random.randn : Module-level sampler (uses numpy's global state).
+
+    Notes
+    -----
+    Closes flopscope#18. The ``_CountedGenerator`` subclass uses an
+    ``__getattribute__`` gate that consults a registry-derived allowlist;
+    new numpy methods that haven't been added to the registry raise
+    ``UnsupportedFunctionError`` rather than silently bypassing FLOP
+    accounting.
     """
     from flopscope.numpy.random._counted_classes import _CountedGenerator
 
