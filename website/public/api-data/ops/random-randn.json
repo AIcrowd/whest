@@ -78,8 +78,8 @@
                     "text": "New code should use the\n"
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_normal.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/standard-normal/",
                     "kind": "link",
                     "target": "random.Generator.standard_normal",
                     "text": "standard_normal"
@@ -279,9 +279,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_normal.html",
-                "href": "",
-                "label": "random.Generator.standard_normal",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/standard-normal/",
+                "label": "flops.random.Generator.standard_normal",
                 "original_target": "random.Generator.standard_normal",
                 "role": "",
                 "target": "random.Generator.standard_normal",
@@ -393,7 +393,7 @@
   "schema_version": 1,
   "slug": "random-randn",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L93",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L117",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.randn.html"
   }
 }

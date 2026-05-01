@@ -75,8 +75,8 @@
                     "text": "New code should use the "
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.random.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/random/",
                     "kind": "link",
                     "target": "random.Generator.random",
                     "text": "random"
@@ -273,9 +273,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.random.html",
-                "href": "",
-                "label": "random.Generator.random",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/random/",
+                "label": "flops.random.Generator.random",
                 "original_target": "random.Generator.random",
                 "role": "",
                 "target": "random.Generator.random",
@@ -374,7 +374,7 @@
   "schema_version": 1,
   "slug": "random-random_sample",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L261",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L301",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_sample.html"
   }
 }

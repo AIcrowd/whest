@@ -2598,7 +2598,10 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
                 getattr(cls_fnp, method_name),
                 getattr(cls_np, method_name, None) if cls_np is not None else None,
             )
-        return getattr(fnp.random, short_name), getattr(np.random, short_name, None)
+        np_obj = getattr(np.random, short_name, None)
+        fnp_obj = getattr(fnp.random, short_name, None)
+        # Fall back to upstream numpy object when flopscope wraps it as deprecated/unimplemented.
+        return fnp_obj if fnp_obj is not None else np_obj, np_obj
     if module == "flopscope.stats":
         try:
             from scipy import stats as scipy_stats

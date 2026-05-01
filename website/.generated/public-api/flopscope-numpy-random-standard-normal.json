@@ -29,8 +29,8 @@
                   "text": "New code should use the\n"
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_normal.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/standard-normal/",
                   "kind": "link",
                   "target": "random.Generator.standard_normal",
                   "text": "standard_normal"
@@ -265,9 +265,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_normal.html",
-              "href": "",
-              "label": "random.Generator.standard_normal",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/standard-normal/",
+              "label": "flops.random.Generator.standard_normal",
               "original_target": "random.Generator.standard_normal",
               "role": "",
               "target": "random.Generator.standard_normal",
@@ -426,7 +426,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.standard_normal",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/standard-normal/",
   "import_path": "flopscope.numpy.random.standard_normal",
   "is_operation_cost_leaf": true,
@@ -522,9 +522,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_normal.html",
-      "href": "",
-      "label": "random.Generator.standard_normal",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/standard-normal/",
+      "label": "flops.random.Generator.standard_normal",
       "original_target": "random.Generator.standard_normal",
       "role": "",
       "target": "random.Generator.standard_normal",

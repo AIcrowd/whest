@@ -202,6 +202,108 @@
               ],
               "name": "einsum_path_cache_size",
               "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", scan every counted op's output for NaN/Inf values and\nemit a "
+                    },
+                    {
+                      "display_text": "FlopscopeWarning",
+                      "explicit_title": false,
+                      "external_url": "",
+                      "href": "",
+                      "kind": "role_reference",
+                      "original_target": "flopscope.errors.FlopscopeWarning",
+                      "role": "class",
+                      "suppress_link": false,
+                      "target": "errors.FlopscopeWarning",
+                      "unresolved": true
+                    },
+                    {
+                      "kind": "text",
+                      "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "untracked_time"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", so it is off by default for\nproduction scoring.  Opt in when debugging an estimator that\nproduces NaN/Inf to identify the introducing op.  Default "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "False"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": ", scan every counted op's output for NaN/Inf values and\nemit a "
+                },
+                {
+                  "display_text": "FlopscopeWarning",
+                  "explicit_title": false,
+                  "external_url": "",
+                  "href": "",
+                  "kind": "role_reference",
+                  "original_target": "flopscope.errors.FlopscopeWarning",
+                  "role": "class",
+                  "suppress_link": false,
+                  "target": "errors.FlopscopeWarning",
+                  "unresolved": true
+                },
+                {
+                  "kind": "text",
+                  "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                },
+                {
+                  "kind": "code",
+                  "text": "untracked_time"
+                },
+                {
+                  "kind": "text",
+                  "text": ", so it is off by default for\nproduction scoring.  Opt in when debugging an estimator that\nproduces NaN/Inf to identify the introducing op.  Default "
+                },
+                {
+                  "kind": "code",
+                  "text": "False"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "check_nan_inf",
+              "type": "field_list"
             }
           ],
           "title": "Parameters",
@@ -261,6 +363,11 @@
               "kind": "input",
               "prompt": ">>>",
               "text": "flops.configure(symmetry_warnings=False)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.configure(check_nan_inf=True)"
             }
           ],
           "type": "doctest_block"
@@ -281,7 +388,7 @@
   "related_guides": [],
   "signature": "flops.configure(**kwargs: 'object') -> 'None'",
   "slug": "configure",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_config.py#L12",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_config.py#L13",
   "status_note": "",
   "summary": "Update flopscope global settings.",
   "upstream_source_url": ""

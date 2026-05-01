@@ -46,8 +46,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.chisquare.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/chisquare/",
                   "kind": "link",
                   "target": "random.Generator.chisquare",
                   "text": "chisquare"
@@ -363,9 +363,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.chisquare.html",
-              "href": "",
-              "label": "random.Generator.chisquare",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/chisquare/",
+              "label": "flops.random.Generator.chisquare",
               "original_target": "random.Generator.chisquare",
               "role": "",
               "target": "random.Generator.chisquare",
@@ -512,7 +512,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.chisquare",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/chisquare/",
   "import_path": "flopscope.numpy.random.chisquare",
   "is_operation_cost_leaf": true,
@@ -589,9 +589,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.chisquare.html",
-      "href": "",
-      "label": "random.Generator.chisquare",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/chisquare/",
+      "label": "flops.random.Generator.chisquare",
       "original_target": "random.Generator.chisquare",
       "role": "",
       "target": "random.Generator.chisquare",

@@ -110,8 +110,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.exponential.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/exponential/",
                   "kind": "link",
                   "target": "random.Generator.exponential",
                   "text": "exponential"
@@ -356,9 +356,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.exponential.html",
-              "href": "",
-              "label": "random.Generator.exponential",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/exponential/",
+              "label": "flops.random.Generator.exponential",
               "original_target": "random.Generator.exponential",
               "role": "",
               "target": "random.Generator.exponential",
@@ -499,7 +499,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.exponential",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/exponential/",
   "legacy_href": "/docs/api/ops/random-exponential/",
   "module": "numpy.random",
@@ -556,9 +556,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.exponential.html",
-      "href": "",
-      "label": "random.Generator.exponential",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/exponential/",
+      "label": "flops.random.Generator.exponential",
       "original_target": "random.Generator.exponential",
       "role": "",
       "target": "random.Generator.exponential",

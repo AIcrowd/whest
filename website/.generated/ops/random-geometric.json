@@ -78,8 +78,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.geometric.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/geometric/",
                   "kind": "link",
                   "target": "random.Generator.geometric",
                   "text": "geometric"
@@ -308,9 +308,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.geometric.html",
-              "href": "",
-              "label": "random.Generator.geometric",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/geometric/",
+              "label": "flops.random.Generator.geometric",
               "original_target": "random.Generator.geometric",
               "role": "",
               "target": "random.Generator.geometric",
@@ -388,7 +388,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.geometric",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/geometric/",
   "legacy_href": "/docs/api/ops/random-geometric/",
   "module": "numpy.random",
@@ -444,9 +444,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.geometric.html",
-      "href": "",
-      "label": "random.Generator.geometric",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/geometric/",
+      "label": "flops.random.Generator.geometric",
       "original_target": "random.Generator.geometric",
       "role": "",
       "target": "random.Generator.geometric",

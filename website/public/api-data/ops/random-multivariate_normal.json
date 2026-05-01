@@ -38,8 +38,8 @@
                     "text": "New code should use the\n"
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multivariate_normal.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/multivariate-normal/",
                     "kind": "link",
                     "target": "random.Generator.multivariate_normal",
                     "text": "multivariate_normal"
@@ -431,9 +431,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multivariate_normal.html",
-                "href": "",
-                "label": "random.Generator.multivariate_normal",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/multivariate-normal/",
+                "label": "flops.random.Generator.multivariate_normal",
                 "original_target": "random.Generator.multivariate_normal",
                 "role": "",
                 "target": "random.Generator.multivariate_normal",
@@ -827,7 +827,7 @@
   "schema_version": 1,
   "slug": "random-multivariate_normal",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.multivariate_normal.html"
   }
 }

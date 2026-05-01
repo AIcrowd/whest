@@ -2291,6 +2291,276 @@
     "kind": "op",
     "slug": "random-gamma"
   },
+  "numpy/random/generator/beta": {
+    "canonical_name": "random.Generator.beta",
+    "href": "/docs/api/numpy/random/generator/beta/",
+    "kind": "op",
+    "slug": "random-Generator-beta"
+  },
+  "numpy/random/generator/binomial": {
+    "canonical_name": "random.Generator.binomial",
+    "href": "/docs/api/numpy/random/generator/binomial/",
+    "kind": "op",
+    "slug": "random-Generator-binomial"
+  },
+  "numpy/random/generator/bit-generator": {
+    "canonical_name": "random.Generator.bit_generator",
+    "href": "/docs/api/numpy/random/generator/bit-generator/",
+    "kind": "op",
+    "slug": "random-Generator-bit_generator"
+  },
+  "numpy/random/generator/bytes": {
+    "canonical_name": "random.Generator.bytes",
+    "href": "/docs/api/numpy/random/generator/bytes/",
+    "kind": "op",
+    "slug": "random-Generator-bytes"
+  },
+  "numpy/random/generator/chisquare": {
+    "canonical_name": "random.Generator.chisquare",
+    "href": "/docs/api/numpy/random/generator/chisquare/",
+    "kind": "op",
+    "slug": "random-Generator-chisquare"
+  },
+  "numpy/random/generator/choice": {
+    "canonical_name": "random.Generator.choice",
+    "href": "/docs/api/numpy/random/generator/choice/",
+    "kind": "op",
+    "slug": "random-Generator-choice"
+  },
+  "numpy/random/generator/dirichlet": {
+    "canonical_name": "random.Generator.dirichlet",
+    "href": "/docs/api/numpy/random/generator/dirichlet/",
+    "kind": "op",
+    "slug": "random-Generator-dirichlet"
+  },
+  "numpy/random/generator/exponential": {
+    "canonical_name": "random.Generator.exponential",
+    "href": "/docs/api/numpy/random/generator/exponential/",
+    "kind": "op",
+    "slug": "random-Generator-exponential"
+  },
+  "numpy/random/generator/f": {
+    "canonical_name": "random.Generator.f",
+    "href": "/docs/api/numpy/random/generator/f/",
+    "kind": "op",
+    "slug": "random-Generator-f"
+  },
+  "numpy/random/generator/gamma": {
+    "canonical_name": "random.Generator.gamma",
+    "href": "/docs/api/numpy/random/generator/gamma/",
+    "kind": "op",
+    "slug": "random-Generator-gamma"
+  },
+  "numpy/random/generator/geometric": {
+    "canonical_name": "random.Generator.geometric",
+    "href": "/docs/api/numpy/random/generator/geometric/",
+    "kind": "op",
+    "slug": "random-Generator-geometric"
+  },
+  "numpy/random/generator/gumbel": {
+    "canonical_name": "random.Generator.gumbel",
+    "href": "/docs/api/numpy/random/generator/gumbel/",
+    "kind": "op",
+    "slug": "random-Generator-gumbel"
+  },
+  "numpy/random/generator/hypergeometric": {
+    "canonical_name": "random.Generator.hypergeometric",
+    "href": "/docs/api/numpy/random/generator/hypergeometric/",
+    "kind": "op",
+    "slug": "random-Generator-hypergeometric"
+  },
+  "numpy/random/generator/integers": {
+    "canonical_name": "random.Generator.integers",
+    "href": "/docs/api/numpy/random/generator/integers/",
+    "kind": "op",
+    "slug": "random-Generator-integers"
+  },
+  "numpy/random/generator/laplace": {
+    "canonical_name": "random.Generator.laplace",
+    "href": "/docs/api/numpy/random/generator/laplace/",
+    "kind": "op",
+    "slug": "random-Generator-laplace"
+  },
+  "numpy/random/generator/logistic": {
+    "canonical_name": "random.Generator.logistic",
+    "href": "/docs/api/numpy/random/generator/logistic/",
+    "kind": "op",
+    "slug": "random-Generator-logistic"
+  },
+  "numpy/random/generator/lognormal": {
+    "canonical_name": "random.Generator.lognormal",
+    "href": "/docs/api/numpy/random/generator/lognormal/",
+    "kind": "op",
+    "slug": "random-Generator-lognormal"
+  },
+  "numpy/random/generator/logseries": {
+    "canonical_name": "random.Generator.logseries",
+    "href": "/docs/api/numpy/random/generator/logseries/",
+    "kind": "op",
+    "slug": "random-Generator-logseries"
+  },
+  "numpy/random/generator/multinomial": {
+    "canonical_name": "random.Generator.multinomial",
+    "href": "/docs/api/numpy/random/generator/multinomial/",
+    "kind": "op",
+    "slug": "random-Generator-multinomial"
+  },
+  "numpy/random/generator/multivariate-hypergeometric": {
+    "canonical_name": "random.Generator.multivariate_hypergeometric",
+    "href": "/docs/api/numpy/random/generator/multivariate-hypergeometric/",
+    "kind": "op",
+    "slug": "random-Generator-multivariate_hypergeometric"
+  },
+  "numpy/random/generator/multivariate-normal": {
+    "canonical_name": "random.Generator.multivariate_normal",
+    "href": "/docs/api/numpy/random/generator/multivariate-normal/",
+    "kind": "op",
+    "slug": "random-Generator-multivariate_normal"
+  },
+  "numpy/random/generator/negative-binomial": {
+    "canonical_name": "random.Generator.negative_binomial",
+    "href": "/docs/api/numpy/random/generator/negative-binomial/",
+    "kind": "op",
+    "slug": "random-Generator-negative_binomial"
+  },
+  "numpy/random/generator/noncentral-chisquare": {
+    "canonical_name": "random.Generator.noncentral_chisquare",
+    "href": "/docs/api/numpy/random/generator/noncentral-chisquare/",
+    "kind": "op",
+    "slug": "random-Generator-noncentral_chisquare"
+  },
+  "numpy/random/generator/noncentral-f": {
+    "canonical_name": "random.Generator.noncentral_f",
+    "href": "/docs/api/numpy/random/generator/noncentral-f/",
+    "kind": "op",
+    "slug": "random-Generator-noncentral_f"
+  },
+  "numpy/random/generator/normal": {
+    "canonical_name": "random.Generator.normal",
+    "href": "/docs/api/numpy/random/generator/normal/",
+    "kind": "op",
+    "slug": "random-Generator-normal"
+  },
+  "numpy/random/generator/pareto": {
+    "canonical_name": "random.Generator.pareto",
+    "href": "/docs/api/numpy/random/generator/pareto/",
+    "kind": "op",
+    "slug": "random-Generator-pareto"
+  },
+  "numpy/random/generator/permutation": {
+    "canonical_name": "random.Generator.permutation",
+    "href": "/docs/api/numpy/random/generator/permutation/",
+    "kind": "op",
+    "slug": "random-Generator-permutation"
+  },
+  "numpy/random/generator/permuted": {
+    "canonical_name": "random.Generator.permuted",
+    "href": "/docs/api/numpy/random/generator/permuted/",
+    "kind": "op",
+    "slug": "random-Generator-permuted"
+  },
+  "numpy/random/generator/poisson": {
+    "canonical_name": "random.Generator.poisson",
+    "href": "/docs/api/numpy/random/generator/poisson/",
+    "kind": "op",
+    "slug": "random-Generator-poisson"
+  },
+  "numpy/random/generator/power": {
+    "canonical_name": "random.Generator.power",
+    "href": "/docs/api/numpy/random/generator/power/",
+    "kind": "op",
+    "slug": "random-Generator-power"
+  },
+  "numpy/random/generator/random": {
+    "canonical_name": "random.Generator.random",
+    "href": "/docs/api/numpy/random/generator/random/",
+    "kind": "op",
+    "slug": "random-Generator-random"
+  },
+  "numpy/random/generator/rayleigh": {
+    "canonical_name": "random.Generator.rayleigh",
+    "href": "/docs/api/numpy/random/generator/rayleigh/",
+    "kind": "op",
+    "slug": "random-Generator-rayleigh"
+  },
+  "numpy/random/generator/shuffle": {
+    "canonical_name": "random.Generator.shuffle",
+    "href": "/docs/api/numpy/random/generator/shuffle/",
+    "kind": "op",
+    "slug": "random-Generator-shuffle"
+  },
+  "numpy/random/generator/spawn": {
+    "canonical_name": "random.Generator.spawn",
+    "href": "/docs/api/numpy/random/generator/spawn/",
+    "kind": "op",
+    "slug": "random-Generator-spawn"
+  },
+  "numpy/random/generator/standard-cauchy": {
+    "canonical_name": "random.Generator.standard_cauchy",
+    "href": "/docs/api/numpy/random/generator/standard-cauchy/",
+    "kind": "op",
+    "slug": "random-Generator-standard_cauchy"
+  },
+  "numpy/random/generator/standard-exponential": {
+    "canonical_name": "random.Generator.standard_exponential",
+    "href": "/docs/api/numpy/random/generator/standard-exponential/",
+    "kind": "op",
+    "slug": "random-Generator-standard_exponential"
+  },
+  "numpy/random/generator/standard-gamma": {
+    "canonical_name": "random.Generator.standard_gamma",
+    "href": "/docs/api/numpy/random/generator/standard-gamma/",
+    "kind": "op",
+    "slug": "random-Generator-standard_gamma"
+  },
+  "numpy/random/generator/standard-normal": {
+    "canonical_name": "random.Generator.standard_normal",
+    "href": "/docs/api/numpy/random/generator/standard-normal/",
+    "kind": "op",
+    "slug": "random-Generator-standard_normal"
+  },
+  "numpy/random/generator/standard-t": {
+    "canonical_name": "random.Generator.standard_t",
+    "href": "/docs/api/numpy/random/generator/standard-t/",
+    "kind": "op",
+    "slug": "random-Generator-standard_t"
+  },
+  "numpy/random/generator/triangular": {
+    "canonical_name": "random.Generator.triangular",
+    "href": "/docs/api/numpy/random/generator/triangular/",
+    "kind": "op",
+    "slug": "random-Generator-triangular"
+  },
+  "numpy/random/generator/uniform": {
+    "canonical_name": "random.Generator.uniform",
+    "href": "/docs/api/numpy/random/generator/uniform/",
+    "kind": "op",
+    "slug": "random-Generator-uniform"
+  },
+  "numpy/random/generator/vonmises": {
+    "canonical_name": "random.Generator.vonmises",
+    "href": "/docs/api/numpy/random/generator/vonmises/",
+    "kind": "op",
+    "slug": "random-Generator-vonmises"
+  },
+  "numpy/random/generator/wald": {
+    "canonical_name": "random.Generator.wald",
+    "href": "/docs/api/numpy/random/generator/wald/",
+    "kind": "op",
+    "slug": "random-Generator-wald"
+  },
+  "numpy/random/generator/weibull": {
+    "canonical_name": "random.Generator.weibull",
+    "href": "/docs/api/numpy/random/generator/weibull/",
+    "kind": "op",
+    "slug": "random-Generator-weibull"
+  },
+  "numpy/random/generator/zipf": {
+    "canonical_name": "random.Generator.zipf",
+    "href": "/docs/api/numpy/random/generator/zipf/",
+    "kind": "op",
+    "slug": "random-Generator-zipf"
+  },
   "numpy/random/geometric": {
     "canonical_name": "random.geometric",
     "href": "/docs/api/numpy/random/geometric/",
@@ -2434,6 +2704,300 @@
     "href": "/docs/api/numpy/random/random-sample/",
     "kind": "op",
     "slug": "random-random_sample"
+  },
+  "numpy/random/random-state/beta": {
+    "canonical_name": "random.RandomState.beta",
+    "href": "/docs/api/numpy/random/random-state/beta/",
+    "kind": "op",
+    "slug": "random-RandomState-beta"
+  },
+  "numpy/random/random-state/binomial": {
+    "canonical_name": "random.RandomState.binomial",
+    "href": "/docs/api/numpy/random/random-state/binomial/",
+    "kind": "op",
+    "slug": "random-RandomState-binomial"
+  },
+  "numpy/random/random-state/bytes": {
+    "canonical_name": "random.RandomState.bytes",
+    "href": "/docs/api/numpy/random/random-state/bytes/",
+    "kind": "op",
+    "slug": "random-RandomState-bytes"
+  },
+  "numpy/random/random-state/chisquare": {
+    "canonical_name": "random.RandomState.chisquare",
+    "href": "/docs/api/numpy/random/random-state/chisquare/",
+    "kind": "op",
+    "slug": "random-RandomState-chisquare"
+  },
+  "numpy/random/random-state/choice": {
+    "canonical_name": "random.RandomState.choice",
+    "href": "/docs/api/numpy/random/random-state/choice/",
+    "kind": "op",
+    "slug": "random-RandomState-choice"
+  },
+  "numpy/random/random-state/dirichlet": {
+    "canonical_name": "random.RandomState.dirichlet",
+    "href": "/docs/api/numpy/random/random-state/dirichlet/",
+    "kind": "op",
+    "slug": "random-RandomState-dirichlet"
+  },
+  "numpy/random/random-state/exponential": {
+    "canonical_name": "random.RandomState.exponential",
+    "href": "/docs/api/numpy/random/random-state/exponential/",
+    "kind": "op",
+    "slug": "random-RandomState-exponential"
+  },
+  "numpy/random/random-state/f": {
+    "canonical_name": "random.RandomState.f",
+    "href": "/docs/api/numpy/random/random-state/f/",
+    "kind": "op",
+    "slug": "random-RandomState-f"
+  },
+  "numpy/random/random-state/gamma": {
+    "canonical_name": "random.RandomState.gamma",
+    "href": "/docs/api/numpy/random/random-state/gamma/",
+    "kind": "op",
+    "slug": "random-RandomState-gamma"
+  },
+  "numpy/random/random-state/geometric": {
+    "canonical_name": "random.RandomState.geometric",
+    "href": "/docs/api/numpy/random/random-state/geometric/",
+    "kind": "op",
+    "slug": "random-RandomState-geometric"
+  },
+  "numpy/random/random-state/get-state": {
+    "canonical_name": "random.RandomState.get_state",
+    "href": "/docs/api/numpy/random/random-state/get-state/",
+    "kind": "op",
+    "slug": "random-RandomState-get_state"
+  },
+  "numpy/random/random-state/gumbel": {
+    "canonical_name": "random.RandomState.gumbel",
+    "href": "/docs/api/numpy/random/random-state/gumbel/",
+    "kind": "op",
+    "slug": "random-RandomState-gumbel"
+  },
+  "numpy/random/random-state/hypergeometric": {
+    "canonical_name": "random.RandomState.hypergeometric",
+    "href": "/docs/api/numpy/random/random-state/hypergeometric/",
+    "kind": "op",
+    "slug": "random-RandomState-hypergeometric"
+  },
+  "numpy/random/random-state/laplace": {
+    "canonical_name": "random.RandomState.laplace",
+    "href": "/docs/api/numpy/random/random-state/laplace/",
+    "kind": "op",
+    "slug": "random-RandomState-laplace"
+  },
+  "numpy/random/random-state/logistic": {
+    "canonical_name": "random.RandomState.logistic",
+    "href": "/docs/api/numpy/random/random-state/logistic/",
+    "kind": "op",
+    "slug": "random-RandomState-logistic"
+  },
+  "numpy/random/random-state/lognormal": {
+    "canonical_name": "random.RandomState.lognormal",
+    "href": "/docs/api/numpy/random/random-state/lognormal/",
+    "kind": "op",
+    "slug": "random-RandomState-lognormal"
+  },
+  "numpy/random/random-state/logseries": {
+    "canonical_name": "random.RandomState.logseries",
+    "href": "/docs/api/numpy/random/random-state/logseries/",
+    "kind": "op",
+    "slug": "random-RandomState-logseries"
+  },
+  "numpy/random/random-state/multinomial": {
+    "canonical_name": "random.RandomState.multinomial",
+    "href": "/docs/api/numpy/random/random-state/multinomial/",
+    "kind": "op",
+    "slug": "random-RandomState-multinomial"
+  },
+  "numpy/random/random-state/multivariate-normal": {
+    "canonical_name": "random.RandomState.multivariate_normal",
+    "href": "/docs/api/numpy/random/random-state/multivariate-normal/",
+    "kind": "op",
+    "slug": "random-RandomState-multivariate_normal"
+  },
+  "numpy/random/random-state/negative-binomial": {
+    "canonical_name": "random.RandomState.negative_binomial",
+    "href": "/docs/api/numpy/random/random-state/negative-binomial/",
+    "kind": "op",
+    "slug": "random-RandomState-negative_binomial"
+  },
+  "numpy/random/random-state/noncentral-chisquare": {
+    "canonical_name": "random.RandomState.noncentral_chisquare",
+    "href": "/docs/api/numpy/random/random-state/noncentral-chisquare/",
+    "kind": "op",
+    "slug": "random-RandomState-noncentral_chisquare"
+  },
+  "numpy/random/random-state/noncentral-f": {
+    "canonical_name": "random.RandomState.noncentral_f",
+    "href": "/docs/api/numpy/random/random-state/noncentral-f/",
+    "kind": "op",
+    "slug": "random-RandomState-noncentral_f"
+  },
+  "numpy/random/random-state/normal": {
+    "canonical_name": "random.RandomState.normal",
+    "href": "/docs/api/numpy/random/random-state/normal/",
+    "kind": "op",
+    "slug": "random-RandomState-normal"
+  },
+  "numpy/random/random-state/pareto": {
+    "canonical_name": "random.RandomState.pareto",
+    "href": "/docs/api/numpy/random/random-state/pareto/",
+    "kind": "op",
+    "slug": "random-RandomState-pareto"
+  },
+  "numpy/random/random-state/permutation": {
+    "canonical_name": "random.RandomState.permutation",
+    "href": "/docs/api/numpy/random/random-state/permutation/",
+    "kind": "op",
+    "slug": "random-RandomState-permutation"
+  },
+  "numpy/random/random-state/poisson": {
+    "canonical_name": "random.RandomState.poisson",
+    "href": "/docs/api/numpy/random/random-state/poisson/",
+    "kind": "op",
+    "slug": "random-RandomState-poisson"
+  },
+  "numpy/random/random-state/power": {
+    "canonical_name": "random.RandomState.power",
+    "href": "/docs/api/numpy/random/random-state/power/",
+    "kind": "op",
+    "slug": "random-RandomState-power"
+  },
+  "numpy/random/random-state/rand": {
+    "canonical_name": "random.RandomState.rand",
+    "href": "/docs/api/numpy/random/random-state/rand/",
+    "kind": "op",
+    "slug": "random-RandomState-rand"
+  },
+  "numpy/random/random-state/randint": {
+    "canonical_name": "random.RandomState.randint",
+    "href": "/docs/api/numpy/random/random-state/randint/",
+    "kind": "op",
+    "slug": "random-RandomState-randint"
+  },
+  "numpy/random/random-state/randn": {
+    "canonical_name": "random.RandomState.randn",
+    "href": "/docs/api/numpy/random/random-state/randn/",
+    "kind": "op",
+    "slug": "random-RandomState-randn"
+  },
+  "numpy/random/random-state/random": {
+    "canonical_name": "random.RandomState.random",
+    "href": "/docs/api/numpy/random/random-state/random/",
+    "kind": "op",
+    "slug": "random-RandomState-random"
+  },
+  "numpy/random/random-state/random-integers": {
+    "canonical_name": "random.RandomState.random_integers",
+    "href": "/docs/api/numpy/random/random-state/random-integers/",
+    "kind": "op",
+    "slug": "random-RandomState-random_integers"
+  },
+  "numpy/random/random-state/random-sample": {
+    "canonical_name": "random.RandomState.random_sample",
+    "href": "/docs/api/numpy/random/random-state/random-sample/",
+    "kind": "op",
+    "slug": "random-RandomState-random_sample"
+  },
+  "numpy/random/random-state/rayleigh": {
+    "canonical_name": "random.RandomState.rayleigh",
+    "href": "/docs/api/numpy/random/random-state/rayleigh/",
+    "kind": "op",
+    "slug": "random-RandomState-rayleigh"
+  },
+  "numpy/random/random-state/seed": {
+    "canonical_name": "random.RandomState.seed",
+    "href": "/docs/api/numpy/random/random-state/seed/",
+    "kind": "op",
+    "slug": "random-RandomState-seed"
+  },
+  "numpy/random/random-state/set-state": {
+    "canonical_name": "random.RandomState.set_state",
+    "href": "/docs/api/numpy/random/random-state/set-state/",
+    "kind": "op",
+    "slug": "random-RandomState-set_state"
+  },
+  "numpy/random/random-state/shuffle": {
+    "canonical_name": "random.RandomState.shuffle",
+    "href": "/docs/api/numpy/random/random-state/shuffle/",
+    "kind": "op",
+    "slug": "random-RandomState-shuffle"
+  },
+  "numpy/random/random-state/standard-cauchy": {
+    "canonical_name": "random.RandomState.standard_cauchy",
+    "href": "/docs/api/numpy/random/random-state/standard-cauchy/",
+    "kind": "op",
+    "slug": "random-RandomState-standard_cauchy"
+  },
+  "numpy/random/random-state/standard-exponential": {
+    "canonical_name": "random.RandomState.standard_exponential",
+    "href": "/docs/api/numpy/random/random-state/standard-exponential/",
+    "kind": "op",
+    "slug": "random-RandomState-standard_exponential"
+  },
+  "numpy/random/random-state/standard-gamma": {
+    "canonical_name": "random.RandomState.standard_gamma",
+    "href": "/docs/api/numpy/random/random-state/standard-gamma/",
+    "kind": "op",
+    "slug": "random-RandomState-standard_gamma"
+  },
+  "numpy/random/random-state/standard-normal": {
+    "canonical_name": "random.RandomState.standard_normal",
+    "href": "/docs/api/numpy/random/random-state/standard-normal/",
+    "kind": "op",
+    "slug": "random-RandomState-standard_normal"
+  },
+  "numpy/random/random-state/standard-t": {
+    "canonical_name": "random.RandomState.standard_t",
+    "href": "/docs/api/numpy/random/random-state/standard-t/",
+    "kind": "op",
+    "slug": "random-RandomState-standard_t"
+  },
+  "numpy/random/random-state/tomaxint": {
+    "canonical_name": "random.RandomState.tomaxint",
+    "href": "/docs/api/numpy/random/random-state/tomaxint/",
+    "kind": "op",
+    "slug": "random-RandomState-tomaxint"
+  },
+  "numpy/random/random-state/triangular": {
+    "canonical_name": "random.RandomState.triangular",
+    "href": "/docs/api/numpy/random/random-state/triangular/",
+    "kind": "op",
+    "slug": "random-RandomState-triangular"
+  },
+  "numpy/random/random-state/uniform": {
+    "canonical_name": "random.RandomState.uniform",
+    "href": "/docs/api/numpy/random/random-state/uniform/",
+    "kind": "op",
+    "slug": "random-RandomState-uniform"
+  },
+  "numpy/random/random-state/vonmises": {
+    "canonical_name": "random.RandomState.vonmises",
+    "href": "/docs/api/numpy/random/random-state/vonmises/",
+    "kind": "op",
+    "slug": "random-RandomState-vonmises"
+  },
+  "numpy/random/random-state/wald": {
+    "canonical_name": "random.RandomState.wald",
+    "href": "/docs/api/numpy/random/random-state/wald/",
+    "kind": "op",
+    "slug": "random-RandomState-wald"
+  },
+  "numpy/random/random-state/weibull": {
+    "canonical_name": "random.RandomState.weibull",
+    "href": "/docs/api/numpy/random/random-state/weibull/",
+    "kind": "op",
+    "slug": "random-RandomState-weibull"
+  },
+  "numpy/random/random-state/zipf": {
+    "canonical_name": "random.RandomState.zipf",
+    "href": "/docs/api/numpy/random/random-state/zipf/",
+    "kind": "op",
+    "slug": "random-RandomState-zipf"
   },
   "numpy/random/rayleigh": {
     "canonical_name": "random.rayleigh",

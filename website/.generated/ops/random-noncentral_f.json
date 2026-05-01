@@ -62,8 +62,8 @@
                   "text": "New code should use the\n"
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.noncentral_f.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/noncentral-f/",
                   "kind": "link",
                   "target": "random.Generator.noncentral_f",
                   "text": "noncentral_f"
@@ -368,9 +368,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.noncentral_f.html",
-              "href": "",
-              "label": "random.Generator.noncentral_f",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/noncentral-f/",
+              "label": "flops.random.Generator.noncentral_f",
               "original_target": "random.Generator.noncentral_f",
               "role": "",
               "target": "random.Generator.noncentral_f",
@@ -513,7 +513,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.noncentral_f",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/noncentral-f/",
   "legacy_href": "/docs/api/ops/random-noncentral_f/",
   "module": "numpy.random",
@@ -587,9 +587,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.noncentral_f.html",
-      "href": "",
-      "label": "random.Generator.noncentral_f",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/noncentral-f/",
+      "label": "flops.random.Generator.noncentral_f",
       "original_target": "random.Generator.noncentral_f",
       "role": "",
       "target": "random.Generator.noncentral_f",

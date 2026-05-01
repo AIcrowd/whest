@@ -46,8 +46,8 @@
                   "text": "New code should use the\n"
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.permutation.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/permutation/",
                   "kind": "link",
                   "target": "random.Generator.permutation",
                   "text": "permutation"
@@ -228,9 +228,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.permutation.html",
-              "href": "",
-              "label": "random.Generator.permutation",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/permutation/",
+              "label": "flops.random.Generator.permutation",
               "original_target": "random.Generator.permutation",
               "role": "",
               "target": "random.Generator.permutation",
@@ -321,7 +321,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.permutation",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L292",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L332",
   "href": "/docs/api/numpy/random/permutation/",
   "legacy_href": "/docs/api/ops/random-permutation/",
   "module": "numpy.random",
@@ -369,9 +369,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.permutation.html",
-      "href": "",
-      "label": "random.Generator.permutation",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/permutation/",
+      "label": "flops.random.Generator.permutation",
       "original_target": "random.Generator.permutation",
       "role": "",
       "target": "random.Generator.permutation",

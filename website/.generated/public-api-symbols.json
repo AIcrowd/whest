@@ -535,7 +535,7 @@
     ],
     "signature": "flops.SymmetricTensor(input_array: 'np.ndarray', *, symmetry: 'SymmetryGroup') -> 'SymmetricTensor'",
     "slug": "symmetric-tensor",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L548",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L549",
     "status_note": "",
     "summary": "An ndarray that carries symmetry metadata.",
     "upstream_source_url": ""
@@ -859,7 +859,7 @@
     ],
     "signature": "flops.as_symmetric(data: 'np.ndarray', *, symmetry) -> 'SymmetricTensor'",
     "slug": "as-symmetric",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L724",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L725",
     "status_note": "",
     "summary": "Wrap *data* as a :class:`SymmetricTensor` after validating symmetry.",
     "upstream_source_url": ""
@@ -3417,6 +3417,108 @@
                 ],
                 "name": "einsum_path_cache_size",
                 "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "True"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", scan every counted op's output for NaN/Inf values and\nemit a "
+                      },
+                      {
+                        "display_text": "FlopscopeWarning",
+                        "explicit_title": false,
+                        "external_url": "",
+                        "href": "",
+                        "kind": "role_reference",
+                        "original_target": "flopscope.errors.FlopscopeWarning",
+                        "role": "class",
+                        "suppress_link": false,
+                        "target": "errors.FlopscopeWarning",
+                        "unresolved": true
+                      },
+                      {
+                        "kind": "text",
+                        "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "untracked_time"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", so it is off by default for\nproduction scoring.  Opt in when debugging an estimator that\nproduces NaN/Inf to identify the introducing op.  Default "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "False"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "bool",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "True"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", scan every counted op's output for NaN/Inf values and\nemit a "
+                  },
+                  {
+                    "display_text": "FlopscopeWarning",
+                    "explicit_title": false,
+                    "external_url": "",
+                    "href": "",
+                    "kind": "role_reference",
+                    "original_target": "flopscope.errors.FlopscopeWarning",
+                    "role": "class",
+                    "suppress_link": false,
+                    "target": "errors.FlopscopeWarning",
+                    "unresolved": true
+                  },
+                  {
+                    "kind": "text",
+                    "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "untracked_time"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", so it is off by default for\nproduction scoring.  Opt in when debugging an estimator that\nproduces NaN/Inf to identify the introducing op.  Default "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "False"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
+                  }
+                ],
+                "name": "check_nan_inf",
+                "type": "field_list"
               }
             ],
             "title": "Parameters",
@@ -3476,6 +3578,11 @@
                 "kind": "input",
                 "prompt": ">>>",
                 "text": "flops.configure(symmetry_warnings=False)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "flops.configure(check_nan_inf=True)"
               }
             ],
             "type": "doctest_block"
@@ -3496,7 +3603,7 @@
     "related_guides": [],
     "signature": "flops.configure(**kwargs: 'object') -> 'None'",
     "slug": "configure",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_config.py#L12",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_config.py#L13",
     "status_note": "",
     "summary": "Update flopscope global settings.",
     "upstream_source_url": ""
@@ -4016,7 +4123,7 @@
     "module": "numpy",
     "name": "errstate",
     "related_guides": [],
-    "signature": "fnp.errstate(*, call=<numpy._core._ufunc_config._unspecified object at 0x103474d70>, all=None, divide=None, over=None, under=None, invalid=None)",
+    "signature": "fnp.errstate(*, call=<numpy._core._ufunc_config._unspecified object at 0x101b58ec0>, all=None, divide=None, over=None, under=None, invalid=None)",
     "slug": "errstate",
     "source_url": "",
     "status_note": "",
@@ -15988,7 +16095,7 @@
     ],
     "signature": "flops.is_symmetric(data: 'np.ndarray', *, symmetry, atol: 'float' = 1e-06, rtol: 'float' = 1e-05) -> 'bool'",
     "slug": "is-symmetric",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L185",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L186",
     "status_note": "",
     "summary": "Check whether *data* is invariant under the given symmetry.",
     "upstream_source_url": ""
@@ -18884,306 +18991,13 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Container for the BitGenerators."
+                "text": "numpy Generator subclass with FLOP-counted sampler methods."
               }
             ],
             "type": "paragraph"
           }
         ],
         "title": "Summary"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "code",
-                "text": "Generator"
-              },
-              {
-                "kind": "text",
-                "text": " exposes a number of methods for generating random\nnumbers drawn from a variety of probability distributions. In addition to\nthe distribution-specific arguments, each method takes a keyword argument\n"
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " that defaults to "
-              },
-              {
-                "kind": "code",
-                "text": "None"
-              },
-              {
-                "kind": "text",
-                "text": ". If "
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " is "
-              },
-              {
-                "kind": "code",
-                "text": "None"
-              },
-              {
-                "kind": "text",
-                "text": ", then a single\nvalue is generated and returned. If "
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " is an integer, then a 1-D\narray filled with generated values is returned. If "
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " is a tuple,\nthen an array with that shape is filled and returned."
-              }
-            ],
-            "type": "paragraph"
-          },
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "The function "
-              },
-              {
-                "display_text": "flops.random.default_rng",
-                "explicit_title": false,
-                "external_url": "",
-                "href": "/docs/api/numpy/random/default-rng/",
-                "kind": "role_reference",
-                "original_target": "flops.random.default_rng",
-                "role": "func",
-                "suppress_link": false,
-                "target": "random.default_rng",
-                "unresolved": false
-              },
-              {
-                "kind": "text",
-                "text": " will instantiate\na "
-              },
-              {
-                "kind": "code",
-                "text": "Generator"
-              },
-              {
-                "kind": "text",
-                "text": " with numpy's default "
-              },
-              {
-                "kind": "code",
-                "text": "BitGenerator"
-              },
-              {
-                "kind": "text",
-                "text": "."
-              }
-            ],
-            "type": "paragraph"
-          },
-          {
-            "inline": [
-              {
-                "kind": "strong",
-                "text": "No Compatibility Guarantee"
-              }
-            ],
-            "type": "paragraph"
-          },
-          {
-            "inline": [
-              {
-                "kind": "code",
-                "text": "Generator"
-              },
-              {
-                "kind": "text",
-                "text": " does not provide a version compatibility guarantee. In\nparticular, as better algorithms evolve the bit stream may change."
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "title": "Extended Summary"
-      },
-      {
-        "blocks": [
-          {
-            "items": [
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "BitGenerator to use as the core generator."
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "BitGenerator",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "BitGenerator to use as the core generator."
-                  }
-                ],
-                "name": "bit_generator",
-                "type": "field_list"
-              }
-            ],
-            "title": "Parameters",
-            "type": "field_list"
-          }
-        ],
-        "title": "Parameters"
-      },
-      {
-        "blocks": [
-          {
-            "links": [
-              {
-                "description": "Recommended constructor for `Generator`.",
-                "description_inline": [
-                  {
-                    "kind": "text",
-                    "text": "Recommended constructor for "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "Generator"
-                  },
-                  {
-                    "kind": "text",
-                    "text": "."
-                  }
-                ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.default_rng.html",
-                "href": "",
-                "label": "default_rng",
-                "original_target": "default_rng",
-                "role": "",
-                "target": "default_rng",
-                "unresolved": false
-              }
-            ],
-            "type": "link_list"
-          }
-        ],
-        "title": "See also"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "The Python stdlib module "
-              },
-              {
-                "kind": "text",
-                "text": ":external+python:mod:`random`"
-              },
-              {
-                "kind": "text",
-                "text": " contains\npseudo-random number generator with a number of methods that are similar\nto the ones available in "
-              },
-              {
-                "kind": "code",
-                "text": "Generator"
-              },
-              {
-                "kind": "text",
-                "text": ".\nIt uses Mersenne Twister, and this bit generator can\nbe accessed using "
-              },
-              {
-                "kind": "code",
-                "text": "MT19937"
-              },
-              {
-                "kind": "text",
-                "text": ". "
-              },
-              {
-                "kind": "code",
-                "text": "Generator"
-              },
-              {
-                "kind": "text",
-                "text": ", besides being\nNumPy-aware, has the advantage that it provides a much larger number\nof probability distributions to choose from."
-              }
-            ],
-            "type": "paragraph"
-          },
-          {
-            "raw_kind": "system_message",
-            "raw_text": "<string>:1: (INFO/1) No role entry for \"external+python:mod\" in module \"docutils.parsers.rst.languages.en\".\nTrying \"external+python:mod\" as canonical role name.",
-            "type": "raw_block"
-          },
-          {
-            "raw_kind": "system_message",
-            "raw_text": "<string>:1: (ERROR/3) Unknown interpreted text role \"external+python:mod\".",
-            "type": "raw_block"
-          }
-        ],
-        "title": "Notes"
-      },
-      {
-        "blocks": [
-          {
-            "lines": [
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "from flops.random import Generator, PCG64"
-              },
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "rng = Generator(PCG64())"
-              },
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "rng.standard_normal()"
-              },
-              {
-                "kind": "output",
-                "text": "-0.203  # random"
-              }
-            ],
-            "type": "doctest_block"
-          }
-        ],
-        "title": "Examples"
       }
     ],
     "canonical_name": "random.Generator",
@@ -19193,14 +19007,14 @@
     "import_path": "flops.random.Generator",
     "kind": "class",
     "members": [],
-    "module": "numpy.random._generator",
+    "module": "flopscope.numpy.random._counted_classes",
     "name": "random.Generator",
     "related_guides": [],
     "signature": "flops.random.Generator",
     "slug": "random-generator",
-    "source_url": "",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/_counted_classes.py#L109",
     "status_note": "",
-    "summary": "Container for the BitGenerators.",
+    "summary": "numpy Generator subclass with FLOP-counted sampler methods.",
     "upstream_source_url": ""
   },
   "random.RandomState": {
@@ -19216,319 +19030,13 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Container for the slow Mersenne Twister pseudo-random number generator. Consider using a different BitGenerator with the Generator container instead."
+                "text": "numpy RandomState subclass with FLOP-counted sampler methods."
               }
             ],
             "type": "paragraph"
           }
         ],
         "title": "Summary"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "code",
-                "text": "RandomState"
-              },
-              {
-                "kind": "text",
-                "text": " and "
-              },
-              {
-                "kind": "code",
-                "text": "Generator"
-              },
-              {
-                "kind": "text",
-                "text": " expose a number of methods for generating\nrandom numbers drawn from a variety of probability distributions. In\naddition to the distribution-specific arguments, each method takes a\nkeyword argument "
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " that defaults to "
-              },
-              {
-                "kind": "code",
-                "text": "None"
-              },
-              {
-                "kind": "text",
-                "text": ". If "
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " is "
-              },
-              {
-                "kind": "code",
-                "text": "None"
-              },
-              {
-                "kind": "text",
-                "text": ",\nthen a single value is generated and returned. If "
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " is an integer,\nthen a 1-D array filled with generated values is returned. If "
-              },
-              {
-                "external_url": "",
-                "href": "/docs/api/numpy/size/",
-                "kind": "link",
-                "target": "size",
-                "text": "size"
-              },
-              {
-                "kind": "text",
-                "text": " is a\ntuple, then an array with that shape is filled and returned."
-              }
-            ],
-            "type": "paragraph"
-          },
-          {
-            "inline": [
-              {
-                "kind": "strong",
-                "text": "Compatibility Guarantee"
-              }
-            ],
-            "type": "paragraph"
-          },
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "A fixed bit generator using a fixed seed and a fixed series of calls to\n'RandomState' methods using the same parameters will always produce the\nsame results up to roundoff error except when the values were incorrect.\n"
-              },
-              {
-                "kind": "code",
-                "text": "RandomState"
-              },
-              {
-                "kind": "text",
-                "text": " is effectively frozen and will only receive updates that\nare required by changes in the internals of Numpy. More substantial\nchanges, including algorithmic improvements, are reserved for\n"
-              },
-              {
-                "kind": "code",
-                "text": "Generator"
-              },
-              {
-                "kind": "text",
-                "text": "."
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "title": "Extended Summary"
-      },
-      {
-        "blocks": [
-          {
-            "items": [
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "Random seed used to initialize the pseudo-random number generator or\nan instantized BitGenerator.  If an integer or array, used as a seed for\nthe MT19937 BitGenerator. Values can be any integer between 0 and\n2**32 - 1 inclusive, an array (or other sequence) of such integers,\nor "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "None"
-                      },
-                      {
-                        "kind": "text",
-                        "text": " (the default).  If "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "seed"
-                      },
-                      {
-                        "kind": "text",
-                        "text": " is "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "None"
-                      },
-                      {
-                        "kind": "text",
-                        "text": ", then the "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "MT19937"
-                      },
-                      {
-                        "kind": "text",
-                        "text": "\nBitGenerator is initialized by reading data from "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "/dev/urandom"
-                      },
-                      {
-                        "kind": "text",
-                        "text": "\n(or the Windows analogue) if available or seed from the clock\notherwise."
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "{None, int, array_like, BitGenerator}, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "Random seed used to initialize the pseudo-random number generator or\nan instantized BitGenerator.  If an integer or array, used as a seed for\nthe MT19937 BitGenerator. Values can be any integer between 0 and\n2**32 - 1 inclusive, an array (or other sequence) of such integers,\nor "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "None"
-                  },
-                  {
-                    "kind": "text",
-                    "text": " (the default).  If "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "seed"
-                  },
-                  {
-                    "kind": "text",
-                    "text": " is "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "None"
-                  },
-                  {
-                    "kind": "text",
-                    "text": ", then the "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "MT19937"
-                  },
-                  {
-                    "kind": "text",
-                    "text": "\nBitGenerator is initialized by reading data from "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "/dev/urandom"
-                  },
-                  {
-                    "kind": "text",
-                    "text": "\n(or the Windows analogue) if available or seed from the clock\notherwise."
-                  }
-                ],
-                "name": "seed",
-                "type": "field_list"
-              }
-            ],
-            "title": "Parameters",
-            "type": "field_list"
-          }
-        ],
-        "title": "Parameters"
-      },
-      {
-        "blocks": [
-          {
-            "links": [
-              {
-                "description": "",
-                "description_inline": [],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.Generator.html",
-                "href": "",
-                "label": "Generator",
-                "original_target": "Generator",
-                "role": "",
-                "target": "Generator",
-                "unresolved": false
-              },
-              {
-                "description": "",
-                "description_inline": [],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.MT19937.html",
-                "href": "",
-                "label": "MT19937",
-                "original_target": "MT19937",
-                "role": "",
-                "target": "MT19937",
-                "unresolved": false
-              },
-              {
-                "description": "",
-                "description_inline": [],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.BitGenerator.html",
-                "href": "",
-                "label": "flops.random.BitGenerator",
-                "original_target": "numpy.random.BitGenerator",
-                "role": "",
-                "target": "random.BitGenerator",
-                "unresolved": false
-              }
-            ],
-            "type": "link_list"
-          }
-        ],
-        "title": "See also"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "The Python stdlib module \"random\" also contains a Mersenne Twister\npseudo-random number generator with a number of methods that are similar\nto the ones available in "
-              },
-              {
-                "kind": "code",
-                "text": "RandomState"
-              },
-              {
-                "kind": "text",
-                "text": ". "
-              },
-              {
-                "kind": "code",
-                "text": "RandomState"
-              },
-              {
-                "kind": "text",
-                "text": ", besides being\nNumPy-aware, has the advantage that it provides a much larger number\nof probability distributions to choose from."
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "title": "Notes"
       }
     ],
     "canonical_name": "random.RandomState",
@@ -19538,14 +19046,14 @@
     "import_path": "flops.random.RandomState",
     "kind": "class",
     "members": [],
-    "module": "numpy.random.mtrand",
+    "module": "flopscope.numpy.random._counted_classes",
     "name": "random.RandomState",
     "related_guides": [],
     "signature": "flops.random.RandomState",
     "slug": "random-random-state",
-    "source_url": "",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/_counted_classes.py#L138",
     "status_note": "",
-    "summary": "Container for the slow Mersenne Twister pseudo-random number generator. Consider using a different BitGenerator with the Generator container instead.",
+    "summary": "numpy RandomState subclass with FLOP-counted sampler methods.",
     "upstream_source_url": ""
   },
   "random.SeedSequence": {
@@ -19920,7 +19428,7 @@
     "related_guides": [],
     "signature": "flops.random.ranf(*args, **kwargs)",
     "slug": "random-ranf",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L261",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L301",
     "status_note": "",
     "summary": "Counted version of ``flops.random.random.ranf``. Cost: numel(output) FLOPs.",
     "upstream_source_url": ""
@@ -19970,7 +19478,7 @@
     "related_guides": [],
     "signature": "flops.random.sample(*args, **kwargs)",
     "slug": "random-sample",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L261",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L301",
     "status_note": "",
     "summary": "Counted version of ``flops.random.random.sample``. Cost: numel(output) FLOPs.",
     "upstream_source_url": ""
@@ -20762,7 +20270,7 @@
     "related_guides": [],
     "signature": "flops.random.symmetric(shape: 'int | Sequence[int]', symmetry: 'SymmetryGroup', distribution: 'str | Callable[..., Any]' = 'randn', **distribution_kwargs: 'Any') -> 'FlopscopeArray'",
     "slug": "random-symmetric",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L364",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L404",
     "status_note": "",
     "summary": "Sample random data and project it to a symmetry group.",
     "upstream_source_url": ""

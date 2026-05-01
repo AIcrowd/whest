@@ -2959,6 +2959,934 @@
     "has_flopscope_examples": false,
     "has_inherited_examples": true
   },
+  "random.Generator.beta": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.beta.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.binomial": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.binomial.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.bit_generator": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_source": "missing",
+    "example_sources": [],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": false
+  },
+  "random.Generator.bytes": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.bytes.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.chisquare": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.chisquare.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.choice": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.choice.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.dirichlet": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.dirichlet.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.exponential": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.exponential.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.f": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.f.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.gamma": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.gamma.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.geometric": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.geometric.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.gumbel": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.gumbel.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.hypergeometric": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.hypergeometric.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.integers": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.integers.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.laplace": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.laplace.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.logistic": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.logistic.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.lognormal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.lognormal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.logseries": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.logseries.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.multinomial": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multinomial.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.multivariate_hypergeometric": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multivariate_hypergeometric.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.multivariate_normal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multivariate_normal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.negative_binomial": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.negative_binomial.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.noncentral_chisquare": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.noncentral_chisquare.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.noncentral_f": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.noncentral_f.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.normal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.normal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.pareto": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.pareto.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.permutation": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.permutation.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.permuted": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.permuted.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.poisson": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.poisson.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.power": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.power.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.random": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.random.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.rayleigh": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.rayleigh.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.shuffle": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.shuffle.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.spawn": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.spawn.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.standard_cauchy": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_cauchy.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.standard_exponential": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_exponential.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.standard_gamma": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_gamma.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.standard_normal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_normal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.standard_t": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_t.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.triangular": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.triangular.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.uniform": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.uniform.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.vonmises": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.vonmises.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.wald": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.wald.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.weibull": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.weibull.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.Generator.zipf": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.zipf.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.beta": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_source": "missing",
+    "example_sources": [],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": false
+  },
+  "random.RandomState.binomial": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.binomial.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.bytes": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.bytes.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.chisquare": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.chisquare.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.choice": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.choice.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.dirichlet": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.dirichlet.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.exponential": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.exponential.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.f": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.f.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.gamma": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.gamma.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.geometric": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.geometric.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.get_state": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_source": "missing",
+    "example_sources": [],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": false
+  },
+  "random.RandomState.gumbel": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.gumbel.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.hypergeometric": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.hypergeometric.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.laplace": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.laplace.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.logistic": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.logistic.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.lognormal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.lognormal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.logseries": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.logseries.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.multinomial": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.multinomial.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.multivariate_normal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.multivariate_normal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.negative_binomial": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.negative_binomial.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.noncentral_chisquare": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.noncentral_chisquare.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.noncentral_f": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.noncentral_f.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.normal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.normal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.pareto": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.pareto.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.permutation": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.permutation.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.poisson": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.poisson.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.power": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.power.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.rand": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.rand.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.randint": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.randint.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.randn": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.randn.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.random": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_source": "missing",
+    "example_sources": [],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": false
+  },
+  "random.RandomState.random_integers": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.random_integers.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.random_sample": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.random_sample.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.rayleigh": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.rayleigh.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.seed": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_source": "missing",
+    "example_sources": [],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": false
+  },
+  "random.RandomState.set_state": {
+    "coverage_status": "missing",
+    "example_count": 0,
+    "example_source": "missing",
+    "example_sources": [],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": false
+  },
+  "random.RandomState.shuffle": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.shuffle.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.standard_cauchy": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.standard_cauchy.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.standard_exponential": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.standard_exponential.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.standard_gamma": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.standard_gamma.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.standard_normal": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.standard_normal.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.standard_t": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.standard_t.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.tomaxint": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.tomaxint.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.triangular": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.triangular.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.uniform": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.uniform.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.vonmises": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.vonmises.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.wald": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.wald.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.weibull": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.weibull.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
+  "random.RandomState.zipf": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.random.RandomState.zipf.html"
+    ],
+    "has_flopscope_examples": false,
+    "has_inherited_examples": true
+  },
   "random.beta": {
     "coverage_status": "missing",
     "example_count": 0,

@@ -70,8 +70,8 @@
                   "text": "New code should use the\n"
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.negative_binomial.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/negative-binomial/",
                   "kind": "link",
                   "target": "random.Generator.negative_binomial",
                   "text": "negative_binomial"
@@ -360,9 +360,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.negative_binomial.html",
-              "href": "",
-              "label": "random.Generator.negative_binomial",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/negative-binomial/",
+              "label": "flops.random.Generator.negative_binomial",
               "original_target": "random.Generator.negative_binomial",
               "role": "",
               "target": "random.Generator.negative_binomial",
@@ -552,7 +552,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.negative_binomial",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/negative-binomial/",
   "import_path": "flopscope.numpy.random.negative_binomial",
   "is_operation_cost_leaf": true,
@@ -644,9 +644,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.negative_binomial.html",
-      "href": "",
-      "label": "random.Generator.negative_binomial",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/negative-binomial/",
+      "label": "flops.random.Generator.negative_binomial",
       "original_target": "random.Generator.negative_binomial",
       "role": "",
       "target": "random.Generator.negative_binomial",
