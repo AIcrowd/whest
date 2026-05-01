@@ -26,17 +26,87 @@ import {
 const TITLE = 'Typed Partition Counter';
 const DECK = 'Partition counting is the exact compressed counter behind the general branching case.';
 
-const FORMULA = String.raw`\alpha_a = \sum_{\tilde{x}\in P_{\mathrm{typed}}(L_a)/G_a} \frac{\prod_s (n_s)_{b_s(\tilde{x})}}{|\overline{G}_{\tilde{x}}|}\, |A_{\tilde{x}}/H_a|`;
+// V3.1 §36 Appendix-Linked Partition Formula Card
+// The formula is composed from four hover-target sub-expressions so each term
+// in α_a = Σ_p̃ (falling-factorial / |Ḡ_p̃|) · |A_p̃/H_a| can highlight the
+// per-pattern table column it drives. KaTeX renders each sub-expression
+// inline; the surrounding spans are the hover bus.
+const FORMULA_LEAD = String.raw`\alpha_a = `;
+const FORMULA_PATTERN = String.raw`\sum_{\tilde{x}\in P_{\mathrm{typed}}(L_a)/G_a}`;
+const FORMULA_FALLING_FACTORIAL = String.raw`\prod_s (n_s)_{b_s(\tilde{x})}`;
+const FORMULA_DIVISOR = String.raw`|\overline{G}_{\tilde{x}}|`;
+const FORMULA_OUTPUT_REACH = String.raw`|A_{\tilde{x}}/H_a|`;
+
+// Column tint applied when a formula term is hovered. var(--coral-light) is
+// the design-system token for the coral 50-tint surface.
+const FORMULA_HOVER_TINT = 'var(--coral-light)';
+
+// V3.1 §36 hover targets. Each entry maps a formula sub-expression to the
+// per-pattern table column it drives, plus the aria-label that names what
+// hovering will highlight (so screen-reader users get the same cue).
+const FORMULA_HOVER_TARGETS = {
+  pattern: {
+    column: 'pattern',
+    ariaLabel: 'Hover to highlight the pattern column in the table below',
+  },
+  fallingFactorial: {
+    column: 'fallingFactorial',
+    ariaLabel: 'Hover to highlight the concrete labelings column in the table below',
+  },
+  divisor: {
+    column: 'divisor',
+    ariaLabel: 'Hover to highlight the block-symmetry divisor column in the table below',
+  },
+  outputReach: {
+    column: 'outputReach',
+    ariaLabel: 'Hover to highlight the output reach column in the table below',
+  },
+};
 
 // Show-N constants. The chip strip and the cumulative table both cap their
 // visible counts at this number; the user can click "+N more" to expand.
 // Eight matches the visual rhythm of the surrounding subsection cards.
 const VISIBLE_LIMIT = 8;
 
+// V3.1 §36 helper. Wraps a formula sub-expression in a hover-bus span that
+// sets the parent's formulaTermHover state on mouse OR focus events (so
+// keyboard users get the same column-highlight cue as mouse users). The
+// surrounding state lives in the parent — this component is purely the
+// event surface and the visible affordance (cursor-help + faint underline).
+function FormulaHoverSpan({ term, activeTerm, setTerm, children }) {
+  const meta = FORMULA_HOVER_TARGETS[term];
+  const isActive = activeTerm === term;
+  const enter = () => setTerm(term);
+  const leave = () => setTerm(null);
+  return (
+    <span
+      data-formula-term={term}
+      tabIndex={0}
+      role="button"
+      aria-label={meta.ariaLabel}
+      title={meta.ariaLabel}
+      className="cursor-help rounded px-0.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-coral/40"
+      style={{ background: isActive ? FORMULA_HOVER_TINT : 'transparent' }}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      onFocus={enter}
+      onBlur={leave}
+    >
+      {children}
+    </span>
+  );
+}
+
 export default function TypedPartitionDemo({ componentData, costModel }) {
   const themeId = getActiveExplorerThemeId();
   const [selectedComponentIdx] = useState(0);
   const [selectedPatternKey, setSelectedPatternKey] = useState(null);
+  // V3.1 §36 hover state. One of: 'pattern' | 'fallingFactorial' | 'divisor'
+  // | 'outputReach' | null. Set by mouse/focus on the four formula spans;
+  // drives a coral-light tint on the matching per-pattern table column so
+  // readers can match each summand to its corresponding column without
+  // squinting at the LaTeX.
+  const [formulaTermHover, setFormulaTermHover] = useState(null);
 
   if (!componentData || !costModel) return null;
 
@@ -125,8 +195,64 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         {DECK}
       </p>
 
+      {/* V3.1 §36 Appendix-Linked Partition Formula Card.
+          The formula is composed from four hover-target sub-expressions.
+          Each span sets `formulaTermHover` on enter/leave/focus/blur and
+          carries an aria-label describing what hovering will highlight.
+          The matching column in the per-pattern table tints coral-light. */}
       <div className="mt-3 overflow-x-auto">
-        <Latex math={FORMULA} display />
+        <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-[18px]">
+          <Latex math={FORMULA_LEAD} />
+          <FormulaHoverSpan
+            term="pattern"
+            activeTerm={formulaTermHover}
+            setTerm={setFormulaTermHover}
+          >
+            <Latex math={FORMULA_PATTERN} />
+          </FormulaHoverSpan>
+          <span className="inline-flex flex-col items-center px-1">
+            <FormulaHoverSpan
+              term="fallingFactorial"
+              activeTerm={formulaTermHover}
+              setTerm={setFormulaTermHover}
+            >
+              <Latex math={FORMULA_FALLING_FACTORIAL} />
+            </FormulaHoverSpan>
+            <span
+              aria-hidden="true"
+              className="my-0.5 block w-full"
+              style={{
+                borderTop: `1px solid ${explorerThemeColor(themeId, 'body')}`,
+                minWidth: '2.5rem',
+              }}
+            />
+            <FormulaHoverSpan
+              term="divisor"
+              activeTerm={formulaTermHover}
+              setTerm={setFormulaTermHover}
+            >
+              <Latex math={FORMULA_DIVISOR} />
+            </FormulaHoverSpan>
+          </span>
+          <span aria-hidden="true" className="px-0.5">·</span>
+          <FormulaHoverSpan
+            term="outputReach"
+            activeTerm={formulaTermHover}
+            setTerm={setFormulaTermHover}
+          >
+            <Latex math={FORMULA_OUTPUT_REACH} />
+          </FormulaHoverSpan>
+        </div>
+        <div className="mt-2 text-center text-[11px]">
+          <a
+            href="#appendix-section-6"
+            data-formula-link="appendix-c"
+            aria-label="Read Appendix C — Typed partition counting theorem"
+            className="font-semibold text-coral underline decoration-coral/30 underline-offset-4 transition-colors hover:decoration-coral"
+          >
+            Full statement → Appendix C
+          </a>
+        </div>
       </div>
 
       <div className="mt-4">
@@ -220,32 +346,100 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
           Sum over patterns · live
         </div>
+        {/* V3.1 §36 per-pattern table.
+            Each column carries a `data-pattern-column` matching the four
+            FORMULA hover targets (pattern, fallingFactorial, divisor,
+            outputReach). When `formulaTermHover` matches the column, the
+            cells tint coral-light so readers can locate the column the
+            hovered formula term contributes to. */}
         <table className="mt-2 w-full font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
-              <th className="p-1 text-left">pattern x̃</th>
-              <th className="p-1 text-right">labelings/|Ḡ|</th>
-              <th className="p-1 text-right">|A_x̃/H|</th>
+              <th
+                className="p-1 text-left"
+                data-pattern-column="pattern"
+                style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : undefined }}
+              >
+                pattern x̃
+              </th>
+              <th
+                className="p-1 text-right"
+                data-pattern-column="fallingFactorial"
+                style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : undefined }}
+              >
+                labelings
+              </th>
+              <th
+                className="p-1 text-right"
+                data-pattern-column="divisor"
+                style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : undefined }}
+              >
+                |Ḡ|
+              </th>
+              <th
+                className="p-1 text-right"
+                data-pattern-column="outputReach"
+                style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : undefined }}
+              >
+                |A_x̃/H|
+              </th>
               <th className="p-1 text-right">contrib.</th>
             </tr>
           </thead>
           <tbody>
-            {visibleRows.map((row) => (
-              <tr
-                key={row.key}
-                onMouseEnter={() => setSelectedPatternKey(row.key)}
-                style={{ background: row.key === selectedPatternKey ? explorerThemeTint(themeId, 'hero', 0.06) : 'transparent' }}
-              >
-                <td className="p-1">{row.key}</td>
-                <td className="p-1 text-right">{row.labelings}/{row.blockActionSize}</td>
-                <td className="p-1 text-right">{row.reach}</td>
-                <td className="p-1 text-right">{row.contribution}</td>
-              </tr>
-            ))}
+            {visibleRows.map((row) => {
+              const rowSelected = row.key === selectedPatternKey;
+              const rowBackground = rowSelected
+                ? explorerThemeTint(themeId, 'hero', 0.06)
+                : 'transparent';
+              const tintFor = (column) =>
+                formulaTermHover === column ? FORMULA_HOVER_TINT : rowBackground;
+              return (
+                <tr
+                  key={row.key}
+                  onMouseEnter={() => setSelectedPatternKey(row.key)}
+                >
+                  <td
+                    className="p-1"
+                    data-pattern-column="pattern"
+                    style={{ background: tintFor('pattern') }}
+                  >
+                    {row.key}
+                  </td>
+                  <td
+                    className="p-1 text-right"
+                    data-pattern-column="fallingFactorial"
+                    style={{ background: tintFor('fallingFactorial') }}
+                  >
+                    {row.labelings}
+                  </td>
+                  <td
+                    className="p-1 text-right"
+                    data-pattern-column="divisor"
+                    style={{ background: tintFor('divisor') }}
+                  >
+                    {row.blockActionSize}
+                  </td>
+                  <td
+                    className="p-1 text-right"
+                    data-pattern-column="outputReach"
+                    style={{ background: tintFor('outputReach') }}
+                  >
+                    {row.reach}
+                  </td>
+                  <td
+                    className="p-1 text-right"
+                    style={{ background: rowBackground }}
+                  >
+                    {row.contribution}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
           <tfoot>
             <tr style={{ borderTop: `1.5px solid ${explorerThemeColor(themeId, 'ink')}` }}>
-              <td className="p-1 font-semibold" colSpan={3}>α =</td>
+              <td className="p-1 font-semibold" colSpan={4}>α =</td>
               <td className="p-1 text-right font-semibold" data-testid="partition-alpha-total" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</td>
             </tr>
           </tfoot>
