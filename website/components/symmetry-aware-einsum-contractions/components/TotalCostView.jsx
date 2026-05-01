@@ -5,6 +5,7 @@ import { AnchorLink } from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
+import LiveResultSentence from './LiveResultSentence.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import { componentColor } from '../engine/componentPalette.js';
 import {
@@ -753,6 +754,7 @@ export default function TotalCostView({
   dimensionN,
   numTerms = 1,
   explorerThemeId,
+  presetName = null,
 }) {
   if (!componentCosts || !componentData) return null;
 
@@ -820,12 +822,44 @@ export default function TotalCostView({
     },
   ];
 
+  // §41 LiveResultSentence — derive method-badge metadata from the live
+  // components. The product method is always the Burnside orbit count in
+  // this engine; the α method is the regime fired for the *first* (or
+  // representative) component. When a preset has multiple components with
+  // different α regimes, the per-component table below remains the source
+  // of truth — the sentence is a high-level entry point, not a drill-down.
+  const firstComponent = components[0] ?? null;
+  const firstAlphaRegimeId = firstComponent?.accumulation?.regimeId
+    ?? firstComponent?.shape
+    ?? null;
+  const firstAlphaPresentation = firstAlphaRegimeId
+    ? getRegimePresentation(firstAlphaRegimeId, SECTION_FIVE_THEME_OVERRIDE)
+    : null;
+  const liveAlphaMethod = firstAlphaRegimeId
+    ? { regimeId: firstAlphaRegimeId, label: firstAlphaPresentation?.label ?? firstAlphaRegimeId }
+    : { label: 'the selected α regime' };
+  const liveProductMethod = { label: 'Burnside orbit count' };
+
   return (
     <div className="space-y-8" style={sectionFiveThemeCssVars}>
       {/* §C50 accessibility — off-screen announcer for screen-reader users. */}
       <CountAnnouncer dimensionN={dimensionN} mu={mu} alpha={alpha} total={totalCost} />
 
       <ComponentRecap components={components} />
+
+      {/* §41 — Live Result Sentence. Friendly prose entry point for the
+          cost-savings story; sits ABOVE the formula card so readers meet
+          prose first, then the formula, then the per-component table. */}
+      <LiveResultSentence
+        presetName={presetName}
+        productMethod={liveProductMethod}
+        alphaMethod={liveAlphaMethod}
+        mu={mu}
+        alpha={alpha}
+        total={totalCost}
+        denseBaseline={denseTotalCost}
+        componentUnavailable={null}
+      />
 
       <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
 

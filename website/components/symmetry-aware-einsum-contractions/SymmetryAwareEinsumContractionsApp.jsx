@@ -786,6 +786,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       dimensionN={dimensionN}
                       numTerms={normalizedExample?.subscripts?.length ?? 1}
                       explorerThemeId={explorerThemeId}
+                      presetName={example?.name ?? null}
                     />
 
                     <button
