@@ -437,7 +437,7 @@ export default function AlgorithmAtAGlance({
             left the "Where symmetry enters" callout sticks to the bottom; on
             the right the MentalFrameworkCode figure stretches so its Counting
             Convention band anchors to the bottom. */}
-        <div className="editorial-two-col-divider-lg grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
+        <div className="editorial-two-col-divider-lg grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
           <EinsumIntroColumn
             example={example}
             hoveredLabels={hoveredLabels}
