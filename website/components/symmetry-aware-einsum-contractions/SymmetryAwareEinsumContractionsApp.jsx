@@ -45,6 +45,7 @@ import {
 } from './lib/notationSystem.js';
 import { selectSection1PreambleExample } from './lib/section1ExampleView.js';
 import { useKeyboardShortcuts } from './lib/useKeyboardShortcuts.js';
+import { setActiveAlphaMethodBus } from './lib/alphaMethodBus.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
@@ -157,6 +158,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
     () => (graphHover?.leafKeys?.length ? new Set(graphHover.leafKeys) : null),
     [graphHover],
   );
+  // Sync activeAlphaMethodHover → alphaMethodBus so DecisionLadder (rendered
+  // inside ComponentCostView without a direct prop chain) can subscribe to it.
+  useEffect(() => {
+    setActiveAlphaMethodBus(activeAlphaMethodHover);
+  }, [activeAlphaMethodHover]);
   const observedEntriesRef = useRef(new Map());
 
   // Resolve the active example: preset or custom

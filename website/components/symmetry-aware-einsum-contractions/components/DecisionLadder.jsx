@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Handle, Panel, Position, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react';
 import PanZoomControls, { PanZoomHint } from './PanZoomControls.jsx';
 import '@xyflow/react/dist/style.css';
@@ -10,6 +10,10 @@ import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import { notationColor, notationTint } from '../lib/notationSystem.js';
+import {
+  subscribeActiveAlphaMethod,
+  getActiveAlphaMethod,
+} from '../lib/alphaMethodBus.js';
 import {
   mixWithWhite,
   mixWithBlack,
@@ -254,10 +258,15 @@ function LeafNode({ data }) {
   const shadow = [
     data.spotlight ? `0 0 0 9px ${SPOTLIGHT_RING}26` : null,
     data.active ? `0 0 0 3px #FFFFFF, 0 0 0 5px ${ACTIVE_RING}` : null,
+    // alphaHighlight: coral outer ring added when the α-method bus emits this
+    // leaf's id (StickyBar badge hover or ComponentCostView method badge hover).
+    // The ring is drawn as a large box-shadow so it does not affect layout and
+    // is visible over the page's white background.
+    data.alphaHighlight ? `0 0 0 3px #FFFFFF, 0 0 0 6px ${CORAL_OUTLINE}` : null,
   ].filter(Boolean).join(', ') || undefined;
   const borderColor = data.active
     ? ACTIVE_RING
-    : (data.spotlight ? SPOTLIGHT_RING : baseBorderColor);
+    : (data.spotlight ? SPOTLIGHT_RING : (data.alphaHighlight ? CORAL_OUTLINE : baseBorderColor));
   const textColor = darkSurface ? '#F8FAFC' : '#132228';
   // Allow 2-line wrap for longer leaf labels (e.g. the Young regime's
   // "Young subgroup (full Sym, cross V/W)"). Shorter labels render on one
@@ -275,6 +284,7 @@ function LeafNode({ data }) {
       }}
       data-tree-node={data.nodeId}
       data-leaf-spotlight={data.spotlight ? 'true' : undefined}
+      data-leaf-alpha-highlight={data.alphaHighlight ? 'true' : undefined}
     >
       <Handle id="right" type="target" position={Position.Right} className="pointer-events-none opacity-0" />
       <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
@@ -364,7 +374,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
   if (nodeId === 'enumerate') {
     return {
       title: 'Enumerate G (dimino)',
-      whenText: 'Paid once, only when structural checks all refuse',
+      stageLabel: 'Paid once, only when structural checks all refuse',
       body: 'Materialise every group element via Dimino\'s algorithm. After this point the remaining ladder has access to the full group and can use Burnside / orbit enumeration.',
       latex: null,
       color: notationColor('g_detected'),
@@ -374,7 +384,10 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
   if (q) {
     return {
       title: q.short,
-      whenText: q.stage === 1 ? 'Stage 1 — structural check (no dimino)' : 'Stage 2 — symmetry check (dimino done)',
+      // stageLabel is the context banner for the node (Stage 1 / Stage 2).
+      // It is NOT an "Applies when" condition — the renderer shows it with
+      // different styling (plain uppercase caption, no "Applies when:" prefix).
+      stageLabel: q.stage === 1 ? 'Stage 1 — structural check (no dimino)' : 'Stage 2 — symmetry check (dimino done)',
       // Structured sections replace the old single `body` string for
       // question nodes. The render path displays `checks`, `why`, and
       // `intuition` under their own captioned headings when present.
@@ -392,15 +405,31 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
     return {
       title: labelForLeaf(nodeId, presentation?.label ?? spec.label),
       whenText: spec.when,
+      // V3.1 CaseBadge "Counts" line: leaf tooltips always show this fixed caption
+      // so the reader understands what α counts regardless of which leaf fired.
+      countsLine: 'Filled O → Q cells for this component',
       body: spec.description,
       latex: spec.latex,
       glossary: spec.glossary,
+      // V3.1 "Full statement" link to Appendix B.
+      appendixHref: '#appendix-section-2',
       color: presentation?.color ?? spec.color,
       liveReasons,
     };
   }
   return null;
 }
+
+// Coral outline for the activeAlphaMethod highlight. This is the same coral
+// used as the site's accent; using a CSS variable would require a theme
+// context unavailable inside the ReactFlow node renderer, so we inline the
+// stable value here.
+// Use the design-system CSS variable (defined in tokens.css under --coral).
+// Inlining the raw coral hex would (a) duplicate the V_free notation color and
+// (b) fail the notation-system host-files audit, which forbids hardcoded
+// notation colors in any host file. CSS variables work in inline styles for
+// both box-shadow and borderColor — React passes them through unchanged.
+const CORAL_OUTLINE = 'var(--coral)';
 
 // ─── Layout ──────────────────────────────────────────────────────────
 //
@@ -409,7 +438,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
 //   - a pair of dashed "Stage 1 / Stage 2" bands behind the rows.
 //   - an "enumerate G" node sitting on the spine between the two stages.
 
-function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
+function buildLadderLayout(activeLeafIds, spotlightLeafIds, activeAlphaMethod = null) {
   const active = activeLeafIds instanceof Set
     ? activeLeafIds
     : new Set(activeLeafIds || []);
@@ -439,6 +468,9 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
         color: presentation?.color ?? spec.color,
         active: active.has(leafId),
         spotlight: spotlight.has(leafId),
+        // alphaHighlight: true when the StickyBar / ComponentCostView α-method
+        // badge is hovered and this leaf's id matches the emitted method id.
+        alphaHighlight: activeAlphaMethod != null && activeAlphaMethod === leafId,
         nodeId: leafId, // keep the canonical id for active/spotlight testing
       },
     };
@@ -731,6 +763,7 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
   edges,
   onNodeMouseEnter,
   onNodeMouseLeave,
+  onNodeClick,
 }) {
   const wrapRef = useRef(null);
   const flowRef = useRef(null);
@@ -808,6 +841,7 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
           onInit={(instance) => { flowRef.current = instance; }}
           onNodeMouseEnter={onNodeMouseEnter}
           onNodeMouseLeave={onNodeMouseLeave}
+          onNodeClick={onNodeClick}
         >
           <LadderHintPanel />
           <LadderControlsPanel />
@@ -829,6 +863,11 @@ export default function DecisionLadder({
   // that has live reasons, the tooltip appends them so the reader sees the
   // concrete numbers (e.g. "estimate 800,000,000 exceeds budget").
   liveReasonsByLeaf = null,
+  // activeAlphaMethod bus (C01/C39 wire): when the StickyBar α-method badge
+  // or a ComponentCostView method badge is hovered, the App emits the hovered
+  // method's leaf id here. The matching tree leaf gets a coral outline so the
+  // reader can trace from the badge back to the classification tree.
+  activeAlphaMethod = null,
 }) {
   const effectiveLeafIds = useMemo(() => {
     if (Array.isArray(activeLeafIds) || activeLeafIds instanceof Set) {
@@ -839,6 +878,18 @@ export default function DecisionLadder({
     if (activeShapeId) legacy.push(activeShapeId);
     return new Set(legacy);
   }, [activeLeafIds, activeRegimeId, activeShapeId]);
+
+  // Subscribe to the α-method bus so that StickyBar / ComponentCostView badge
+  // hover highlights the matching leaf even when the prop is not forwarded by
+  // an intermediate component. The explicit `activeAlphaMethod` prop takes
+  // precedence (e.g. for stories and direct usage); the bus value is the
+  // fallback that works without ComponentCostView needing modification.
+  const busAlphaMethod = useSyncExternalStore(
+    subscribeActiveAlphaMethod,
+    getActiveAlphaMethod,
+    () => null,
+  );
+  const effectiveAlphaMethod = activeAlphaMethod ?? busAlphaMethod;
 
   const [hoveredNode, setHoveredNode] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
@@ -853,8 +904,8 @@ export default function DecisionLadder({
   }, [spotlightLeafIds]);
 
   const { nodes, edges } = useMemo(
-    () => buildLadderLayout(effectiveLeafIds, effectiveSpotlight),
-    [effectiveLeafIds, effectiveSpotlight],
+    () => buildLadderLayout(effectiveLeafIds, effectiveSpotlight, effectiveAlphaMethod),
+    [effectiveLeafIds, effectiveSpotlight, effectiveAlphaMethod],
   );
 
   const openTooltipForNode = useCallback((nodeId, rect) => {
@@ -921,6 +972,19 @@ export default function DecisionLadder({
 
   const handleNodeMouseLeave = useCallback(() => hideTooltip(), [hideTooltip]);
 
+  // Click-leaf → Appendix B anchor (C29 V3.1 interaction).
+  // Only leaf nodes navigate — question/source/enumerate/stageBand nodes do
+  // not carry appendix anchors. We detect leaf nodes by checking whether
+  // specFor returns a non-null value for the node's canonical id.
+  const handleNodeClick = useCallback((_evt, node) => {
+    // Use the canonical id stored in data.nodeId (node.id may carry a suffix
+    // like "bruteForceOrbit__alt" for duplicate leaf instances).
+    const canonicalId = node.data?.nodeId ?? node.id;
+    if (specFor(canonicalId)) {
+      window.location.hash = '#appendix-section-2';
+    }
+  }, []);
+
   useEffect(() => () => cancelHide(), [cancelHide]);
 
   useEffect(() => {
@@ -963,6 +1027,7 @@ export default function DecisionLadder({
           edges={edges}
           onNodeMouseEnter={handleNodeMouseEnter}
           onNodeMouseLeave={handleNodeMouseLeave}
+          onNodeClick={handleNodeClick}
         />
       </div>
       {activeTooltip && (
@@ -983,13 +1048,23 @@ export default function DecisionLadder({
             />
             <span className="text-sm font-semibold">{activeTooltip.title}</span>
           </div>
-          {activeTooltip.whenText && (
+          {activeTooltip.stageLabel && (
             <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+              <InlineMathText>{activeTooltip.stageLabel}</InlineMathText>
+            </div>
+          )}
+          {activeTooltip.whenText && (
+            <div className="mb-1 text-[11px] uppercase tracking-wider text-stone-500">
               <InlineMathText>
-                {activeTooltip.whenText.toLowerCase().startsWith('when')
+                {activeTooltip.whenText.toLowerCase().startsWith('applies when')
                   ? activeTooltip.whenText
-                  : `When: ${activeTooltip.whenText}`}
+                  : `Applies when: ${activeTooltip.whenText}`}
               </InlineMathText>
+            </div>
+          )}
+          {activeTooltip.countsLine && (
+            <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+              Counts: {activeTooltip.countsLine}
             </div>
           )}
           {activeTooltip.body && (
@@ -1044,6 +1119,21 @@ export default function DecisionLadder({
                   <li key={i}>· {r}</li>
                 ))}
               </ul>
+            </div>
+          )}
+          {activeTooltip.appendixHref && (
+            <div className="pointer-events-auto mt-3 border-t border-stone-200 pt-2 text-[11px] text-stone-500">
+              Full statement:{' '}
+              <a
+                href={activeTooltip.appendixHref}
+                className="font-medium text-stone-700 underline underline-offset-2 hover:text-stone-900"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.location.hash = activeTooltip.appendixHref;
+                }}
+              >
+                Appendix B
+              </a>
             </div>
           )}
         </div>
