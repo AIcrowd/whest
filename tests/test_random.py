@@ -93,11 +93,26 @@ class TestChoiceWithoutReplacement:
 
 
 class TestDefaultRng:
-    def test_is_free(self):
+    def test_constructor_is_free(self):
         with BudgetContext(flop_budget=10, quiet=True) as budget:
             merandom.default_rng(42)
             assert budget.flops_used == 0
 
-    def test_rng_passthrough(self):
+    def test_returned_rng_charges_flops_on_sample(self):
+        # Issue #18 regression: previously rng.standard_normal() was 0 FLOPs.
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rng = merandom.default_rng(42)
+            rng.standard_normal((3,))
+        assert budget.flops_used == 3
+
+    def test_returned_rng_returns_flopscope_array(self):
+        from flopscope._ndarray import FlopscopeArray
+
+        with BudgetContext(flop_budget=10**6, quiet=True):
+            rng = merandom.default_rng(42)
+            result = rng.standard_normal((3,))
+        assert isinstance(result, FlopscopeArray)
+
+    def test_returned_rng_is_numpy_generator_subclass(self):
         rng = merandom.default_rng(42)
-        assert rng.standard_normal((3,)).shape == (3,)
+        assert isinstance(rng, numpy.random.Generator)

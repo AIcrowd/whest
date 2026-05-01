@@ -123,9 +123,16 @@ def _counted_dims_sampler(
 # ---------------------------------------------------------------------------
 
 
-def default_rng(seed: Any = None) -> Generator:
-    """Construct a numpy random Generator. Cost: 0 FLOPs."""
-    return _npr.default_rng(seed)
+def default_rng(seed: Any = None) -> "_CountedGenerator":
+    """Construct a flopscope-counted Generator. Cost: 0 FLOPs.
+
+    The returned Generator's sampler methods deduct FLOPs from the active
+    BudgetContext and return ``FlopscopeArray``. See issue #18.
+    """
+    from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+    raw = _npr.default_rng(seed)
+    return _CountedGenerator(raw.bit_generator)
 
 
 def seed(seed: int | None = None) -> None:
