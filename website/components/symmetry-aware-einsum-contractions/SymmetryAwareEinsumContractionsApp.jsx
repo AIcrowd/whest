@@ -589,6 +589,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         } : null}
                         onActiveComponentHoverChange={setActiveComponentId}
                         onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
+                        onDimensionNChange={setDefaultSize}
                       />
                     </div>
                     <div className="mt-4">

@@ -14,6 +14,7 @@ import MultiplicationCostCard from './MultiplicationCostCard.jsx';
 import AccumulationHardCard from './AccumulationHardCard.jsx';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 import BranchingDemo from './BranchingDemo.jsx';
+import UnavailableDetailsPanel from './UnavailableDetailsPanel.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import {
   explorerThemeColor,
@@ -127,6 +128,22 @@ function VWSplitCell({ comp }) {
   );
 }
 
+// Heuristic: classify a refused-trace entry into one of the V3.1 §49 buckets.
+// We look at the most-specific (latest) refusal entry that isn't the
+// 'fallthrough' sentinel — its `reason` string carries the actionable signal.
+function classifyFailedCondition(trace) {
+  const list = Array.isArray(trace) ? trace : [];
+  const declined = [...list]
+    .reverse()
+    .find((entry) => entry?.decision === 'refused' && entry.regimeId !== 'fallthrough');
+  const reason = (declined?.reason ?? '').toLowerCase();
+  if (reason.includes('partition')) return 'typed-partition';
+  if (reason.includes('brute-force') || reason.includes('brute force') || reason.includes('tuple')) {
+    return 'brute-force';
+  }
+  return 'no-shortcut';
+}
+
 function ComponentSummaryTable({
   components,
   dimensionN,
@@ -134,6 +151,7 @@ function ComponentSummaryTable({
   onOpenOrbitModal,
   onActiveComponentHoverChange,
   onActiveAlphaMethodHoverChange,
+  onDimensionNChange,
 }) {
   const explorerThemeId = getActiveExplorerThemeId();
   // 7-column layout: labels | V_a/W_a | G_a | method | M_a | α_a | savings
@@ -376,6 +394,35 @@ function ComponentSummaryTable({
                 )}
               </div>
             </div>
+
+            {/* V3.1 §49 — when accumulation is unavailable, expose the verbose
+                Unavailable details panel beneath the row. Wrapped in a
+                <details>/<summary> for free a11y; keyboard users can toggle
+                with Enter/Space. The pill above remains the at-a-glance
+                signal; this panel provides the live numbers + CTAs. */}
+            {actualAcc === null ? (
+              <details className="mb-3 ml-1 mt-0.5 group">
+                <summary
+                  className="cursor-pointer select-none text-[11px] font-medium text-muted-foreground hover:text-foreground"
+                  aria-label={`Show unavailable count details for component ${componentId || idx + 1}`}
+                >
+                  <span className="mr-1 inline-block transition-transform group-open:rotate-90" aria-hidden="true">▸</span>
+                  why is this unavailable?
+                </summary>
+                <div className="mt-1.5">
+                  <UnavailableDetailsPanel
+                    componentId={componentId}
+                    sizes={Array.isArray(comp.sizes) && comp.sizes.length > 0
+                      ? comp.sizes
+                      : Array(comp.labels?.length ?? 0).fill(dimensionN)}
+                    groupSize={comp.elements?.length ?? 1}
+                    failedCondition={classifyFailedCondition(comp.accumulation?.trace)}
+                    onLowerN={typeof onDimensionNChange === 'function' ? onDimensionNChange : null}
+                    currentN={dimensionN}
+                  />
+                </div>
+              </details>
+            ) : null}
           </div>
         );
       })}
@@ -462,6 +509,10 @@ export default function ComponentCostView({
   // Setters are passed from App-level state (C20 and C01 respectively).
   onActiveComponentHoverChange = null,
   onActiveAlphaMethodHoverChange = null,
+  // C49: dimension-N setter; threaded through to UnavailableDetailsPanel so
+  // the "Try n = …" CTA can lower n when an unavailable state fires.
+  // Optional — when null, the panel hides the lower-n button.
+  onDimensionNChange = null,
 }) {
   if (!componentData || !costModel) return null;
 
@@ -545,6 +596,7 @@ export default function ComponentCostView({
         }}
         onActiveComponentHoverChange={onActiveComponentHoverChange}
         onActiveAlphaMethodHoverChange={onActiveAlphaMethodHoverChange}
+        onDimensionNChange={onDimensionNChange}
       />
 
       <ExplorerModal
