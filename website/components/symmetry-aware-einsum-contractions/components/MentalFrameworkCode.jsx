@@ -167,12 +167,18 @@ function CodeRow({ line }) {
   const leadingWhitespace = codePrefix.match(/^\s*/)?.[0] ?? '';
   const tokens = tokenizePseudocodeLine(codePrefix);
   const wrappedCommentLines = commentSuffix ? wrapCommentLines(commentSuffix) : [];
+  // Pure-comment lines (start with `#`) are tokenized as a single comment token
+  // whose width is the entire comment string. Under `whitespace-pre` that would
+  // overflow the column on long lines; switch to `whitespace-pre-wrap` so the
+  // comment wraps on whitespace while preserving leading indent.
+  const isPureCommentLine = line.code.trimStart().startsWith('#');
+  const codeWhitespaceClass = isPureCommentLine ? 'whitespace-pre-wrap' : 'whitespace-pre';
   return (
     <Fragment>
       <span className="select-none pr-3 text-right text-xs text-stone-400">
         {line.number}
       </span>
-      <code className="whitespace-pre border-l border-stone-200/80 pl-4 text-stone-800">
+      <code className={`${codeWhitespaceClass} border-l border-stone-200/80 pl-4 text-stone-800`}>
         {tokens.length === 0 ? (
           <span>&nbsp;</span>
         ) : (
