@@ -73,6 +73,16 @@ test('ComponentCostView mounts BranchingDemo full-width (single-column, no Typed
   assert.doesNotMatch(src, /<TypedPartitionDemo/);
 });
 
+test('ComponentCostView exposes section-placement switches for the app layout', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
+  assert.match(src, /showBranchingDemo = true/);
+  assert.match(src, /showCostCards = true/);
+  assert.match(src, /showDecisionLadder = true/);
+  assert.match(src, /\{showBranchingDemo \? \(/);
+  assert.match(src, /\{showCostCards \? \(/);
+  assert.match(src, /\{showDecisionLadder \? \(/);
+});
+
 test('ComponentCostView imports the two new cards + renders the CLASSIFICATION TREE section', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
   assert.match(src, /import MultiplicationCostCard/);
@@ -104,6 +114,24 @@ test('ComponentCostView passes activeLeafIds (all detected) to the DecisionLadde
   assert.match(src, /c\.accumulation\?\.regimeId/);
   assert.match(src, /c\.shape/);
 });
+
+test('App places the O→Q, factorization, and shortcut heroes in their narrative sections', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
+  const section3Idx = src.indexOf('§3 Projection');
+  const section5Idx = src.indexOf('§5 Component Factorization');
+  const section7Idx = src.indexOf('§7 Counting Shortcuts');
+  const branchingIdx = src.indexOf('<BranchingDemo', section3Idx);
+  const componentCostIdx = src.indexOf('<ComponentCostView', section5Idx);
+  const decisionIdx = src.indexOf('<DecisionLadder', section7Idx);
+  assert.ok(branchingIdx > section3Idx && branchingIdx < section5Idx, 'BranchingDemo must be a §3 O→Q hero');
+  assert.ok(componentCostIdx > section5Idx && componentCostIdx < section7Idx, 'ComponentCostView summary must move to §5');
+  assert.ok(decisionIdx > section7Idx, 'DecisionLadder must be the §7 shortcut hero');
+  const componentCostBlock = src.slice(componentCostIdx, src.indexOf('/>', componentCostIdx) + 2);
+  assert.match(componentCostBlock, /showBranchingDemo=\{false\}/);
+  assert.match(componentCostBlock, /showCostCards=\{false\}/);
+  assert.match(componentCostBlock, /showDecisionLadder=\{false\}/);
+});
+
 
 test('Section 5 piecewise brace renders as valid KaTeX', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');

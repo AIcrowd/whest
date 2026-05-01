@@ -110,10 +110,15 @@ test('§4 ComponentCostView no longer mounts LabelInteractionGraph or TypedParti
   assert.doesNotMatch(src, /<TypedPartitionDemo/);
 });
 
-test('§3 mounts LabelInteractionGraph in the App', () => {
+test('§5 mounts LabelInteractionGraph in the App', () => {
   const src = read('components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
   assert.match(src, /import \{[^}]*LabelInteractionGraph/);
-  assert.match(src, /<LabelInteractionGraph/);
+  const section5Idx = src.indexOf('§5 Component Factorization');
+  const section6Idx = src.indexOf('§6 Certification');
+  const graphIdx = src.indexOf('<LabelInteractionGraph', section5Idx);
+  assert.ok(section5Idx > -1, '§5 comment not found');
+  assert.ok(section6Idx > section5Idx, '§6 comment must follow §5');
+  assert.ok(graphIdx > section5Idx && graphIdx < section6Idx, 'LabelInteractionGraph must live in §5');
 });
 
 test('ComponentCostView forwards dimensionN to BranchingDemo', () => {

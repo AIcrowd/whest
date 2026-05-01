@@ -505,6 +505,9 @@ export default function ComponentCostView({
   spotlightLeafIds,
   expressionInfo = null,
   hoveredLabels = null,
+  showBranchingDemo = true,
+  showCostCards = true,
+  showDecisionLadder = true,
   // C39: hover buses — write activeComponentId / activeAlphaMethod on hover.
   // Setters are passed from App-level state (C20 and C01 respectively).
   onActiveComponentHoverChange = null,
@@ -523,68 +526,74 @@ export default function ComponentCostView({
 
   return (
     <div className="min-w-0 space-y-6">
-      {/* ROW 0 — BranchingDemo lifted to right after the §4 intro so the matrix
-          visualizes "product orbit" and "stored output rep" the moment the prose
-          introduces those terms. The cost cards / classification tree / summary
-          follow below. */}
-      <div id="demos-1col" className="border-b border-gray-100 pb-6">
-        <BranchingDemo
-          dimensionN={dimensionN}
-          componentData={componentData}
-          costModel={costModel}
-          selectedOrbitIdx={selectedOrbitIdx}
-          onSelectOrbit={onSelectOrbit}
-          onHover={onGraphHover}
-          expressionInfo={expressionInfo}
-          hoveredLabels={hoveredLabels}
-        />
-      </div>
-
-      {/* ROW 2 — μ vs α-hard (the right contrast) */}
-      <div id="two-cost-cards" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <MultiplicationCostCard
-          components={components.map((comp) => ({
-            ...comp,
-            multiplicationCount: multiplicationCount(comp),
-          }))}
-          numTerms={numTerms}
-        />
-        <AccumulationHardCard />
-      </div>
-
-      {/* ROW 3 — Classification tree (roadmap) */}
-      <div id="classification-tree" className="bg-white p-4 scroll-mt-sticky">
-        <ExplorerSubsectionHeader anchorId="classification-tree" labelText="Classification Tree">
-          Classification Tree
-        </ExplorerSubsectionHeader>
-        <p className="explorer-support-prose mt-2">
-          Each component is routed through a yes/no spine that dispatches to the
-          cheapest applicable closed form, or to brute-force orbit projection
-          when nothing else fits. The highlighted leaf on the left is where the
-          current example lands.
-        </p>
-        <div className="mt-4">
-          <DecisionLadder
-            activeLeafIds={components
-              .flatMap((c) => [c.accumulation?.regimeId, c.shape])
-              .filter(Boolean)}
-            spotlightLeafIds={spotlightLeafIds}
-            liveReasonsByLeaf={(() => {
-              const map = new Map();
-              for (const comp of components) {
-                const trace = comp.accumulation?.trace ?? [];
-                for (const step of trace) {
-                  if (!step?.regimeId || !step?.reason) continue;
-                  const list = map.get(step.regimeId) ?? [];
-                  if (!list.includes(step.reason)) list.push(step.reason);
-                  map.set(step.regimeId, list);
-                }
-              }
-              return map;
-            })()}
+      {showBranchingDemo ? (
+        /* ROW 0 — BranchingDemo lifted to right after the §4 intro so the matrix
+            visualizes "product orbit" and "stored output rep" the moment the prose
+            introduces those terms. The cost cards / classification tree / summary
+            follow below. */
+        <div id="demos-1col" className="border-b border-gray-100 pb-6">
+          <BranchingDemo
+            dimensionN={dimensionN}
+            componentData={componentData}
+            costModel={costModel}
+            selectedOrbitIdx={selectedOrbitIdx}
+            onSelectOrbit={onSelectOrbit}
+            onHover={onGraphHover}
+            expressionInfo={expressionInfo}
+            hoveredLabels={hoveredLabels}
           />
         </div>
-      </div>
+      ) : null}
+
+      {showCostCards ? (
+        /* ROW 2 — μ vs α-hard (the right contrast) */
+        <div id="two-cost-cards" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <MultiplicationCostCard
+            components={components.map((comp) => ({
+              ...comp,
+              multiplicationCount: multiplicationCount(comp),
+            }))}
+            numTerms={numTerms}
+          />
+          <AccumulationHardCard />
+        </div>
+      ) : null}
+
+      {showDecisionLadder ? (
+        /* ROW 3 — Classification tree (roadmap) */
+        <div id="classification-tree" className="bg-white p-4 scroll-mt-sticky">
+          <ExplorerSubsectionHeader anchorId="classification-tree" labelText="Classification Tree">
+            Classification Tree
+          </ExplorerSubsectionHeader>
+          <p className="explorer-support-prose mt-2">
+            Each component is routed through a yes/no spine that dispatches to the
+            cheapest applicable closed form, or to brute-force orbit projection
+            when nothing else fits. The highlighted leaf on the left is where the
+            current example lands.
+          </p>
+          <div className="mt-4">
+            <DecisionLadder
+              activeLeafIds={components
+                .flatMap((c) => [c.accumulation?.regimeId, c.shape])
+                .filter(Boolean)}
+              spotlightLeafIds={spotlightLeafIds}
+              liveReasonsByLeaf={(() => {
+                const map = new Map();
+                for (const comp of components) {
+                  const trace = comp.accumulation?.trace ?? [];
+                  for (const step of trace) {
+                    if (!step?.regimeId || !step?.reason) continue;
+                    const list = map.get(step.regimeId) ?? [];
+                    if (!list.includes(step.reason)) list.push(step.reason);
+                    map.set(step.regimeId, list);
+                  }
+                }
+                return map;
+              })()}
+            />
+          </div>
+        </div>
+      ) : null}
 
       {/* ROW 6 — Per-component summary table */}
       <ComponentSummaryTable

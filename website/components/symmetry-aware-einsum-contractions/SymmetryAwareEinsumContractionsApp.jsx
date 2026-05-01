@@ -25,6 +25,8 @@ import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
 import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
+import BranchingDemo from './components/BranchingDemo.jsx';
+import DecisionLadder from './components/DecisionLadder.jsx';
 import DenseAssignmentGrid from './components/DenseAssignmentGrid.jsx';
 import ProductOrbitLens from './components/ProductOrbitLens.jsx';
 import LoopMorphStepper from './components/LoopMorphStepper.jsx';
@@ -307,6 +309,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
     return orbitRows[lockedProductOrbitId] ?? null;
   }, [lockedProductOrbitId, cost]);
 
+  const teachingProductOrbitId = resolvedSelectedOrbitIdx >= 0 ? resolvedSelectedOrbitIdx : null;
+  const teachingProductOrbit = useMemo(() => {
+    if (teachingProductOrbitId == null) return null;
+    return cost?.orbitRows?.[teachingProductOrbitId] ?? null;
+  }, [cost, teachingProductOrbitId]);
+
   const outputActionSize = useMemo(() => {
     const labels = group?.allLabels ?? [];
     const vLabels = group?.vLabels ?? [];
@@ -319,6 +327,26 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
     return restrictStabilizerToPositions(elements, visiblePositions).length;
   }, [group]);
+
+  const activeLeafIds = useMemo(() => {
+    return (componentData?.components ?? [])
+      .flatMap((component) => [component.accumulation?.regimeId, component.shape])
+      .filter(Boolean);
+  }, [componentData]);
+
+  const liveReasonsByLeaf = useMemo(() => {
+    const map = new Map();
+    for (const component of componentData?.components ?? []) {
+      const trace = component.accumulation?.trace ?? [];
+      for (const step of trace) {
+        if (!step?.regimeId || !step?.reason) continue;
+        const list = map.get(step.regimeId) ?? [];
+        if (!list.includes(step.reason)) list.push(step.reason);
+        map.set(step.regimeId, list);
+      }
+    }
+    return map;
+  }, [componentData]);
 
   useEffect(() => {
     resetActiveExplorerTheme();
@@ -577,11 +605,23 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     description={<InlineMathText>{EXPLORER_ACTS[1].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
-                  >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[1].introParagraphs} />
-                    <div className="editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                      <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
-                        <ExplorerSubsectionHeader anchorId="bipartite-graph" labelText="Bipartite Graph">
+	                  >
+	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[1].introParagraphs} />
+	                    <div className="mt-6">
+	                      <ProductOrbitLens
+	                        orbit={teachingProductOrbit}
+	                        orbitId={teachingProductOrbitId}
+	                        labels={group?.allLabels ?? []}
+	                        subscripts={normalizedExample?.subscripts ?? []}
+	                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
+	                          .split(',')
+	                          .map((s) => s.trim())
+	                          .filter(Boolean)}
+	                      />
+	                    </div>
+	                    <div className="editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+	                      <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
+	                        <ExplorerSubsectionHeader anchorId="bipartite-graph" labelText="Bipartite Graph">
                           Bipartite Graph
                         </ExplorerSubsectionHeader>
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
@@ -644,13 +684,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         product-orbit fields (Representative / Members /
                         Orbit size / Reason / Fixed-point label) for the
                         orbit locked by clicking a cell above. */}
-                    <div className="mt-4">
-                      <ProductOrbitLens
-                        orbit={lockedProductOrbit}
-                        orbitId={lockedProductOrbitId}
-                        labels={group?.allLabels ?? []}
-                        subscripts={normalizedExample?.subscripts ?? []}
-                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
+	                    <div className="mt-4">
+	                      <ProductOrbitLens
+	                        orbit={lockedProductOrbit ?? teachingProductOrbit}
+	                        orbitId={lockedProductOrbitId ?? teachingProductOrbitId}
+	                        labels={group?.allLabels ?? []}
+	                        subscripts={normalizedExample?.subscripts ?? []}
+	                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
                           .split(',')
                           .map((s) => s.trim())
                           .filter(Boolean)}
@@ -660,36 +700,28 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         The "what we'll do with it" companion to the dense grid:
                         side-by-side dense vs representative pseudocode with a
                         5-step stepper morphing between them. */}
-                    <div className="mt-6">
-                      <LoopMorphStepper />
-                    </div>
-                    <div className="mt-6">
-                      <ComponentCostView
-                        componentData={componentData}
-                        costModel={cost}
-                        dimensionN={dimensionN}
-                        numTerms={normalizedExample?.subscripts?.length ?? 1}
-                        allLabels={group.allLabels}
-                        vLabels={group.vLabels}
-                        fullGenerators={group.fullGenerators}
-                        selectedOrbitIdx={resolvedSelectedOrbitIdx}
-                        onSelectOrbit={setSelectedOrbitIdx}
-                        onGraphHover={handleGraphHover}
-                        spotlightLeafIds={spotlightLeafSet}
-                        hoveredLabels={hoveredLabelSet}
-                        expressionInfo={normalizedExample ? {
-                          subscripts: normalizedExample.subscripts ?? [],
+	                    <div className="mt-6">
+	                      <LoopMorphStepper />
+	                    </div>
+	                    <div className="mt-6">
+	                      <BranchingDemo
+	                        componentData={componentData}
+	                        costModel={cost}
+	                        dimensionN={dimensionN}
+	                        selectedOrbitIdx={resolvedSelectedOrbitIdx}
+	                        onSelectOrbit={setSelectedOrbitIdx}
+	                        onHover={handleGraphHover}
+	                        hoveredLabels={hoveredLabelSet}
+	                        expressionInfo={normalizedExample ? {
+	                          subscripts: normalizedExample.subscripts ?? [],
                           output: normalizedExample.output ?? '',
                           operandNames: (normalizedExample.expression?.operandNames ?? '')
                             .split(',')
-                            .map((s) => s.trim())
-                            .filter(Boolean),
-                        } : null}
-                        onActiveComponentHoverChange={setActiveComponentId}
-                        onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
-                        onDimensionNChange={setDefaultSize}
-                      />
-                    </div>
+	                            .map((s) => s.trim())
+	                            .filter(Boolean),
+	                        } : null}
+	                      />
+	                    </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
                     </div>
@@ -724,11 +756,53 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
-                  >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[4].introParagraphs} />
-                    <div className="mt-4">
-                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
-                    </div>
+	                  >
+	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[4].introParagraphs} />
+	                    <div className="mt-6">
+	                      <LabelInteractionGraph
+	                        allLabels={group?.allLabels ?? []}
+	                        vLabels={group?.vLabels ?? []}
+	                        interactionGraph={componentData?.interactionGraph}
+	                        components={componentData?.components ?? null}
+	                        fullGenerators={group?.fullGenerators ?? []}
+	                        onHover={handleGraphHover}
+	                        activeComponentId={activeComponentId}
+	                        onActiveComponentHoverChange={setActiveComponentId}
+	                      />
+	                    </div>
+	                    <div className="mt-6">
+	                      <ComponentCostView
+	                        componentData={componentData}
+	                        costModel={cost}
+	                        dimensionN={dimensionN}
+	                        numTerms={normalizedExample?.subscripts?.length ?? 1}
+	                        allLabels={group.allLabels}
+	                        vLabels={group.vLabels}
+	                        fullGenerators={group.fullGenerators}
+	                        selectedOrbitIdx={resolvedSelectedOrbitIdx}
+	                        onSelectOrbit={setSelectedOrbitIdx}
+	                        onGraphHover={handleGraphHover}
+	                        spotlightLeafIds={spotlightLeafSet}
+	                        hoveredLabels={hoveredLabelSet}
+	                        expressionInfo={normalizedExample ? {
+	                          subscripts: normalizedExample.subscripts ?? [],
+	                          output: normalizedExample.output ?? '',
+	                          operandNames: (normalizedExample.expression?.operandNames ?? '')
+	                            .split(',')
+	                            .map((s) => s.trim())
+	                            .filter(Boolean),
+	                        } : null}
+	                        showBranchingDemo={false}
+	                        showCostCards={false}
+	                        showDecisionLadder={false}
+	                        onActiveComponentHoverChange={setActiveComponentId}
+	                        onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
+	                        onDimensionNChange={setDefaultSize}
+	                      />
+	                    </div>
+	                    <div className="mt-4">
+	                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
+	                    </div>
                   </ExplorerSectionCard>
                 </section>
 
@@ -792,22 +866,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         />
                       </div>
                     </div>
-                    <div className="mt-6">
-                      <LabelInteractionGraph
-                        allLabels={group?.allLabels ?? []}
-                        vLabels={group?.vLabels ?? []}
-                        interactionGraph={componentData?.interactionGraph}
-                        components={componentData?.components ?? null}
-                        fullGenerators={group?.fullGenerators ?? []}
-                        onHover={handleGraphHover}
-                        activeComponentId={activeComponentId}
-                        onActiveComponentHoverChange={setActiveComponentId}
-                      />
-                    </div>
-                    {/* C27 — Certification Summary Strip: 7-metric bridge that
-                        sits at the end of the certification section, between
-                        the SigmaLoop / Generator-Construction / LabelInteractionGraph
-                        block above and the next section's narrative callouts.
+	                    {/* C27 — Certification Summary Strip: 7-metric bridge that
+	                        sits at the end of the certification section, after
+	                        the SigmaLoop / Generator-Construction block and before
+	                        the next section's narrative callouts.
                         Each pill is hover-aware: writing to upstream highlight
                         targets (wreath / audit / generator-closure / column-action)
                         and the existing activeComponentId bus. */}
@@ -846,11 +908,26 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     description={<InlineMathText>{EXPLORER_ACTS[6].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
-                  >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[6].introParagraphs} />
-                    <div className="mt-6">
-                      <NaiveAlphaCostMeter
-                        dimensionN={dimensionN}
+	                  >
+	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[6].introParagraphs} />
+	                    <div id="classification-tree" className="mt-6 bg-white p-4 scroll-mt-sticky">
+	                      <ExplorerSubsectionHeader anchorId="classification-tree" labelText="Classification Tree">
+	                        Shortcut Decision Ladder
+	                      </ExplorerSubsectionHeader>
+	                      <p className="explorer-support-prose mt-2">
+	                        Each component follows this yes/no spine until the cheapest exact accumulation counter applies. The highlighted leaves show where the active example lands.
+	                      </p>
+	                      <div className="mt-4">
+	                        <DecisionLadder
+	                          activeLeafIds={activeLeafIds}
+	                          spotlightLeafIds={spotlightLeafSet}
+	                          liveReasonsByLeaf={liveReasonsByLeaf}
+	                        />
+	                      </div>
+	                    </div>
+	                    <div className="mt-6">
+	                      <NaiveAlphaCostMeter
+	                        dimensionN={dimensionN}
                         allLabels={group?.allLabels ?? []}
                         groupSize={group?.fullElements?.length ?? 1}
                         hSize={outputActionSize}

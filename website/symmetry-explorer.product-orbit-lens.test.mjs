@@ -98,20 +98,30 @@ test('App computes orbitsByAssignment from cost.orbitRows', () => {
   assert.match(src, /onOrbitSelect=\{setLockedProductOrbitId\}/);
 });
 
-test('App mounts ProductOrbitLens alongside DenseAssignmentGrid in §3', () => {
+test('App teaches ProductOrbitLens in §2 and keeps a click-linked lens in §3', () => {
   const src = readFileSync(APP_PATH, 'utf-8');
   // Default import.
   assert.match(src, /import ProductOrbitLens from '\.\/components\/ProductOrbitLens\.jsx';/);
-  // Mounted JSX with the full prop contract from the spec.
-  assert.match(src, /<ProductOrbitLens[\s\S]*?orbit=\{lockedProductOrbit\}[\s\S]*?\/>/);
-  assert.match(src, /<ProductOrbitLens[\s\S]*?orbitId=\{lockedProductOrbitId\}[\s\S]*?\/>/);
-  // Mount order: ProductOrbitLens must appear AFTER DenseAssignmentGrid so
-  // it visually pairs with the grid that drives its selection.
-  const dagIdx = src.indexOf('<DenseAssignmentGrid');
-  const polIdx = src.indexOf('<ProductOrbitLens');
-  assert.ok(dagIdx > 0, 'expected DenseAssignmentGrid to be mounted');
-  assert.ok(polIdx > 0, 'expected ProductOrbitLens to be mounted');
-  assert.ok(dagIdx < polIdx, 'ProductOrbitLens must mount AFTER DenseAssignmentGrid in §3');
+
+  const section2Idx = src.indexOf('§2 Product Symmetry');
+  const section3Idx = src.indexOf('§3 Projection');
+  const graphIdx = src.indexOf('<BipartiteGraph', section2Idx);
+  const teachingLensIdx = src.indexOf('<ProductOrbitLens', section2Idx);
+  assert.ok(section2Idx > -1, '§2 Product Symmetry comment not found');
+  assert.ok(section3Idx > section2Idx, '§3 Projection comment must follow §2');
+  assert.ok(teachingLensIdx > section2Idx && teachingLensIdx < graphIdx, '§2 lens must lead the structural graph views');
+  assert.match(src.slice(teachingLensIdx, graphIdx), /orbit=\{teachingProductOrbit\}/);
+  assert.match(src.slice(teachingLensIdx, graphIdx), /orbitId=\{teachingProductOrbitId\}/);
+
+  const dagIdx = src.indexOf('<DenseAssignmentGrid', section3Idx);
+  const projectionLensIdx = src.indexOf('<ProductOrbitLens', dagIdx);
+  const loopIdx = src.indexOf('<LoopMorphStepper', section3Idx);
+  assert.ok(dagIdx > section3Idx, 'expected DenseAssignmentGrid to be mounted in §3');
+  assert.ok(projectionLensIdx > dagIdx, '§3 ProductOrbitLens must appear after DenseAssignmentGrid');
+  assert.ok(projectionLensIdx < loopIdx, '§3 ProductOrbitLens must stay adjacent to the dense grid');
+  const projectionLensBlock = src.slice(projectionLensIdx, loopIdx);
+  assert.match(projectionLensBlock, /orbit=\{lockedProductOrbit \?\? teachingProductOrbit\}/);
+  assert.match(projectionLensBlock, /orbitId=\{lockedProductOrbitId \?\? teachingProductOrbitId\}/);
 });
 
 test('App resets lockedProductOrbitId on preset / custom-example switches', () => {
