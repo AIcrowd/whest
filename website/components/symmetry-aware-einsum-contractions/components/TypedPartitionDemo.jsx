@@ -78,6 +78,58 @@ const VISIBLE_LIMIT = 8;
 // enumeration.
 const BRUTE_FORCE_NS = [2, 3, 4, 5, 6];
 
+// V3.1 §35 mini-ledger. Cap how many concrete member assignments we list
+// in the prose ledger so the panel never grows past a glance — the
+// underlying labelings count is already shown numerically.
+const MINI_LEDGER_EXAMPLE_LIMIT = 5;
+
+// V3.1 §35 helper. Enumerate concrete value-assignments whose equality
+// pattern matches the partition. For partition [0,0,1] with sizes [3,3,3]
+// this yields tuples like (0,0,1), (0,0,2), (1,1,0), … — exactly the
+// rows the falling-factorial product counts. Stops at `limit` so callers
+// don't pay for the full ∏(nₛ)_{bₛ}; when truncated the caller can show
+// "+N more" rather than the entire universe.
+function enumerateMemberAssignments(partition, sizes, limit) {
+  const blocks = numBlocks(partition);
+  if (blocks === 0) return [];
+  // Build the list of positions per block in canonical order.
+  const positionsByBlock = Array.from({ length: blocks }, () => []);
+  partition.forEach((block, position) => positionsByBlock[block].push(position));
+  // Each block draws a value from sizes[firstPositionInBlock] (all
+  // positions in a block share a domain). Block values must all be
+  // distinct within a same-domain group; cross-domain blocks are free.
+  const blockDomain = positionsByBlock.map((positions) => sizes[positions[0]]);
+  const examples = [];
+  function visit(blockIdx, blockValues) {
+    if (examples.length >= limit) return;
+    if (blockIdx === blocks) {
+      const tuple = new Array(partition.length);
+      partition.forEach((block, position) => {
+        tuple[position] = blockValues[block];
+      });
+      examples.push(tuple);
+      return;
+    }
+    const domainSize = blockDomain[blockIdx];
+    for (let value = 0; value < domainSize; value += 1) {
+      // Distinctness only required against earlier blocks sharing this domain.
+      let conflict = false;
+      for (let prior = 0; prior < blockIdx; prior += 1) {
+        if (blockDomain[prior] === domainSize && blockValues[prior] === value) {
+          conflict = true;
+          break;
+        }
+      }
+      if (conflict) continue;
+      blockValues[blockIdx] = value;
+      visit(blockIdx + 1, blockValues);
+      if (examples.length >= limit) return;
+    }
+  }
+  visit(0, []);
+  return examples;
+}
+
 // V3.1 §34 helper. Given a partition (block assignment per position) and a
 // uniform domain size n, return ∏_s (n)_{b_s}. We treat every position as
 // living in the same n-size domain so the blocks all share a single
@@ -148,6 +200,12 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
   // detail card so readers can see how (n)_b grows vs the partition
   // counter's compressed form.
   const [bruteForceOpen, setBruteForceOpen] = useState(false);
+  // V3.1 §35 "Show full α sum" toggle. Default-off; flipping it expands
+  // the mini-ledger from the single selected-pattern contribution to the
+  // full alpha sum across every pattern family in this component, so
+  // readers can see how the one prose line they're reading composes into
+  // the cumulative total at the bottom of the table.
+  const [showFullAlphaSum, setShowFullAlphaSum] = useState(false);
 
   if (!componentData || !costModel) return null;
 
@@ -199,6 +257,40 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
     };
   });
   const cumulativeAlpha = cumulativeRows.reduce((acc, row) => acc + row.contribution, 0);
+
+  // V3.1 §35 mini-ledger derived data. The ledger renders prose around
+  // four numbers: the per-block falling-factorial multiplier (e.g.
+  // "choose value for ab block: 3 choices"), the total concrete-labeling
+  // count, up to MINI_LEDGER_EXAMPLE_LIMIT member assignments shown as
+  // tuples, and the contribution this pattern family contributes to α.
+  const activeLabels = activeComponent?.labels ?? [];
+  const ledgerBlockChoices = activeChip
+    ? (() => {
+        const blocks = numBlocks(activeChip.partition);
+        const positionsByBlock = Array.from({ length: blocks }, () => []);
+        activeChip.partition.forEach((block, position) => {
+          positionsByBlock[block].push(position);
+        });
+        // Within each domain, blocks are picked in order and must be
+        // distinct from earlier blocks of the same domain. The choice
+        // count for the k-th block of a size-n domain is therefore
+        // (n - k_so_far_in_this_domain).
+        const usedByDomain = new Map();
+        return positionsByBlock.map((positions) => {
+          const domain = sizes[positions[0]];
+          const used = usedByDomain.get(domain) ?? 0;
+          usedByDomain.set(domain, used + 1);
+          return {
+            blockLabel: positions.map((p) => activeLabels[p] ?? `p${p}`).join(''),
+            domain,
+            choices: domain - used,
+          };
+        });
+      })()
+    : [];
+  const ledgerExamples = activeChip
+    ? enumerateMemberAssignments(activeChip.partition, sizes, MINI_LEDGER_EXAMPLE_LIMIT)
+    : [];
 
   // V3.1 §34 brute-force compare. For each n in BRUTE_FORCE_NS substitute
   // every position size with n and compute (n)_b for the active partition;
@@ -537,6 +629,117 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* V3.1 §35 Worked Pattern Mini-Ledger.
+          A more verbose, prose-style sibling of the "Selected pattern
+          detail" card above. Walks the reader through the arithmetic in
+          plain English — choose a value for each block, multiply, list
+          the concrete tuples, divide by the orbit size, multiply by the
+          output reach. Below the ledger sits a required caveat (this is
+          one pattern-family contribution, not the full alpha) and a
+          "Show full α sum" toggle that expands the ledger into the
+          stacked sum across every pattern family. */}
+      {activeChip && (
+        <div
+          data-testid="worked-pattern-mini-ledger"
+          className="mt-3 rounded-md p-3"
+          style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}
+        >
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+            Worked mini-ledger · {activeChip.key}
+          </div>
+          <div className="mt-2 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
+            <div>
+              <span className="font-semibold">Pattern:</span> {activeChip.key}
+            </div>
+            <div>
+              <span className="font-semibold">Meaning:</span>{' '}
+              {describeBlocks(activeChip.partition, activeLabels)} — positions in the same block share a value; positions in different blocks may take different values.
+            </div>
+            <div className="mt-2">
+              <span className="font-semibold">Concrete labelings:</span>
+            </div>
+            <ul className="mt-0.5 list-none space-y-0">
+              {ledgerBlockChoices.map((entry, idx) => (
+                <li key={`mini-ledger-block-${idx}`} data-mini-ledger-block={idx} className="pl-3">
+                  choose value for {entry.blockLabel} block: <strong>{entry.choices}</strong> choices
+                </li>
+              ))}
+              <li className="pl-3">
+                total: <strong>{activeChip.labelings}</strong>
+              </li>
+            </ul>
+            <div className="mt-2">
+              <span className="font-semibold">Member assignments:</span>
+            </div>
+            <ul className="mt-0.5 list-none space-y-0">
+              {ledgerExamples.map((tuple, idx) => (
+                <li key={`mini-ledger-example-${idx}`} data-mini-ledger-example={idx} className="pl-3">
+                  ({tuple.join(',')})
+                </li>
+              ))}
+              {activeChip.labelings > ledgerExamples.length && (
+                <li className="pl-3" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                  … and {activeChip.labelings - ledgerExamples.length} more
+                </li>
+              )}
+            </ul>
+            <div className="mt-2">
+              <span className="font-semibold">Output reach:</span> <strong>{reachCount}</strong>
+            </div>
+            <div>
+              <span className="font-semibold">Contribution shown for this pattern family:</span>{' '}
+              <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong>
+            </div>
+          </div>
+          {/* Required caveat. Visual emphasis via amber callout: a left
+              border + tinted surface so the line reads as a note, not as
+              part of the prose ledger above. */}
+          <div
+            data-testid="worked-pattern-ledger-caveat"
+            role="note"
+            className="mt-3 border-l-4 border-amber-300 bg-amber-50 px-3 py-2 text-[11px] text-amber-900"
+          >
+            This is one pattern-family contribution, not the full alpha. The full alpha also includes the all-distinct and all-equal pattern families.
+          </div>
+          <div className="mt-3 border-t pt-2" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+            <button
+              type="button"
+              data-action="toggle-full-alpha-sum"
+              aria-label={showFullAlphaSum ? 'Hide the full alpha sum across every pattern family' : 'Show full α sum — stack every pattern-family contribution into the cumulative alpha'}
+              aria-expanded={showFullAlphaSum}
+              onClick={() => setShowFullAlphaSum((prev) => !prev)}
+              className="text-[11px] font-medium underline-offset-2 hover:underline"
+              style={{ color: explorerThemeColor(themeId, 'muted') }}
+            >
+              {showFullAlphaSum ? 'hide full α sum' : 'show full α sum'}
+            </button>
+            {showFullAlphaSum && (
+              <div data-testid="worked-pattern-full-alpha-sum" className="mt-2 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                <div className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                  Stacked α: every pattern family contributes one term.
+                </div>
+                <div className="mt-1">
+                  α_a ={' '}
+                  {cumulativeRows.map((row, idx) => (
+                    <span key={`full-alpha-term-${row.key}`} data-full-alpha-term={row.key}>
+                      {idx > 0 ? ' + ' : ''}
+                      <span title={`${row.key}: ${row.labelings}/${row.blockActionSize} · ${row.reach} = ${row.contribution}`}>
+                        {row.contribution}
+                        <span className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                          {' '}({row.key})
+                        </span>
+                      </span>
+                    </span>
+                  ))}
+                  {' = '}
+                  <strong style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</strong>
+                </div>
               </div>
             )}
           </div>
