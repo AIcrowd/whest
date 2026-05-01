@@ -98,27 +98,64 @@ function LabelsCell({ comp }) {
   );
 }
 
+// V_a / W_a split cell — warm tones for V_free, cool tones for W_summed.
+// Uses the same RoleBadge as LabelsCell so the coloring is consistent.
+function VWSplitCell({ comp }) {
+  const va = comp.va ?? [];
+  const wa = comp.wa ?? [];
+  return (
+    <div className="space-y-1">
+      <div className="flex flex-wrap items-center gap-1">
+        {va.length > 0 ? (
+          va.map((label) => (
+            <RoleBadge key={`va-${label}`} role="v">{label}</RoleBadge>
+          ))
+        ) : (
+          <span className="text-[11px] text-muted-foreground">∅</span>
+        )}
+      </div>
+      <div className="flex flex-wrap items-center gap-1">
+        {wa.length > 0 ? (
+          wa.map((label) => (
+            <RoleBadge key={`wa-${label}`} role="w">{label}</RoleBadge>
+          ))
+        ) : (
+          <span className="text-[11px] text-muted-foreground">∅</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ComponentSummaryTable({
   components,
   dimensionN,
   orbitRows,
   onOpenOrbitModal,
+  onActiveComponentHoverChange,
+  onActiveAlphaMethodHoverChange,
 }) {
   const explorerThemeId = getActiveExplorerThemeId();
-  // Shared column template so every component card's middle-row lines up
-  // column-wise with the global header at the top.
-  const MIDDLE_COLS = 'grid-cols-[1.2fr_2.5fr_0.9fr_0.9fr_1.4fr]';
+  // 7-column layout: labels | V_a/W_a | G_a | method | M_a | α_a | savings
+  const MIDDLE_COLS = 'grid-cols-[1fr_0.9fr_0.7fr_2fr_0.85fr_0.85fr_1.3fr]';
 
   return (
     <div className="max-w-full overflow-x-auto bg-white">
       <p className="px-5 py-3 text-[12px] leading-5 text-muted-foreground">
         The dense baseline is the same direct-event convention without symmetry: one product chain and one output update for every full label assignment.
       </p>
-      {/* Global column header — only labels the 5 middle-row columns. */}
+      {/* Global column header — labels the 7 middle-row columns. */}
       <div
-        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-900`}
+        className={`grid ${MIDDLE_COLS} items-center gap-x-3 bg-surface-raised px-5 py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-900`}
+        aria-label="Component accounting table header"
       >
         <span>Component</span>
+        <span>
+          <span title="Free labels V_a / Summed labels W_a">V<sub>a</sub> / W<sub>a</sub></span>
+        </span>
+        <span>
+          <span title="Local symmetry group G_a">G<sub>a</sub></span>
+        </span>
         <span>Method</span>
         <span>Product Orbits (<NotationSymbol id="m_component" mode="math" />)</span>
         <span>Accumulation Updates (<NotationSymbol id="alpha_component" mode="math" />)</span>
@@ -136,7 +173,6 @@ function ComponentSummaryTable({
         //   This is the per-component combined reduction at unit (k=2) cost.
         //   The honest global Total% lives in TotalCostView; this pill is a
         //   quick "is this component pulling its weight?" indicator.
-        const labelCount = comp.labels?.length ?? 0;
         const denseCell = denseTupleCount(comp, dimensionN);
         const actualAcc = accumulationCount(comp);
         const pct = (actual, dense) =>
@@ -152,14 +188,25 @@ function ComponentSummaryTable({
         const methodDescription = presentation?.tooltip?.body;
         const methodLatex = presentation?.tooltip?.latex;
 
+        // The componentId is the comma-joined sorted label list, matching the
+        // format used by C20 LabelInteractionGraph.
+        const componentId = (comp.labels ?? []).join(',');
+
         return (
           <div
             key={`comp-${idx}`}
-            className="border-t-2 border-border/70 px-5"
+            className="border-t-2 border-border/70 px-5 transition-colors hover:bg-surface-raised/40 focus-within:bg-surface-raised/40"
+            tabIndex={0}
+            role="row"
+            aria-label={`Component ${componentId || idx + 1}`}
+            onMouseEnter={() => onActiveComponentHoverChange?.(componentId)}
+            onMouseLeave={() => onActiveComponentHoverChange?.(null)}
+            onFocus={() => onActiveComponentHoverChange?.(componentId)}
+            onBlur={() => onActiveComponentHoverChange?.(null)}
           >
-            {/* the 5-column row */}
-            <div className={`grid ${MIDDLE_COLS} items-start gap-x-4 py-3`}>
-              {/* Component */}
+            {/* the 7-column row */}
+            <div className={`grid ${MIDDLE_COLS} items-start gap-x-3 py-3`}>
+              {/* Component labels */}
               <div className="space-y-2.5">
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -168,32 +215,44 @@ function ComponentSummaryTable({
                   <CaseBadge regimeId={leafId} size="sm" />
                 </div>
                 <LabelsCell comp={comp} />
-                <div className="space-y-1">
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Symmetry
-                  </span>
-                  <div className="flex items-center">
-                    <SymmetryBadge value={comp.groupName || 'trivial'} />
-                  </div>
-                </div>
               </div>
 
-              {/* Method: description + α formula, wrapped in a CaseBadge
-                  passthrough so hovering any part opens the full tooltip
-                  (glossary and all). */}
+              {/* V_a / W_a split */}
+              <div className="pt-0.5">
+                <VWSplitCell comp={comp} />
+              </div>
+
+              {/* G_a local group */}
+              <div className="pt-0.5 flex items-start">
+                <SymmetryBadge value={comp.groupName || 'trivial'} />
+              </div>
+
+              {/* Method: description + α formula, wrapped in a hover target
+                  that emits to the activeAlphaMethod bus on mouseenter/focus. */}
               <div className="space-y-2">
-                <CaseBadge regimeId={leafId}>
-                  <div className="space-y-2">
-                    {methodDescription ? (
-                      <MethodDescription text={methodDescription} />
-                    ) : null}
-                    {methodLatex ? (
-                      <div className="overflow-x-auto pl-2 text-[13px] text-foreground">
-                        <Latex math={methodLatex} />
-                      </div>
-                    ) : null}
-                  </div>
-                </CaseBadge>
+                <div
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Alpha method: ${leafId ?? 'unknown'}. Hover for details.`}
+                  className="cursor-default"
+                  onMouseEnter={() => onActiveAlphaMethodHoverChange?.(leafId)}
+                  onMouseLeave={() => onActiveAlphaMethodHoverChange?.(null)}
+                  onFocus={() => onActiveAlphaMethodHoverChange?.(leafId)}
+                  onBlur={() => onActiveAlphaMethodHoverChange?.(null)}
+                >
+                  <CaseBadge regimeId={leafId}>
+                    <div className="space-y-2">
+                      {methodDescription ? (
+                        <MethodDescription text={methodDescription} />
+                      ) : null}
+                      {methodLatex ? (
+                        <div className="overflow-x-auto pl-2 text-[13px] text-foreground">
+                          <Latex math={methodLatex} />
+                        </div>
+                      ) : null}
+                    </div>
+                  </CaseBadge>
+                </div>
                 {canOpenOrbits ? (
                   <button
                     type="button"
@@ -399,6 +458,10 @@ export default function ComponentCostView({
   spotlightLeafIds,
   expressionInfo = null,
   hoveredLabels = null,
+  // C39: hover buses — write activeComponentId / activeAlphaMethod on hover.
+  // Setters are passed from App-level state (C20 and C01 respectively).
+  onActiveComponentHoverChange = null,
+  onActiveAlphaMethodHoverChange = null,
 }) {
   if (!componentData || !costModel) return null;
 
@@ -480,6 +543,8 @@ export default function ComponentCostView({
           setOrbitModalComponent(comp);
           setShowOrbitModal(true);
         }}
+        onActiveComponentHoverChange={onActiveComponentHoverChange}
+        onActiveAlphaMethodHoverChange={onActiveAlphaMethodHoverChange}
       />
 
       <ExplorerModal

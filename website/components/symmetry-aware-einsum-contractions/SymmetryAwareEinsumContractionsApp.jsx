@@ -579,6 +579,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                             .map((s) => s.trim())
                             .filter(Boolean),
                         } : null}
+                        onActiveComponentHoverChange={setActiveComponentId}
+                        onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
                       />
                     </div>
                     <div className="mt-4">
