@@ -601,7 +601,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
               aria-label={bruteForceOpen ? 'Hide the brute-force tuple comparison table' : 'Compare brute force — show tuple count for n = 2 through 6'}
               aria-expanded={bruteForceOpen}
               onClick={() => setBruteForceOpen((prev) => !prev)}
-              className="text-[11px] font-medium underline-offset-2 hover:underline"
+              className="py-1 text-[11px] font-medium underline-offset-2 hover:underline"
               style={{ color: explorerThemeColor(themeId, 'muted') }}
             >
               {bruteForceOpen ? 'hide brute-force compare' : 'compare brute force'}
@@ -714,7 +714,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
               aria-label={showFullAlphaSum ? 'Hide the full alpha sum across every pattern family' : 'Show full α sum — stack every pattern-family contribution into the cumulative alpha'}
               aria-expanded={showFullAlphaSum}
               onClick={() => setShowFullAlphaSum((prev) => !prev)}
-              className="text-[11px] font-medium underline-offset-2 hover:underline"
+              className="py-1 text-[11px] font-medium underline-offset-2 hover:underline"
               style={{ color: explorerThemeColor(themeId, 'muted') }}
             >
               {showFullAlphaSum ? 'hide full α sum' : 'show full α sum'}
