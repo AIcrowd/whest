@@ -44,6 +44,15 @@ const COLOR = {
   muted: '#9AA0A0',
 };
 
+const MAX_CANVAS_BITMAP_SIDE = 32767;
+
+function canvasDprFor(width, height) {
+  if (typeof window === 'undefined') return 1;
+  const rawDpr = window.devicePixelRatio || 1;
+  const maxSide = Math.max(width, height, 1);
+  return Math.max(0.01, Math.min(rawDpr, MAX_CANVAS_BITMAP_SIDE / maxSide));
+}
+
 function resolveCanvasToken(node, token, fallback) {
   if (typeof window === 'undefined') return fallback;
   const ElementCtor = node?.ownerDocument?.defaultView?.Element;
@@ -106,6 +115,7 @@ function OrbitRepMatrix({
   const canvasRef = useRef(null);
   const offscreenRef = useRef(null); // cached base layer (grid + filled cells)
   const containerRef = useRef(null);
+  const scrollportRef = useRef(null);
   const rafRef = useRef(null);
   // Hover lives in a ref, not React state. Mousemove updates the ref and
   // schedules a manual rAF paint that reads from the ref. No React re-render
@@ -190,9 +200,9 @@ function OrbitRepMatrix({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !layout.cellWidth || !layout.cellHeight) return;
-    const dpr = window.devicePixelRatio || 1;
     const w = layout.contentWidth;
     const h = layout.contentHeight;
+    const dpr = canvasDprFor(w, h);
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
     canvas.style.width = `${w}px`;
@@ -275,9 +285,9 @@ function OrbitRepMatrix({
     const off = offscreenRef.current;
     if (!canvas || !off || !layout.cellWidth || !layout.cellHeight) return;
     const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
     const cw = layout.cellWidth;
     const ch = layout.cellHeight;
+    const dpr = canvasDprFor(layout.contentWidth, layout.contentHeight);
     const hoverCell = hoverRef.current;
     const canvasColor = resolveOrbitCanvasColors(containerRef.current);
 
@@ -312,8 +322,8 @@ function OrbitRepMatrix({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout, orbitRows, reps, cells, hover]);
 
-  // Pointer event helpers. The canvas is fixed-size with no internal scroll,
-  // so coords are simply mouse-relative-to-canvas.
+  // Pointer event helpers. In scroll mode the canvas node itself is taller
+  // than the viewport, so mouse-relative-to-canvas coords are content coords.
   function pointerCoords(e) {
     const canvas = canvasRef.current;
     if (!canvas) return null;
@@ -383,6 +393,17 @@ function OrbitRepMatrix({
   // card flips correctly even when keyboard-driven.
   const numRows = orbitRows.length;
   const numCols = reps.length;
+  const scrollCellIntoView = useCallback((row) => {
+    const scrollport = scrollportRef.current;
+    if (!scrollport || !layout.cellHeight) return;
+    const top = row * layout.cellHeight;
+    const bottom = top + layout.cellHeight;
+    if (top < scrollport.scrollTop) {
+      scrollport.scrollTop = top;
+    } else if (bottom > scrollport.scrollTop + scrollport.clientHeight) {
+      scrollport.scrollTop = bottom - scrollport.clientHeight;
+    }
+  }, [layout.cellHeight]);
   const handleKeyDown = useCallback((e) => {
     if (numRows === 0 || numCols === 0) return;
     let nextRow = focusedCell.row;
@@ -413,7 +434,8 @@ function OrbitRepMatrix({
     }
     e.preventDefault();
     setFocusedCell({ row: nextRow, col: nextCol });
-  }, [focusedCell, numRows, numCols, layout.cellWidth, layout.cellHeight, onHoverChange]);
+    scrollCellIntoView(nextRow);
+  }, [focusedCell, numRows, numCols, layout.cellWidth, layout.cellHeight, onHoverChange, scrollCellIntoView]);
 
   if (orbitRows.length === 0) {
     return (
@@ -487,18 +509,21 @@ function OrbitRepMatrix({
       </div>
 
       {/* Canvas frame with permanent axis labels + tick gutters.
-          Grid: 3 columns (axis-label | tick-gutter | canvas),
-                3 rows  (canvas | tick-row | axis-label-row).
+          Grid: 2 outer columns (axis-label | scrollable matrix body),
+                3 rows (body viewport | 24px tick row | 24px axis row).
+          The body column has an inner 28px Y tick gutter + canvas. Left chrome
+          (20 + 28) and bottom chrome (24 + 24) both resolve to 48px.
           Tuple values appear in the OrbitDetailCard (on hover or in the modal). */}
       {(() => {
         const yTicks = computeAxisTicks(orbitRows.length, 6);
         const xTicks = computeAxisTicks(reps.length, 6);
+        const bodyWidth = 28 + layout.canvasW;
         return (
           <div
             className="grid"
             style={{
-              gridTemplateColumns: '20px 28px minmax(0, 1fr)',
-              gridTemplateRows: 'auto 18px 18px',
+              gridTemplateColumns: '20px minmax(0, 1fr)',
+              gridTemplateRows: 'auto 24px 24px',
             }}
           >
             {/* Y axis label — col 1, row 1 */}
@@ -516,255 +541,300 @@ function OrbitRepMatrix({
               orbit <Latex math="O" />
             </div>
 
-            {/* Y tick gutter — labels + 4px hairline tick marks. Marks sit flush
-                against the canvas's left edge so they read as a real chart tick. */}
+            {/* Scrollport — col 2, row 1. It owns both Y tick gutter and canvas
+                so tick labels scroll in lockstep with tall matrix rows. */}
             <div
-              style={{ gridColumn: 2, gridRow: 1, position: 'relative' }}
-              aria-hidden="true"
-              data-testid="orbit-rep-matrix-y-ticks"
+              ref={scrollportRef}
+              data-testid="orbit-rep-matrix-scrollport"
+              style={{
+                gridColumn: 2, gridRow: 1,
+                display: 'grid',
+                gridTemplateColumns: '28px minmax(0, 1fr)',
+                width: bodyWidth,
+                height: layout.viewportH,
+                maxHeight: FIXED_CANVAS_HEIGHT,
+                overflowY: layout.needsVerticalScroll ? 'auto' : 'visible',
+                overflowX: 'hidden',
+              }}
             >
-              {/* Labels */}
-              {yTicks.map((rowIdx) => {
-                const y = (rowIdx + 0.5) * layout.cellHeight;
-                return (
-                  <span
-                    key={`label-${rowIdx}`}
-                    className="font-mono"
-                    style={{
-                      position: 'absolute',
-                      right: 10,
-                      top: y,
-                      transform: 'translateY(-50%)',
-                      fontSize: 9,
-                      color: COLOR.muted,
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {rowIdx}
-                  </span>
-                );
-              })}
-              {/* Hairline tick marks: 4px horizontal lines flush to the canvas left edge. */}
-              <div data-testid="orbit-rep-matrix-y-tick-marks" aria-hidden="true">
+              {/* Y tick gutter — labels + 4px hairline tick marks. Marks sit flush
+                  against the canvas's left edge so they read as a real chart tick. */}
+              <div
+                style={{
+                  gridColumn: 1, gridRow: 1,
+                  position: 'relative',
+                  width: 28,
+                  height: layout.canvasH,
+                }}
+                aria-hidden="true"
+                data-testid="orbit-rep-matrix-y-ticks"
+              >
+                {/* Labels */}
                 {yTicks.map((rowIdx) => {
                   const y = (rowIdx + 0.5) * layout.cellHeight;
                   return (
                     <span
-                      key={`mark-${rowIdx}`}
+                      key={`label-${rowIdx}`}
+                      className="font-mono"
                       style={{
                         position: 'absolute',
-                        right: 0,
+                        right: 10,
                         top: y,
-                        width: 4,
-                        height: 1,
-                        background: COLOR.border,
                         transform: 'translateY(-50%)',
+                        fontSize: 9,
+                        color: COLOR.muted,
+                        whiteSpace: 'nowrap',
                       }}
-                    />
+                    >
+                      {rowIdx}
+                    </span>
                   );
                 })}
+                {/* Hairline tick marks: 4px horizontal lines flush to the canvas left edge. */}
+                <div data-testid="orbit-rep-matrix-y-tick-marks" aria-hidden="true">
+                  {yTicks.map((rowIdx) => {
+                    const y = (rowIdx + 0.5) * layout.cellHeight;
+                    return (
+                      <span
+                        key={`mark-${rowIdx}`}
+                        style={{
+                          position: 'absolute',
+                          right: 0,
+                          top: y,
+                          width: 4,
+                          height: 1,
+                          background: COLOR.border,
+                          transform: 'translateY(-50%)',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* Canvas — col 3, row 1. Fixed size, no scroll wrapper.
-                Chart-style axes: left border (Y-axis line) + bottom border
-                (X-axis line) only. box-sizing: content-box so the canvas
-                fits inside the wrapper at exact `canvasW × canvasH`. */}
-            <div
-              style={{
-                gridColumn: 3, gridRow: 1,
-                position: 'relative',
-                boxSizing: 'content-box',
-                width: layout.canvasW, height: layout.canvasH,
-                background: COLOR.bg,
-                borderLeft: `1px solid ${COLOR.border}`,
-                borderBottom: `1px solid ${COLOR.border}`,
-                cursor: 'default',
-              }}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-            >
-              <canvas ref={canvasRef} />
-              {onExpand && (
-                <button
-                  type="button"
-                  data-action="open-modal"
-                  onClick={(e) => { e.stopPropagation(); onExpand(); }}
-                  className="absolute top-2 right-2 inline-flex h-7 w-7 items-center justify-center rounded-md bg-transparent opacity-50 transition-opacity duration-150 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
-                  style={{ color: '#9AA0A0', cursor: 'pointer' }}
-                  aria-label="Expand matrix to full screen"
-                >
-                  {/* Corner-arrows-out: universal "expand to fullscreen" signifier. */}
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
+              {/* Canvas — inner col 2. The content canvas may exceed the viewport
+                  height; chart-style axes remain on the visible frame. */}
+              <div
+                style={{
+                  gridColumn: 2, gridRow: 1,
+                  position: 'relative',
+                  boxSizing: 'content-box',
+                  width: layout.canvasW, height: layout.canvasH,
+                  background: COLOR.bg,
+                  borderLeft: `1px solid ${COLOR.border}`,
+                  cursor: 'default',
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                <canvas ref={canvasRef} />
+                {onExpand && (
+                  <button
+                    type="button"
+                    data-action="open-modal"
+                    onClick={(e) => { e.stopPropagation(); onExpand(); }}
+                    className="absolute top-2 right-2 inline-flex h-7 w-7 items-center justify-center rounded-md bg-transparent opacity-50 transition-opacity duration-150 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                    style={{ color: '#9AA0A0', cursor: 'pointer' }}
+                    aria-label="Expand matrix to full screen"
                   >
-                    <polyline points="9,2 13,2 13,6" />
-                    <polyline points="5,12 1,12 1,8" />
-                    <line x1="13" y1="2" x2="8" y2="7" />
-                    <line x1="1" y1="12" x2="6" y2="7" />
-                  </svg>
-                </button>
-              )}
-              {/* CSS overlay for the focused cell — eased opacity + position reveal.
-                  The canvas's PAINT stage already draws the strong-coral FILL on the
-                  focused cell (instant for clarity); this overlay layers a 2px coral
-                  border on top with a 120ms opacity transition and 80ms position
-                  transition so the eye sees a smooth "lock-on" rather than a snap.
-                  V3.1 §C50: under prefers-reduced-motion, we drop the transitions
-                  so the overlay snaps in place without easing. */}
-              <div
-                data-testid="orbit-rep-matrix-focus-overlay"
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  pointerEvents: 'none',
-                  top: hover ? hover.row * layout.cellHeight : 0,
-                  left: hover ? hover.col * layout.cellWidth : 0,
-                  width: layout.cellWidth || 0,
-                  height: layout.cellHeight || 0,
-                  boxSizing: 'border-box',
-                  border: `2px solid ${COLOR.cellPinned}`,
-                  borderRadius: 2,
-                  opacity: hover ? 1 : 0,
-                  transition: reducedMotion
-                    ? 'none'
-                    : 'opacity 120ms cubic-bezier(0.4, 0, 0.2, 1), top 80ms cubic-bezier(0.4, 0, 0.2, 1), left 80ms cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-              />
-              {/* V3.1 §C50 (keyboard nav). Focusable overlay — receives Tab focus
-                  and arrow-key events. Layered above the canvas with
-                  pointer-events:none so mouse hover still hits the canvas's
-                  onMouseMove handler underneath. The 2px dashed coral border
-                  visualizes the focused cell when the overlay holds focus. */}
-              <div
-                data-testid="orbit-rep-matrix-keyboard-overlay"
-                tabIndex={0}
-                role="grid"
-                aria-label="Output orbit O × representative Q matrix. Use arrow keys to navigate, Enter to pin a cell, Escape to clear pin."
-                aria-rowcount={numRows}
-                aria-colcount={numCols}
-                onKeyDown={handleKeyDown}
-                onFocus={() => setOverlayHasFocus(true)}
-                onBlur={() => setOverlayHasFocus(false)}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  pointerEvents: 'none',
-                  outline: 'none',
-                }}
-              >
-                {/* Dashed focus rect rendered only when the overlay has focus
-                    (separate from the hover pin so mouse + keyboard layer
-                    cleanly). Drawn as a positioned div so we don't have to
-                    re-enter the canvas paint pipeline. */}
-                {overlayHasFocus && layout.cellWidth > 0 && layout.cellHeight > 0 && (
-                  <div
-                    data-testid="orbit-rep-matrix-keyboard-focus-rect"
-                    aria-hidden="true"
-                    style={{
-                      position: 'absolute',
-                      top: focusedCell.row * layout.cellHeight,
-                      left: focusedCell.col * layout.cellWidth,
-                      width: layout.cellWidth,
-                      height: layout.cellHeight,
-                      boxSizing: 'border-box',
-                      border: `2px dashed ${COLOR.cellPinned}`,
-                      borderRadius: 2,
-                      pointerEvents: 'none',
-                      transition: reducedMotion ? 'none' : 'top 80ms ease-out, left 80ms ease-out',
-                    }}
-                  />
+                    {/* Corner-arrows-out: universal "expand to fullscreen" signifier. */}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points="9,2 13,2 13,6" />
+                      <polyline points="5,12 1,12 1,8" />
+                      <line x1="13" y1="2" x2="8" y2="7" />
+                      <line x1="1" y1="12" x2="6" y2="7" />
+                    </svg>
+                  </button>
                 )}
-              </div>
-              {/* SR-only aria-live announcer that tracks keyboard focus position.
-                  Polite so it doesn't interrupt; not visible on screen. */}
-              <div
-                data-testid="orbit-rep-matrix-focus-announcer"
-                role="status"
-                aria-live="polite"
-                aria-atomic="true"
-                className="sr-only"
-                style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}
-              >
-                {overlayHasFocus
-                  ? `Row ${focusedCell.row} column ${focusedCell.col}. ${
-                      cells[focusedCell.row]?.[focusedCell.col] !== null && cells[focusedCell.row]?.[focusedCell.col] !== undefined
-                        ? `${cells[focusedCell.row][focusedCell.col]} incidence${cells[focusedCell.row][focusedCell.col] === 1 ? '' : 's'}.`
-                        : 'Empty cell.'
-                    }`
-                  : ''}
+                {/* CSS overlay for the focused cell — eased opacity + position reveal.
+                    The canvas's PAINT stage already draws the strong-coral FILL on the
+                    focused cell (instant for clarity); this overlay layers a 2px coral
+                    border on top with a 120ms opacity transition and 80ms position
+                    transition so the eye sees a smooth "lock-on" rather than a snap.
+                    V3.1 §C50: under prefers-reduced-motion, we drop the transitions
+                    so the overlay snaps in place without easing. */}
+                <div
+                  data-testid="orbit-rep-matrix-focus-overlay"
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    pointerEvents: 'none',
+                    top: hover ? hover.row * layout.cellHeight : 0,
+                    left: hover ? hover.col * layout.cellWidth : 0,
+                    width: layout.cellWidth || 0,
+                    height: layout.cellHeight || 0,
+                    boxSizing: 'border-box',
+                    border: `2px solid ${COLOR.cellPinned}`,
+                    borderRadius: 2,
+                    opacity: hover ? 1 : 0,
+                    transition: reducedMotion
+                      ? 'none'
+                      : 'opacity 120ms cubic-bezier(0.4, 0, 0.2, 1), top 80ms cubic-bezier(0.4, 0, 0.2, 1), left 80ms cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+                {/* V3.1 §C50 (keyboard nav). Focusable overlay — receives Tab focus
+                    and arrow-key events. Layered above the canvas with
+                    pointer-events:none so mouse hover still hits the canvas's
+                    onMouseMove handler underneath. The 2px dashed coral border
+                    visualizes the focused cell when the overlay holds focus. */}
+                <div
+                  data-testid="orbit-rep-matrix-keyboard-overlay"
+                  tabIndex={0}
+                  role="grid"
+                  aria-label="Output orbit O × representative Q matrix. Use arrow keys to navigate, Enter to pin a cell, Escape to clear pin."
+                  aria-rowcount={numRows}
+                  aria-colcount={numCols}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => setOverlayHasFocus(true)}
+                  onBlur={() => setOverlayHasFocus(false)}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    pointerEvents: 'none',
+                    outline: 'none',
+                  }}
+                >
+                  {/* Dashed focus rect rendered only when the overlay has focus
+                      (separate from the hover pin so mouse + keyboard layer
+                      cleanly). Drawn as a positioned div so we don't have to
+                      re-enter the canvas paint pipeline. */}
+                  {overlayHasFocus && layout.cellWidth > 0 && layout.cellHeight > 0 && (
+                    <div
+                      data-testid="orbit-rep-matrix-keyboard-focus-rect"
+                      aria-hidden="true"
+                      style={{
+                        position: 'absolute',
+                        top: focusedCell.row * layout.cellHeight,
+                        left: focusedCell.col * layout.cellWidth,
+                        width: layout.cellWidth,
+                        height: layout.cellHeight,
+                        boxSizing: 'border-box',
+                        border: `2px dashed ${COLOR.cellPinned}`,
+                        borderRadius: 2,
+                        pointerEvents: 'none',
+                        transition: reducedMotion ? 'none' : 'top 80ms ease-out, left 80ms ease-out',
+                      }}
+                    />
+                  )}
+                </div>
+                {/* SR-only aria-live announcer that tracks keyboard focus position.
+                    Polite so it doesn't interrupt; not visible on screen. */}
+                <div
+                  data-testid="orbit-rep-matrix-focus-announcer"
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  className="sr-only"
+                  style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}
+                >
+                  {overlayHasFocus
+                    ? `Row ${focusedCell.row} column ${focusedCell.col}. ${
+                        cells[focusedCell.row]?.[focusedCell.col] !== null && cells[focusedCell.row]?.[focusedCell.col] !== undefined
+                          ? `${cells[focusedCell.row][focusedCell.col]} incidence${cells[focusedCell.row][focusedCell.col] === 1 ? '' : 's'}.`
+                          : 'Empty cell.'
+                      }`
+                    : ''}
+                </div>
               </div>
             </div>
 
             {/* X tick gutter — labels + 4px hairline tick marks flush to the canvas
                 bottom edge. */}
             <div
-              style={{ gridColumn: 3, gridRow: 2, position: 'relative' }}
+              style={{
+                gridColumn: 2, gridRow: 2,
+                display: 'grid',
+                gridTemplateColumns: '28px minmax(0, 1fr)',
+                width: bodyWidth,
+              }}
               aria-hidden="true"
-              data-testid="orbit-rep-matrix-x-ticks"
             >
-              {/* Labels */}
-              {xTicks.map((colIdx) => {
-                const x = (colIdx + 0.5) * layout.cellWidth;
-                return (
-                  <span
-                    key={`label-${colIdx}`}
-                    className="font-mono"
-                    style={{
-                      position: 'absolute',
-                      top: 6,
-                      left: x,
-                      transform: 'translateX(-50%)',
-                      fontSize: 9,
-                      color: COLOR.muted,
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {colIdx}
-                  </span>
-                );
-              })}
-              {/* Hairline tick marks: 4px vertical lines flush to the canvas bottom edge. */}
-              <div data-testid="orbit-rep-matrix-x-tick-marks" aria-hidden="true">
+              <div />
+              <div
+                style={{
+                  gridColumn: 2,
+                  position: 'relative',
+                  height: 24,
+                  width: layout.canvasW,
+                  borderTop: `1px solid ${COLOR.border}`,
+                }}
+                data-testid="orbit-rep-matrix-x-ticks"
+              >
+                {/* Labels */}
                 {xTicks.map((colIdx) => {
                   const x = (colIdx + 0.5) * layout.cellWidth;
                   return (
                     <span
-                      key={`mark-${colIdx}`}
+                      key={`label-${colIdx}`}
+                      className="font-mono"
                       style={{
                         position: 'absolute',
-                        top: 0,
+                        top: 7,
                         left: x,
-                        width: 1,
-                        height: 4,
-                        background: COLOR.border,
                         transform: 'translateX(-50%)',
+                        fontSize: 9,
+                        color: COLOR.muted,
+                        whiteSpace: 'nowrap',
                       }}
-                    />
+                    >
+                      {colIdx}
+                    </span>
                   );
                 })}
+                {/* Hairline tick marks: 4px vertical lines flush to the canvas bottom edge. */}
+                <div data-testid="orbit-rep-matrix-x-tick-marks" aria-hidden="true">
+                  {xTicks.map((colIdx) => {
+                    const x = (colIdx + 0.5) * layout.cellWidth;
+                    return (
+                      <span
+                        key={`mark-${colIdx}`}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: x,
+                          width: 1,
+                          height: 4,
+                          background: COLOR.border,
+                          transform: 'translateX(-50%)',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
-            {/* X axis label — col 3, row 3 */}
+            {/* X axis label — col 2, row 3 */}
             <div
               style={{
-                gridColumn: 3, gridRow: 3,
-                color: xAxisHighlighted ? COLOR.cellPinned : COLOR.muted,
-                transition: reducedMotion ? 'none' : 'color 120ms ease-out',
+                gridColumn: 2, gridRow: 3,
+                display: 'grid',
+                gridTemplateColumns: '28px minmax(0, 1fr)',
+                width: bodyWidth,
               }}
-              className={`text-center text-[10px] font-medium tracking-[0.04em] font-sans pt-1${xAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}
-              data-testid="orbit-rep-matrix-x-axis-label"
             >
-              rep <Latex math="Q" />
+              <div />
+              <div
+                style={{
+                  gridColumn: 2,
+                  color: xAxisHighlighted ? COLOR.cellPinned : COLOR.muted,
+                  transition: reducedMotion ? 'none' : 'color 120ms ease-out',
+                }}
+                className={`text-center text-[10px] font-medium tracking-[0.04em] font-sans pt-1${xAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}
+                data-testid="orbit-rep-matrix-x-axis-label"
+              >
+                rep <Latex math="Q" />
+              </div>
             </div>
           </div>
         );

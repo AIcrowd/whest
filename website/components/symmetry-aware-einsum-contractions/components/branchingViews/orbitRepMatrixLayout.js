@@ -1,18 +1,18 @@
 // Pure layout / hit-testing math for the O → Q matrix.
 // No React, no DOM — easily unit-tested.
 //
-// Design: the canvas is a FIXED SQUARE frame whose dimensions follow the
-// container width (responsive). Cells are RECTANGLES — `cellWidth` =
-// floor(canvasW / numCols), `cellHeight` = floor(canvasH / numRows). Every
-// matrix fits in-frame at all sizes; there is no internal scroll.
+// Design-system call: the visible matrix viewport is a fixed 360px frame, but
+// rows never compress below the 8px spacing unit. Tall matrices render a larger
+// canvas inside that viewport and scroll vertically.
 //
 // Used by:
 //   - components/branchingViews/OrbitRepMatrix.jsx (canvas component)
 //   - components/BranchingDemo.jsx (parent that owns hover/pin state)
 
 export const SQUARE_FRAME = 360;       // default canvas width on lg
-export const FIXED_CANVAS_HEIGHT = 360; // canvas height — fixed; cell height adapts to numRows
+export const FIXED_CANVAS_HEIGHT = 360; // viewport height; tall content scrolls within it
 export const MIN_CELL = 1;             // 1-px floor — never invisible
+export const MIN_INTERACTIVE_CELL = 8;  // design-system --space-2: smallest readable row
 
 export function tupleKey(tuple) {
   return JSON.stringify(tuple ?? {});
@@ -48,16 +48,15 @@ export function deriveCells(orbitRows = [], reps = []) {
 }
 
 /**
- * Fixed-dimensions canvas with adaptive rectangular cells.
+ * Fixed viewport with adaptive rectangular cells.
  *
- * `canvasW = canvasWidth` (responsive to the container)
- * `canvasH = canvasHeight` (fixed — defaults to FIXED_CANVAS_HEIGHT)
+ * `viewportW = canvasWidth` (responsive to the container)
+ * `viewportH = canvasHeight` (fixed — defaults to FIXED_CANVAS_HEIGHT)
  * `cellWidth  = floor(canvasW / numCols)`
- * `cellHeight = floor(canvasH / numRows)`
+ * `cellHeight = max(8, floor(viewportH / numRows))`
  *
- * Cells fill the canvas: column count adjusts cellWidth, row count adjusts
- * cellHeight. This is the user's explicit design — fixed canvas dimensions,
- * row height + column width both adapt to the matrix shape, no scroll.
+ * Compact matrices fill the viewport. Tall matrices keep an 8px row floor,
+ * expand the content canvas vertically, and scroll within the viewport.
  */
 export function layoutFor({ canvasWidth, canvasHeight, numRows, numCols }) {
   const safeWidth = Math.max(canvasWidth || SQUARE_FRAME, MIN_CELL * 2);
@@ -69,16 +68,22 @@ export function layoutFor({ canvasWidth, canvasHeight, numRows, numCols }) {
       cellWidth: 0, cellHeight: 0,
       canvasW: 0, canvasH: 0,
       contentWidth: 0, contentHeight: 0,
+      viewportW: 0, viewportH: 0,
+      needsVerticalScroll: false,
     };
   }
   const cellWidth = Math.max(MIN_CELL, Math.floor(safeWidth / safeCols));
-  const cellHeight = Math.max(MIN_CELL, Math.floor(safeHeight / safeRows));
+  const cellHeight = Math.max(MIN_INTERACTIVE_CELL, Math.floor(safeHeight / safeRows));
   const contentWidth = cellWidth * safeCols;
   const contentHeight = cellHeight * safeRows;
+  const viewportWidth = Math.min(contentWidth, safeWidth);
+  const viewportHeight = Math.min(contentHeight, safeHeight);
   return {
     cellWidth, cellHeight,
     canvasW: contentWidth, canvasH: contentHeight,
     contentWidth, contentHeight,
+    viewportW: viewportWidth, viewportH: viewportHeight,
+    needsVerticalScroll: contentHeight > safeHeight,
   };
 }
 
@@ -116,7 +121,8 @@ export function computeAxisTicks(n, maxTicks = 6) {
  * Map canvas-relative pixel coords (origin at top-left of the canvas) to a
  * (row, col) cell index. Returns null if outside the rendered cell area.
  *
- * No scroll handling — the canvas is fixed-size and fits all content.
+ * In scroll mode, coords are still content-relative because callers measure
+ * against the scrolled canvas node, not the fixed viewport wrapper.
  */
 export function cellAtPoint({ x, y }, layout) {
   if (!layout) return null;

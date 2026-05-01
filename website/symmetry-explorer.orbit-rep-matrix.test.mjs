@@ -33,26 +33,33 @@ test('labelledTuple keeps k=v form', () => {
   assert.equal(labelledTuple({ i: 0, j: 0, k: 1 }), '(i=0, j=0, k=1)');
 });
 
-test('layoutFor: fixed canvas dimensions; cell width adapts to numCols, cell height to numRows', () => {
+test('layoutFor: viewport stays fixed while tall matrices keep readable row cells', () => {
   // 6 × 6 (square): cellWidth = floor(360/6) = 60, cellHeight = floor(360/6) = 60.
   assert.deepEqual(layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 6, numCols: 6 }), {
     cellWidth: 60, cellHeight: 60,
     canvasW: 360, canvasH: 360,
     contentWidth: 360, contentHeight: 360,
+    viewportW: 360, viewportH: 360,
+    needsVerticalScroll: false,
   });
   // 14 × 10: cellWidth = floor(360/14) = 25, cellHeight = floor(360/10) = 36.
   assert.deepEqual(layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 10, numCols: 14 }), {
     cellWidth: 25, cellHeight: 36,
     canvasW: 350, canvasH: 360,
     contentWidth: 350, contentHeight: 360,
+    viewportW: 350, viewportH: 360,
+    needsVerticalScroll: false,
   });
-  // 165 × 10 (Trilinear, very tall): cellWidth = 36, cellHeight = floor(360/165) = 2.
-  // Canvas dimensions are fixed; cells become rectangles (wide-but-short rows).
+  // 165 × 10 (Trilinear, very tall): row cells clamp to the 8px spacing unit
+  // instead of collapsing to the old 2px strips; the 360px viewport scrolls.
   const trilinear = layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 165, numCols: 10 });
   assert.equal(trilinear.cellWidth, 36);
-  assert.equal(trilinear.cellHeight, 2);
+  assert.equal(trilinear.cellHeight, 8);
   assert.equal(trilinear.canvasW, 360);
-  assert.equal(trilinear.canvasH, 330); // 165 × 2
+  assert.equal(trilinear.canvasH, 1320); // 165 × 8
+  assert.equal(trilinear.contentHeight, 1320);
+  assert.equal(trilinear.viewportH, 360);
+  assert.equal(trilinear.needsVerticalScroll, true);
 });
 
 test('layoutFor floors at MIN_CELL=1 (no zero-size cells)', () => {
@@ -73,11 +80,11 @@ test('cellAtPoint maps pixel coords to (row, col)', () => {
 });
 
 test('cellAtPoint handles rectangular cells (cellWidth ≠ cellHeight)', () => {
-  // Rectangular cells: 36 wide × 2 tall.
-  const layout = { cellWidth: 36, cellHeight: 2, canvasW: 360, canvasH: 330 };
+  // Rectangular cells: 36 wide × 8 tall.
+  const layout = { cellWidth: 36, cellHeight: 8, canvasW: 360, canvasH: 1320 };
   assert.deepEqual(cellAtPoint({ x: 5, y: 1 }, layout), { row: 0, col: 0 });
   assert.deepEqual(cellAtPoint({ x: 38, y: 1 }, layout), { row: 0, col: 1 });
-  assert.deepEqual(cellAtPoint({ x: 5, y: 100 }, layout), { row: 50, col: 0 });
+  assert.deepEqual(cellAtPoint({ x: 5, y: 100 }, layout), { row: 12, col: 0 });
 });
 
 test('derivePreReps + deriveCells pull stored reps + filled-coeff matrix', () => {
@@ -129,6 +136,9 @@ test('layoutFor returns a clean empty layout for 0 rows / 0 cols / NaN / negativ
     assert.equal(out.canvasH, 0);
     assert.equal(out.contentWidth, 0);
     assert.equal(out.contentHeight, 0);
+    assert.equal(out.viewportW, 0);
+    assert.equal(out.viewportH, 0);
+    assert.equal(out.needsVerticalScroll, false);
   }
 });
 
@@ -230,6 +240,25 @@ test('OrbitRepMatrix renders Y/X axis tick gutters with computeAxisTicks', () =>
   assert.match(src, /computeAxisTicks/);
   assert.match(src, /data-testid="orbit-rep-matrix-y-ticks"/);
   assert.match(src, /data-testid="orbit-rep-matrix-x-ticks"/);
+});
+
+test('OrbitRepMatrix uses an internal vertical scrollport and symmetric 48px chrome', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /data-testid="orbit-rep-matrix-scrollport"/);
+  assert.match(src, /overflowY:\s*layout\.needsVerticalScroll \? 'auto' : 'visible'/);
+  assert.match(src, /maxHeight:\s*FIXED_CANVAS_HEIGHT/);
+  assert.match(src, /gridTemplateColumns:\s*'20px minmax\(0, 1fr\)'/);
+  assert.match(src, /gridTemplateColumns:\s*'28px minmax\(0, 1fr\)'/);
+  assert.match(src, /gridTemplateRows:\s*'auto 24px 24px'/);
+});
+
+test('OrbitRepMatrix caps tall-canvas DPR before sizing the backing bitmap', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /MAX_CANVAS_BITMAP_SIDE\s*=\s*32767/);
+  assert.match(src, /function canvasDprFor\(width, height\)/);
+  assert.match(src, /Math\.min\(rawDpr,\s*MAX_CANVAS_BITMAP_SIDE \/ maxSide\)/);
+  assert.match(src, /canvas\.width\s*=\s*Math\.floor\(w \* dpr\)/);
+  assert.match(src, /canvas\.height\s*=\s*Math\.floor\(h \* dpr\)/);
 });
 
 test('OrbitRepMatrix legend uses hairline-only inline label grouping (no chip borders)', () => {
