@@ -975,3 +975,32 @@ def test_check_nan_inf_opt_in_attributes_to_overhead():
         f"got {per_call_delta * 1e6:.2f}µs "
         f"(overhead_on={overhead_on:.4f}s, overhead_off={overhead_off:.4f}s)"
     )
+
+
+def test_untracked_time_property_agrees_with_summary_dict():
+    """Regression: BudgetContext.untracked_time property must match
+    summary_dict()['untracked_time_s']. Prior to the fix, the property
+    returned `wall - tracked` (pre-#76 semantics) while summary_dict
+    returned `wall - tracked - overhead` — the two disagreed by exactly
+    flopscope_overhead_time.
+    """
+    import flopscope
+    import flopscope.numpy as fnp
+
+    ctx = flopscope.BudgetContext(flop_budget=int(1e12), quiet=True)
+    with ctx:
+        # Generate enough wrapper overhead that the bug would be visible
+        a = fnp.eye(64)
+        for _ in range(20):
+            a = a @ a + a
+
+    prop_value = ctx.untracked_time
+    summary_value = ctx.summary_dict()["untracked_time_s"]
+    assert prop_value is not None
+    assert summary_value is not None
+    assert prop_value == pytest.approx(summary_value, abs=1e-9)
+    # Also verify both equal the documented identity.
+    expected = (
+        ctx.wall_time_s - ctx.total_tracked_time - ctx.flopscope_overhead_time  # type: ignore[operator]
+    )
+    assert prop_value == pytest.approx(max(expected, 0.0), abs=1e-9)

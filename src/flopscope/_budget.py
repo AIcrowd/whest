@@ -460,7 +460,14 @@ class BudgetContext:
         """
         if self._wall_time_s is None:
             return None
-        return self._wall_time_s - self._total_tracked_time
+        residual = (
+            self._wall_time_s
+            - self._total_tracked_time
+            - self._total_flopscope_overhead_time
+        )
+        if residual < 0 and abs(residual) < 1e-12:
+            return 0.0
+        return max(residual, 0.0)
 
     def deduct(
         self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
