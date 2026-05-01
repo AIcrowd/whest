@@ -235,7 +235,223 @@ function BurnsideTable({
   );
 }
 
-export default function MultiplicationCostCard({ components = [], onHoveredLabelsChange = null }) {
+// ─── C11 Product Savings Metric Row (V3.1 §11) ────────────────────────
+//
+// Four metric cards in a row, each surfacing one number that lives at
+// the top of the Multiplication card so the reader sees the product-side
+// savings story before they read the Burnside derivation:
+//
+//   1. Dense product chains  — ∏ over all labels of n_label (the dense
+//                              baseline: one product per full assignment).
+//   2. Product representatives M  — ∏_a M_a  (the global orbit-quotient).
+//   3. Multiplication-chain events μ  — (num_terms − 1) · M.
+//   4. Product-side reduction  — (1 − M / dense) · 100, signed honestly.
+//
+// Plus a warning pill: "Products are rows, not updates." This is the
+// single most common reader confusion at this point in the page — they
+// see big numbers and assume they're updates (α). The pill is clickable
+// and scrolls back to the O→Q matrix where row vs column is settled.
+//
+// Hover wiring:
+//   - M card  → writes the union of all component labels to the hover
+//               bus so upstream views can highlight the product-orbit
+//               rows. (Token: 'product-rep-M'.)
+//   - μ card  → writes a special token 'mu-k-minus-1' so views that
+//               know about it (e.g. the formula block below) can
+//               emphasize the (k−1) factor.
+// All four cards are tabIndex=0 / role="button" so the bus also fires
+// for keyboard users.
+
+const PILL_LABELS = {
+  dense: 'Dense product chains',
+  M: 'Product representatives M',
+  mu: 'Multiplication-chain events mu',
+  reduction: 'Product-side reduction',
+};
+
+const WARNING_PILL_TEXT = 'Products are rows, not updates.';
+
+function MetricCard({ label, value, sublabel, accent, testId, onHover, onLeave }) {
+  return (
+    <div
+      tabIndex={0}
+      role="button"
+      aria-label={`${label}: ${value}`}
+      data-testid={testId}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      onFocus={onHover}
+      onBlur={onLeave}
+      className="flex flex-col gap-0.5 rounded-md border border-stone-200 bg-white px-3 py-2 text-left transition-colors hover:border-stone-400 focus:border-stone-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+      style={accent ? { borderLeft: `3px solid ${accent}` } : undefined}
+    >
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </div>
+      <div className="font-mono text-sm font-semibold text-stone-900">
+        {value}
+      </div>
+      {sublabel ? (
+        <div className="text-[10px] text-stone-500">{sublabel}</div>
+      ) : null}
+    </div>
+  );
+}
+
+function ProductSavingsMetricRow({
+  components,
+  numTerms,
+  onHoveredLabelsChange,
+}) {
+  // Dense baseline = ∏_a ∏_{label in a} n_label — number of full label
+  // assignments before symmetry. The dense direct path forms one product
+  // chain per assignment.
+  const dense = useMemo(() => {
+    if (!components?.length) return null;
+    let prod = 1;
+    for (const comp of components) {
+      const sizes = comp?.sizes ?? [];
+      for (const n of sizes) {
+        if (typeof n === 'number' && Number.isFinite(n)) prod *= n;
+      }
+    }
+    return prod;
+  }, [components]);
+
+  // Global product-rep count M = ∏_a M_a.
+  const M = useMemo(() => {
+    if (!components?.length) return null;
+    let prod = 1;
+    let any = false;
+    for (const comp of components) {
+      const Ma = comp?.multiplicationCount ?? comp?.multiplication?.count ?? null;
+      if (typeof Ma === 'number' && Number.isFinite(Ma)) {
+        prod *= Ma;
+        any = true;
+      } else {
+        return null;
+      }
+    }
+    return any ? prod : null;
+  }, [components]);
+
+  // μ = (num_terms − 1) · M.
+  const k = typeof numTerms === 'number' && numTerms > 0 ? numTerms : 2;
+  const mu = M != null ? (k - 1) * M : null;
+
+  // Product-side reduction: how much M shrinks the dense baseline.
+  const reductionPct = useMemo(() => {
+    if (typeof dense !== 'number' || dense <= 0) return null;
+    if (typeof M !== 'number' || !Number.isFinite(M)) return null;
+    return ((dense - M) / dense) * 100;
+  }, [dense, M]);
+
+  const fmt = (n) => {
+    if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
+    return n.toLocaleString();
+  };
+  const fmtPct = (p) => {
+    if (typeof p !== 'number' || !Number.isFinite(p)) return '—';
+    return `${p.toFixed(1)}%`;
+  };
+
+  // Hover bus payloads.
+  const allLabels = useMemo(() => {
+    const set = new Set();
+    for (const comp of components ?? []) {
+      for (const lbl of comp?.labels ?? []) set.add(lbl);
+    }
+    return set;
+  }, [components]);
+
+  const writeHover = (payload) => {
+    if (typeof onHoveredLabelsChange === 'function') {
+      onHoveredLabelsChange(payload);
+    }
+  };
+
+  const onHoverM = () => writeHover(allLabels.size ? new Set(allLabels) : null);
+  const onLeaveM = () => writeHover(null);
+  // μ hover writes a single sentinel label 'mu-k-minus-1' that downstream
+  // views can branch on without disturbing the existing label-name bus.
+  const onHoverMu = () => writeHover(new Set(['mu-k-minus-1']));
+  const onLeaveMu = () => writeHover(null);
+
+  return (
+    <div
+      data-testid="product-savings-metric-row"
+      className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4"
+    >
+      <MetricCard
+        label={PILL_LABELS.dense}
+        value={fmt(dense)}
+        sublabel="baseline"
+        testId="product-savings-dense"
+      />
+      <MetricCard
+        label={PILL_LABELS.M}
+        value={fmt(M)}
+        sublabel="prod_a M_a"
+        accent="var(--ein-v, #2c5f7c)"
+        testId="product-savings-M"
+        onHover={onHoverM}
+        onLeave={onLeaveM}
+      />
+      <MetricCard
+        label={PILL_LABELS.mu}
+        value={fmt(mu)}
+        sublabel={`(k - 1) M, k = ${k}`}
+        accent="var(--ein-v, #2c5f7c)"
+        testId="product-savings-mu"
+        onHover={onHoverMu}
+        onLeave={onLeaveMu}
+      />
+      <MetricCard
+        label={PILL_LABELS.reduction}
+        value={fmtPct(reductionPct)}
+        sublabel="vs dense"
+        testId="product-savings-reduction"
+      />
+    </div>
+  );
+}
+
+// Warning pill — clickable button that scrolls the O→Q matrix into view.
+// V3.1 §11 verbatim copy: "Products are rows, not updates."
+function ProductsAreRowsPill() {
+  const onClick = useCallback(() => {
+    if (typeof document === 'undefined') return;
+    // Prefer the data-testid the matrix already exposes; fall back to
+    // the BranchingDemo container by id, then to its anchor id.
+    const target =
+      document.querySelector('[data-testid="orbit-rep-matrix"]') ||
+      document.querySelector('[data-orbit-rep-matrix]') ||
+      document.getElementById('orbit-rep-matrix');
+    if (target && typeof target.scrollIntoView === 'function') {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, []);
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Products are rows, not updates. Click to scroll to O→Q matrix."
+      data-testid="products-are-rows-pill"
+      className="mt-3 inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-[11px] font-medium text-amber-900 transition-colors hover:bg-amber-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+    >
+      <span aria-hidden="true">⚠</span>
+      <span>{WARNING_PILL_TEXT}</span>
+      <span aria-hidden="true" className="text-amber-700">→</span>
+    </button>
+  );
+}
+
+export default function MultiplicationCostCard({
+  components = [],
+  numTerms = 2,
+  onHoveredLabelsChange = null,
+}) {
   const formulaRef = useRef(null);
   const [anchorRect, setAnchorRect] = useState(null);
   const hideTimerRef = useRef(null);
@@ -284,6 +500,15 @@ export default function MultiplicationCostCard({ components = [], onHoveredLabel
       <p className="mt-3 text-[12px] leading-5 text-muted-foreground">
         <InlineMathText>{String.raw`$M$ counts representative product values. $\mu = (k-1)M$ counts multiplication-chain events. $\alpha$ counts accumulation updates from product-orbit representatives into stored output representatives.`}</InlineMathText>
       </p>
+
+      {/* C11 Product Savings Metric Row — four cards summarising the
+          dense baseline, the orbit-quotient M, μ, and the % reduction. */}
+      <ProductSavingsMetricRow
+        components={components}
+        numTerms={numTerms}
+        onHoveredLabelsChange={onHoveredLabelsChange}
+      />
+      <ProductsAreRowsPill />
 
       {/* Hover-wrapped formula — shows μ on top, the per-component
           Mₐ/Burnside identity below, so the reader sees how each
