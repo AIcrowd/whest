@@ -75,6 +75,13 @@ class TestSortCost:
         a = np.arange(20)
         assert formula((a,), {}, np.zeros(5)) == 20 * _ceil_log2(20)
 
+    def test_zero_d_array_population(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["sort_cost(n)"]
+        a = np.array(16)  # 0-D scalar array; numpy.choice accepts as int(a)
+        assert formula((a,), {}, np.zeros(5)) == 16 * _ceil_log2(16)
+
 
 class TestChoiceCost:
     def test_with_replacement_uses_numel_output(self):

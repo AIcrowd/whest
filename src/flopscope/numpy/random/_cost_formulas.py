@@ -46,7 +46,7 @@ def _sort_cost_formula(args: tuple, kwargs: dict, result: Any) -> int:
     if isinstance(a, (int, _np.integer)):
         n = int(a)
     elif hasattr(a, "shape"):
-        n = int(a.shape[0]) if getattr(a, "ndim", 1) > 0 else 1
+        n = int(a.shape[0]) if getattr(a, "ndim", 1) > 0 else int(a)
     elif hasattr(a, "__len__"):
         n = len(a)
     else:
