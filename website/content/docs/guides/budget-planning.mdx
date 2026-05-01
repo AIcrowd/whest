@@ -126,11 +126,14 @@ print(budget.summary())
 ```
 
 When the time limit is exceeded, Flopscope raises `TimeExhaustedError` at the next
-operation boundary. The summary exposes three timing views:
+operation boundary. The summary exposes four timing views that decompose wall time exactly:
 
 - `wall_time_s`: total elapsed time for the context
-- `tracked_time_s`: time spent inside counted NumPy calls
-- `untracked_time_s`: everything else in the context (`wall_time_s - tracked_time_s`)
+- `tracked_time_s`: time spent inside the inner NumPy calls being counted
+- `flopscope_overhead_time_s`: time spent in flopscope's own dispatch code (wrapper preambles, FLOP cost computation, view-casts, post-call wrapping, `maybe_check_nan_inf` when opted in via `flopscope.configure(check_nan_inf=True)`)
+- `untracked_time_s`: genuinely everything else (user Python between ops, `time.sleep`, GC pauses, un-instrumented numpy)
+
+The identity `wall_time_s = tracked_time_s + flopscope_overhead_time_s + untracked_time_s` holds within numerical tolerance.
 
 Use `budget.summary()` when you want the current context's timings, and
 `flops.budget_summary()` when you want the accumulated session/global view.
