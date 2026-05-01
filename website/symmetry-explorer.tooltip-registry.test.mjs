@@ -32,22 +32,32 @@ test('OrbitDetailCard: eyebrow reads "Worked example · O → Q" (V3.1 Part 6)',
   );
 });
 
-test('OrbitDetailCard: branching caption uses V3.1 "fills [n] cells in its row" phrase (Part 6)', () => {
+test('OrbitDetailCard: branching caption uses V3.1 §13 "stored-output updates / contributes N to alpha" phrase (Part 6)', () => {
   const src = read(COMPONENTS, 'branchingViews/OrbitDetailCard.jsx');
-  // V3.1: "This orbit fills [branch count] cells in its row — alpha for this orbit alone is [branch count]."
-  assert.match(
-    src,
-    /This orbit fills.*cells in its row.*for this orbit alone is/,
-    'OrbitDetailCard must contain the V3.1 branching row caption structure',
+  // V3.1 §13 (supersedes Part 6): "1 representative product → N stored-output
+  // updates. This row contributes N to alpha." for the branching case.
+  assert.ok(
+    src.includes('stored-output update'),
+    'OrbitDetailCard must contain the V3.1 §13 branching caption phrase "stored-output update(s)"',
+  );
+  assert.ok(
+    src.includes('This row contributes'),
+    'OrbitDetailCard must contain the V3.1 §13 branching caption phrase "This row contributes ... to alpha"',
   );
 });
 
-test('OrbitDetailCard: empty-cell caption matches V3.1 "No member projects to this Q. The cell is empty." (Part 6)', () => {
+test('OrbitDetailCard: non-branching caption matches V3.1 §13 "1 representative product → 1 stored-output update." (Part 6)', () => {
   const src = read(COMPONENTS, 'branchingViews/OrbitDetailCard.jsx');
-  assert.match(
-    src,
-    /No member projects to this Q\. The cell is empty\./,
-    'OrbitDetailCard must contain the V3.1 empty-cell caption',
+  // V3.1 §13 (supersedes Part 6 empty-cell wording): non-branching rows
+  // (and empty-cell hover) now read "1 representative product → 1 stored-output
+  // update. This row contributes 1 to alpha."
+  assert.ok(
+    src.includes('1 representative product → 1 stored-output update.'),
+    'OrbitDetailCard must contain the V3.1 §13 non-branching caption verbatim',
+  );
+  assert.ok(
+    src.includes('This row contributes 1 to alpha.'),
+    'OrbitDetailCard must contain the V3.1 §13 non-branching tail "This row contributes 1 to alpha."',
   );
 });
 
