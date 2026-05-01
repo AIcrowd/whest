@@ -93,6 +93,11 @@ def _build_counted_class(
     target_cls._FREE = frozenset(free)
 
 
+def _reconstruct_counted_generator(bit_generator: Any) -> "_CountedGenerator":
+    """Pickle helper — reconstruct a _CountedGenerator from its bit_generator."""
+    return _CountedGenerator(bit_generator)
+
+
 class _CountedGenerator(_np.random.Generator):
     """numpy Generator subclass with FLOP-counted sampler methods."""
 
@@ -110,6 +115,16 @@ class _CountedGenerator(_np.random.Generator):
             f"This is either a new numpy method or one not yet wrapped. "
             f"See https://github.com/AIcrowd/flopscope/issues/18"
         )
+
+    # Wrap spawned children so their methods stay counted.
+    def spawn(self, n_children: int) -> list["_CountedGenerator"]:
+        children = _np.random.Generator.spawn(self, n_children)
+        return [_CountedGenerator(c.bit_generator) for c in children]
+
+    # Round-trip pickling back to _CountedGenerator (numpy's default would
+    # reconstruct as np.random.Generator and lose the counting wrappers).
+    def __reduce__(self) -> tuple:
+        return (_reconstruct_counted_generator, (self.bit_generator,))
 
 
 class _CountedRandomState(_np.random.RandomState):

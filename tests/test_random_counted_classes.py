@@ -126,5 +126,50 @@ class TestCountedGeneratorMethods:
 
         # standard_normal must be in _COUNTED for the gate to allow it
         assert "standard_normal" in _CountedGenerator._COUNTED
-        # bit_generator must be in _FREE
+        # bit_generator and spawn must be in _FREE
         assert "bit_generator" in _CountedGenerator._FREE
+        assert "spawn" in _CountedGenerator._FREE
+
+
+class TestCountedGeneratorOverrides:
+    def test_spawn_returns_counted_children(self):
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        bg = np.random.default_rng(42).bit_generator
+        rng = _CountedGenerator(bg)
+        children = rng.spawn(3)
+        assert len(children) == 3
+        for c in children:
+            assert isinstance(c, _CountedGenerator)
+
+    def test_spawned_child_charges_flops(self):
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        bg = np.random.default_rng(42).bit_generator
+        rng = _CountedGenerator(bg)
+        children = rng.spawn(1)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            children[0].standard_normal(7)
+        assert budget.flops_used == 7
+
+    def test_pickle_roundtrip_preserves_counted_class(self):
+        import pickle
+
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        bg = np.random.default_rng(42).bit_generator
+        rng = _CountedGenerator(bg)
+        revived = pickle.loads(pickle.dumps(rng))
+        assert isinstance(revived, _CountedGenerator)
+
+    def test_pickled_revival_still_counts(self):
+        import pickle
+
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        bg = np.random.default_rng(42).bit_generator
+        rng = _CountedGenerator(bg)
+        revived = pickle.loads(pickle.dumps(rng))
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            revived.standard_normal(13)
+        assert budget.flops_used == 13
