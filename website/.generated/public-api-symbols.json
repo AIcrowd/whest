@@ -361,7 +361,7 @@
         "title": "Budget Planning & Debugging"
       }
     ],
-    "signature": "flops.OpRecord(op_name: str, subscripts: str | None, shapes: tuple, flop_cost: int, cumulative: int, namespace: str | None = None, timestamp: float | None = None, duration: float | None = None)",
+    "signature": "flops.OpRecord(op_name: str, subscripts: str | None, shapes: tuple, flop_cost: int, cumulative: int, namespace: str | None = None, flopscope_context_start_offset_s: float | None = None, flopscope_backend_duration_s: float | None = None, flopscope_overhead_duration_s: float | None = None)",
     "slug": "op-record",
     "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L14",
     "status_note": "",
@@ -2902,7 +2902,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "\"tracked_time_s\""
+                        "text": "\"flopscope_backend_time_s\""
                       },
                       {
                         "kind": "text",
@@ -2910,11 +2910,19 @@
                       },
                       {
                         "kind": "code",
-                        "text": "\"untracked_time_s\""
+                        "text": "\"flopscope_overhead_time_s\""
                       },
                       {
                         "kind": "text",
-                        "text": ", and optionally\n"
+                        "text": ",\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "\"residual_wall_time_s\""
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", and optionally "
                       },
                       {
                         "kind": "code",
@@ -2922,7 +2930,7 @@
                       },
                       {
                         "kind": "text",
-                        "text": " with exact attribution buckets."
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -2976,7 +2984,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "\"tracked_time_s\""
+                    "text": "\"flopscope_backend_time_s\""
                   },
                   {
                     "kind": "text",
@@ -2984,11 +2992,19 @@
                   },
                   {
                     "kind": "code",
-                    "text": "\"untracked_time_s\""
+                    "text": "\"flopscope_overhead_time_s\""
                   },
                   {
                     "kind": "text",
-                    "text": ", and optionally\n"
+                    "text": ",\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "\"residual_wall_time_s\""
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", and optionally "
                   },
                   {
                     "kind": "code",
@@ -2996,7 +3012,7 @@
                   },
                   {
                     "kind": "text",
-                    "text": " with exact attribution buckets."
+                    "text": "."
                   }
                 ],
                 "name": "",
@@ -3045,7 +3061,7 @@
               },
               {
                 "kind": "output",
-                "text": "['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']"
+                "text": "['flop_budget', 'flops_remaining', 'flops_used', 'flopscope_backend_time_s', 'flopscope_overhead_time_s', 'operations', 'residual_wall_time_s', 'wall_time_s']"
               }
             ],
             "type": "doctest_block"
@@ -3448,11 +3464,11 @@
                       },
                       {
                         "kind": "text",
-                        "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                        "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is attributed\nto "
                       },
                       {
                         "kind": "code",
-                        "text": "untracked_time"
+                        "text": "flopscope_overhead_time"
                       },
                       {
                         "kind": "text",
@@ -3498,11 +3514,11 @@
                   },
                   {
                     "kind": "text",
-                    "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is silently\nattributed to "
+                    "text": " if any are found.\nThe scan is two full O(n) sweeps over the result and is attributed\nto "
                   },
                   {
                     "kind": "code",
-                    "text": "untracked_time"
+                    "text": "flopscope_overhead_time"
                   },
                   {
                     "kind": "text",

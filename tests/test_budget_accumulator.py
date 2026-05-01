@@ -58,16 +58,16 @@ def test_budget_summary_dict_by_namespace():
     root_bucket = data["by_namespace"]["predict"]
     assert root_bucket["flops_used"] == 10
     assert root_bucket["calls"] == 1
-    assert root_bucket["tracked_time_s"] >= 0
+    assert root_bucket["flopscope_backend_time_s"] >= 0
     assert root_bucket["operations"]["mul"]["flop_cost"] == 10
     assert "flop_budget" not in root_bucket
     assert "wall_time_s" not in root_bucket
-    assert "untracked_time_s" not in root_bucket
+    assert "residual_wall_time_s" not in root_bucket
 
     nested_bucket = data["by_namespace"]["predict.precompute"]
     assert nested_bucket["flops_used"] == 40
     assert nested_bucket["calls"] == 2
-    assert nested_bucket["tracked_time_s"] >= 0
+    assert nested_bucket["flopscope_backend_time_s"] >= 0
     assert nested_bucket["operations"]["add"]["flop_cost"] == 40
     assert nested_bucket["operations"]["add"]["calls"] == 2
 
@@ -103,9 +103,9 @@ def test_budget_summary_dict_accumulates_across_contexts():
     assert data["flops_used"] == 400
     assert data["operations"]["add"]["flop_cost"] == 400
     assert data["operations"]["add"]["calls"] == 2
-    assert data["tracked_time_s"] == 0.0
-    assert data["untracked_time_s"] is not None
-    assert data["untracked_time_s"] >= 0
+    assert data["flopscope_backend_time_s"] == 0.0
+    assert data["residual_wall_time_s"] is not None
+    assert data["residual_wall_time_s"] >= 0
 
 
 def test_budget_reset():

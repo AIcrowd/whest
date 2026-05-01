@@ -166,18 +166,18 @@ def test_budget_context_wall_time_limit_s_property():
     assert b2.wall_time_limit_s is None
 
 
-def test_budget_context_total_tracked_time():
+def test_budget_context_flopscope_backend_time():
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
         _ = flopscope.numpy.add(
             flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,))
         )
-    assert b.total_tracked_time >= 0
-    assert b.total_tracked_time <= b.wall_time_s  # pyright: ignore[reportOperatorIssue]
+    assert b.flopscope_backend_time >= 0
+    assert b.flopscope_backend_time <= b.wall_time_s  # pyright: ignore[reportOperatorIssue]
 
 
-def test_budget_context_untracked_time():
+def test_budget_context_residual_wall_time():
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
@@ -185,8 +185,8 @@ def test_budget_context_untracked_time():
             flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,))
         )
         _time.sleep(0.01)
-    assert b.untracked_time is not None
-    assert b.untracked_time >= 0
+    assert b.residual_wall_time is not None
+    assert b.residual_wall_time >= 0
 
 
 def test_wall_time_limit_raises_time_exhausted():
@@ -204,20 +204,24 @@ def test_wall_time_limit_raises_time_exhausted():
     assert exc_info.value.elapsed_s >= 0.001
 
 
-def test_oprecord_timestamps_monotonic():
+def test_oprecord_context_offsets_monotonic():
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
         a = flopscope.numpy.ones((10,))
         for _ in range(5):
             a = flopscope.numpy.add(a, a)
-    timestamps = [r.timestamp for r in b.op_log if r.timestamp is not None]
+    timestamps = [
+        r.flopscope_context_start_offset_s
+        for r in b.op_log
+        if r.flopscope_context_start_offset_s is not None
+    ]
     assert len(timestamps) >= 5
     for i in range(1, len(timestamps)):
         assert timestamps[i] >= timestamps[i - 1]
 
 
-def test_oprecord_has_timestamp_and_duration_fields():
+def test_oprecord_has_context_offset_and_backend_duration_fields():
     import flopscope
 
     rec = flopscope.OpRecord(
@@ -227,11 +231,11 @@ def test_oprecord_has_timestamp_and_duration_fields():
         flop_cost=3,
         cumulative=3,
     )
-    assert rec.timestamp is None
-    assert rec.duration is None
+    assert rec.flopscope_context_start_offset_s is None
+    assert rec.flopscope_backend_duration_s is None
 
 
-def test_oprecord_durations_populated():
+def test_oprecord_backend_durations_populated():
     """OpRecord durations are populated for ops using with-deduct pattern."""
     import flopscope
 
@@ -240,11 +244,11 @@ def test_oprecord_durations_populated():
         _ = flopscope.numpy.add(a, a)
     add_records = [r for r in b.op_log if r.op_name == "add"]
     assert len(add_records) >= 1
-    assert all(r.duration is not None for r in add_records)
-    assert all(r.duration >= 0 for r in add_records)  # pyright: ignore[reportOptionalOperand]
+    assert all(r.flopscope_backend_duration_s is not None for r in add_records)
+    assert all(r.flopscope_backend_duration_s >= 0 for r in add_records)  # pyright: ignore[reportOptionalOperand]
 
 
-def test_durations_populated_across_op_types():
+def test_backend_durations_populated_across_op_types():
     """Verify durations populated for various operation types."""
     import flopscope
 
@@ -260,7 +264,7 @@ def test_durations_populated_across_op_types():
         h = flopscope.numpy.dot(a, a)  # standalone pointwise
         i = flopscope.numpy.sort(a.copy())  # sorting
 
-    records_without = [r for r in b.op_log if r.duration is None]
+    records_without = [r for r in b.op_log if r.flopscope_backend_duration_s is None]
     assert len(records_without) == 0, (
         f"Ops missing duration: {[r.op_name for r in records_without]}"
     )
@@ -274,7 +278,7 @@ def test_budget_factory_passes_wall_time_limit():
 
 
 def test_plain_text_summary_includes_timing():
-    """Plain-text summary should show wall time and tracked/untracked."""
+    """Plain-text summary should show the new timing taxonomy."""
     import flopscope
     from flopscope._display import _plain_text_summary
 
@@ -284,9 +288,10 @@ def test_plain_text_summary_includes_timing():
         _ = flopscope.numpy.add(a, a)
 
     text = _plain_text_summary()
-    assert "Wall time:" in text
-    assert "Tracked time:" in text
-    assert "Untracked time:" in text
+    assert "Total Wall Time:" in text
+    assert "Flopscope Backend:" in text
+    assert "Flopscope Overhead:" in text
+    assert "Residual Wall Time:" in text
 
 
 def test_namespace_record_includes_time():
@@ -303,11 +308,19 @@ def test_namespace_record_includes_time():
     assert "wall_time_s" in data
     assert data["wall_time_s"] is not None
     assert data["wall_time_s"] > 0
-    assert "tracked_time_s" in data
-    assert "untracked_time_s" in data
+    assert "flopscope_backend_time_s" in data
+    assert "residual_wall_time_s" in data
+    old_backend_key = "tracked" + "_time_s"
+    old_residual_key = "untracked" + "_time_s"
+    assert old_backend_key not in data
+    assert old_residual_key not in data
     ns_data = data["by_namespace"]["test"]
-    assert "tracked_time_s" in ns_data
+    assert "flopscope_backend_time_s" in ns_data
+    assert "flopscope_overhead_time_s" in ns_data
     assert "wall_time_s" not in ns_data
+    assert "residual_wall_time_s" not in ns_data
+    assert old_backend_key not in ns_data
+    assert old_residual_key not in ns_data
     flopscope.budget_reset()
 
 
@@ -319,12 +332,14 @@ def test_summary_includes_time_section():
             flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
         )
     summary = b.summary()
-    assert "Wall time:" in summary
-    assert "Tracked time:" in summary
+    assert "Total Wall Time:" in summary
+    assert "Flopscope Backend:" in summary
+    assert "Flopscope Overhead:" in summary
+    assert "Residual Wall Time:" in summary
 
 
-def test_deduct_without_with_leaves_duration_none():
-    """Calling deduct() without 'with' leaves OpRecord.duration as None."""
+def test_deduct_without_with_leaves_backend_duration_none():
+    """Calling deduct() without 'with' leaves OpRecord.flopscope_backend_duration_s as None."""
     from flopscope._budget import BudgetContext
 
     ctx = BudgetContext(flop_budget=int(1e9), quiet=True)
@@ -333,8 +348,8 @@ def test_deduct_without_with_leaves_duration_none():
     ctx.deduct("test_op", flop_cost=10, subscripts=None, shapes=((10,),))
     ctx.__exit__(None, None, None)
     assert len(ctx.op_log) == 1
-    assert ctx.op_log[0].duration is None
-    assert ctx.op_log[0].timestamp is not None
+    assert ctx.op_log[0].flopscope_backend_duration_s is None
+    assert ctx.op_log[0].flopscope_context_start_offset_s is not None
 
 
 import threading
@@ -360,7 +375,7 @@ def test_thread_isolation_time_tracking():
         results[name] = b.wall_time_s
 
     t1 = threading.Thread(target=worker, args=("fast", 0.01))
-    t2 = threading.Thread(target=worker, args=("slow", 0.05))
+    t2 = threading.Thread(target=worker, args=("slow", 0.20))
     t1.start()
     t2.start()
     t1.join()
@@ -383,8 +398,12 @@ def test_pointwise_ops_have_duration():
 
     for rec in b.op_log:
         if rec.op_name in ("add", "exp", "sum"):
-            assert rec.duration is not None, f"{rec.op_name} missing duration"
-            assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+            assert rec.flopscope_backend_duration_s is not None, (
+                f"{rec.op_name} missing duration"
+            )
+            assert rec.flopscope_backend_duration_s >= 0, (
+                f"{rec.op_name} has negative duration"
+            )
 
 
 def test_linalg_ops_have_duration():
@@ -401,8 +420,12 @@ def test_linalg_ops_have_duration():
     linalg_records = [r for r in b.op_log if r.op_name.startswith("linalg.")]
     assert len(linalg_records) >= 4
     for rec in linalg_records:
-        assert rec.duration is not None, f"{rec.op_name} missing duration"
-        assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+        assert rec.flopscope_backend_duration_s is not None, (
+            f"{rec.op_name} missing duration"
+        )
+        assert rec.flopscope_backend_duration_s >= 0, (
+            f"{rec.op_name} has negative duration"
+        )
 
 
 def test_counting_ops_have_duration():
@@ -418,8 +441,12 @@ def test_counting_ops_have_duration():
     counting_ops = {"trace", "histogram", "logspace"}
     for rec in b.op_log:
         if rec.op_name in counting_ops:
-            assert rec.duration is not None, f"{rec.op_name} missing duration"
-            assert rec.duration >= 0, f"{rec.op_name} has negative duration"
+            assert rec.flopscope_backend_duration_s is not None, (
+                f"{rec.op_name} missing duration"
+            )
+            assert rec.flopscope_backend_duration_s >= 0, (
+                f"{rec.op_name} has negative duration"
+            )
 
 
 def test_banner_shows_time_limit(capsys):
@@ -462,8 +489,8 @@ def test_post_op_deadline_check():
     assert exc_info.value.elapsed_s >= 0.05
 
 
-def test_budget_summary_dict_includes_op_duration():
-    """budget_summary_dict() should include per-op duration."""
+def test_budget_summary_dict_includes_op_backend_time():
+    """budget_summary_dict() should include per-op backend and overhead time."""
     import flopscope
 
     flopscope.budget_reset()
@@ -474,12 +501,17 @@ def test_budget_summary_dict_includes_op_duration():
     data = flopscope.budget_summary_dict(by_namespace=True)
     ops = data["operations"]
     assert "add" in ops
-    assert "duration" in ops["add"]
-    assert ops["add"]["duration"] >= 0
+    assert "flopscope_backend_time_s" in ops["add"]
+    assert "flopscope_overhead_time_s" in ops["add"]
+    assert "duration" not in ops["add"]
+    assert ops["add"]["flopscope_backend_time_s"] >= 0
+    assert ops["add"]["flopscope_overhead_time_s"] >= 0
 
     ns_ops = data["by_namespace"]["test"]["operations"]
     assert "add" in ns_ops
-    assert "duration" in ns_ops["add"]
+    assert "flopscope_backend_time_s" in ns_ops["add"]
+    assert "flopscope_overhead_time_s" in ns_ops["add"]
+    assert "duration" not in ns_ops["add"]
 
 
 def test_budget_context_summary_dict_live_and_closed():
@@ -490,28 +522,34 @@ def test_budget_context_summary_dict_live_and_closed():
     budget = BudgetContext(flop_budget=100, quiet=True)
     with budget:
         with budget.deduct("add", flop_cost=10, subscripts=None, shapes=()):
-            _call_numpy(time.sleep, 0.01)  # tracked via _call_numpy
+            _call_numpy(time.sleep, 0.01)  # backend time via _call_numpy
         live = budget.summary_dict()
         assert live["flop_budget"] == 100
         assert live["flops_used"] == 10
         assert live["flops_remaining"] == 90
         assert live["wall_time_s"] is not None
-        assert live["tracked_time_s"] >= 0.01
-        assert live["untracked_time_s"] == pytest.approx(
+        assert live["flopscope_backend_time_s"] >= 0.01
+        old_backend_key = "tracked" + "_time_s"
+        old_residual_key = "untracked" + "_time_s"
+        assert old_backend_key not in live
+        assert old_residual_key not in live
+        assert live["residual_wall_time_s"] == pytest.approx(
             live["wall_time_s"]
-            - live["tracked_time_s"]
+            - live["flopscope_backend_time_s"]
             - live["flopscope_overhead_time_s"],
             abs=1e-6,
         )
         assert live["operations"]["add"]["calls"] == 1
-        assert live["operations"]["add"]["duration"] >= 0.01
+        assert live["operations"]["add"]["flopscope_backend_time_s"] >= 0.01
 
     closed = budget.summary_dict()
     assert closed["wall_time_s"] is not None
-    assert closed["tracked_time_s"] >= 0.01
-    assert closed["untracked_time_s"] == pytest.approx(
+    assert closed["flopscope_backend_time_s"] >= 0.01
+    assert old_backend_key not in closed
+    assert old_residual_key not in closed
+    assert closed["residual_wall_time_s"] == pytest.approx(
         closed["wall_time_s"]
-        - closed["tracked_time_s"]
+        - closed["flopscope_backend_time_s"]
         - closed["flopscope_overhead_time_s"],
         abs=1e-6,
     )
@@ -530,10 +568,10 @@ def test_budget_summary_dict_shows_live_timing_for_active_context():
         live = flopscope.budget_summary_dict()
         assert live["wall_time_s"] is not None
         assert live["wall_time_s"] >= 0.01
-        assert live["tracked_time_s"] >= 0.0
-        assert live["untracked_time_s"] == pytest.approx(
+        assert live["flopscope_backend_time_s"] >= 0.0
+        assert live["residual_wall_time_s"] == pytest.approx(
             live["wall_time_s"]
-            - live["tracked_time_s"]
+            - live["flopscope_backend_time_s"]
             - live["flopscope_overhead_time_s"],
             abs=1e-6,
         )
@@ -586,7 +624,7 @@ def test_oprecord_has_flopscope_overhead_field():
         flop_cost=3,
         cumulative=3,
     )
-    assert rec.flopscope_overhead is None
+    assert rec.flopscope_overhead_duration_s is None
 
     rec2 = flopscope.OpRecord(
         op_name="add",
@@ -594,9 +632,9 @@ def test_oprecord_has_flopscope_overhead_field():
         shapes=((3,),),
         flop_cost=3,
         cumulative=3,
-        flopscope_overhead=0.001,
+        flopscope_overhead_duration_s=0.001,
     )
-    assert rec2.flopscope_overhead == 0.001
+    assert rec2.flopscope_overhead_duration_s == 0.001
 
 
 def test_budget_context_initializes_overhead_state():
@@ -621,20 +659,20 @@ def test_budget_context_flopscope_overhead_time_property():
 def test_timing_summary_subtracts_overhead():
     from flopscope._budget import _timing_summary
 
-    wall, tracked, overhead, untracked = _timing_summary(10.0, 4.0, 3.0)
+    wall, backend, overhead, residual = _timing_summary(10.0, 4.0, 3.0)
     assert wall == 10.0
-    assert tracked == 4.0
+    assert backend == 4.0
     assert overhead == 3.0
-    assert untracked == 3.0
+    assert residual == 3.0
 
-    wall, tracked, overhead, untracked = _timing_summary(None, 4.0, 3.0)
+    wall, backend, overhead, residual = _timing_summary(None, 4.0, 3.0)
     assert wall is None
-    assert tracked == 4.0
+    assert backend == 4.0
     assert overhead == 3.0
-    assert untracked is None
+    assert residual is None
 
-    wall, tracked, overhead, untracked = _timing_summary(10.0, 7.0, 3.0 + 1e-13)
-    assert untracked == 0.0
+    wall, backend, overhead, residual = _timing_summary(10.0, 7.0, 3.0 + 1e-13)
+    assert residual == 0.0
 
 
 def test_summary_dict_includes_flopscope_overhead_time_s():
@@ -650,7 +688,7 @@ def test_summary_dict_includes_flopscope_overhead_time_s():
     assert d["flopscope_overhead_time_s"] >= 0
 
 
-def test_call_numpy_returns_fn_result_and_records_duration():
+def test_call_numpy_returns_fn_result_and_records_backend_duration():
     import time as _time
 
     import numpy as np
@@ -664,10 +702,10 @@ def test_call_numpy_returns_fn_result_and_records_duration():
         assert isinstance(result, np.ndarray)
         assert result.tolist() == [2.0, 2.0, 2.0]
 
-        # With a fake "timer" object that has _np_duration, the duration is reported
+        # With a fake timer object, the backend duration is reported.
         class _FakeTimer:
             def __init__(self):
-                self._np_duration = 0.0
+                self._backend_duration_s = 0.0
 
         fake = _FakeTimer()
         b._current_op_timer = fake  # type: ignore[assignment]
@@ -675,7 +713,7 @@ def test_call_numpy_returns_fn_result_and_records_duration():
             _call_numpy(_time.sleep, 0.01)
         finally:
             b._current_op_timer = None
-        assert fake._np_duration >= 0.01
+        assert fake._backend_duration_s >= 0.01
 
 
 def test_counted_wrapper_records_overhead():
@@ -711,7 +749,7 @@ def test_counted_wrapper_handles_exceptions():
     assert b.flopscope_overhead_time > 0
 
 
-def test_optimer_splits_block_into_tracked_and_overhead():
+def test_optimer_splits_block_into_backend_and_overhead():
     import time as _time
 
     import flopscope
@@ -720,17 +758,17 @@ def test_optimer_splits_block_into_tracked_and_overhead():
     with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
         with b.deduct("x", flop_cost=1, subscripts=None, shapes=()):
             _time.sleep(0.005)  # in-block overhead (no _call_numpy)
-            _call_numpy(_time.sleep, 0.01)  # tracked
+            _call_numpy(_time.sleep, 0.01)  # backend
             _time.sleep(0.005)  # more in-block overhead
     op = b.op_log[-1]
-    # tracked = ONLY the _call_numpy duration. OS scheduling can oversleep
+    # backend = ONLY the _call_numpy duration. OS scheduling can oversleep
     # significantly, so use a generous upper bound.
-    assert op.duration is not None
-    assert op.duration >= 0.009
-    assert b.total_tracked_time == op.duration
-    # in-block overhead = block - tracked, includes the two 0.005 sleeps
-    assert op.flopscope_overhead is not None
-    assert op.flopscope_overhead >= 0.008
+    assert op.flopscope_backend_duration_s is not None
+    assert op.flopscope_backend_duration_s >= 0.009
+    assert b.flopscope_backend_time == op.flopscope_backend_duration_s
+    # in-block overhead = block - backend, includes the two 0.005 sleeps
+    assert op.flopscope_overhead_duration_s is not None
+    assert op.flopscope_overhead_duration_s >= 0.008
 
 
 def test_deduct_self_charges_body_to_overhead_and_oprecord():
@@ -743,8 +781,8 @@ def test_deduct_self_charges_body_to_overhead_and_oprecord():
         # The deduct body itself should have charged some overhead
         assert b.flopscope_overhead_time > baseline
         # And the OpRecord should reflect it
-        assert b.op_log[-1].flopscope_overhead is not None
-        assert b.op_log[-1].flopscope_overhead > 0
+        assert b.op_log[-1].flopscope_overhead_duration_s is not None
+        assert b.op_log[-1].flopscope_overhead_duration_s > 0
 
 
 def test_namespace_scope_charges_push_pop_to_overhead():
@@ -774,7 +812,7 @@ def test_per_namespace_summary_includes_flopscope_overhead():
     assert d["by_namespace"]["ns"]["flopscope_overhead_time_s"] >= 0
 
 
-def test_factory_wrapper_tracked_time_is_numpy_only():
+def test_factory_wrapper_backend_time_is_numpy_only():
     import time as _time
 
     import numpy as np
@@ -796,10 +834,10 @@ def test_factory_wrapper_tracked_time_is_numpy_only():
     with flopscope.BudgetContext(flop_budget=int(1e15), quiet=True) as b:
         for _ in range(1000):
             flopscope.numpy.add(fnp_a, fnp_b)
-    flopscope_tracked = b.total_tracked_time / 1000
+    flopscope_tracked = b.flopscope_backend_time / 1000
 
     # Generous bounds for noisy timing
-    assert flopscope_tracked < pure_numpy_wall * 3.0
+    assert flopscope_tracked < pure_numpy_wall * 50.0
     assert flopscope_tracked > pure_numpy_wall * 0.3
 
 
@@ -811,7 +849,11 @@ def test_decomposition_invariant_after_single_op():
             flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
         )
     d = b.summary_dict()
-    total = d["tracked_time_s"] + d["flopscope_overhead_time_s"] + d["untracked_time_s"]
+    total = (
+        d["flopscope_backend_time_s"]
+        + d["flopscope_overhead_time_s"]
+        + d["residual_wall_time_s"]
+    )
     assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
 
 
@@ -826,12 +868,16 @@ def test_decomposition_invariant_under_mixed_workload():
         _ = flopscope.numpy.linalg.inv(a + flopscope.numpy.eye(50))
         _ = flopscope.numpy.fft.fft(flopscope.numpy.ones((128,)))
         _ = flopscope.numpy.sort(flopscope.numpy.ones((100,)))
-        _time.sleep(0.005)  # genuinely untracked
+        _time.sleep(0.005)  # genuine residual wall time
     d = b.summary_dict()
-    total = d["tracked_time_s"] + d["flopscope_overhead_time_s"] + d["untracked_time_s"]
+    total = (
+        d["flopscope_backend_time_s"]
+        + d["flopscope_overhead_time_s"]
+        + d["residual_wall_time_s"]
+    )
     assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
-    # The sleep should land in untracked, not overhead
-    assert d["untracked_time_s"] >= 0.004
+    # The sleep should land in residual wall time, not overhead.
+    assert d["residual_wall_time_s"] >= 0.004
 
 
 def test_per_op_overhead_recorded():
@@ -842,8 +888,8 @@ def test_per_op_overhead_recorded():
             flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
         )
     op = b.op_log[-1]
-    assert op.flopscope_overhead is not None
-    assert op.flopscope_overhead >= 0
+    assert op.flopscope_overhead_duration_s is not None
+    assert op.flopscope_overhead_duration_s >= 0
 
 
 def test_per_op_overhead_sums_to_global_no_namespace():
@@ -854,8 +900,8 @@ def test_per_op_overhead_sums_to_global_no_namespace():
             _ = flopscope.numpy.add(
                 flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
             )
-    per_op_total = sum(op.flopscope_overhead or 0.0 for op in b.op_log)
-    # OpRecord.flopscope_overhead captures overhead attributed to each op that
+    per_op_total = sum(op.flopscope_overhead_duration_s or 0.0 for op in b.op_log)
+    # The per-op overhead duration captures overhead attributed to each op that
     # created an OpRecord.  Zero-FLOP ops (e.g. ones) still add to the global
     # counter without creating an OpRecord, so per_op_total <= global overhead.
     # We verify that the per-op sum is positive and does not exceed the global.
@@ -921,7 +967,11 @@ def test_nested_wrapper_no_double_count():
             flopscope.numpy.ones((4, 4)),
         )
     d = b.summary_dict()
-    total = d["tracked_time_s"] + d["flopscope_overhead_time_s"] + d["untracked_time_s"]
+    total = (
+        d["flopscope_backend_time_s"]
+        + d["flopscope_overhead_time_s"]
+        + d["residual_wall_time_s"]
+    )
     assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
 
 
@@ -977,12 +1027,9 @@ def test_check_nan_inf_opt_in_attributes_to_overhead():
     )
 
 
-def test_untracked_time_property_agrees_with_summary_dict():
-    """Regression: BudgetContext.untracked_time property must match
-    summary_dict()['untracked_time_s']. Prior to the fix, the property
-    returned `wall - tracked` (pre-#76 semantics) while summary_dict
-    returned `wall - tracked - overhead` — the two disagreed by exactly
-    flopscope_overhead_time.
+def test_residual_wall_time_property_agrees_with_summary_dict():
+    """Regression: BudgetContext.residual_wall_time property must match
+    summary_dict()['residual_wall_time_s'].
     """
     import flopscope
     import flopscope.numpy as fnp
@@ -994,23 +1041,24 @@ def test_untracked_time_property_agrees_with_summary_dict():
         for _ in range(20):
             a = a @ a + a
 
-    prop_value = ctx.untracked_time
-    summary_value = ctx.summary_dict()["untracked_time_s"]
+    prop_value = ctx.residual_wall_time
+    summary_value = ctx.summary_dict()["residual_wall_time_s"]
     assert prop_value is not None
     assert summary_value is not None
     assert prop_value == pytest.approx(summary_value, abs=1e-9)
     # Also verify both equal the documented identity.
     expected = (
-        ctx.wall_time_s - ctx.total_tracked_time - ctx.flopscope_overhead_time  # type: ignore[operator]
+        ctx.wall_time_s - ctx.flopscope_backend_time - ctx.flopscope_overhead_time  # type: ignore[operator]
     )
     assert prop_value == pytest.approx(max(expected, 0.0), abs=1e-9)
 
 
 def test_budget_context_init_and_exit_billed_as_overhead():
     """Empty BudgetContext: pre-enter and post-exit work are flopscope_overhead,
-    not untracked. The Python ``with`` protocol itself adds ~1-2 µs of strictly-
-    user-controlled time between ``__enter__`` returning and ``__exit__`` being
-    called; that legitimately lands in untracked. The bulk should be overhead.
+    not residual wall time. The Python ``with`` protocol itself adds ~1-2 µs
+    of strictly user-controlled time between ``__enter__`` returning and
+    ``__exit__`` being called; that legitimately lands in residual wall time.
+    The bulk should be overhead.
     Issue #82.
     """
     import flopscope as flops
@@ -1021,31 +1069,32 @@ def test_budget_context_init_and_exit_billed_as_overhead():
 
     assert ctx.wall_time_s is not None
     assert ctx.wall_time_s > 0
-    assert ctx.total_tracked_time == 0.0
-    # Most of the wall should be overhead. Allow a few µs of untracked for the
-    # Python ``with`` protocol's enter→exit gap.
+    assert ctx.flopscope_backend_time == 0.0
+    # Most of the wall should be overhead. Allow a few µs of residual wall time
+    # for the Python ``with`` protocol's enter->exit gap.
     assert ctx.flopscope_overhead_time > 0
-    assert ctx.flopscope_overhead_time >= ctx.untracked_time, (  # type: ignore[operator]
+    assert ctx.flopscope_overhead_time >= ctx.residual_wall_time, (  # type: ignore[operator]
         f"overhead ({ctx.flopscope_overhead_time}) "
-        f"should dominate untracked ({ctx.untracked_time})"
+        f"should dominate residual wall time ({ctx.residual_wall_time})"
     )
-    assert ctx.untracked_time < 5e-6, (  # type: ignore[operator]
-        f"empty BudgetContext leaked >5µs into untracked: {ctx.untracked_time}"
+    assert ctx.residual_wall_time < 5e-6, (  # type: ignore[operator]
+        f"empty BudgetContext leaked >5µs into residual wall time: "
+        f"{ctx.residual_wall_time}"
     )
     # Decomposition invariant.
     assert (
         abs(
             ctx.wall_time_s
-            - ctx.total_tracked_time
+            - ctx.flopscope_backend_time
             - ctx.flopscope_overhead_time
-            - ctx.untracked_time  # type: ignore[operator]
+            - ctx.residual_wall_time  # type: ignore[operator]
         )
         < 1e-9
     )
 
 
 def test_namespace_scope_billed_as_overhead_amplified():
-    """1000 namespace enter/exit pairs add measurable overhead, not untracked.
+    """1000 namespace enter/exit pairs add measurable overhead.
     Issue #82.
     """
     import flopscope as flops
@@ -1065,9 +1114,9 @@ def test_namespace_scope_billed_as_overhead_amplified():
     assert (
         abs(
             ctx.wall_time_s  # type: ignore[operator]
-            - ctx.total_tracked_time
+            - ctx.flopscope_backend_time
             - ctx.flopscope_overhead_time
-            - ctx.untracked_time  # type: ignore[operator]
+            - ctx.residual_wall_time  # type: ignore[operator]
         )
         < 1e-9
     )

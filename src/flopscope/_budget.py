@@ -20,9 +20,13 @@ class OpRecord(NamedTuple):
     flop_cost: int
     cumulative: int
     namespace: str | None = None
-    timestamp: float | None = None  # seconds since context __enter__
-    duration: float | None = None  # wall-clock seconds of the numpy call
-    flopscope_overhead: float | None = (
+    flopscope_context_start_offset_s: float | None = (
+        None  # seconds since active BudgetContext start
+    )
+    flopscope_backend_duration_s: float | None = (
+        None  # wall-clock seconds of the backend call
+    )
+    flopscope_overhead_duration_s: float | None = (
         None  # per-op flopscope dispatch time (preamble + deduct body + bookkeeping + postamble)
     )
 
@@ -62,17 +66,23 @@ class _OpTimer:
             result = _call_numpy(np_func, ...)
 
     On __exit__, the block's wall time is split into:
-      - tracked_time:  sum of _call_numpy durations reported during the block
-      - in-block overhead: block_duration - tracked (view-casts, copyto, etc.)
+      - backend duration: sum of _call_numpy durations reported during the block
+      - in-block overhead: block_duration - backend duration
     """
 
-    __slots__ = ("_budget", "_op_index", "_block_t0", "_np_duration", "_prev_timer")
+    __slots__ = (
+        "_budget",
+        "_op_index",
+        "_block_t0",
+        "_backend_duration_s",
+        "_prev_timer",
+    )
 
     def __init__(self, budget: BudgetContext, op_index: int):
         self._budget = budget
         self._op_index = op_index
         self._block_t0: float | None = None
-        self._np_duration: float = 0.0
+        self._backend_duration_s: float = 0.0
         self._prev_timer: _OpTimer | None = None
 
     def __enter__(self) -> _OpTimer:
@@ -85,15 +95,16 @@ class _OpTimer:
     def __exit__(self, exc_type, exc_val, exc_tb) -> Literal[False]:
         if self._block_t0 is not None:
             block_duration = time.perf_counter() - self._block_t0
-            in_block_overhead = max(block_duration - self._np_duration, 0.0)
+            in_block_overhead = max(block_duration - self._backend_duration_s, 0.0)
 
-            self._budget._total_tracked_time += self._np_duration
+            self._budget._total_flopscope_backend_time += self._backend_duration_s
             self._budget._total_flopscope_overhead_time += in_block_overhead
 
             op = self._budget._op_log[self._op_index]
             self._budget._op_log[self._op_index] = op._replace(
-                duration=self._np_duration,
-                flopscope_overhead=(op.flopscope_overhead or 0.0) + in_block_overhead,
+                flopscope_backend_duration_s=self._backend_duration_s,
+                flopscope_overhead_duration_s=(op.flopscope_overhead_duration_s or 0.0)
+                + in_block_overhead,
             )
 
             # Post-op deadline check (preserves existing behavior)
@@ -115,13 +126,13 @@ class _OpTimer:
 
 
 def _call_numpy(fn: Any, *args: Any, **kwargs: Any) -> Any:
-    """Invoke a numpy callable, attributing only its wall time to tracked_time.
+    """Invoke a numpy callable, attributing only its wall time to backend time.
 
     All numpy calls inside counted-op wrappers MUST go through this helper so
     that view-casts, copyto, errstate setup, and other flopscope-internal work
     surrounding the call are correctly bucketed as flopscope_overhead.
 
-    Reports the call's duration to the active _OpTimer (via
+    Reports the call's backend duration to the active _OpTimer (via
     budget._current_op_timer). When no timer is active (e.g. helper called
     from a non-counted code path), it is a transparent passthrough.
 
@@ -136,14 +147,14 @@ def _call_numpy(fn: Any, *args: Any, **kwargs: Any) -> Any:
         d = time.perf_counter() - t0
         budget = get_active_budget()
         if budget is not None and budget._current_op_timer is not None:
-            budget._current_op_timer._np_duration += d
+            budget._current_op_timer._backend_duration_s += d
 
 
 def _counted_wrapper(fn):
     """Decorator that brackets a flopscope wrapper and bills its non-numpy,
     non-nested-overhead time to flopscope_overhead_time.
 
-    Formula: wall - tracked_delta - overhead_delta. Handles nesting naturally
+    Formula: wall - backend_delta - overhead_delta. Handles nesting naturally
     (outer attributes only its own remainder), so no re-entrancy guard.
 
     Per-op attribution: wrapper-own overhead is distributed equally across
@@ -156,16 +167,16 @@ def _counted_wrapper(fn):
 
         budget = require_budget()
         fs_t0 = time.perf_counter()
-        tracked_baseline = budget._total_tracked_time
+        backend_baseline = budget._total_flopscope_backend_time
         overhead_baseline = budget._total_flopscope_overhead_time
         ops_before = len(budget._op_log)
         try:
             return fn(*args, **kwargs)
         finally:
             wall = time.perf_counter() - fs_t0
-            tracked_delta = budget._total_tracked_time - tracked_baseline
+            backend_delta = budget._total_flopscope_backend_time - backend_baseline
             overhead_delta = budget._total_flopscope_overhead_time - overhead_baseline
-            wrapper_own_overhead = max(wall - tracked_delta - overhead_delta, 0.0)
+            wrapper_own_overhead = max(wall - backend_delta - overhead_delta, 0.0)
             budget._total_flopscope_overhead_time += wrapper_own_overhead
             ops_added = list(range(ops_before, len(budget._op_log)))
             if ops_added and wrapper_own_overhead > 0:
@@ -173,7 +184,10 @@ def _counted_wrapper(fn):
                 for idx in ops_added:
                     op = budget._op_log[idx]
                     budget._op_log[idx] = op._replace(
-                        flopscope_overhead=(op.flopscope_overhead or 0.0) + per_op
+                        flopscope_overhead_duration_s=(
+                            op.flopscope_overhead_duration_s or 0.0
+                        )
+                        + per_op
                     )
 
     return wrapped
@@ -270,13 +284,16 @@ def _update_operation_summary(ops: dict[str, dict], op: OpRecord) -> None:
         {
             "flop_cost": 0,
             "calls": 0,
-            "duration": 0.0,
+            "flopscope_backend_time_s": 0.0,
+            "flopscope_overhead_time_s": 0.0,
         },
     )
     bucket["flop_cost"] += op.flop_cost
     bucket["calls"] += 1
-    if op.duration is not None:
-        bucket["duration"] += op.duration
+    if op.flopscope_backend_duration_s is not None:
+        bucket["flopscope_backend_time_s"] += op.flopscope_backend_duration_s
+    if op.flopscope_overhead_duration_s is not None:
+        bucket["flopscope_overhead_time_s"] += op.flopscope_overhead_duration_s
 
 
 def _summarize_operations(op_log: list[OpRecord]) -> dict[str, dict]:
@@ -294,34 +311,34 @@ def _summarize_by_namespace(op_log: list[OpRecord]) -> dict[str | None, dict]:
             {
                 "flops_used": 0,
                 "calls": 0,
-                "tracked_time_s": 0.0,
+                "flopscope_backend_time_s": 0.0,
                 "flopscope_overhead_time_s": 0.0,
                 "operations": {},
             },
         )
         bucket["flops_used"] += op.flop_cost
         bucket["calls"] += 1
-        if op.duration is not None:
-            bucket["tracked_time_s"] += op.duration
-        if op.flopscope_overhead is not None:
-            bucket["flopscope_overhead_time_s"] += op.flopscope_overhead
+        if op.flopscope_backend_duration_s is not None:
+            bucket["flopscope_backend_time_s"] += op.flopscope_backend_duration_s
+        if op.flopscope_overhead_duration_s is not None:
+            bucket["flopscope_overhead_time_s"] += op.flopscope_overhead_duration_s
         _update_operation_summary(bucket["operations"], op)
     return by_namespace
 
 
 def _timing_summary(
     wall_time_s: float | None,
-    tracked_time_s: float | None,
+    flopscope_backend_time_s: float | None,
     overhead_time_s: float | None,
 ) -> tuple[float | None, float, float, float | None]:
-    tracked = tracked_time_s or 0.0
+    backend = flopscope_backend_time_s or 0.0
     overhead = overhead_time_s or 0.0
     if wall_time_s is None:
-        return None, tracked, overhead, None
-    untracked = wall_time_s - tracked - overhead
-    if untracked < 0 and abs(untracked) < 1e-12:
-        untracked = 0.0
-    return wall_time_s, tracked, overhead, max(untracked, 0.0)
+        return None, backend, overhead, None
+    residual = wall_time_s - backend - overhead
+    if residual < 0 and abs(residual) < 1e-12:
+        residual = 0.0
+    return wall_time_s, backend, overhead, max(residual, 0.0)
 
 
 class BudgetContext:
@@ -384,13 +401,13 @@ class BudgetContext:
         self._start_time: float | None = None
         self._deadline: float | None = None
         self._wall_time_s: float | None = None
-        self._total_tracked_time: float = 0.0
+        self._total_flopscope_backend_time: float = 0.0
         self._total_flopscope_overhead_time: float = 0.0
         self._pre_enter_overhead: float = 0.0
         self._current_op_timer: _OpTimer | None = None
         self._recorded_flops_used = 0
         self._recorded_op_count = 0
-        self._recorded_tracked_time = 0.0
+        self._recorded_flopscope_backend_time = 0.0
         self._recorded_overhead_time: float = 0.0
         self._budget_recorded = False
         _all_budget_contexts.add(self)
@@ -436,11 +453,12 @@ class BudgetContext:
         accumulator-record and active-budget restoration work). ``None`` until
         ``__exit__`` has run.
 
-        The decomposition ``wall_time_s == tracked_time + flopscope_overhead_time
-        + untracked_time`` holds within numerical tolerance. The pre-``__enter__``
-        slice (``__init__`` body + banner print) and the post-``__exit__`` body
-        slice (accumulator-record, active-budget restore) are both attributed
-        to ``flopscope_overhead_time``.
+        The decomposition ``wall_time_s == flopscope_backend_time
+        + flopscope_overhead_time + residual_wall_time`` holds within numerical
+        tolerance. The pre-``__enter__`` slice (``__init__`` body + banner print)
+        and the post-``__exit__`` body slice (accumulator-record,
+        active-budget restore) are both attributed to
+        ``flopscope_overhead_time``.
         """
         return self._wall_time_s
 
@@ -451,8 +469,8 @@ class BudgetContext:
         return time.perf_counter() - self._start_time
 
     @property
-    def total_tracked_time(self) -> float:
-        return self._total_tracked_time
+    def flopscope_backend_time(self) -> float:
+        return self._total_flopscope_backend_time
 
     @property
     def flopscope_overhead_time(self) -> float:
@@ -469,22 +487,18 @@ class BudgetContext:
         return self._total_flopscope_overhead_time
 
     @property
-    def untracked_time(self) -> float | None:
-        """Wall time minus tracked_time minus flopscope_overhead_time.
+    def residual_wall_time(self) -> float | None:
+        """Wall time minus flopscope backend and overhead time.
 
-        Genuinely 'neither' — user Python between ops, time.sleep, GC pauses,
-        un-instrumented numpy.
-
-        BREAKING (vs versions before issue #76): previously was
-        wall_time - tracked_time. The new value subtracts measured framework
-        overhead. To recover the prior 'all-unattributed' value, compute
-        flopscope_overhead_time + untracked_time.
+        This is the measured wall-clock remainder outside the backend calls and
+        flopscope's own dispatch/accounting work: user Python between ops,
+        time.sleep, GC pauses, and un-instrumented NumPy.
         """
         if self._wall_time_s is None:
             return None
         residual = (
             self._wall_time_s
-            - self._total_tracked_time
+            - self._total_flopscope_backend_time
             - self._total_flopscope_overhead_time
         )
         if residual < 0 and abs(residual) < 1e-12:
@@ -511,7 +525,9 @@ class BudgetContext:
             self._flops_used += adjusted_cost
 
             now = time.perf_counter()
-            timestamp = now - self._start_time if self._start_time is not None else None
+            context_start_offset_s = (
+                now - self._start_time if self._start_time is not None else None
+            )
 
             self._op_log.append(
                 OpRecord(
@@ -521,7 +537,7 @@ class BudgetContext:
                     flop_cost=adjusted_cost,
                     cumulative=self._flops_used,
                     namespace=self.namespace,
-                    timestamp=timestamp,
+                    flopscope_context_start_offset_s=context_start_offset_s,
                 )
             )
             appended = True
@@ -543,7 +559,10 @@ class BudgetContext:
             if appended:
                 op = self._op_log[-1]
                 self._op_log[-1] = op._replace(
-                    flopscope_overhead=(op.flopscope_overhead or 0.0) + deduct_body_time
+                    flopscope_overhead_duration_s=(
+                        op.flopscope_overhead_duration_s or 0.0
+                    )
+                    + deduct_body_time
                 )
 
     def summary_dict(self, by_namespace: bool = False) -> dict:
@@ -551,19 +570,21 @@ class BudgetContext:
 
         Returns a dict with keys ``flop_budget``, ``flops_used``,
         ``flops_remaining``, ``operations``, ``wall_time_s``,
-        ``tracked_time_s``, ``flopscope_overhead_time_s``,
-        ``untracked_time_s``, and optionally ``by_namespace`` with per-
+        ``flopscope_backend_time_s``, ``flopscope_overhead_time_s``,
+        ``residual_wall_time_s``, and optionally ``by_namespace`` with per-
         namespace buckets that each include the same timing keys.
 
-        Decomposition: ``wall_time_s == tracked_time_s
-        + flopscope_overhead_time_s + untracked_time_s`` (within numerical
+        Decomposition: ``wall_time_s == flopscope_backend_time_s
+        + flopscope_overhead_time_s + residual_wall_time_s`` (within numerical
         tolerance).
         """
         wall_time = self._wall_time_s
         if wall_time is None and self._start_time is not None:
             wall_time = self.elapsed_s
-        wall_time, tracked_time, overhead_time, untracked_time = _timing_summary(
-            wall_time, self._total_tracked_time, self._total_flopscope_overhead_time
+        wall_time, backend_time, overhead_time, residual_wall_time = _timing_summary(
+            wall_time,
+            self._total_flopscope_backend_time,
+            self._total_flopscope_overhead_time,
         )
 
         result = {
@@ -572,9 +593,9 @@ class BudgetContext:
             "flops_remaining": self.flops_remaining,
             "operations": _summarize_operations(self._op_log),
             "wall_time_s": wall_time,
-            "tracked_time_s": tracked_time,
+            "flopscope_backend_time_s": backend_time,
             "flopscope_overhead_time_s": overhead_time,
-            "untracked_time_s": untracked_time,
+            "residual_wall_time_s": residual_wall_time,
         }
         if by_namespace:
             result["by_namespace"] = _summarize_by_namespace(self._op_log)
@@ -608,9 +629,11 @@ class BudgetContext:
         if wall_time is None and self._start_time is not None:
             wall_time = self.elapsed_s
 
-        tracked_delta = self._total_tracked_time - self._recorded_tracked_time
-        if tracked_delta < 0 and abs(tracked_delta) < 1e-12:
-            tracked_delta = 0.0
+        backend_delta = (
+            self._total_flopscope_backend_time - self._recorded_flopscope_backend_time
+        )
+        if backend_delta < 0 and abs(backend_delta) < 1e-12:
+            backend_delta = 0.0
 
         overhead_delta = (
             self._total_flopscope_overhead_time - self._recorded_overhead_time
@@ -624,7 +647,7 @@ class BudgetContext:
             flops_used=max(self._flops_used - self._recorded_flops_used, 0),
             op_log=list(self._op_log[self._recorded_op_count :]),
             wall_time_s=wall_time,
-            total_tracked_time=max(tracked_delta, 0.0),
+            total_flopscope_backend_time=max(backend_delta, 0.0),
             total_flopscope_overhead_time=max(overhead_delta, 0.0),
         )
 
@@ -634,14 +657,14 @@ class BudgetContext:
     def _mark_recorded(self) -> None:
         self._recorded_flops_used = self._flops_used
         self._recorded_op_count = len(self._op_log)
-        self._recorded_tracked_time = self._total_tracked_time
+        self._recorded_flopscope_backend_time = self._total_flopscope_backend_time
         self._recorded_overhead_time = self._total_flopscope_overhead_time
         self._budget_recorded = True
 
     def _mark_reset_baseline(self) -> None:
         self._recorded_flops_used = self._flops_used
         self._recorded_op_count = len(self._op_log)
-        self._recorded_tracked_time = self._total_tracked_time
+        self._recorded_flopscope_backend_time = self._total_flopscope_backend_time
         self._recorded_overhead_time = self._total_flopscope_overhead_time
         self._budget_recorded = False
 
@@ -805,7 +828,7 @@ class NamespaceRecord(NamedTuple):
     flops_used: int
     op_log: list[OpRecord]
     wall_time_s: float | None = None
-    total_tracked_time: float | None = None
+    total_flopscope_backend_time: float | None = None
     total_flopscope_overhead_time: float | None = None
 
 
@@ -829,7 +852,7 @@ class BudgetAccumulator:
         total_budget = 0
         total_used = 0
         total_wall_time: float | None = None
-        total_tracked: float | None = None
+        total_backend: float | None = None
         total_overhead: float | None = None
         all_ops: list[OpRecord] = []
 
@@ -839,15 +862,17 @@ class BudgetAccumulator:
             all_ops.extend(rec.op_log)
             if rec.wall_time_s is not None:
                 total_wall_time = (total_wall_time or 0.0) + rec.wall_time_s
-            if rec.total_tracked_time is not None:
-                total_tracked = (total_tracked or 0.0) + rec.total_tracked_time
+            if rec.total_flopscope_backend_time is not None:
+                total_backend = (
+                    total_backend or 0.0
+                ) + rec.total_flopscope_backend_time
             if rec.total_flopscope_overhead_time is not None:
                 total_overhead = (
                     total_overhead or 0.0
                 ) + rec.total_flopscope_overhead_time
 
-        wall_time, tracked_time, overhead_time, untracked_time = _timing_summary(
-            total_wall_time, total_tracked, total_overhead
+        wall_time, backend_time, overhead_time, residual_wall_time = _timing_summary(
+            total_wall_time, total_backend, total_overhead
         )
 
         result = {
@@ -856,9 +881,9 @@ class BudgetAccumulator:
             "flops_remaining": total_budget - total_used,
             "operations": _summarize_operations(all_ops),
             "wall_time_s": wall_time,
-            "tracked_time_s": tracked_time,
+            "flopscope_backend_time_s": backend_time,
             "flopscope_overhead_time_s": overhead_time,
-            "untracked_time_s": untracked_time,
+            "residual_wall_time_s": residual_wall_time,
         }
 
         if by_namespace:
@@ -902,8 +927,8 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
     dict
         Dictionary with keys ``"flop_budget"``, ``"flops_used"``,
         ``"flops_remaining"``, ``"operations"``, ``"wall_time_s"``,
-        ``"tracked_time_s"``, ``"flopscope_overhead_time_s"``,
-        ``"untracked_time_s"``, and optionally ``"by_namespace"``.
+        ``"flopscope_backend_time_s"``, ``"flopscope_overhead_time_s"``,
+        ``"residual_wall_time_s"``, and optionally ``"by_namespace"``.
 
     Examples
     --------
@@ -913,7 +938,7 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
     ...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
     >>> summary = flops.budget_summary_dict()
     >>> sorted(summary)
-    ['flop_budget', 'flops_remaining', 'flops_used', 'flopscope_overhead_time_s', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']
+    ['flop_budget', 'flops_remaining', 'flops_used', 'flopscope_backend_time_s', 'flopscope_overhead_time_s', 'operations', 'residual_wall_time_s', 'wall_time_s']
     """
     acc_copy = BudgetAccumulator()
     acc_copy._records = _snapshot_records()

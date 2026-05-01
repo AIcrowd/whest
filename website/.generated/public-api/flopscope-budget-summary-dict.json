@@ -153,7 +153,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "\"tracked_time_s\""
+                      "text": "\"flopscope_backend_time_s\""
                     },
                     {
                       "kind": "text",
@@ -161,11 +161,19 @@
                     },
                     {
                       "kind": "code",
-                      "text": "\"untracked_time_s\""
+                      "text": "\"flopscope_overhead_time_s\""
                     },
                     {
                       "kind": "text",
-                      "text": ", and optionally\n"
+                      "text": ",\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"residual_wall_time_s\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", and optionally "
                     },
                     {
                       "kind": "code",
@@ -173,7 +181,7 @@
                     },
                     {
                       "kind": "text",
-                      "text": " with exact attribution buckets."
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
@@ -227,7 +235,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "\"tracked_time_s\""
+                  "text": "\"flopscope_backend_time_s\""
                 },
                 {
                   "kind": "text",
@@ -235,11 +243,19 @@
                 },
                 {
                   "kind": "code",
-                  "text": "\"untracked_time_s\""
+                  "text": "\"flopscope_overhead_time_s\""
                 },
                 {
                   "kind": "text",
-                  "text": ", and optionally\n"
+                  "text": ",\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "\"residual_wall_time_s\""
+                },
+                {
+                  "kind": "text",
+                  "text": ", and optionally "
                 },
                 {
                   "kind": "code",
@@ -247,7 +263,7 @@
                 },
                 {
                   "kind": "text",
-                  "text": " with exact attribution buckets."
+                  "text": "."
                 }
               ],
               "name": "",
@@ -296,7 +312,7 @@
             },
             {
               "kind": "output",
-              "text": "['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']"
+              "text": "['flop_budget', 'flops_remaining', 'flops_used', 'flopscope_backend_time_s', 'flopscope_overhead_time_s', 'operations', 'residual_wall_time_s', 'wall_time_s']"
             }
           ],
           "type": "doctest_block"
@@ -317,12 +333,12 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": ">>> import flopscope as flops\n>>> import flopscope.numpy as fnp\n>>> with flops.BudgetContext(flop_budget=100):\n...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))\n>>> summary = flops.budget_summary_dict()\n>>> sorted(summary)\n['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']",
+    "code": ">>> import flopscope as flops\n>>> import flopscope.numpy as fnp\n>>> with flops.BudgetContext(flop_budget=100):\n...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))\n>>> summary = flops.budget_summary_dict()\n>>> sorted(summary)\n['flop_budget', 'flops_remaining', 'flops_used', 'flopscope_backend_time_s', 'flopscope_overhead_time_s', 'operations', 'residual_wall_time_s', 'wall_time_s']",
     "output": "",
     "source": "derived"
   },
   "flopscope_ref": "flopscope.budget_summary_dict",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L682",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L916",
   "href": "/docs/api/flopscope/budget-summary-dict/",
   "import_path": "flopscope.budget_summary_dict",
   "is_operation_cost_leaf": false,
@@ -351,8 +367,8 @@
       "body": [
         "Dictionary with keys ``\"flop_budget\"``, ``\"flops_used\"``,",
         "``\"flops_remaining\"``, ``\"operations\"``, ``\"wall_time_s\"``,",
-        "``\"tracked_time_s\"``, ``\"untracked_time_s\"``, and optionally",
-        "``\"by_namespace\"`` with exact attribution buckets."
+        "``\"flopscope_backend_time_s\"``, ``\"flopscope_overhead_time_s\"``,",
+        "``\"residual_wall_time_s\"``, and optionally ``\"by_namespace\"``."
       ],
       "name": "",
       "type": "dict"
