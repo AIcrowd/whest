@@ -224,7 +224,12 @@ function FieldRow({
       onBlur={onBlur}
       style={{
         display: 'grid',
-        gridTemplateColumns: '160px 1fr',
+        // Cap label column at 160 px but let it shrink as low as 80 px so the
+        // row doesn't force its parent wider than the gallery card on narrow
+        // viewports. min-content on the value column is also 0 so a long
+        // mono value wraps via `word-break: break-word` instead of pushing
+        // the row's intrinsic min-width past the card.
+        gridTemplateColumns: 'minmax(80px, 160px) minmax(0, 1fr)',
         columnGap: 10,
         alignItems: 'baseline',
         padding: '4px 6px',
@@ -284,7 +289,11 @@ function AcceptedCard({ pair, uLabels, group, onHoverSigma, onHoverPi }) {
       className="witness-gallery-card witness-gallery-card-accepted"
       style={{
         flex: '1 1 280px',
-        minWidth: 280,
+        // Allow the card to shrink below its 280-px flex-basis on viewports
+        // narrower than that (otherwise the card forces its parent wider
+        // than the gallery column and the section card horizontally
+        // overflows on mobile).
+        minWidth: 0,
         backgroundColor: TOKEN.white,
         border: `1px solid ${TOKEN.coralBorder}`,
         borderLeft: `3px solid ${TOKEN.success}`,
@@ -395,7 +404,9 @@ function RejectedCard({ pair, uLabels, onHoverSigma }) {
       className="witness-gallery-card witness-gallery-card-rejected"
       style={{
         flex: '1 1 280px',
-        minWidth: 280,
+        // See AcceptedCard above — same minWidth:0 fix so the rejected card
+        // shrinks below 280 px on narrow viewports.
+        minWidth: 0,
         backgroundColor: TOKEN.white,
         border: `1px solid ${TOKEN.warningBorder}`,
         borderLeft: `3px solid ${TOKEN.warning}`,
