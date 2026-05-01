@@ -14,6 +14,7 @@ from typing import Any
 import numpy as _np
 from numpy.typing import ArrayLike, DTypeLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._docstrings import attach_docstring
 from flopscope._flops import _ceil_log2
 from flopscope._ndarray import FlopscopeArray, _to_base_ndarray, _to_base_ndarray_tree
@@ -24,6 +25,7 @@ from flopscope._validation import require_budget
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def trace(
     a: ArrayLike,
     offset: int = 0,
@@ -37,7 +39,8 @@ def trace(
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
     out_stripped = _to_base_ndarray(out) if out is not None else None
     with budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.trace(
+        result = _call_numpy(
+            _np.trace,
             _to_base_ndarray(a),
             offset=offset,
             axis1=axis1,
@@ -53,6 +56,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def allclose(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
     budget = require_budget()
     a = _np.asarray(a)
@@ -65,7 +69,7 @@ def allclose(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
     with budget.deduct(
         "allclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.allclose(a, b, **kwargs)
+        result = _call_numpy(_np.allclose, a, b, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -73,6 +77,7 @@ attach_docstring(allclose, _np.allclose, "counted_custom", "numel(a) FLOPs")
 allclose.__signature__ = _inspect.signature(_np.allclose)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def array_equal(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
     budget = require_budget()
     a = _np.asarray(a)
@@ -82,7 +87,7 @@ def array_equal(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
     with budget.deduct(
         "array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.array_equal(a, b, **kwargs)
+        result = _call_numpy(_np.array_equal, a, b, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -90,6 +95,7 @@ attach_docstring(array_equal, _np.array_equal, "counted_custom", "numel(a) FLOPs
 array_equal.__signature__ = _inspect.signature(_np.array_equal)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def array_equiv(a: ArrayLike, b: ArrayLike) -> bool:
     budget = require_budget()
     a = _np.asarray(a)
@@ -106,7 +112,7 @@ def array_equiv(a: ArrayLike, b: ArrayLike) -> bool:
     with budget.deduct(
         "array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.array_equiv(a, b)
+        result = _call_numpy(_np.array_equiv, a, b)
     return result  # type: ignore[return-value]
 
 
@@ -119,6 +125,7 @@ array_equiv.__signature__ = _inspect.signature(_np.array_equiv)  # pyright: igno
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def histogram(
     a: ArrayLike,
     bins: int | Sequence[int] | str = 10,
@@ -135,7 +142,7 @@ def histogram(
         bins_arr = _np.asarray(bins)
         cost = _builtins.max(n * _ceil_log2(_builtins.len(bins_arr)), 1)
     with budget.deduct("histogram", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.histogram(a, bins=bins, **kwargs)
+        result = _call_numpy(_np.histogram, a, bins=bins, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -148,6 +155,7 @@ attach_docstring(
 histogram.__signature__ = _inspect.signature(_np.histogram)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def histogram2d(
     x: ArrayLike,
     y: ArrayLike,
@@ -185,7 +193,7 @@ def histogram2d(
     with budget.deduct(
         "histogram2d", flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
     ):
-        result = _np.histogram2d(x, y, bins=bins, **kwargs)
+        result = _call_numpy(_np.histogram2d, x, y, bins=bins, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -198,6 +206,7 @@ attach_docstring(
 histogram2d.__signature__ = _inspect.signature(_np.histogram2d)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def histogramdd(
     sample: ArrayLike,
     bins: Any = 10,
@@ -232,7 +241,7 @@ def histogramdd(
     with budget.deduct(
         "histogramdd", flop_cost=cost, subscripts=None, shapes=(sample.shape,)
     ):
-        result = _np.histogramdd(sample, bins=bins, **kwargs)
+        result = _call_numpy(_np.histogramdd, sample, bins=bins, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -245,6 +254,7 @@ attach_docstring(
 histogramdd.__signature__ = _inspect.signature(_np.histogramdd)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def histogram_bin_edges(
     a: ArrayLike,
     bins: int | Sequence[int] | str = 10,
@@ -256,7 +266,7 @@ def histogram_bin_edges(
     with budget.deduct(
         "histogram_bin_edges", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.histogram_bin_edges(a, bins=bins, **kwargs)
+        result = _call_numpy(_np.histogram_bin_edges, a, bins=bins, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -266,12 +276,13 @@ attach_docstring(
 histogram_bin_edges.__signature__ = _inspect.signature(_np.histogram_bin_edges)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def bincount(x: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     budget = require_budget()
     x = _np.asarray(x)
     cost = _builtins.max(x.size, 1)
     with budget.deduct("bincount", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.bincount(x, **kwargs)
+        result = _call_numpy(_np.bincount, x, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -287,6 +298,7 @@ except (ValueError, TypeError):
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def logspace(
     start: Any,
     stop: Any,
@@ -296,7 +308,7 @@ def logspace(
     budget = require_budget()
     cost = _builtins.max(num, 1)
     with budget.deduct("logspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
-        result = _np.logspace(start, stop, num=num, **kwargs)
+        result = _call_numpy(_np.logspace, start, stop, num=num, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -304,6 +316,7 @@ attach_docstring(logspace, _np.logspace, "counted_custom", "num FLOPs")
 logspace.__signature__ = _inspect.signature(_np.logspace)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def geomspace(
     start: Any,
     stop: Any,
@@ -313,7 +326,7 @@ def geomspace(
     budget = require_budget()
     cost = _builtins.max(num, 1)
     with budget.deduct("geomspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
-        result = _np.geomspace(start, stop, num=num, **kwargs)
+        result = _call_numpy(_np.geomspace, start, stop, num=num, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -321,6 +334,7 @@ attach_docstring(geomspace, _np.geomspace, "counted_custom", "num FLOPs")
 geomspace.__signature__ = _inspect.signature(_np.geomspace)  # pyright: ignore[reportFunctionMemberAccess]
 
 
+@_counted_wrapper
 def vander(
     x: ArrayLike,
     N: int | None = None,
@@ -333,7 +347,7 @@ def vander(
         N = n
     cost = _builtins.max(n * (N - 1), 1)
     with budget.deduct("vander", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.vander(x, N=N, **kwargs)
+        result = _call_numpy(_np.vander, x, N=N, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -345,6 +359,7 @@ vander.__signature__ = _inspect.signature(_np.vander)  # pyright: ignore[reportF
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def apply_along_axis(
     func1d: Any,
     axis: int,
@@ -373,6 +388,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def apply_over_axes(
     func: Any,
     a: ArrayLike,
@@ -399,6 +415,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def piecewise(
     x: ArrayLike,
     condlist: Any,

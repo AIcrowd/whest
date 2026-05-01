@@ -9,6 +9,7 @@ from typing import Any
 import numpy as _np
 from numpy.typing import ArrayLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._docstrings import attach_docstring
 from flopscope._flops import search_cost, sort_cost
 from flopscope._ndarray import FlopscopeArray, _to_base_ndarray, _to_base_ndarray_tree
@@ -45,6 +46,7 @@ def _sort_cost_nd(a: _np.ndarray, axis: int) -> int:
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def sort(
     a: ArrayLike,
     axis: int | None = -1,
@@ -64,7 +66,7 @@ def sort(
         ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
     with budget.deduct("sort", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.sort(_to_base_ndarray(a), axis=axis, **kwargs)
+        result = _call_numpy(_np.sort, _to_base_ndarray(a), axis=axis, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -72,6 +74,7 @@ attach_docstring(sort, _np.sort, "counted_custom", "n*ceil(log2(n)) FLOPs per sl
 sort.__signature__ = _inspect.signature(_np.sort)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def argsort(
     a: ArrayLike,
     axis: int | None = -1,
@@ -89,7 +92,7 @@ def argsort(
         ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
     with budget.deduct("argsort", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.argsort(_to_base_ndarray(a), axis=axis, **kwargs)
+        result = _call_numpy(_np.argsort, _to_base_ndarray(a), axis=axis, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -99,6 +102,7 @@ attach_docstring(
 argsort.__signature__ = _inspect.signature(_np.argsort)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def lexsort(keys: Sequence[ArrayLike], axis: int = -1) -> FlopscopeArray:
     """Counted version of ``numpy.lexsort``.
 
@@ -117,13 +121,14 @@ def lexsort(keys: Sequence[ArrayLike], axis: int = -1) -> FlopscopeArray:
         cost = max(k * sort_cost(n), 1)
     shapes = tuple(_np.asarray(key).shape for key in keys_list)
     with budget.deduct("lexsort", flop_cost=cost, subscripts=None, shapes=shapes):
-        result = _np.lexsort(_to_base_ndarray_tree(keys_list), axis=axis)
+        result = _call_numpy(_np.lexsort, _to_base_ndarray_tree(keys_list), axis=axis)
     return result
 
 
 attach_docstring(lexsort, _np.lexsort, "counted_custom", "k*n*ceil(log2(n)) FLOPs")
 
 
+@_counted_wrapper
 def partition(
     a: ArrayLike,
     kth: int | Sequence[int],
@@ -148,7 +153,7 @@ def partition(
         num_slices = numel // n if n > 0 else 1
         cost = max(num_slices * n * kth_count, 1)
     with budget.deduct("partition", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.partition(_to_base_ndarray(a), kth, axis=axis, **kwargs)
+        result = _call_numpy(_np.partition, _to_base_ndarray(a), kth, axis=axis, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -158,6 +163,7 @@ attach_docstring(
 partition.__signature__ = _inspect.signature(_np.partition)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def argpartition(
     a: ArrayLike,
     kth: int | Sequence[int],
@@ -184,7 +190,7 @@ def argpartition(
     with budget.deduct(
         "argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.argpartition(_to_base_ndarray(a), kth, axis=axis, **kwargs)
+        result = _call_numpy(_np.argpartition, _to_base_ndarray(a), kth, axis=axis, **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -202,6 +208,7 @@ argpartition.__signature__ = _inspect.signature(_np.argpartition)  # type: ignor
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def searchsorted(
     a: ArrayLike,
     v: ArrayLike,
@@ -224,7 +231,7 @@ def searchsorted(
         subscripts=None,
         shapes=(a.shape, v_arr.shape),
     ):
-        result = _np.searchsorted(_to_base_ndarray(a), _to_base_ndarray(v), **kwargs)
+        result = _call_numpy(_np.searchsorted, _to_base_ndarray(a), _to_base_ndarray(v), **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -237,6 +244,7 @@ attach_docstring(
 searchsorted.__signature__ = _inspect.signature(_np.searchsorted)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def digitize(
     x: ArrayLike,
     bins: ArrayLike,
@@ -257,7 +265,7 @@ def digitize(
         subscripts=None,
         shapes=(x_arr.shape, bins_arr.shape),
     ):
-        result = _np.digitize(_to_base_ndarray(x), _to_base_ndarray(bins), **kwargs)  # type: ignore[arg-type]
+        result = _call_numpy(_np.digitize, _to_base_ndarray(x), _to_base_ndarray(bins), **kwargs)  # type: ignore[arg-type]
     return result  # type: ignore[return-value]
 
 
@@ -283,6 +291,7 @@ def _unique_cost(ar):
     return sort_cost(n)
 
 
+@_counted_wrapper
 def unique(ar: ArrayLike, **kwargs: Any) -> FlopscopeArray | tuple[FlopscopeArray, ...]:
     """Counted version of ``numpy.unique``. Cost: n*ceil(log2(n)) FLOPs.
 
@@ -296,7 +305,7 @@ def unique(ar: ArrayLike, **kwargs: Any) -> FlopscopeArray | tuple[FlopscopeArra
     with budget.deduct(
         "unique", flop_cost=cost, subscripts=None, shapes=(ar_arr.shape,)
     ):
-        result = _np.unique(ar_arr, **kwargs)
+        result = _call_numpy(_np.unique, ar_arr, **kwargs)
 
     # Shim: restore sort guarantee for string / complex dtypes on numpy 2.3+.
     # Only active for the default signature (no auxiliary arrays requested).
@@ -317,6 +326,7 @@ attach_docstring(unique, _np.unique, "counted_custom", "n*ceil(log2(n)) FLOPs")
 unique.__signature__ = _inspect.signature(_np.unique)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def unique_all(x: ArrayLike, /) -> Any:
     """Counted version of ``numpy.unique_all``. Cost: n*ceil(log2(n)) FLOPs."""
     budget = require_budget()
@@ -325,13 +335,14 @@ def unique_all(x: ArrayLike, /) -> Any:
     with budget.deduct(
         "unique_all", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
     ):
-        result = _np.unique_all(x_arr)
+        result = _call_numpy(_np.unique_all, x_arr)
     return result
 
 
 attach_docstring(unique_all, _np.unique_all, "counted_custom", "n*ceil(log2(n)) FLOPs")
 
 
+@_counted_wrapper
 def unique_counts(x: ArrayLike, /) -> Any:
     """Counted version of ``numpy.unique_counts``. Cost: n*ceil(log2(n)) FLOPs."""
     budget = require_budget()
@@ -340,7 +351,7 @@ def unique_counts(x: ArrayLike, /) -> Any:
     with budget.deduct(
         "unique_counts", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
     ):
-        result = _np.unique_counts(x_arr)
+        result = _call_numpy(_np.unique_counts, x_arr)
     return result
 
 
@@ -349,6 +360,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def unique_inverse(x: ArrayLike, /) -> Any:
     """Counted version of ``numpy.unique_inverse``. Cost: n*ceil(log2(n)) FLOPs."""
     budget = require_budget()
@@ -357,7 +369,7 @@ def unique_inverse(x: ArrayLike, /) -> Any:
     with budget.deduct(
         "unique_inverse", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
     ):
-        result = _np.unique_inverse(x_arr)
+        result = _call_numpy(_np.unique_inverse, x_arr)
     return result
 
 
@@ -366,6 +378,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def unique_values(x: ArrayLike, /) -> FlopscopeArray:
     """Counted version of ``numpy.unique_values``. Cost: n*ceil(log2(n)) FLOPs."""
     budget = require_budget()
@@ -374,7 +387,7 @@ def unique_values(x: ArrayLike, /) -> FlopscopeArray:
     with budget.deduct(
         "unique_values", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
     ):
-        result = _np.unique_values(x_arr)
+        result = _call_numpy(_np.unique_values, x_arr)
     return result  # type: ignore[return-value]
 
 
@@ -398,6 +411,7 @@ def _set_cost(ar1, ar2):
 
 if hasattr(_np, "in1d"):
 
+    @_counted_wrapper
     def in1d(ar1: ArrayLike, ar2: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         """Counted version of ``numpy.in1d``. Cost: (n+m)*ceil(log2(n+m)) FLOPs."""
         budget = require_budget()
@@ -407,7 +421,7 @@ if hasattr(_np, "in1d"):
         with budget.deduct(
             "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
         ):
-            result = _np.in1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+            result = _call_numpy(_np.in1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
         return result  # type: ignore[return-value]
 
     attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
@@ -419,6 +433,7 @@ else:
         raise UnsupportedFunctionError("in1d", max_version="2.4", replacement="isin")
 
 
+@_counted_wrapper
 def isin(
     element: ArrayLike,
     test_elements: ArrayLike,
@@ -432,8 +447,8 @@ def isin(
     with budget.deduct(
         "isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape)
     ):
-        result = _np.isin(
-            _to_base_ndarray(element), _to_base_ndarray(test_elements), **kwargs
+        result = _call_numpy(
+            _np.isin, _to_base_ndarray(element), _to_base_ndarray(test_elements), **kwargs
         )
     return result  # type: ignore[return-value]
 
@@ -442,6 +457,7 @@ attach_docstring(isin, _np.isin, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs"
 isin.__signature__ = _inspect.signature(_np.isin)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def intersect1d(
     ar1: ArrayLike,
     ar2: ArrayLike,
@@ -455,7 +471,7 @@ def intersect1d(
     with budget.deduct(
         "intersect1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.intersect1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+        result = _call_numpy(_np.intersect1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -465,6 +481,7 @@ attach_docstring(
 intersect1d.__signature__ = _inspect.signature(_np.intersect1d)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def union1d(ar1: ArrayLike, ar2: ArrayLike) -> FlopscopeArray:
     """Counted version of ``numpy.union1d``. Cost: (n+m)*ceil(log2(n+m)) FLOPs."""
     budget = require_budget()
@@ -474,13 +491,14 @@ def union1d(ar1: ArrayLike, ar2: ArrayLike) -> FlopscopeArray:
     with budget.deduct(
         "union1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.union1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2))
+        result = _call_numpy(_np.union1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2))
     return result  # type: ignore[return-value]
 
 
 attach_docstring(union1d, _np.union1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
 
 
+@_counted_wrapper
 def setdiff1d(
     ar1: ArrayLike,
     ar2: ArrayLike,
@@ -494,7 +512,7 @@ def setdiff1d(
     with budget.deduct(
         "setdiff1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.setdiff1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+        result = _call_numpy(_np.setdiff1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
     return result  # type: ignore[return-value]
 
 
@@ -504,6 +522,7 @@ attach_docstring(
 setdiff1d.__signature__ = _inspect.signature(_np.setdiff1d)  # type: ignore[attr-defined]
 
 
+@_counted_wrapper
 def setxor1d(
     ar1: ArrayLike,
     ar2: ArrayLike,
@@ -517,7 +536,7 @@ def setxor1d(
     with budget.deduct(
         "setxor1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.setxor1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+        result = _call_numpy(_np.setxor1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
     return result  # type: ignore[return-value]
 
 
