@@ -30,6 +30,7 @@ import TwoQuotientSchematic from './components/TwoQuotientSchematic.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import NaiveAlphaCostMeter from './components/NaiveAlphaCostMeter.jsx';
 import TuplePatternMeter from './components/TuplePatternMeter.jsx';
+import CertificationSummaryStrip from './components/CertificationSummaryStrip.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import {
   getExplorerThemeCssVariables,
@@ -704,6 +705,25 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         onHover={handleGraphHover}
                         activeComponentId={activeComponentId}
                         onActiveComponentHoverChange={setActiveComponentId}
+                      />
+                    </div>
+                    {/* C27 — Certification Summary Strip: 7-metric bridge that
+                        sits at the end of the certification section, between
+                        the SigmaLoop / Generator-Construction / LabelInteractionGraph
+                        block above and the next section's narrative callouts.
+                        Each pill is hover-aware: writing to upstream highlight
+                        targets (wreath / audit / generator-closure / column-action)
+                        and the existing activeComponentId bus. */}
+                    <div className="mt-6">
+                      <CertificationSummaryStrip
+                        candidateMoves={(sigmaResults ?? []).filter((r) => !r.skipped).length}
+                        accepted={(sigmaResults ?? []).filter((r) => !r.skipped && r.isValid).length}
+                        identityOnly={(sigmaResults ?? []).filter((r) => r.skipped).length}
+                        rejected={(sigmaResults ?? []).filter((r) => !r.skipped && !r.isValid).length}
+                        gPtSize={group?.fullElements?.length ?? 1}
+                        hSize={group?.fullElements?.length ?? 1}
+                        componentsCount={(componentData?.components ?? []).length}
+                        setActiveComponentId={setActiveComponentId}
                       />
                     </div>
                     <div className="mt-4">
