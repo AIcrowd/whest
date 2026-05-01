@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import CaseBadge from './CaseBadge.jsx';
 import { AnchorLink } from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
@@ -24,6 +26,14 @@ import {
 // orbit-projection count over product orbits, not generally a simple quotient
 // of the visible labels alone.
 const AGGREGATION_FORMULA = String.raw`\text{Total Cost} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
+
+// V3.1 editorial heart of §9 — MUST appear verbatim.
+const CAPTION_ADDED_NOT_MULTIPLIED =
+  'Multiplication-chain events and accumulation-update events are added, not multiplied.';
+
+// Tooltip text for hovering the product term in the hero formula.
+const BURNSIDE_PRODUCT_TOOLTIP =
+  'M_a is a Burnside orbit count: representative products per component.';
 const SECTION_FIVE_INTRO_PARAGRAPH =
   'The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. The final step is to combine the two quantities a direct symmetry-aware evaluator needs: representative products and accumulation updates from those product-orbit representatives into stored output representatives.';
 
@@ -40,6 +50,53 @@ const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\
 const PIECEWISE_SCOPE_NOTE =
   `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts pairs $(O, Q)$ where $O$ is a product orbit and $Q$ is a stored output representative reached by $${notationLatex('projection_pi_v_free')}$: an orbit that reaches several stored output representatives contributes once to each such representative.`;
 
+
+// ---------------------------------------------------------------------------
+// SimpleTooltip — lightweight absolute-positioned popover used for the
+// Burnside product-term hover. Matches CaseBadge's visual register (same
+// rounded-xl border, shadow, z-index) without requiring a regimeId.
+// ---------------------------------------------------------------------------
+
+function SimpleTooltip({ anchorRef, text, visible }) {
+  const [pos, setPos] = useState({ x: 0, y: 0, flipped: false });
+
+  useEffect(() => {
+    if (!visible || !anchorRef?.current) return;
+    const rect = anchorRef.current.getBoundingClientRect();
+    const vw = document.documentElement.clientWidth;
+    const TOOLTIP_W = 340;
+    let x = rect.left + rect.width / 2;
+    x = Math.max(TOOLTIP_W / 2 + 12, Math.min(x, vw - TOOLTIP_W / 2 - 12));
+    const roomAbove = rect.top;
+    const flipped = roomAbove < 80;
+    const y = flipped ? rect.bottom + 8 : rect.top - 8;
+    setPos({ x, y, flipped });
+  }, [visible, anchorRef]);
+
+  if (!visible || typeof document === 'undefined') return null;
+
+  return createPortal(
+    <div
+      className="pointer-events-none fixed z-[9999] w-[340px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
+      role="tooltip"
+      style={{
+        left: pos.x,
+        top: pos.y,
+        transform: pos.flipped ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)',
+      }}
+    >
+      <p className="text-sm leading-5 text-stone-700">{text}</p>
+      <div
+        className={['absolute left-1/2 h-1.5 w-3 bg-white', pos.flipped ? 'top-[-6px]' : 'bottom-[-6px]'].join(' ')}
+        style={{
+          clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+          transform: pos.flipped ? 'translateX(-50%) rotate(180deg)' : 'translateX(-50%)',
+        }}
+      />
+    </div>,
+    document.body,
+  );
+}
 
 // Helper: \textcolor wrapper for composing LaTeX with a role color. The
 // legend definitions below use these so that every math token inside a
@@ -213,60 +270,148 @@ function HeroFormulaBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   const piecewisePrefix = getPiecewisePrefix(themeOverride);
   const aggregationLeaves = getAggregationLeaves(themeOverride);
   const piecewiseRowSpan = getPiecewiseRowSpan();
+
+  // Compact / full formula toggle (default: full)
+  const [formulaMode, setFormulaMode] = useState('full');
+
+  // Hover-product-term → Burnside tooltip
+  const productTermRef = useRef(null);
+  const [showBurnsideTooltip, setShowBurnsideTooltip] = useState(false);
+
+  const compactLine = String.raw`\mathrm{Total} \;=\; \mu + \alpha \;=\; (k-1)\!\prod_a M_a \;+\; \prod_a \alpha_a`;
+
   return (
     <div className="space-y-7">
-      {/* Top line */}
-      <div className="flex justify-center overflow-x-auto overflow-y-visible">
-        <div className="min-w-0 text-[17px] sm:text-[19px]">
-          <Latex display math={topLine} themeOverride={themeOverride} />
-        </div>
+      {/* Compact / full toggle — matches TwoQuotientSchematic preset-button register */}
+      <div
+        role="group"
+        aria-label="Formula detail level"
+        className="flex justify-center gap-2"
+      >
+        {[
+          { id: 'compact', label: 'Compact' },
+          { id: 'full', label: 'Full formula' },
+        ].map(({ id, label }) => {
+          const active = formulaMode === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              aria-pressed={active}
+              onClick={() => setFormulaMode(id)}
+              className={[
+                'rounded-md border px-3 py-1 text-[13px] transition-colors',
+                active
+                  ? 'border-coral bg-coral/10 font-semibold text-coral'
+                  : 'border-border bg-white font-normal text-muted-foreground hover:border-gray-300',
+              ].join(' ')}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
-      <div className="text-center">
-        <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
-          <InlineMathText themeOverride={themeOverride}>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
+      {formulaMode === 'compact' ? (
+        /* Compact mode: one-line summary */
+        <div className="flex justify-center overflow-x-auto overflow-y-visible">
+          <div className="min-w-0 text-[17px] sm:text-[19px]">
+            <Latex display math={compactLine} themeOverride={themeOverride} />
+          </div>
         </div>
-      </div>
-      <div className="flex justify-center overflow-x-auto overflow-y-visible">
-        <div
-          className="grid items-center gap-x-5 gap-y-2 text-[14px]"
-          style={{ gridTemplateColumns: 'auto auto 1fr auto' }}
-        >
-          {/* Keep α_a, =, and the brace in one KaTeX fragment so alignment comes from math layout, not CSS boxes. */}
-          <div
-            className="flex items-center justify-center self-stretch overflow-visible pr-1"
-            style={{
-              gridColumn: '1 / span 2',
-              gridRow: `1 / span ${piecewiseRowSpan}`,
-            }}
-          >
-            <Latex math={piecewisePrefix} themeOverride={themeOverride} />
+      ) : (
+        <>
+          {/* Full mode: top line with hover-product-term */}
+          <div className="flex justify-center overflow-x-auto overflow-y-visible">
+            <div className="min-w-0 text-[17px] sm:text-[19px]">
+              {/* Hover wrapper for the product term → Burnside tooltip */}
+              <span
+                ref={productTermRef}
+                className="inline-block cursor-help"
+                tabIndex={0}
+                role="button"
+                aria-label="Hover to learn about Burnside orbit counts"
+                onMouseEnter={() => setShowBurnsideTooltip(true)}
+                onMouseLeave={() => setShowBurnsideTooltip(false)}
+                onFocus={() => setShowBurnsideTooltip(true)}
+                onBlur={() => setShowBurnsideTooltip(false)}
+              >
+                <Latex display math={topLine} themeOverride={themeOverride} />
+              </span>
+              <SimpleTooltip
+                anchorRef={productTermRef}
+                text={BURNSIDE_PRODUCT_TOOLTIP}
+                visible={showBurnsideTooltip}
+              />
+            </div>
           </div>
 
-          {aggregationLeaves.map((leaf) => (
-            <FormulaRow key={leaf.id} leaf={leaf} themeOverride={themeOverride} />
-          ))}
-        </div>
-      </div>
+          {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
+          <div className="text-center">
+            <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
+              <InlineMathText themeOverride={themeOverride}>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
+            </div>
+          </div>
+          <div className="flex justify-center overflow-x-auto overflow-y-visible">
+            <div
+              className="grid items-center gap-x-5 gap-y-2 text-[14px]"
+              style={{ gridTemplateColumns: 'auto auto 1fr auto' }}
+            >
+              {/* Keep α_a, =, and the brace in one KaTeX fragment so alignment comes from math layout, not CSS boxes. */}
+              <div
+                className="flex items-center justify-center self-stretch overflow-visible pr-1"
+                style={{
+                  gridColumn: '1 / span 2',
+                  gridRow: `1 / span ${piecewiseRowSpan}`,
+                }}
+              >
+                <Latex math={piecewisePrefix} themeOverride={themeOverride} />
+              </div>
+
+              {aggregationLeaves.map((leaf) => (
+                <FormulaRow key={leaf.id} leaf={leaf} themeOverride={themeOverride} />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* V3.1 §9 editorial caption — MUST appear verbatim */}
+      <p className="text-center font-serif text-[13px] italic leading-[1.6] text-gray-500">
+        {CAPTION_ADDED_NOT_MULTIPLIED}
+      </p>
     </div>
   );
 }
 
 function FormulaRow({ leaf, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
+  // Appendix B link target — alpha-shortcut details live in appendix section 2
+  // (accumulation counting methods). The appendix is opened via the hash
+  // #appendix-section-2 which the app's openAppendix listener recognises.
+  const appendixHref = '#appendix-section-2';
+  const presentation = getRegimePresentation(leaf.id, null);
+  const shortcutLabel = presentation?.label ?? leaf.id;
+
   return (
     <>
       {/* Formula cell wrapped in CaseBadge passthrough mode — hovering the
-          formula opens the same shape/regime tooltip as the leaf pill. */}
+          formula opens the same shape/regime tooltip as the leaf pill.
+          Clicking navigates to Appendix B (alpha-shortcut details). */}
       <div className="py-1 pr-4" style={{ gridColumn: 3 }}>
-        <CaseBadge
-          regimeId={leaf.id}
-          className="whitespace-nowrap"
-          themeOverride={themeOverride}
-          presentationThemeOverride={null}
+        <a
+          href={appendixHref}
+          className="group/alpha-row outline-none"
+          aria-label={`${shortcutLabel} alpha shortcut — see Appendix B for full derivation`}
         >
-          <Latex math={leaf.formula} themeOverride={themeOverride} />
-        </CaseBadge>
+          <CaseBadge
+            regimeId={leaf.id}
+            className="whitespace-nowrap"
+            themeOverride={themeOverride}
+            presentationThemeOverride={null}
+          >
+            <Latex math={leaf.formula} themeOverride={themeOverride} />
+          </CaseBadge>
+        </a>
       </div>
       <div className="flex items-center gap-2 whitespace-nowrap pl-2 text-[12px] text-muted-foreground" style={{ gridColumn: 4 }}>
         <span className="italic">if</span>
