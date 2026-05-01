@@ -484,11 +484,12 @@ def test_budget_summary_dict_includes_op_duration():
 
 def test_budget_context_summary_dict_live_and_closed():
     import time
+    from flopscope._budget import _call_numpy
 
     budget = BudgetContext(flop_budget=100, quiet=True)
     with budget:
         with budget.deduct("add", flop_cost=10, subscripts=None, shapes=()):
-            time.sleep(0.01)
+            _call_numpy(time.sleep, 0.01)  # tracked via _call_numpy
         live = budget.summary_dict()
         assert live["flop_budget"] == 100
         assert live["flops_used"] == 10
@@ -696,3 +697,23 @@ def test_counted_wrapper_handles_exceptions():
             boom()
     # Overhead recorded despite the exception
     assert b.flopscope_overhead_time > 0
+
+
+def test_optimer_splits_block_into_tracked_and_overhead():
+    import time as _time
+    import flopscope
+    from flopscope._budget import _call_numpy
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        with b.deduct("x", flop_cost=1, subscripts=None, shapes=()):
+            _time.sleep(0.005)  # in-block overhead (no _call_numpy)
+            _call_numpy(_time.sleep, 0.01)  # tracked
+            _time.sleep(0.005)  # more in-block overhead
+    op = b.op_log[-1]
+    # tracked = ONLY the _call_numpy duration
+    assert op.duration is not None
+    assert 0.009 <= op.duration <= 0.020  # ~0.01 with timing slop
+    assert b.total_tracked_time == op.duration
+    # in-block overhead = block - tracked, includes the two 0.005 sleeps
+    assert op.flopscope_overhead is not None
+    assert op.flopscope_overhead >= 0.008

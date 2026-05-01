@@ -52,35 +52,49 @@ class OpRecord(NamedTuple):
 
 
 class _OpTimer:
-    """Lightweight timer returned by BudgetContext.deduct().
+    """Timer for a counted op's numpy call window.
 
-    Use as a context manager to measure wall-clock duration of the
-    numpy operation that follows the FLOP deduction::
+    Used as a context manager around the numpy call::
 
-        with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(...)):
-            result = np_func(x)
+        with budget.deduct(op_name, ...):
+            result = _call_numpy(np_func, ...)
 
-    If used without ``with``, duration stays ``None`` on the OpRecord.
+    On __exit__, the block's wall time is split into:
+      - tracked_time:  sum of _call_numpy durations reported during the block
+      - in-block overhead: block_duration - tracked (view-casts, copyto, etc.)
     """
 
-    __slots__ = ("_budget", "_start")
+    __slots__ = ("_budget", "_op_index", "_block_t0", "_np_duration", "_prev_timer")
 
-    def __init__(self, budget: BudgetContext):
+    def __init__(self, budget: BudgetContext, op_index: int):
         self._budget = budget
-        self._start: float | None = None
+        self._op_index = op_index
+        self._block_t0: float | None = None
+        self._np_duration: float = 0.0
+        self._prev_timer: _OpTimer | None = None
 
     def __enter__(self) -> _OpTimer:
-        self._start = time.perf_counter()
+        self._block_t0 = time.perf_counter()
+        # Stack discipline supports the rare case of nested deduct() blocks
+        self._prev_timer = self._budget._current_op_timer
+        self._budget._current_op_timer = self
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> Literal[False]:
-        if self._start is not None:
-            duration = time.perf_counter() - self._start
-            log = self._budget._op_log
-            log[-1] = log[-1]._replace(duration=duration)
-            self._budget._total_tracked_time += duration
+        if self._block_t0 is not None:
+            block_duration = time.perf_counter() - self._block_t0
+            in_block_overhead = max(block_duration - self._np_duration, 0.0)
 
-            # Post-op deadline check: only if no exception is already propagating
+            self._budget._total_tracked_time += self._np_duration
+            self._budget._total_flopscope_overhead_time += in_block_overhead
+
+            op = self._budget._op_log[self._op_index]
+            self._budget._op_log[self._op_index] = op._replace(
+                duration=self._np_duration,
+                flopscope_overhead=(op.flopscope_overhead or 0.0) + in_block_overhead,
+            )
+
+            # Post-op deadline check (preserves existing behavior)
             if (
                 exc_type is None
                 and self._budget._deadline is not None
@@ -89,10 +103,12 @@ class _OpTimer:
                 from flopscope.errors import TimeExhaustedError
 
                 raise TimeExhaustedError(
-                    log[-1].op_name,
+                    op.op_name,
                     elapsed_s=time.perf_counter() - self._budget._start_time,  # type: ignore[operator]
                     limit_s=self._budget._wall_time_limit_s,  # type: ignore[arg-type]
                 )
+
+        self._budget._current_op_timer = self._prev_timer
         return False
 
 
@@ -458,7 +474,8 @@ class BudgetContext:
                 limit_s=self._wall_time_limit_s,  # type: ignore[arg-type]
             )
 
-        return _OpTimer(self)
+        op_index = len(self._op_log) - 1
+        return _OpTimer(self, op_index=op_index)
 
     def summary_dict(self, by_namespace: bool = False) -> dict:
         """Return structured summary data for this budget context."""
