@@ -5,7 +5,40 @@ title: Changelog
 
 ## Unreleased
 
+### Fixed
+
+- **`fnp.random.default_rng()` and `fnp.random.RandomState()` now properly count
+  FLOPs.** Sampler methods on the returned objects (e.g. `rng.standard_normal()`,
+  `rs.randn()`) deduct FLOPs from the active budget and return `FlopscopeArray`
+  instead of raw `numpy.ndarray`. Previously these silently bypassed FLOP
+  accounting — a real risk for the ARC Whitebox Estimation Challenge, since
+  submissions could burn arbitrary compute without deducting a single FLOP.
+  Closes [flopscope#18](https://github.com/AIcrowd/flopscope/issues/18).
+
+### Changed
+
+- **`fnp.random.__getattr__` no longer silently forwards unknown attributes to
+  `numpy.random`.** Bit-generator classes (`BitGenerator`, `MT19937`, `PCG64`,
+  `PCG64DXSM`, `Philox`, `SFC64`) pass through unchanged. Anything else now
+  raises `AttributeError` with a pointer to `default_rng()`. Use
+  `numpy.random` directly if you need an unwrapped/unsupported function.
+  Module-level samplers (`fnp.random.randn`, `normal`, `uniform`, …) are
+  unchanged — same semantics as numpy, no warnings.
+
+### Notes
+
+- Downstream repos (`whestbench`, `whest-starterkit`) can now drop the
+  `fnp.asarray(rng.uniform(...).astype(...))` workaround around `default_rng`
+  / `RandomState` sampler outputs — the wrap is no longer needed.
+
 ### Added
+
+- **Method-level registry entries for `random.Generator.<method>` and
+  `random.RandomState.<method>`** (~94 entries with categories
+  `counted_random_method` / `free_random_method` and a `cost_formula` field).
+  `scripts/numpy_audit.py` now drift-checks the new slice on every numpy
+  version bump, so future numpy releases that add a new sampler method will
+  fail the audit until the maintainer adds a registry entry.
 
 - **NumPy `__array_ufunc__` (NEP 13) and `__array_function__` (NEP 18) protocols on
   `FlopscopeArray`.** Calls like `np.add(flopscope, x)`, `np.add.reduce(a)`,
