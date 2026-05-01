@@ -664,3 +664,35 @@ def test_call_numpy_returns_fn_result_and_records_duration():
         finally:
             b._current_op_timer = None
         assert fake._np_duration >= 0.01
+
+
+def test_counted_wrapper_records_overhead():
+    import time as _time
+    import flopscope
+    from flopscope._budget import _counted_wrapper
+
+    @_counted_wrapper
+    def fake_wrapper(x):
+        # Pure preamble (no deduct, no numpy) — all time is overhead
+        _time.sleep(0.01)
+        return x + 1
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        result = fake_wrapper(5)
+    assert result == 6
+    assert b.flopscope_overhead_time >= 0.01
+
+
+def test_counted_wrapper_handles_exceptions():
+    import flopscope
+    from flopscope._budget import _counted_wrapper
+
+    @_counted_wrapper
+    def boom():
+        raise ValueError("nope")
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        with pytest.raises(ValueError):
+            boom()
+    # Overhead recorded despite the exception
+    assert b.flopscope_overhead_time > 0

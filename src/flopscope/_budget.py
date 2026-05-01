@@ -117,6 +117,43 @@ def _call_numpy(fn, *args, **kwargs):
             budget._current_op_timer._np_duration += d
 
 
+def _counted_wrapper(fn):
+    """Decorator that brackets a flopscope wrapper and bills its non-numpy,
+    non-nested-overhead time to flopscope_overhead_time.
+
+    Formula: wall - tracked_delta - overhead_delta. Handles nesting naturally
+    (outer attributes only its own remainder), so no re-entrancy guard.
+
+    Per-op attribution: wrapper-own overhead is distributed equally across
+    ops created during this call (typically exactly 1 across this codebase).
+    """
+    @functools.wraps(fn)
+    def wrapped(*args, **kwargs):
+        from flopscope._validation import require_budget
+        budget = require_budget()
+        fs_t0 = time.perf_counter()
+        tracked_baseline = budget._total_tracked_time
+        overhead_baseline = budget._total_flopscope_overhead_time
+        ops_before = len(budget._op_log)
+        try:
+            return fn(*args, **kwargs)
+        finally:
+            wall = time.perf_counter() - fs_t0
+            tracked_delta = budget._total_tracked_time - tracked_baseline
+            overhead_delta = budget._total_flopscope_overhead_time - overhead_baseline
+            wrapper_own_overhead = max(wall - tracked_delta - overhead_delta, 0.0)
+            budget._total_flopscope_overhead_time += wrapper_own_overhead
+            ops_added = list(range(ops_before, len(budget._op_log)))
+            if ops_added and wrapper_own_overhead > 0:
+                per_op = wrapper_own_overhead / len(ops_added)
+                for idx in ops_added:
+                    op = budget._op_log[idx]
+                    budget._op_log[idx] = op._replace(
+                        flopscope_overhead=(op.flopscope_overhead or 0.0) + per_op
+                    )
+    return wrapped
+
+
 _thread_local = threading.local()
 _all_budget_contexts: weakref.WeakSet[BudgetContext] = weakref.WeakSet()
 
