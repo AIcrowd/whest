@@ -18,6 +18,7 @@ import {
   countMapOrbitsUnderH,
   partitionKey,
   numBlocks,
+  fallingFactorial,
 } from '../engine/partition/typedPartitions.js';
 import {
   restrictStabilizerToPositions,
@@ -68,6 +69,41 @@ const FORMULA_HOVER_TARGETS = {
 // Eight matches the visual rhythm of the surrounding subsection cards.
 const VISIBLE_LIMIT = 8;
 
+// V3.1 §34 brute-force compare. The "compare brute force" toggle expands a
+// tiny tuple-count table for n = 2..6: at each n we substitute the
+// partition's per-position sizes with uniform n and compute (n)_b — the
+// number of tuples whose equality pattern is exactly x̃. This is the same
+// quantity α counts before the |Ḡ| / |A_p̃/H_a| collapse, so the column
+// gives a direct read on how much partition counting saves vs raw tuple
+// enumeration.
+const BRUTE_FORCE_NS = [2, 3, 4, 5, 6];
+
+// V3.1 §34 helper. Given a partition (block assignment per position) and a
+// uniform domain size n, return ∏_s (n)_{b_s}. We treat every position as
+// living in the same n-size domain so the blocks all share a single
+// falling-factorial tier; this is the natural "what if every dimension
+// were n?" thought experiment for the brute-force compare table.
+function bruteForceTupleCount(partition, n) {
+  const blocks = numBlocks(partition);
+  return fallingFactorial(n, blocks);
+}
+
+// V3.1 §34 helper. Render a partition as a human-readable block list, e.g.
+// partition [0,0,1] with labels ['a','b','c'] becomes "{a,b}, {c}". Falls
+// back to numeric position indices when labels are missing so the detail
+// card never shows undefined.
+function describeBlocks(partition, labels) {
+  const blockToLabels = new Map();
+  partition.forEach((block, position) => {
+    if (!blockToLabels.has(block)) blockToLabels.set(block, []);
+    blockToLabels.get(block).push(labels[position] ?? `p${position}`);
+  });
+  const sortedBlocks = [...blockToLabels.keys()].sort((a, b) => a - b);
+  return sortedBlocks
+    .map((block) => `{${blockToLabels.get(block).join(',')}}`)
+    .join(', ');
+}
+
 // V3.1 §36 helper. Wraps a formula sub-expression in a hover-bus span that
 // sets the parent's formulaTermHover state on mouse OR focus events (so
 // keyboard users get the same column-highlight cue as mouse users). The
@@ -107,6 +143,11 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
   // readers can match each summand to its corresponding column without
   // squinting at the LaTeX.
   const [formulaTermHover, setFormulaTermHover] = useState(null);
+  // V3.1 §34 "Compare brute force" toggle. Default-off; flipping it
+  // expands a tiny per-n tuple-count strip beneath the selected-pattern
+  // detail card so readers can see how (n)_b grows vs the partition
+  // counter's compressed form.
+  const [bruteForceOpen, setBruteForceOpen] = useState(false);
 
   if (!componentData || !costModel) return null;
 
@@ -130,6 +171,12 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
   }));
 
   const hElements = elements.length > 0 ? restrictStabilizerToPositions(elements, visiblePositions) : [];
+  // V3.1 §34. selectedPatternIdx is derived from the canonical
+  // selectedPatternKey state above so chip clicks, row hovers, and the
+  // detail card stay in lockstep. -1 means "no row selected yet"; the
+  // detail card falls back to the first chip in that case so the panel is
+  // never empty when chips exist.
+  const selectedPatternIdx = chips.findIndex((chip) => chip.key === selectedPatternKey);
   const activeChip = chips.find((chip) => chip.key === selectedPatternKey) ?? chips[0] ?? null;
   const inducedMaps = activeChip
     ? inducedPrefixMaps(activeChip.partition, elements, visiblePositions)
@@ -152,6 +199,20 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
     };
   });
   const cumulativeAlpha = cumulativeRows.reduce((acc, row) => acc + row.contribution, 0);
+
+  // V3.1 §34 brute-force compare. For each n in BRUTE_FORCE_NS substitute
+  // every position size with n and compute (n)_b for the active partition;
+  // alongside, n^k is the raw "enumerate every tuple" count. The ratio
+  // n^k / (n)_b shows the saving the equality pattern alone gives, before
+  // |Ḡ| / |A_p̃/H_a| collapse the orbit further.
+  const bruteForceRows = activeChip
+    ? BRUTE_FORCE_NS.map((n) => {
+        const tupleCount = bruteForceTupleCount(activeChip.partition, n);
+        const positions = activeChip.partition.length;
+        const rawCount = positions > 0 ? Math.pow(n, positions) : 0;
+        return { n, tupleCount, rawCount };
+      })
+    : [];
 
   const componentRegimeId = activeComponent?.accumulation?.regimeId ?? null;
   const partitionBudgetExceeded =
@@ -342,6 +403,146 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         </div>
       )}
 
+      {/* V3.1 §34 Pattern Contribution Explainer.
+          Six labeled fields lay out exactly what α gets from this one
+          partition, in the spec's canonical order:
+            Pattern · Blocks · Concrete labelings · Induced block-symmetry
+            divisor · Output reach · Contribution.
+          Each labeled value is a hover surface (cursor-help, tabIndex=0,
+          aria-label) that sets formulaTermHover — so hovering the
+          "Concrete labelings" field highlights the falling-factorial term
+          in the formula card above. This is the C34 reverse arrow
+          (table → formula); C36 wires the forward arrow. */}
+      {activeChip && (
+        <div
+          data-testid="pattern-contribution-explainer"
+          className="mt-3 rounded-md p-3"
+          style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}
+        >
+          <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+            Selected pattern detail · idx {selectedPatternIdx >= 0 ? selectedPatternIdx : 0}
+          </div>
+          <dl className="mt-2 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
+            <div
+              data-detail-field="pattern"
+              tabIndex={0}
+              aria-label="Pattern field — hover or focus to highlight the pattern term in the formula above"
+              className="cursor-help rounded px-1 transition-colors"
+              style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : 'transparent' }}
+              onMouseEnter={() => setFormulaTermHover('pattern')}
+              onMouseLeave={() => setFormulaTermHover(null)}
+              onFocus={() => setFormulaTermHover('pattern')}
+              onBlur={() => setFormulaTermHover(null)}
+            >
+              <dt className="inline font-semibold">Pattern:</dt> <dd className="inline">{activeChip.key}</dd>
+            </div>
+            <div
+              data-detail-field="blocks"
+              tabIndex={0}
+              aria-label="Blocks field — hover or focus to highlight the pattern term in the formula above"
+              className="cursor-help rounded px-1 transition-colors"
+              style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : 'transparent' }}
+              onMouseEnter={() => setFormulaTermHover('pattern')}
+              onMouseLeave={() => setFormulaTermHover(null)}
+              onFocus={() => setFormulaTermHover('pattern')}
+              onBlur={() => setFormulaTermHover(null)}
+            >
+              <dt className="inline font-semibold">Blocks:</dt>{' '}
+              <dd className="inline">{describeBlocks(activeChip.partition, activeComponent?.labels ?? [])}</dd>
+            </div>
+            <div
+              data-detail-field="fallingFactorial"
+              tabIndex={0}
+              aria-label="Concrete labelings field — hover or focus to highlight the concrete labelings term in the formula above"
+              className="cursor-help rounded px-1 transition-colors"
+              style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : 'transparent' }}
+              onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
+              onMouseLeave={() => setFormulaTermHover(null)}
+              onFocus={() => setFormulaTermHover('fallingFactorial')}
+              onBlur={() => setFormulaTermHover(null)}
+            >
+              <dt className="inline font-semibold">Concrete labelings:</dt>{' '}
+              <dd className="inline">∏ₛ (nₛ)_{`{bₛ}`} = <strong>{activeChip.labelings}</strong></dd>
+            </div>
+            <div
+              data-detail-field="divisor"
+              tabIndex={0}
+              aria-label="Induced block-symmetry divisor field — hover or focus to highlight the divisor term in the formula above"
+              className="cursor-help rounded px-1 transition-colors"
+              style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : 'transparent' }}
+              onMouseEnter={() => setFormulaTermHover('divisor')}
+              onMouseLeave={() => setFormulaTermHover(null)}
+              onFocus={() => setFormulaTermHover('divisor')}
+              onBlur={() => setFormulaTermHover(null)}
+            >
+              <dt className="inline font-semibold">Induced block-symmetry divisor:</dt>{' '}
+              <dd className="inline">|Ḡ_x̃| = <strong>{activeChip.blockActionSize}</strong></dd>
+            </div>
+            <div
+              data-detail-field="outputReach"
+              tabIndex={0}
+              aria-label="Output reach field — hover or focus to highlight the output reach term in the formula above"
+              className="cursor-help rounded px-1 transition-colors"
+              style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : 'transparent' }}
+              onMouseEnter={() => setFormulaTermHover('outputReach')}
+              onMouseLeave={() => setFormulaTermHover(null)}
+              onFocus={() => setFormulaTermHover('outputReach')}
+              onBlur={() => setFormulaTermHover(null)}
+            >
+              <dt className="inline font-semibold">Output reach:</dt>{' '}
+              <dd className="inline">|A_x̃ / H_a| = <strong>{reachCount}</strong></dd>
+            </div>
+            <div
+              data-detail-field="contribution"
+              tabIndex={0}
+              aria-label="Contribution field — sum of labelings divided by divisor times reach"
+              className="cursor-help rounded px-1 transition-colors"
+            >
+              <dt className="inline font-semibold">Contribution:</dt>{' '}
+              <dd className="inline">{activeChip.labelings} / {activeChip.blockActionSize} · {reachCount} = <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong></dd>
+            </div>
+          </dl>
+          <div className="mt-2 border-t pt-2" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+            <button
+              type="button"
+              data-action="toggle-brute-force"
+              aria-label={bruteForceOpen ? 'Hide the brute-force tuple comparison table' : 'Compare brute force — show tuple count for n = 2 through 6'}
+              aria-expanded={bruteForceOpen}
+              onClick={() => setBruteForceOpen((prev) => !prev)}
+              className="text-[11px] font-medium underline-offset-2 hover:underline"
+              style={{ color: explorerThemeColor(themeId, 'muted') }}
+            >
+              {bruteForceOpen ? 'hide brute-force compare' : 'compare brute force'}
+            </button>
+            {bruteForceOpen && (
+              <div data-testid="brute-force-compare" className="mt-2">
+                <div className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                  Equivalent tuple enumeration · uniform n substitution. (n)_b is the count of tuples that exhibit this exact equality pattern; n^k is the raw enumeration cost over all positions.
+                </div>
+                <table className="mt-2 w-full font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
+                      <th className="p-1 text-left">n</th>
+                      <th className="p-1 text-right">tuples in pattern (n)_b</th>
+                      <th className="p-1 text-right">raw enum n^k</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bruteForceRows.map((row) => (
+                      <tr key={`bf-n-${row.n}`} data-brute-force-row={row.n}>
+                        <td className="p-1">n = {row.n}</td>
+                        <td className="p-1 text-right">{row.tupleCount}</td>
+                        <td className="p-1 text-right">{row.rawCount}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div data-testid="partition-cumulative-table" className="mt-3 border-t pt-3" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
         <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
           Sum over patterns · live
@@ -351,34 +552,64 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
             FORMULA hover targets (pattern, fallingFactorial, divisor,
             outputReach). When `formulaTermHover` matches the column, the
             cells tint coral-light so readers can locate the column the
-            hovered formula term contributes to. */}
+            hovered formula term contributes to.
+
+            V3.1 §34 reverse direction. The four <th> headers are themselves
+            keyboard-focusable hover surfaces — hovering or focusing a
+            column header sets formulaTermHover, which highlights the
+            matching term in the formula card above. C36 wires
+            formula → table; this is the reverse arrow (table → formula). */}
         <table className="mt-2 w-full font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
               <th
-                className="p-1 text-left"
+                className="p-1 text-left cursor-help"
                 data-pattern-column="pattern"
+                tabIndex={0}
+                aria-label="Hover or focus to highlight the pattern term in the formula above"
+                onMouseEnter={() => setFormulaTermHover('pattern')}
+                onMouseLeave={() => setFormulaTermHover(null)}
+                onFocus={() => setFormulaTermHover('pattern')}
+                onBlur={() => setFormulaTermHover(null)}
                 style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : undefined }}
               >
                 pattern x̃
               </th>
               <th
-                className="p-1 text-right"
+                className="p-1 text-right cursor-help"
                 data-pattern-column="fallingFactorial"
+                tabIndex={0}
+                aria-label="Hover or focus to highlight the concrete labelings term in the formula above"
+                onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
+                onMouseLeave={() => setFormulaTermHover(null)}
+                onFocus={() => setFormulaTermHover('fallingFactorial')}
+                onBlur={() => setFormulaTermHover(null)}
                 style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : undefined }}
               >
                 labelings
               </th>
               <th
-                className="p-1 text-right"
+                className="p-1 text-right cursor-help"
                 data-pattern-column="divisor"
+                tabIndex={0}
+                aria-label="Hover or focus to highlight the block-symmetry divisor term in the formula above"
+                onMouseEnter={() => setFormulaTermHover('divisor')}
+                onMouseLeave={() => setFormulaTermHover(null)}
+                onFocus={() => setFormulaTermHover('divisor')}
+                onBlur={() => setFormulaTermHover(null)}
                 style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : undefined }}
               >
                 |Ḡ|
               </th>
               <th
-                className="p-1 text-right"
+                className="p-1 text-right cursor-help"
                 data-pattern-column="outputReach"
+                tabIndex={0}
+                aria-label="Hover or focus to highlight the output reach term in the formula above"
+                onMouseEnter={() => setFormulaTermHover('outputReach')}
+                onMouseLeave={() => setFormulaTermHover(null)}
+                onFocus={() => setFormulaTermHover('outputReach')}
+                onBlur={() => setFormulaTermHover(null)}
                 style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : undefined }}
               >
                 |A_x̃/H|
