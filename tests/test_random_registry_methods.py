@@ -1,0 +1,84 @@
+"""Tests asserting the registry contains method-level entries for
+random.Generator with the right shape and category coverage.
+"""
+
+import numpy as np
+
+from flopscope._registry import REGISTRY
+
+
+# Methods on numpy.random.Generator that are NOT counted (free passthrough).
+GENERATOR_FREE = {"bit_generator", "spawn"}
+
+# All other public attributes on Generator are counted samplers.
+GENERATOR_COUNTED = {
+    "beta", "binomial", "bytes", "chisquare", "choice", "dirichlet",
+    "exponential", "f", "gamma", "geometric", "gumbel", "hypergeometric",
+    "integers", "laplace", "logistic", "lognormal", "logseries",
+    "multinomial", "multivariate_hypergeometric", "multivariate_normal",
+    "negative_binomial", "noncentral_chisquare", "noncentral_f", "normal",
+    "pareto", "permutation", "permuted", "poisson", "power", "random",
+    "rayleigh", "shuffle", "standard_cauchy", "standard_exponential",
+    "standard_gamma", "standard_normal", "standard_t", "triangular",
+    "uniform", "vonmises", "wald", "weibull", "zipf",
+}
+
+
+class TestGeneratorRegistryCoverage:
+    def test_every_public_method_has_a_registry_entry(self):
+        public = {
+            n for n in dir(np.random.Generator)
+            if not n.startswith("_")
+        }
+        registered = {
+            n[len("random.Generator."):]
+            for n in REGISTRY
+            if n.startswith("random.Generator.")
+        }
+        missing = public - registered
+        assert not missing, f"Generator methods missing from registry: {sorted(missing)}"
+
+    def test_counted_entries_have_required_fields(self):
+        for short in GENERATOR_COUNTED:
+            op = f"random.Generator.{short}"
+            assert op in REGISTRY, f"missing entry: {op}"
+            entry = REGISTRY[op]
+            assert entry["category"] == "counted_random_method", op
+            assert entry["module"] == "numpy", op
+            assert "cost_formula" in entry, op
+            assert "notes" in entry, op
+
+    def test_free_entries_have_required_fields(self):
+        for short in GENERATOR_FREE:
+            op = f"random.Generator.{short}"
+            assert op in REGISTRY, f"missing entry: {op}"
+            entry = REGISTRY[op]
+            assert entry["category"] == "free_random_method", op
+            assert entry["module"] == "numpy", op
+
+    def test_cost_formula_is_known(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        for op, entry in REGISTRY.items():
+            if entry.get("category") != "counted_random_method":
+                continue
+            assert entry["cost_formula"] in COST_FORMULAS, (
+                f"{op}: unknown cost_formula {entry['cost_formula']!r}"
+            )
+
+
+class TestSpecificCostFormulaAssignments:
+    def test_shuffle_uses_numel_input(self):
+        assert REGISTRY["random.Generator.shuffle"]["cost_formula"] == "numel(input)"
+
+    def test_permuted_uses_numel_input(self):
+        assert REGISTRY["random.Generator.permuted"]["cost_formula"] == "numel(input)"
+
+    def test_bytes_uses_length(self):
+        assert REGISTRY["random.Generator.bytes"]["cost_formula"] == "length"
+
+    def test_choice_uses_choice_cost(self):
+        assert REGISTRY["random.Generator.choice"]["cost_formula"] == "choice_cost"
+
+    def test_standard_normal_uses_numel_output(self):
+        assert REGISTRY["random.Generator.standard_normal"]["cost_formula"] == "numel(output)"
