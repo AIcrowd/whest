@@ -54,6 +54,36 @@ def _sort_cost_formula(args: tuple, kwargs: dict, result: Any) -> int:
     return _sort_cost(n)
 
 
+def _shape_axis(args: tuple, kwargs: dict, result: Any) -> int:
+    """Cost = shape along the axis being permuted (defaults to axis=0).
+
+    Used by shuffle/permutation: the algorithm is O(shape[axis]) RNG draws
+    regardless of how wide each slice is. For integer input (the
+    ``permutation(int_n)`` case), cost = ``int(n)``. For ``axis=None`` —
+    which numpy interprets as "flatten then operate" — cost = numel.
+    """
+    a = args[0] if args else kwargs.get("x")
+    if isinstance(a, (int, _np.integer)):
+        return _builtins.max(int(a), 1)
+
+    axis = kwargs.get("axis", 0)
+    if axis is None:
+        if isinstance(a, _np.ndarray):
+            return _builtins.max(int(a.size), 1)
+        if hasattr(a, "__len__"):
+            return _builtins.max(len(a), 1)
+        return 1
+
+    if isinstance(a, _np.ndarray):
+        if a.ndim == 0:
+            # 0-D scalar array; numpy choice/permutation treats as int(a)
+            return _builtins.max(int(a), 1)
+        return _builtins.max(int(a.shape[int(axis)]), 1)
+    if hasattr(a, "__len__"):
+        return _builtins.max(len(a), 1)
+    return 1
+
+
 def _choice_cost(args: tuple, kwargs: dict, result: Any) -> int:
     # Generator.choice:    choice(a, size=None, replace=True, p=None, axis=0, shuffle=True)
     # RandomState.choice:  choice(a, size=None, replace=True, p=None)
@@ -70,6 +100,7 @@ def _choice_cost(args: tuple, kwargs: dict, result: Any) -> int:
 COST_FORMULAS: dict[str, Callable[[tuple, dict, Any], int]] = {
     "numel(output)": _numel_output,
     "numel(input)": _numel_input,
+    "shape[axis]": _shape_axis,
     "length": _length,
     "sort_cost(n)": _sort_cost_formula,
     "choice_cost": _choice_cost,

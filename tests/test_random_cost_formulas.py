@@ -122,3 +122,65 @@ class TestRegistry:
             "sort_cost(n)",
             "choice_cost",
         }
+
+
+class TestShapeAxis:
+    def test_1d_array(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        a = np.arange(50)
+        assert formula((a,), {}, None) == 50
+
+    def test_2d_default_axis_charges_first_dim(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        a = np.zeros((5, 10))
+        # default axis=0 → cost is shape[0]=5, NOT numel=50
+        assert formula((a,), {}, None) == 5
+
+    def test_2d_explicit_axis(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        a = np.zeros((5, 10))
+        assert formula((a,), {"axis": 1}, None) == 10
+        assert formula((a,), {"axis": 0}, None) == 5
+
+    def test_axis_none_means_flatten(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        a = np.zeros((5, 10))
+        # numpy treats axis=None as flatten-then-operate; cost = numel
+        assert formula((a,), {"axis": None}, None) == 50
+
+    def test_int_input(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        # permutation(16) — Fisher-Yates of [0,16); cost = 16
+        formula = COST_FORMULAS["shape[axis]"]
+        assert formula((16,), {}, None) == 16
+
+    def test_list_input(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        assert formula(([1, 2, 3, 4],), {}, None) == 4
+
+    def test_zero_d_array(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        a = np.array(7)  # 0-D scalar array
+        # 0-D has no shape[0]; numpy choice/permutation treats as int(a)
+        # Defensive: don't crash, return at least 1
+        assert formula((a,), {}, None) >= 1
+
+
+class TestShapeAxisRegistration:
+    def test_shape_axis_in_formulas(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        assert "shape[axis]" in COST_FORMULAS
