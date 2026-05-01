@@ -496,7 +496,10 @@ def test_budget_context_summary_dict_live_and_closed():
         assert live["wall_time_s"] is not None
         assert live["tracked_time_s"] >= 0.01
         assert live["untracked_time_s"] == pytest.approx(
-            live["wall_time_s"] - live["tracked_time_s"], abs=1e-6
+            live["wall_time_s"]
+            - live["tracked_time_s"]
+            - live["flopscope_overhead_time_s"],
+            abs=1e-6,
         )
         assert live["operations"]["add"]["calls"] == 1
         assert live["operations"]["add"]["duration"] >= 0.01
@@ -505,7 +508,10 @@ def test_budget_context_summary_dict_live_and_closed():
     assert closed["wall_time_s"] is not None
     assert closed["tracked_time_s"] >= 0.01
     assert closed["untracked_time_s"] == pytest.approx(
-        closed["wall_time_s"] - closed["tracked_time_s"], abs=1e-6
+        closed["wall_time_s"]
+        - closed["tracked_time_s"]
+        - closed["flopscope_overhead_time_s"],
+        abs=1e-6,
     )
 
 
@@ -524,7 +530,10 @@ def test_budget_summary_dict_shows_live_timing_for_active_context():
         assert live["wall_time_s"] >= 0.01
         assert live["tracked_time_s"] >= 0.0
         assert live["untracked_time_s"] == pytest.approx(
-            live["wall_time_s"] - live["tracked_time_s"], abs=1e-6
+            live["wall_time_s"]
+            - live["tracked_time_s"]
+            - live["flopscope_overhead_time_s"],
+            abs=1e-6,
         )
 
 

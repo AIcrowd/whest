@@ -457,6 +457,10 @@ class BudgetContext:
         if tracked_delta < 0 and abs(tracked_delta) < 1e-12:
             tracked_delta = 0.0
 
+        overhead_delta = self._total_flopscope_overhead_time - self._recorded_overhead_time
+        if overhead_delta < 0 and abs(overhead_delta) < 1e-12:
+            overhead_delta = 0.0
+
         return NamespaceRecord(
             namespace=self.namespace,
             flop_budget=0 if self._budget_recorded else self.flop_budget,
@@ -464,6 +468,7 @@ class BudgetContext:
             op_log=list(self._op_log[self._recorded_op_count :]),
             wall_time_s=wall_time,
             total_tracked_time=max(tracked_delta, 0.0),
+            total_flopscope_overhead_time=max(overhead_delta, 0.0),
         )
 
     def _has_unrecorded_activity(self) -> bool:
@@ -473,12 +478,14 @@ class BudgetContext:
         self._recorded_flops_used = self._flops_used
         self._recorded_op_count = len(self._op_log)
         self._recorded_tracked_time = self._total_tracked_time
+        self._recorded_overhead_time = self._total_flopscope_overhead_time
         self._budget_recorded = True
 
     def _mark_reset_baseline(self) -> None:
         self._recorded_flops_used = self._flops_used
         self._recorded_op_count = len(self._op_log)
         self._recorded_tracked_time = self._total_tracked_time
+        self._recorded_overhead_time = self._total_flopscope_overhead_time
         self._budget_recorded = False
 
     def __enter__(self) -> BudgetContext:
@@ -626,6 +633,7 @@ class NamespaceRecord(NamedTuple):
     op_log: list[OpRecord]
     wall_time_s: float | None = None
     total_tracked_time: float | None = None
+    total_flopscope_overhead_time: float | None = None
 
 
 def _snapshot_namespace_record(ctx: BudgetContext) -> NamespaceRecord:
@@ -649,6 +657,7 @@ class BudgetAccumulator:
         total_used = 0
         total_wall_time: float | None = None
         total_tracked: float | None = None
+        total_overhead: float | None = None
         all_ops: list[OpRecord] = []
 
         for rec in self._records:
@@ -659,11 +668,12 @@ class BudgetAccumulator:
                 total_wall_time = (total_wall_time or 0.0) + rec.wall_time_s
             if rec.total_tracked_time is not None:
                 total_tracked = (total_tracked or 0.0) + rec.total_tracked_time
+            if rec.total_flopscope_overhead_time is not None:
+                total_overhead = (total_overhead or 0.0) + rec.total_flopscope_overhead_time
 
         wall_time, tracked_time, overhead_time, untracked_time = _timing_summary(
-            total_wall_time, total_tracked, None
+            total_wall_time, total_tracked, total_overhead
         )
-        del overhead_time  # accumulator overhead wiring lands in Task 13
 
         result = {
             "flop_budget": total_budget,
@@ -672,6 +682,7 @@ class BudgetAccumulator:
             "operations": _summarize_operations(all_ops),
             "wall_time_s": wall_time,
             "tracked_time_s": tracked_time,
+            "flopscope_overhead_time_s": overhead_time,
             "untracked_time_s": untracked_time,
         }
 
@@ -727,7 +738,7 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
     ...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
     >>> summary = flops.budget_summary_dict()
     >>> sorted(summary)
-    ['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']
+    ['flop_budget', 'flops_remaining', 'flops_used', 'flopscope_overhead_time_s', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']
     """
     acc_copy = BudgetAccumulator()
     acc_copy._records = _snapshot_records()
