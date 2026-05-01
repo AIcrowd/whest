@@ -25,6 +25,7 @@ import DiminoView from './components/DiminoView.jsx';
 import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import DenseAssignmentGrid from './components/DenseAssignmentGrid.jsx';
+import ProductOrbitLens from './components/ProductOrbitLens.jsx';
 import LoopMorphStepper from './components/LoopMorphStepper.jsx';
 import { LabelInteractionGraph } from './components/ComponentView.jsx';
 import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
@@ -125,6 +126,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
   // Back-compat alias — many child components still take a single `dimensionN` prop.
   const dimensionN = defaultSize;
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
+  // V3.1 §8 — C08 Product-Orbit Lens: locked orbit-id for the side-card
+  // adjacent to DenseAssignmentGrid. Distinct from selectedOrbitIdx (the
+  // ComponentCostView orbit-row dropdown), since the dense grid lives in §3
+  // and operates over the FULL einsum's product orbit decomposition.
+  const [lockedProductOrbitId, setLockedProductOrbitId] = useState(null);
   const [selectedSigmaPairIndex, setSelectedSigmaPairIndex] = useState(null);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
   const [isDirty, setIsDirty] = useState(false);
@@ -192,6 +198,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     if (EXAMPLES[idx]) setDefaultSize(presetDefaultSize(EXAMPLES[idx]));
     setIsDirty(false);
     setSelectedOrbitIdx(-1);
+    setLockedProductOrbitId(null);
     setSelectedSigmaPairIndex(null);
     setClusterSizes({});
   }, []);
@@ -202,6 +209,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setPreviewExample(ex);
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
+    setLockedProductOrbitId(null);
     setSelectedSigmaPairIndex(null);
     setClusterSizes({});
   }, []);
@@ -209,6 +217,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const handleCustomMode = useCallback(() => {
     setExampleIdx(CUSTOM_IDX);
     setSelectedOrbitIdx(-1);
+    setLockedProductOrbitId(null);
     setSelectedSigmaPairIndex(null);
     setClusterSizes({});
   }, []);
@@ -266,6 +275,36 @@ export default function SymmetryAwareEinsumContractionsApp() {
     if (selectedOrbitIdx >= 0 && selectedOrbitIdx < orbitRows.length) return selectedOrbitIdx;
     return pickDefaultOrbitRow(orbitRows);
   }, [cost, selectedOrbitIdx]);
+
+  // V3.1 §8 — C08 Product-Orbit Lens
+  //   Build a Map<assignment-tuple-key, orbitId> from the brute-force orbit
+  //   decomposition (cost.orbitRows). Each row's `orbitTuples` lists every
+  //   assignment in that orbit; we key each by the same tuple-string the
+  //   DenseAssignmentGrid produces (label values joined with commas, in the
+  //   order of `group.allLabels`). The orbit-id is just the row index — this
+  //   keeps the map cheap to recompute and stable for colour-cycling.
+  const orbitsByAssignment = useMemo(() => {
+    const orbitRows = cost?.orbitRows ?? [];
+    const labels = group?.allLabels ?? [];
+    if (!orbitRows.length || !labels.length) return null;
+    const map = new Map();
+    for (let orbitId = 0; orbitId < orbitRows.length; orbitId += 1) {
+      const tuples = orbitRows[orbitId]?.orbitTuples ?? [];
+      for (const tuple of tuples) {
+        const key = labels.map((l) => tuple[l]).join(',');
+        map.set(key, orbitId);
+      }
+    }
+    return map;
+  }, [cost, group]);
+
+  // The locked orbit row, derived from `lockedProductOrbitId` (set by
+  // DenseAssignmentGrid clicks). Falls back to `null` when nothing is locked.
+  const lockedProductOrbit = useMemo(() => {
+    if (lockedProductOrbitId == null) return null;
+    const orbitRows = cost?.orbitRows ?? [];
+    return orbitRows[lockedProductOrbitId] ?? null;
+  }, [lockedProductOrbitId, cost]);
 
   useEffect(() => {
     resetActiveExplorerTheme();
@@ -582,6 +621,25 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           .map((s) => s.trim())
                           .filter(Boolean)}
                         output={normalizedExample?.output ?? ''}
+                        orbitsByAssignment={orbitsByAssignment}
+                        onOrbitSelect={setLockedProductOrbitId}
+                      />
+                    </div>
+                    {/* §3 V3.1 §8 — C08 ProductOrbitLens (NEW)
+                        Side-card paired with the dense grid. Reveals the
+                        product-orbit fields (Representative / Members /
+                        Orbit size / Reason / Fixed-point label) for the
+                        orbit locked by clicking a cell above. */}
+                    <div className="mt-4">
+                      <ProductOrbitLens
+                        orbit={lockedProductOrbit}
+                        orbitId={lockedProductOrbitId}
+                        labels={group?.allLabels ?? []}
+                        subscripts={normalizedExample?.subscripts ?? []}
+                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
+                          .split(',')
+                          .map((s) => s.trim())
+                          .filter(Boolean)}
                       />
                     </div>
                     {/* §3 V3.1 §7 — C07 LoopMorphStepper (NEW)

@@ -47,6 +47,36 @@ const TOKEN = {
 const RENDER_CAP = 4;
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Orbit colour palette — V3.1 §8 (C08 Product-Orbit Lens)
+   Subtle, distinguishable outlines so the dense grid stays legible. We cycle
+   through a small palette of CSS variables (already pinned in styles.css /
+   colors_and_type.css). Token-only — no raw hex.
+   ───────────────────────────────────────────────────────────────────────────── */
+const ORBIT_PALETTE = [
+  'var(--ein-v)',          // blue (visible)
+  'var(--ein-w)',          // contracted
+  'var(--coral)',          // coral
+  'var(--accent-purple, #7E57C2)', // fallback purple
+  'var(--accent-teal, #26A69A)',   // fallback teal
+  'var(--accent-amber, #F59E0B)',  // fallback amber
+];
+
+/** Cycle through the orbit palette by orbit-id (numeric or string-hashed). */
+export function orbitColor(orbitId) {
+  if (orbitId == null) return TOKEN.gray300;
+  let n;
+  if (typeof orbitId === 'number') {
+    n = orbitId;
+  } else {
+    let h = 0;
+    const s = String(orbitId);
+    for (let i = 0; i < s.length; i += 1) h = (h * 31 + s.charCodeAt(i)) | 0;
+    n = Math.abs(h);
+  }
+  return ORBIT_PALETTE[n % ORBIT_PALETTE.length];
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Helpers
    ───────────────────────────────────────────────────────────────────────────── */
 
@@ -103,6 +133,15 @@ function assignmentTuple(labels, assignment) {
   return `(${labels.map((l) => `${l}=${assignment[l]}`).join(', ')})`;
 }
 
+/**
+ * Stable key for an assignment tuple under a given label order, e.g.
+ *   labels=['i','j','k'], a={i:0,j:1,k:2} → "0,1,2".
+ * Mirrors the Map key shape `orbitsByAssignment` is expected to use.
+ */
+export function assignmentTupleKey(labels, assignment) {
+  return labels.map((l) => assignment[l]).join(',');
+}
+
 /* ─────────────────────────────────────────────────────────────────────────────
    Component
    ───────────────────────────────────────────────────────────────────────────── */
@@ -118,13 +157,36 @@ function DenseAssignmentGrid({
   operandNames = [],
   /** Output subscript string, e.g. 'ik'. */
   output = '',
+  /**
+   * V3.1 §8 — C08 Product-Orbit Lens
+   * Map from assignment-tuple-key (see `assignmentTupleKey`) to orbit-id
+   * (string or number). When provided, cells expose `data-orbit-id` and
+   * the "Show all orbits" toggle paints subtle orbit outlines.
+   */
+  orbitsByAssignment = null,
+  /**
+   * Fired when a cell is clicked AND has an orbit id, to lock the orbit
+   * selection in the parent (which renders the side-card).
+   */
+  onOrbitSelect,
 }) {
   const n = Number.isFinite(dimensionN) ? dimensionN : 2;
   const labels = Array.isArray(allLabels) ? allLabels : [];
 
   const [showProducts, setShowProducts] = useState(false);
   const [showOutputs, setShowOutputs] = useState(false);
+  const [showAllOrbits, setShowAllOrbits] = useState(false);
+  const [hoveredOrbitId, setHoveredOrbitId] = useState(null);
   const [selectedIdx, setSelectedIdx] = useState(0);
+
+  const hasOrbits = orbitsByAssignment != null
+    && typeof orbitsByAssignment.get === 'function';
+
+  // Resolve the orbit-id for an assignment object.
+  const orbitIdFor = useCallback((assignment) => {
+    if (!hasOrbits) return null;
+    return orbitsByAssignment.get(assignmentTupleKey(labels, assignment)) ?? null;
+  }, [hasOrbits, orbitsByAssignment, labels]);
 
   // Pick the facet label (k for triples, the last label otherwise).
   // First two labels span the (rows, cols) of each panel; remaining labels
@@ -162,13 +224,22 @@ function DenseAssignmentGrid({
 
   const handleSelect = useCallback((idx) => {
     setSelectedIdx(idx);
-  }, []);
+    if (typeof onOrbitSelect === 'function') {
+      const a = assignments[idx];
+      const id = a ? orbitIdFor(a) : null;
+      if (id != null) onOrbitSelect(id);
+    }
+  }, [assignments, orbitIdFor, onOrbitSelect]);
 
   const handleKey = useCallback((e, idx) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setSelectedIdx(idx);
+      handleSelect(idx);
     }
+  }, [handleSelect]);
+
+  const handleHoverOrbit = useCallback((id) => {
+    setHoveredOrbitId(id);
   }, []);
 
   // ─── Cap message ───────────────────────────────────────────────────────────
@@ -246,6 +317,23 @@ function DenseAssignmentGrid({
             />
             <span>show outputs</span>
           </label>
+          {hasOrbits && (
+            <label
+              className="flex cursor-pointer items-center gap-1.5"
+              style={{ color: TOKEN.gray600 }}
+              aria-label="Show all orbits"
+            >
+              <input
+                type="checkbox"
+                checked={showAllOrbits}
+                onChange={(e) => setShowAllOrbits(e.target.checked)}
+                data-testid="dense-assignment-grid-toggle-all-orbits"
+                aria-label="Show all orbits"
+                className="h-3 w-3"
+              />
+              <span>show all orbits</span>
+            </label>
+          )}
         </div>
       </div>
 
@@ -314,11 +402,15 @@ function DenseAssignmentGrid({
                     selectedIdx={selectedIdx}
                     showProducts={showProducts}
                     showOutputs={showOutputs}
+                    showAllOrbits={showAllOrbits && hasOrbits}
                     subscripts={subscripts}
                     operandNames={operandNames}
                     output={output}
                     onSelect={handleSelect}
                     onKey={handleKey}
+                    onHoverOrbit={handleHoverOrbit}
+                    hoveredOrbitId={hoveredOrbitId}
+                    orbitIdFor={orbitIdFor}
                     labels={labels}
                   />
                 );
@@ -373,11 +465,15 @@ function ROWFragment({
   selectedIdx,
   showProducts,
   showOutputs,
+  showAllOrbits,
   subscripts,
   operandNames,
   output,
   onSelect,
   onKey,
+  onHoverOrbit,
+  hoveredOrbitId,
+  orbitIdFor,
   labels,
 }) {
   return (
@@ -398,6 +494,18 @@ function ROWFragment({
         const productLabel = productExpr(subscripts, operandNames, a);
         const outputLabel = outputExpr(output, a);
         const ariaLabel = `assignment ${tupleLabel} — product ${productLabel}; output ${outputLabel}`;
+        // V3.1 §8 — orbit-overlay decoration. Per cell:
+        //   - data-orbit-id attribute (when an orbit-id is known)
+        //   - subtle outline color when "show all orbits" is on, OR when
+        //     this cell's orbit is the currently-hovered one (so the entire
+        //     orbit lights up).
+        const orbitId = typeof orbitIdFor === 'function' ? orbitIdFor(a) : null;
+        const isHoveredOrbit = orbitId != null && hoveredOrbitId === orbitId;
+        const showOrbitOutline = orbitId != null && (showAllOrbits || isHoveredOrbit);
+        const orbitBorderColor = showOrbitOutline ? orbitColor(orbitId) : null;
+        const borderColor = isSelected
+          ? TOKEN.coral
+          : (orbitBorderColor ?? TOKEN.gray200);
         return (
           <div
             key={`cell-${idx}`}
@@ -408,11 +516,18 @@ function ROWFragment({
             data-testid="dense-assignment-grid-cell"
             data-assignment-idx={idx}
             data-selected={isSelected ? 'true' : 'false'}
+            data-orbit-id={orbitId != null ? String(orbitId) : undefined}
+            data-orbit-hovered={isHoveredOrbit ? 'true' : undefined}
             onClick={() => onSelect(idx)}
             onKeyDown={(e) => onKey(e, idx)}
+            onMouseEnter={() => onHoverOrbit?.(orbitId)}
+            onMouseLeave={() => onHoverOrbit?.(null)}
+            onFocus={() => onHoverOrbit?.(orbitId)}
+            onBlur={() => onHoverOrbit?.(null)}
             className="cursor-pointer rounded border px-1.5 py-1 text-center font-mono text-[10px] leading-tight transition-colors"
             style={{
-              borderColor: isSelected ? TOKEN.coral : TOKEN.gray200,
+              borderColor,
+              borderWidth: isHoveredOrbit && !isSelected ? 2 : 1,
               background: isSelected ? TOKEN.coralLight : TOKEN.white,
               color: isSelected ? TOKEN.gray900 : TOKEN.gray600,
               outline: 'none',
