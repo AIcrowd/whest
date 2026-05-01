@@ -1,3 +1,4 @@
+import { useCallback, useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
 import ExplorerSectionCard, { AnchorLink } from './ExplorerSectionCard.jsx';
 import EditorialCallout from './EditorialCallout.jsx';
@@ -34,31 +35,169 @@ function renderSingleProseBlock(blocks = [], keyPrefix = 'main-prose-block') {
   return renderProseBlocks(blocks, { keyPrefix })[0] ?? null;
 }
 
-function ColorLegend({ freeLabelColor, summedLabelColor }) {
-  return (
-    <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-stone-700">
-      <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: summedLabelColor }} />
-        <span>
-          <strong className="font-semibold text-stone-900">summed</strong> label (collapses)
-        </span>
-      </span>
-      <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: freeLabelColor }} />
-        <span>
-          <strong className="font-semibold text-stone-900">free</strong> labels (stay on output)
-        </span>
-      </span>
-    </div>
-  );
-}
-
 const JUSTIFIED_PROSE_STYLE = { textAlign: 'justify' };
 
 // V3.1 §C04 tooltip strings (registries.md §4 Tooltips)
 const TOOLTIP_VISIBLE_LABEL = 'Visible/output label. It survives as an axis of the result.';
 const TOOLTIP_SUMMED_LABEL = 'Summed label. The evaluator loops over this label and accumulates it away.';
 const TOOLTIP_DECLARED_SYMMETRY = 'Declared operand symmetry. This creates candidate product symmetries, but they still need certification.';
+
+// V3.1 §C05 — Label Role Legend.
+// Three roles: visible (V), summed (W), declared symmetric axes. Each chip:
+//  - Hover/focus → fires onHoveredLabelsChange with the role's label set
+//                  (broadcasts on the page-wide hoveredLabels bus, so the
+//                   formula and the chip lists in the einsum prose light up).
+//  - Click       → toggles a "lock" so the broadcast persists until clicked
+//                   again. A second chip's lock supersedes any prior lock.
+//  - Reverse     → if hoveredLabels (read from the same bus, passed in as a
+//                   prop here) intersects this role's label set, the chip
+//                   gets a coral pulse/ring. This is the symmetric direction:
+//                   hovering a label in the formula lights up the legend role
+//                   that label belongs to.
+//
+// The lock state is local to the legend (one shared "locked role" id). When
+// locked, hover events from elsewhere still update reverse-highlight, but the
+// outgoing broadcast is pinned to the locked set.
+function LabelRoleLegend({
+  view,
+  freeLabelColor,
+  summedLabelColor,
+  hoveredLabels,
+  onHoveredLabelsChange,
+}) {
+  const [lockedRole, setLockedRole] = useState(null);
+
+  const items = useMemo(() => {
+    const declaredCount = Array.isArray(view?.declaredSymmetricLabels)
+      ? view.declaredSymmetricLabels.length
+      : 0;
+    return [
+      {
+        id: 'visible',
+        labels: Array.isArray(view?.vFreeLabels) ? view.vFreeLabels : [],
+        label: 'visible',
+        suffix: ' labels (stay on output)',
+        tooltip: TOOLTIP_VISIBLE_LABEL,
+        ariaLabel: 'Visible labels — highlight the V-set across visible components',
+      },
+      {
+        id: 'summed',
+        labels: Array.isArray(view?.wSummedLabels) ? view.wSummedLabels : [],
+        label: 'summed',
+        suffix: ' labels (collapse under sum)',
+        tooltip: TOOLTIP_SUMMED_LABEL,
+        ariaLabel: 'Summed labels — highlight the W-set across visible components',
+      },
+      {
+        id: 'declared',
+        labels: declaredCount > 0
+          ? view.declaredSymmetricLabels
+          : [],
+        // Coral is the role accent for declared symmetric axes — the
+        // "where symmetry enters" callout already uses coral as its eyebrow,
+        // so the visual mapping is consistent (see dotStyle below).
+        label: 'declared',
+        suffix: ' symmetric axes',
+        tooltip: TOOLTIP_DECLARED_SYMMETRY,
+        ariaLabel: 'Declared symmetric axes — highlight the labels under declared operand symmetries',
+        emptyHint: declaredCount === 0 ? ' (none)' : null,
+      },
+    ];
+  }, [view]);
+
+  const hoveredSet = hoveredLabels instanceof Set ? hoveredLabels : null;
+
+  const handleHover = useCallback((labels) => {
+    if (!onHoveredLabelsChange) return;
+    if (lockedRole) return; // lock supersedes hover broadcast
+    if (!labels || labels.length === 0) {
+      onHoveredLabelsChange(null);
+      return;
+    }
+    onHoveredLabelsChange(new Set(labels));
+  }, [onHoveredLabelsChange, lockedRole]);
+
+  const handleLeave = useCallback(() => {
+    if (!onHoveredLabelsChange) return;
+    if (lockedRole) return;
+    onHoveredLabelsChange(null);
+  }, [onHoveredLabelsChange, lockedRole]);
+
+  const handleClick = useCallback((roleId, labels) => {
+    if (!onHoveredLabelsChange) return;
+    if (lockedRole === roleId) {
+      // unlock + clear
+      setLockedRole(null);
+      onHoveredLabelsChange(null);
+      return;
+    }
+    setLockedRole(roleId);
+    if (labels && labels.length > 0) {
+      onHoveredLabelsChange(new Set(labels));
+    } else {
+      onHoveredLabelsChange(null);
+    }
+  }, [onHoveredLabelsChange, lockedRole]);
+
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-stone-700">
+      {items.map((item) => {
+        // Reverse-highlight: any of this role's labels currently in the bus?
+        const isReverseHit = hoveredSet
+          && item.labels.length > 0
+          && item.labels.some((ch) => hoveredSet.has(ch));
+        const isLocked = lockedRole === item.id;
+        const isInteractive = Boolean(onHoveredLabelsChange) && item.labels.length > 0;
+        // Theme-bound dot color: visible→freeLabelColor, summed→summedLabelColor,
+        // declared→coral. The first two literal references make the
+        // theme-role contract grep-visible (preamble.test.mjs).
+        const dotStyle = item.id === 'visible'
+          ? { backgroundColor: freeLabelColor }
+          : item.id === 'summed'
+            ? { backgroundColor: summedLabelColor }
+            : { backgroundColor: 'var(--coral)' };
+        return (
+          <button
+            key={item.id}
+            type="button"
+            data-role={item.id}
+            data-locked={isLocked ? 'true' : 'false'}
+            data-reverse-hit={isReverseHit ? 'true' : 'false'}
+            disabled={!isInteractive}
+            aria-label={item.ariaLabel}
+            aria-pressed={isLocked}
+            title={item.tooltip}
+            onMouseEnter={isInteractive ? () => handleHover(item.labels) : undefined}
+            onMouseLeave={isInteractive ? () => handleLeave() : undefined}
+            onFocus={isInteractive ? () => handleHover(item.labels) : undefined}
+            onBlur={isInteractive ? () => handleLeave() : undefined}
+            onClick={isInteractive ? () => handleClick(item.id, item.labels) : undefined}
+            className={cn(
+              'inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-left transition-all',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
+              isInteractive
+                ? 'cursor-pointer border-transparent hover:border-stone-200 hover:bg-stone-50'
+                : 'cursor-default border-transparent opacity-80',
+              (isReverseHit || isLocked)
+                && 'border-[color:var(--coral)] bg-[color:color-mix(in_oklab,var(--coral)_8%,white)] ring-2 ring-[color:var(--coral)]/40 animate-pulse',
+            )}
+          >
+            <span
+              className="h-2.5 w-2.5 rounded-full"
+              aria-hidden="true"
+              style={dotStyle}
+            />
+            <span>
+              <strong className="font-semibold text-stone-900">{item.label}</strong>
+              {item.suffix}
+              {item.emptyHint && <span className="text-stone-500">{item.emptyHint}</span>}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 // Renders V/W label chips with hover interaction and V3.1 tooltips.
 // Each label is a span that fires onHoveredLabelsChange on enter/leave.
@@ -194,7 +333,13 @@ function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
         </p>
       </div>
 
-      <ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />
+      <LabelRoleLegend
+        view={view}
+        freeLabelColor={freeLabelColor}
+        summedLabelColor={summedLabelColor}
+        hoveredLabels={hoveredLabels}
+        onHoveredLabelsChange={onHoveredLabelsChange}
+      />
 
       {/* Spacer: anchors the callout to the bottom when the right column is taller
           (so both columns end at the same y), with a mt-6 minimum gap when not. */}

@@ -80,6 +80,27 @@ function formatDeclaredSymmetrySummary(variables) {
     .join(' · ');
 }
 
+// V3.1 §C05: collect every label that appears under at least one declared
+// symmetric axis. Used by the Label Role Legend to highlight the "declared
+// symmetric axes" chip's footprint across the visible formulas.
+function collectDeclaredSymmetricLabels(variables, subscripts) {
+  if (!Array.isArray(variables) || !Array.isArray(subscripts)) return [];
+  const out = new Set();
+  variables.forEach((variable, idx) => {
+    if (!variable || variable.symmetry === 'none') return;
+    const subscript = subscripts[idx] || '';
+    if (!subscript) return;
+    const axes = Array.isArray(variable.symAxes) && variable.symAxes.length > 0
+      ? variable.symAxes
+      : Array.from({ length: subscript.length }, (_, i) => i);
+    axes.forEach((axisIdx) => {
+      const ch = subscript[axisIdx];
+      if (ch) out.add(ch);
+    });
+  });
+  return [...out];
+}
+
 function labelSizesFromClusters(clusters = []) {
   return (Array.isArray(clusters) ? clusters : []).reduce((acc, cluster) => {
     if (!cluster?.id || !Number.isFinite(cluster?.size) || cluster.size <= 0) return acc;
@@ -141,6 +162,8 @@ export function buildSection1ExampleView(example, palette = {}) {
     hasHeterogeneousSizes,
   });
 
+  const declaredSymmetricLabels = collectDeclaredSymmetricLabels(variables, subscripts);
+
   return {
     exactEinsumText,
     exactEinsumLatex,
@@ -151,6 +174,9 @@ export function buildSection1ExampleView(example, palette = {}) {
     outputSummary: output || 'scalar',
     vFreeSummary: freeLabels.length ? freeLabels.join(', ') : '∅',
     wSummedSummary: summedLabels.length ? summedLabels.join(', ') : '∅',
+    vFreeLabels: freeLabels,
+    wSummedLabels: summedLabels,
+    declaredSymmetricLabels,
     declaredSymmetrySummary: formatDeclaredSymmetrySummary(variables),
     hasHeterogeneousSizes,
     denseGridScalingLatex: denseGridLatex,

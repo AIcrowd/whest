@@ -77,7 +77,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
     'expanded contraction should render before the prose explanation',
   );
   assert.ok(
-    src.indexOf('The summed labels') < src.indexOf('<ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />'),
+    src.indexOf('The summed labels') < src.indexOf('<LabelRoleLegend'),
     'legend should stay inside the same einsum surface after the explanatory prose',
   );
   assert.match(src, /textAlign: 'justify'/);
