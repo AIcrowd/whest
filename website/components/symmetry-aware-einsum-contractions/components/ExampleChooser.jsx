@@ -2,10 +2,11 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { validateAll } from '../engine/validation.js';
-import { varField } from '../engine/validationMessages.js';
+import { varField, VALIDATION_ERROR_CATEGORIES } from '../engine/validationMessages.js';
 import { generatePython } from '../engine/pythonCodegen.js';
 import { buildVariableColors, SYMMETRY_ICONS, contrastText } from '../engine/colorPalette.js';
-import { parseCycleNotation } from '../engine/cycleParser.js';
+import { parseCycleNotation, cyclesToArrayForm } from '../engine/cycleParser.js';
+import { Permutation } from '../engine/permutation.js';
 import { cn } from '../lib/utils.js';
 import { CUSTOM_IDX, getPresetSummary, presetToState, resolvePresetSelection } from '../lib/presetSelection.js';
 import { variableSymmetryLabel } from '../lib/symmetryLabel.js';
@@ -23,6 +24,31 @@ const SYM_LABELS = {
   dihedral: 'D_k',
   custom: 'custom',
 };
+
+/**
+ * V3.1 §3 — re-export the canonical eight inline-validation categories.
+ * Downstream callers (e.g. tests, mini-preview tooltips) can read this
+ * without reaching into the engine module.
+ */
+export const errorCategories = VALIDATION_ERROR_CATEGORIES;
+
+/**
+ * Render a single custom generator as cycle notation on local axis indices.
+ * Reuses Permutation.cycleNotation() so the formatting matches the rest of
+ * the explorer (see SigmaLoop / DiminoView). Returns 'e' for the identity.
+ */
+function generatorPreviewText(generators, axesCount) {
+  const { generators: parsed, error } = parseCycleNotation(generators);
+  if (error || !parsed || parsed.length === 0) return null;
+  const labels = Array.from({ length: axesCount }, (_, i) => String(i));
+  return parsed
+    .map((cycles) => {
+      const arr = cyclesToArrayForm(cycles, axesCount);
+      const perm = new Permutation(arr);
+      return perm.cycleNotation(labels);
+    })
+    .join(', ');
+}
 
 function groupOrder(symmetry, k) {
   switch (symmetry) {
@@ -146,6 +172,15 @@ export default function ExampleChooser({
     setTouched((prev) => (prev.has(field) ? prev : new Set(prev).add(field)));
   }, []);
 
+  // Brief visible-state success cue after a clean Analyze click. Cleared on
+  // any subsequent state change so the indicator doesn't go stale.
+  const [analyzeSuccess, setAnalyzeSuccess] = useState(false);
+  useEffect(() => {
+    if (!analyzeSuccess) return undefined;
+    const timer = setTimeout(() => setAnalyzeSuccess(false), 2000);
+    return () => clearTimeout(timer);
+  }, [analyzeSuccess]);
+
   const presetSummaries = useMemo(() => examples.map(getPresetSummary), [examples]);
 
   const loadPreset = useCallback((idx) => {
@@ -185,6 +220,8 @@ export default function ExampleChooser({
   const markCustom = useCallback(() => {
     setActivePresetIdx(CUSTOM_IDX);
     onDirtyChange?.(true);
+    // Any further edit invalidates the prior analysis — drop the cue.
+    setAnalyzeSuccess(false);
   }, [onDirtyChange]);
 
   const updateVar = useCallback((idx, field, value) => {
@@ -364,6 +401,7 @@ export default function ExampleChooser({
 
     onCustomExample(customExample);
     onDirtyChange?.(false);
+    setAnalyzeSuccess(true);
   }, [activePresetIdx, examples, onCustomExample, onDirtyChange, operandNamesStr, outputStr, subscriptsStr, validation.valid, variables]);
 
   const builderContent = (
@@ -393,6 +431,7 @@ export default function ExampleChooser({
                       onBlur={() => touch(varField(idx, 'name'))}
                       placeholder="X"
                       maxLength={8}
+                      aria-invalid={errorFieldSet.has(varField(idx, 'name')) ? 'true' : undefined}
                     />
 
                     <div className="flex items-center gap-1">
@@ -488,26 +527,42 @@ export default function ExampleChooser({
                     </div>
                   )}
 
-                  {variable.symmetry === 'custom' && (
-                    <ExplorerField
-                      label="Generators"
-                      className="mb-1"
-                      labelClassName="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400"
-                      inputClassName={cn(
-                        'h-auto px-3 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30',
-                        errorFieldSet.has(varField(idx, 'generators')) ? 'border-red-300' : 'border-gray-200',
-                      )}
-                      value={variable.generators}
-                      onChange={(event) => updateVar(idx, 'generators', event.target.value)}
-                      onBlur={() => touch(varField(idx, 'generators'))}
-                      placeholder="(0 1)(2 3), (0 2)(1 3)"
-                      hint={(
-                        <>
-                          Cycle notation, comma-separated generators. Indices are local to the selected axes above: if axes 2 and 3 are selected, <code className="rounded bg-gray-100 px-1">(0 1)</code> swaps tensor axes 2 and 3.
-                        </>
-                      )}
-                    />
-                  )}
+                  {variable.symmetry === 'custom' && (() => {
+                    const axesCount = (variable.symAxes && variable.symAxes.length) || variable.rank;
+                    const previewText = generatorPreviewText(variable.generators, axesCount);
+                    return (
+                      <>
+                        <ExplorerField
+                          label="Generators"
+                          className="mb-1"
+                          labelClassName="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400"
+                          inputClassName={cn(
+                            'h-auto px-3 py-1.5 text-sm font-mono focus:border-coral focus:ring-coral/30',
+                            errorFieldSet.has(varField(idx, 'generators')) ? 'border-red-300' : 'border-gray-200',
+                          )}
+                          value={variable.generators}
+                          onChange={(event) => updateVar(idx, 'generators', event.target.value)}
+                          onBlur={() => touch(varField(idx, 'generators'))}
+                          placeholder="(0 1)(2 3), (0 2)(1 3)"
+                          aria-invalid={errorFieldSet.has(varField(idx, 'generators')) ? 'true' : undefined}
+                          hint={(
+                            <>
+                              Cycle notation, comma-separated generators. Indices are local to the selected axes above: if axes 2 and 3 are selected, <code className="rounded bg-gray-100 px-1">(0 1)</code> swaps tensor axes 2 and 3.
+                            </>
+                          )}
+                        />
+                        {previewText && (
+                          <div
+                            className="mt-1 flex items-center gap-1.5 text-xs text-gray-500"
+                            data-generator-cycle-preview={previewText}
+                          >
+                            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-400">cycle</span>
+                            <code className="rounded bg-gray-50 px-1.5 py-0.5 font-mono text-gray-700">{previewText}</code>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
 
                   <div
                     className="mt-2 inline-block rounded-full px-2.5 py-1 text-xs font-semibold"
@@ -554,6 +609,7 @@ export default function ExampleChooser({
                   onChange={(event) => handleSubscriptsChange(event.target.value.toLowerCase())}
                   onBlur={() => touch('subscripts')}
                   placeholder="ia,ib"
+                  aria-invalid={errorFieldSet.has('subscripts') ? 'true' : undefined}
                 />
                 <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">subscripts</span>
               </div>
@@ -568,6 +624,7 @@ export default function ExampleChooser({
                   onChange={(event) => handleOutputChange(event.target.value.toLowerCase())}
                   onBlur={() => touch('output')}
                   placeholder="ab"
+                  aria-invalid={errorFieldSet.has('output') ? 'true' : undefined}
                 />
                 <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">output</span>
               </div>
@@ -582,6 +639,7 @@ export default function ExampleChooser({
                   onChange={(event) => handleOperandNamesChange(event.target.value)}
                   onBlur={() => touch('operands')}
                   placeholder="X, X"
+                  aria-invalid={errorFieldSet.has('operands') ? 'true' : undefined}
                 />
                 <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">operands</span>
               </div>
@@ -598,11 +656,22 @@ export default function ExampleChooser({
                 className={cn(
                   'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--coral)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--coral-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20',
                   !validation.valid && 'opacity-60',
+                  analyzeSuccess && 'bg-emerald-600 hover:bg-emerald-600',
                 )}
                 onClick={handleAnalyze}
+                aria-label="Analyze custom einsum expression"
+                data-analyze-success={analyzeSuccess ? 'true' : 'false'}
                 title={validation.valid ? undefined : 'Click to see what needs fixing'}
               >
-                <span aria-hidden>&#x25B6;</span> Analyze
+                {analyzeSuccess ? (
+                  <>
+                    <span aria-hidden>&#x2713;</span> Analyzed
+                  </>
+                ) : (
+                  <>
+                    <span aria-hidden>&#x25B6;</span> Analyze
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -632,11 +701,17 @@ export default function ExampleChooser({
         </div>
 
         {visibleErrors.length > 0 && (
-          <div className="space-y-1 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
+          <div
+            className="space-y-1 rounded-lg border border-red-200 bg-red-50 px-3 py-2"
+            role="alert"
+            aria-live="polite"
+          >
             {visibleErrors.map((error, idx) => (
               <div
                 key={`${error.code}-${error.field}-${idx}`}
                 className="flex items-start gap-1.5 text-xs text-red-600"
+                data-error-category={error.category || 'malformed-einsum'}
+                data-error-code={error.code}
               >
                 <span className="mt-0.5 shrink-0 text-red-400">&#x26A0;</span>
                 <span className="flex-1 leading-snug">{error.message}</span>
@@ -651,6 +726,17 @@ export default function ExampleChooser({
                 )}
               </div>
             ))}
+          </div>
+        )}
+        {analyzeSuccess && visibleErrors.length === 0 && (
+          <div
+            className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700"
+            role="status"
+            aria-live="polite"
+            data-analyze-status="success"
+          >
+            <span aria-hidden className="text-emerald-500">&#x2713;</span>
+            <span>Analysis complete — results updated below.</span>
           </div>
         )}
       </div>

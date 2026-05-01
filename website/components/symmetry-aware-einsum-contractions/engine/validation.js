@@ -1,4 +1,4 @@
-import { parseCycleNotation, generatorIndices } from './cycleParser.js';
+import { parseCycleNotation, cyclesToArrayForm, generatorIndices } from './cycleParser.js';
 import {
   nameEmptyError,
   rankTooSmallError,
@@ -16,6 +16,8 @@ import {
   outputNonLowercaseError,
   outputDuplicateLabelError,
   outputLabelMissingError,
+  ellipsisUnsupportedError,
+  incompatibleDomainMoveError,
 } from './validationMessages.js';
 
 /**
@@ -133,6 +135,16 @@ export function validateAll(variables, subscripts, output, operandNames) {
     errors.push(noOperandsError());
   }
 
+  // V3.1 §3: ellipsis / broadcasting is unsupported. Detect a "." anywhere
+  // in subscripts or output before the lowercase-only checks complain — the
+  // dedicated message is more actionable than "use lowercase letters only".
+  if (subscripts && subscripts.indexOf('.') !== -1) {
+    errors.push(ellipsisUnsupportedError({ where: 'subscripts' }));
+  }
+  if (output && output.indexOf('.') !== -1) {
+    errors.push(ellipsisUnsupportedError({ where: 'output' }));
+  }
+
   // 9. Number of subscripts must equal number of operands
   if (subs.length !== opNames.length) {
     errors.push(
@@ -157,8 +169,15 @@ export function validateAll(variables, subscripts, output, operandNames) {
     if (i < subs.length) {
       const sub = subs[i];
 
-      // 11. Each subscript must be lowercase letters only
-      if (!/^[a-z]+$/.test(sub)) {
+      // 11. Each subscript must be lowercase letters only.
+      // When the offending characters are only "." we let the dedicated
+      // ellipsisUnsupportedError carry the message — emit the lowercase
+      // complaint only if non-dot, non-letter characters are present, or if
+      // letters are mixed with dots in a way the strip-dots fix wouldn't
+      // help.
+      const isLowercaseOnly = /^[a-z]+$/.test(sub);
+      const isPureEllipsis = sub.length > 0 && /^\.+$/.test(sub);
+      if (!isLowercaseOnly && !isPureEllipsis) {
         errors.push(subscriptNonLowercaseError({ opIdx: i, sub, name }));
       }
 
@@ -193,8 +212,10 @@ export function validateAll(variables, subscripts, output, operandNames) {
     }
   }
 
-  // 14. Output must be lowercase letters only
-  if (output && !/^[a-z]*$/.test(output)) {
+  // 14. Output must be lowercase letters only.
+  // Same suppression rule as subscripts: when the only offender is the
+  // literal ellipsis we let ellipsisUnsupportedError carry the message.
+  if (output && !/^[a-z]*$/.test(output) && !/^\.+$/.test(output)) {
     errors.push(outputNonLowercaseError({ outputStr: output }));
   }
 
@@ -216,6 +237,64 @@ export function validateAll(variables, subscripts, output, operandNames) {
     for (const ch of output) {
       if (/[a-z]/.test(ch) && !allInputLabels.has(ch)) {
         errors.push(outputLabelMissingError({ ch }));
+      }
+    }
+  }
+
+  // V3.1 §3: a custom generator's cycle must keep axes within the same label
+  // "domain" — i.e. it can't permute a *summed* label onto a *free* (output-
+  // facing) label. The engine's wreath construction needs every cycle to act
+  // within one label-class so the resulting orbit lives consistently in
+  // either Σ-summed or Π-output space.
+  const outputLabelSet = new Set();
+  if (output) {
+    for (const ch of output) {
+      if (/[a-z]/.test(ch)) outputLabelSet.add(ch);
+    }
+  }
+  for (let varIdx = 0; varIdx < variables.length; varIdx += 1) {
+    const variable = variables[varIdx];
+    if (variable.symmetry !== 'custom') continue;
+    if (!variable.generators || variable.generators.trim() === '') continue;
+    const { generators: parsedGens, error: parseErr } = parseCycleNotation(variable.generators);
+    if (parseErr) continue;
+
+    // Find the first operand using this variable so we can read its labels.
+    const opIdx = opNames.findIndex((n) => n === variable.name.trim());
+    if (opIdx < 0 || opIdx >= subs.length) continue;
+    const sub = subs[opIdx];
+    const axes = Array.isArray(variable.symAxes)
+      ? variable.symAxes
+      : [...Array(variable.rank).keys()];
+    // Only run the domain check when the subscript is well-formed enough.
+    if (sub.length !== variable.rank) continue;
+
+    const axisLabels = axes.map((a) => sub[a]).filter((ch) => /[a-z]/.test(ch));
+    if (axisLabels.length !== axes.length) continue;
+
+    for (const cycles of parsedGens) {
+      const perm = cyclesToArrayForm(cycles, axes.length);
+      for (let pos = 0; pos < perm.length; pos += 1) {
+        const target = perm[pos];
+        if (target === pos) continue; // fixed point — no domain crossing
+        const fromLabel = axisLabels[pos];
+        const toLabel = axisLabels[target];
+        if (fromLabel == null || toLabel == null) continue;
+        if (fromLabel === toLabel) continue;
+        // Cycle moves between two different labels — that's only admissible
+        // when both labels live in the same "summed-vs-free" class.
+        const fromIsFree = outputLabelSet.has(fromLabel);
+        const toIsFree = outputLabelSet.has(toLabel);
+        if (fromIsFree !== toIsFree) {
+          errors.push(
+            incompatibleDomainMoveError(varIdx, {
+              name: variable.name,
+              fromLabel,
+              toLabel,
+            }),
+          );
+          break;
+        }
       }
     }
   }

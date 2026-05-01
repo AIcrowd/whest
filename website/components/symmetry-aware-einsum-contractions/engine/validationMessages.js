@@ -31,7 +31,29 @@ export const ERROR_CODES = Object.freeze({
   OUTPUT_NON_LOWERCASE: 'output-non-lowercase',
   OUTPUT_DUPLICATE_LABEL: 'output-duplicate-label',
   OUTPUT_LABEL_MISSING: 'output-label-missing',
+  ELLIPSIS_UNSUPPORTED: 'ellipsis-unsupported',
+  INCOMPATIBLE_DOMAIN_MOVE: 'incompatible-domain-move',
 });
+
+/**
+ * V3.1 §3 inline-validation taxonomy: every error builder also carries one of
+ * these eight categories on the resulting error so the custom builder can
+ * surface them via `data-error-category` for QA hooks and downstream copy.
+ *
+ * The mapping from concrete `code` → coarser `category` is many-to-one — e.g.
+ * malformed cycle notation, non-lowercase subscripts, and length mismatches
+ * all fold into 'malformed-einsum' for the user-facing summary.
+ */
+export const VALIDATION_ERROR_CATEGORIES = Object.freeze([
+  'unknown-operand',
+  'duplicate-output-label',
+  'repeated-input-label',
+  'ellipsis-unsupported',
+  'invalid-generator-axis',
+  'incompatible-domain-move',
+  'output-label-missing-in-input',
+  'malformed-einsum',
+]);
 
 export function varField(i, kind) {
   return `var-${i}-${kind}`;
@@ -88,6 +110,7 @@ function updateVariable(state, i, patch) {
 export function nameEmptyError(i) {
   return {
     code: ERROR_CODES.NAME_EMPTY,
+    category: 'unknown-operand',
     field: varField(i, 'name'),
     message:
       'A variable needs a name — the operand symbol used in the expression, like A or T.',
@@ -98,6 +121,7 @@ export function rankTooSmallError(i, { name, rank }) {
   const current = rank == null ? 'unset' : String(rank);
   return {
     code: ERROR_CODES.RANK_TOO_SMALL,
+    category: 'malformed-einsum',
     field: varField(i, 'rank'),
     message: `Variable "${name}" needs rank ≥ 1 (currently ${current}).`,
     fix: {
@@ -110,6 +134,7 @@ export function rankTooSmallError(i, { name, rank }) {
 export function namedSymAxesTooFewError(i, { name, rank, symmetry }) {
   const base = {
     code: ERROR_CODES.NAMED_SYM_AXES_TOO_FEW,
+    category: 'invalid-generator-axis',
     field: varField(i, 'axes'),
     message: `Variable "${name}"'s ${symmetry} symmetry needs at least 2 axes — select more axes above.`,
   };
@@ -129,6 +154,7 @@ export function namedSymAxesTooFewError(i, { name, rank, symmetry }) {
 export function namedSymAxisOorError(i, { name, badIdx, rank }) {
   return {
     code: ERROR_CODES.NAMED_SYM_AXIS_OOR,
+    category: 'invalid-generator-axis',
     field: varField(i, 'axes'),
     message: `Variable "${name}" has rank ${rank}, so axis ${badIdx} doesn't exist — valid axes are ${indexRange(rank)}.`,
     fix: {
@@ -155,6 +181,7 @@ export function customGeneratorsEmptyError(i, { name, axesCount }) {
   }
   return {
     code: ERROR_CODES.CUSTOM_GENERATORS_EMPTY,
+    category: 'malformed-einsum',
     field: varField(i, 'generators'),
     message,
   };
@@ -195,6 +222,7 @@ export function customGeneratorsParseError(i, { name, axesCount, rawError }) {
 
   return {
     code: ERROR_CODES.CUSTOM_GENERATORS_PARSE,
+    category: 'malformed-einsum',
     field: varField(i, 'generators'),
     message,
   };
@@ -207,6 +235,7 @@ export function customGeneratorAxisOorError(i, { name, badIdx, axesCount, axesEx
   const qualifier = axesExplicitlySelected ? `your ${axesCount} selected ${axisWord}` : `the ${axesCount} ${axisWord} (rank ${axesCount})`;
   return {
     code: ERROR_CODES.CUSTOM_GENERATOR_AXIS_OOR,
+    category: 'invalid-generator-axis',
     field: varField(i, 'generators'),
     message: `Variable "${name}": index ${badIdx} is outside ${qualifier} — valid indices are ${indexRange(axesCount)}.`,
   };
@@ -217,6 +246,7 @@ export function customGeneratorAxisOorError(i, { name, badIdx, axesCount, axesEx
 export function noOperandsError() {
   return {
     code: ERROR_CODES.NO_OPERANDS,
+    category: 'malformed-einsum',
     field: 'operands',
     message: "The expression needs at least one operand — like A in einsum('ij,j->i', A, b).",
   };
@@ -226,6 +256,7 @@ export function subscriptsOperandsCountMismatchError({ subsCount, opsCount }) {
   const plural = (n, s) => `${n} ${s}${n === 1 ? '' : 's'}`;
   return {
     code: ERROR_CODES.SUBSCRIPTS_OPERANDS_COUNT_MISMATCH,
+    category: 'malformed-einsum',
     field: 'subscripts',
     message: `The expression has ${plural(subsCount, 'subscript')} but ${plural(opsCount, 'operand')} — add or remove one so the counts match.`,
   };
@@ -234,6 +265,7 @@ export function subscriptsOperandsCountMismatchError({ subsCount, opsCount }) {
 export function operandUndefinedError({ name }) {
   return {
     code: ERROR_CODES.OPERAND_UNDEFINED,
+    category: 'unknown-operand',
     field: 'operands',
     message: `Operand "${name}" isn't a defined variable — either rename the operand, or add a variable called "${name}".`,
   };
@@ -243,6 +275,7 @@ export function subscriptNonLowercaseError({ opIdx, sub, name }) {
   const cleaned = sub.toLowerCase().replace(/[^a-z]/g, '');
   const base = {
     code: ERROR_CODES.SUBSCRIPT_NON_LOWERCASE,
+    category: 'malformed-einsum',
     field: 'subscripts',
     message: `Subscript "${sub}" for operand "${name}" must use lowercase letters a–z only.`,
   };
@@ -264,6 +297,7 @@ export function subscriptNonLowercaseError({ opIdx, sub, name }) {
 export function subscriptDuplicateLabelError({ sub, name, ch }) {
   return {
     code: ERROR_CODES.SUBSCRIPT_DUPLICATE_LABEL,
+    category: 'repeated-input-label',
     field: 'subscripts',
     message: `Subscript "${sub}" for operand "${name}" uses "${ch}" twice — each axis needs its own letter.`,
   };
@@ -290,6 +324,7 @@ export function subscriptLengthMismatchError({
     const moreWord = `${diff} more label${diff === 1 ? '' : 's'}`;
     return {
       code: ERROR_CODES.SUBSCRIPT_LENGTH_MISMATCH,
+      category: 'malformed-einsum',
       field: 'subscripts',
       message: `Variable "${name}" has rank ${rank} but subscript "${sub}" has ${haveWord} — add ${moreWord} (e.g. "${padded}"), or change "${name}"'s rank to ${sub.length}.`,
       fix: {
@@ -304,6 +339,7 @@ export function subscriptLengthMismatchError({
   const extraWord = `${-diff} label${-diff === 1 ? '' : 's'}`;
   return {
     code: ERROR_CODES.SUBSCRIPT_LENGTH_MISMATCH,
+    category: 'malformed-einsum',
     field: 'subscripts',
     message: `Variable "${name}" has rank ${rank} but subscript "${sub}" has ${haveWord} — drop ${extraWord}, or change "${name}"'s rank to ${sub.length}.`,
   };
@@ -313,6 +349,7 @@ export function outputNonLowercaseError({ outputStr }) {
   const cleaned = outputStr.toLowerCase().replace(/[^a-z]/g, '');
   const base = {
     code: ERROR_CODES.OUTPUT_NON_LOWERCASE,
+    category: 'malformed-einsum',
     field: 'output',
     message: 'The output subscript must use lowercase letters a–z only.',
   };
@@ -331,6 +368,7 @@ export function outputNonLowercaseError({ outputStr }) {
 export function outputLabelMissingError({ ch }) {
   return {
     code: ERROR_CODES.OUTPUT_LABEL_MISSING,
+    category: 'output-label-missing-in-input',
     field: 'output',
     message: `Output label "${ch}" doesn't appear in any input subscript — there's no source to index from. Remove "${ch}" from the output, or add it to one of the inputs.`,
     fix: {
@@ -346,6 +384,7 @@ export function outputLabelMissingError({ ch }) {
 export function outputDuplicateLabelError({ ch }) {
   return {
     code: ERROR_CODES.OUTPUT_DUPLICATE_LABEL,
+    category: 'duplicate-output-label',
     field: 'output',
     message: `Output label "${ch}" appears twice — this explorer uses explicit output axes, so each output label must be unique.`,
     fix: {
@@ -366,5 +405,50 @@ export function outputDuplicateLabelError({ ch }) {
         };
       },
     },
+  };
+}
+
+// ── V3.1 §3 additions ────────────────────────────────────────────────
+
+/**
+ * Ellipsis / broadcasting unsupported. NumPy einsum accepts `...` to mean
+ * "remaining axes", but the explorer's symmetry classification needs every
+ * label written explicitly so it can reason about per-axis domains.
+ */
+export function ellipsisUnsupportedError({ where }) {
+  // `where` is 'subscripts' or 'output' — points the field highlight at the
+  // exact input the user typed dots into.
+  const field = where === 'output' ? 'output' : 'subscripts';
+  const dots = '...';
+  return {
+    code: ERROR_CODES.ELLIPSIS_UNSUPPORTED,
+    category: 'ellipsis-unsupported',
+    field,
+    message: `Ellipsis (${dots}) and broadcasting aren't supported here — every axis needs an explicit lowercase label (a–z) so the symmetry classifier can pin its domain.`,
+    fix: {
+      label: `Strip "${dots}"`,
+      apply: (state) => {
+        if (where === 'output') {
+          return { ...state, outputStr: state.outputStr.replace(/\./g, '') };
+        }
+        return { ...state, subscriptsStr: state.subscriptsStr.replace(/\./g, '') };
+      },
+    },
+  };
+}
+
+/**
+ * Custom generator induces a label permutation that crosses domains — i.e.
+ * the cycle moves an axis labelled "i" onto a position labelled "j" while
+ * "i" and "j" don't share a domain on this operand. The explorer requires
+ * generators to act within a single domain (otherwise the resulting wreath
+ * structure isn't an honest symmetry of the underlying tensor).
+ */
+export function incompatibleDomainMoveError(i, { name, fromLabel, toLabel }) {
+  return {
+    code: ERROR_CODES.INCOMPATIBLE_DOMAIN_MOVE,
+    category: 'incompatible-domain-move',
+    field: varField(i, 'generators'),
+    message: `Variable "${name}": this generator moves axis "${fromLabel}" onto axis "${toLabel}", but those labels live in different domains — generators must permute within one label domain.`,
   };
 }
