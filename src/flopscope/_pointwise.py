@@ -12,6 +12,7 @@ from typing import Any
 import numpy as _np
 from numpy.typing import ArrayLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._config import get_setting as _get_setting
 from flopscope._docstrings import attach_docstring
 from flopscope._flops import (
@@ -47,7 +48,6 @@ from flopscope._symmetry_utils import (
     restrict_group_to_axes,
     unique_elements_for_shape,
 )
-from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._validation import maybe_check_nan_inf, require_budget
 from flopscope.errors import (
     CostFallbackWarning,

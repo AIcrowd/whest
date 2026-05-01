@@ -484,6 +484,7 @@ def test_budget_summary_dict_includes_op_duration():
 
 def test_budget_context_summary_dict_live_and_closed():
     import time
+
     from flopscope._budget import _call_numpy
 
     budget = BudgetContext(flop_budget=100, quiet=True)
@@ -644,7 +645,9 @@ def test_summary_dict_includes_flopscope_overhead_time_s():
 
 def test_call_numpy_returns_fn_result_and_records_duration():
     import time as _time
+
     import numpy as np
+
     import flopscope
     from flopscope._budget import _call_numpy
 
@@ -669,6 +672,7 @@ def test_call_numpy_returns_fn_result_and_records_duration():
 
 def test_counted_wrapper_records_overhead():
     import time as _time
+
     import flopscope
     from flopscope._budget import _counted_wrapper
 
@@ -701,6 +705,7 @@ def test_counted_wrapper_handles_exceptions():
 
 def test_optimer_splits_block_into_tracked_and_overhead():
     import time as _time
+
     import flopscope
     from flopscope._budget import _call_numpy
 
@@ -763,7 +768,9 @@ def test_per_namespace_summary_includes_flopscope_overhead():
 
 def test_factory_wrapper_tracked_time_is_numpy_only():
     import time as _time
+
     import numpy as np
+
     import flopscope
 
     plain_a = np.ones((10000,))
@@ -806,6 +813,7 @@ def test_decomposition_invariant_after_single_op():
 
 def test_decomposition_invariant_under_mixed_workload():
     import time as _time
+
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
@@ -889,6 +897,7 @@ def test_overhead_recorded_on_budget_exhausted():
 
 def test_overhead_recorded_on_numpy_call_exception():
     import numpy as np
+
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:

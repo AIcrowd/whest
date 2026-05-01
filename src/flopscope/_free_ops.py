@@ -15,6 +15,7 @@ from typing import Any
 import numpy as _np
 from numpy.typing import ArrayLike, DTypeLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray, _to_base_ndarray, _to_base_ndarray_tree
 from flopscope._perm_group import SymmetryGroup
@@ -27,7 +28,6 @@ from flopscope._symmetry_utils import (
     wrap_with_symmetry,
     wrap_with_trusted_symmetry,
 )
-from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._validation import require_budget
 from flopscope.errors import SymmetryError, UnsupportedFunctionError
 
