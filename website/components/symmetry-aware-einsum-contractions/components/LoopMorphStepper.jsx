@@ -192,7 +192,7 @@ function PseudocodeBlock({
     return (
       <div
         key={idx}
-        className="flex items-baseline"
+        className="flex items-baseline overflow-x-auto"
         data-testid={`loop-morph-stepper-${side}-line`}
         data-line-idx={idx}
         data-pulsed={isPulse ? 'true' : 'false'}
