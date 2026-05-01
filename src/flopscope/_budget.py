@@ -374,6 +374,7 @@ class BudgetContext:
         self._recorded_tracked_time = 0.0
         self._recorded_overhead_time: float = 0.0
         self._budget_recorded = False
+        self._current_op_timer: _OpTimer | None = None
         _all_budget_contexts.add(self)
 
     @property

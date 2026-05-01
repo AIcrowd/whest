@@ -786,3 +786,189 @@ def test_factory_wrapper_tracked_time_is_numpy_only():
     # Generous bounds for noisy timing
     assert flopscope_tracked < pure_numpy_wall * 3.0
     assert flopscope_tracked > pure_numpy_wall * 0.3
+
+
+def test_decomposition_invariant_after_single_op():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+        )
+    d = b.summary_dict()
+    total = (
+        d["tracked_time_s"]
+        + d["flopscope_overhead_time_s"]
+        + d["untracked_time_s"]
+    )
+    assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
+
+
+def test_decomposition_invariant_under_mixed_workload():
+    import time as _time
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        a = flopscope.numpy.ones((50, 50))
+        _ = flopscope.numpy.matmul(a, a)
+        _ = flopscope.numpy.linalg.inv(a + flopscope.numpy.eye(50))
+        _ = flopscope.numpy.fft.fft(flopscope.numpy.ones((128,)))
+        _ = flopscope.numpy.sort(flopscope.numpy.ones((100,)))
+        _time.sleep(0.005)  # genuinely untracked
+    d = b.summary_dict()
+    total = (
+        d["tracked_time_s"]
+        + d["flopscope_overhead_time_s"]
+        + d["untracked_time_s"]
+    )
+    assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
+    # The sleep should land in untracked, not overhead
+    assert d["untracked_time_s"] >= 0.004
+
+
+def test_per_op_overhead_recorded():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+        )
+    op = b.op_log[-1]
+    assert op.flopscope_overhead is not None
+    assert op.flopscope_overhead >= 0
+
+
+def test_per_op_overhead_sums_to_global_no_namespace():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        for _ in range(5):
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+            )
+    per_op_total = sum(
+        op.flopscope_overhead or 0.0 for op in b.op_log
+    )
+    # OpRecord.flopscope_overhead captures overhead attributed to each op that
+    # created an OpRecord.  Zero-FLOP ops (e.g. ones) still add to the global
+    # counter without creating an OpRecord, so per_op_total <= global overhead.
+    # We verify that the per-op sum is positive and does not exceed the global.
+    assert per_op_total > 0
+    assert per_op_total <= b.flopscope_overhead_time + 1e-9
+
+
+def test_per_namespace_overhead_breakdown():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        with flopscope.namespace("ns1"):
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+            )
+        with flopscope.namespace("ns2"):
+            _ = flopscope.numpy.multiply(
+                flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+            )
+    d = b.summary_dict(by_namespace=True)
+    assert d["by_namespace"]["ns1"]["flopscope_overhead_time_s"] > 0
+    assert d["by_namespace"]["ns2"]["flopscope_overhead_time_s"] > 0
+
+
+def test_overhead_recorded_on_budget_exhausted():
+    import flopscope
+    from flopscope.errors import BudgetExhaustedError
+
+    with flopscope.BudgetContext(flop_budget=10, quiet=True) as b:
+        with pytest.raises(BudgetExhaustedError):
+            _ = flopscope.numpy.matmul(
+                flopscope.numpy.ones((100, 100)),
+                flopscope.numpy.ones((100, 100)),
+            )
+    assert b.flopscope_overhead_time > 0
+
+
+def test_overhead_recorded_on_numpy_call_exception():
+    import numpy as np
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        # Singular matrix raises LinAlgError inside the numpy call
+        singular = flopscope.numpy.zeros((3, 3))
+        with pytest.raises(np.linalg.LinAlgError):
+            _ = flopscope.numpy.linalg.inv(singular)
+    # Decorator's try/finally captured the wrapper time
+    assert b.flopscope_overhead_time > 0
+
+
+def test_nested_wrapper_no_double_count():
+    """Calling a wrapped op transitively (e.g., einsum internally calling
+    np.tensordot through opt_einsum) does not double-count overhead."""
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        # einsum's _execute_pairwise dispatches to multiple inner ops
+        _ = flopscope.numpy.einsum(
+            "ij,jk,kl->il",
+            flopscope.numpy.ones((4, 4)),
+            flopscope.numpy.ones((4, 4)),
+            flopscope.numpy.ones((4, 4)),
+        )
+    d = b.summary_dict()
+    total = (
+        d["tracked_time_s"]
+        + d["flopscope_overhead_time_s"]
+        + d["untracked_time_s"]
+    )
+    assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
+
+
+def test_check_nan_inf_opt_in_attributes_to_overhead():
+    """Toggling check_nan_inf=True should grow flopscope overhead.
+
+    Each call pays an extra np.any(np.isnan | np.isinf) scan — pure overhead.
+    We measure the per-call overhead delta directly to avoid cross-run noise.
+    """
+    import flopscope
+
+    N_CALLS = 200
+    ARRAY_SIZE = 100_000  # large enough for np.any scan to be measurable
+
+    # Warmup to ensure modules are loaded before timing
+    for _ in range(3):
+        with flopscope.BudgetContext(flop_budget=int(1e15), quiet=True):
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((ARRAY_SIZE,)),
+                flopscope.numpy.ones((ARRAY_SIZE,)),
+            )
+
+    flopscope.configure(check_nan_inf=False)
+    with flopscope.BudgetContext(flop_budget=int(1e15), quiet=True) as b_off:
+        for _ in range(N_CALLS):
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((ARRAY_SIZE,)),
+                flopscope.numpy.ones((ARRAY_SIZE,)),
+            )
+
+    flopscope.configure(check_nan_inf=True)
+    try:
+        with flopscope.BudgetContext(flop_budget=int(1e15), quiet=True) as b_on:
+            for _ in range(N_CALLS):
+                _ = flopscope.numpy.add(
+                    flopscope.numpy.ones((ARRAY_SIZE,)),
+                    flopscope.numpy.ones((ARRAY_SIZE,)),
+                )
+    finally:
+        flopscope.configure(check_nan_inf=False)
+
+    overhead_off = b_off.flopscope_overhead_time
+    overhead_on = b_on.flopscope_overhead_time
+
+    # check_nan_inf=True must add measurable overhead. We verify per-call
+    # overhead grew by at least 5 µs per call (a very conservative lower bound
+    # for np.any on a 100k-element array) to tolerate timing noise.
+    per_call_delta = (overhead_on - overhead_off) / N_CALLS
+    assert per_call_delta > 5e-6, (
+        f"Expected per-call overhead to grow by >5µs with check_nan_inf=True; "
+        f"got {per_call_delta*1e6:.2f}µs "
+        f"(overhead_on={overhead_on:.4f}s, overhead_off={overhead_off:.4f}s)"
+    )
