@@ -1114,6 +1114,86 @@
   border: 1px solid color-mix(in oklab, var(--coral) 20%, transparent);
 }
 
+/* C22 — Incidence Fingerprint Visual: rejected π verdict + domain-mismatch
+ * marking + Show fingerprints toggle.
+ *
+ * The third stage of the σ-loop turns red on rejected pairs so the verdict is
+ * visually distinct from the green "= M ✓" badge. Mismatched columns (those
+ * whose σ(M) fingerprint has no partner in M) get a red border + × overlay
+ * in both the matrix grid and the fingerprint pill row.
+ */
+.inc-matrix-rejected .inc-matrix {
+  border: 1.5px solid color-mix(in oklab, var(--coral) 35%, transparent);
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--coral) 3%, transparent);
+}
+
+.inc-matrix-rejected .inc-matrix-label {
+  color: var(--coral);
+}
+
+.inc-matrix-reject-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--coral-light);
+  color: var(--coral);
+  border: 1px solid color-mix(in oklab, var(--coral) 25%, transparent);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  vertical-align: middle;
+}
+
+.inc-col-mismatch {
+  position: relative;
+  border-bottom: 2px solid var(--coral) !important;
+  color: var(--coral) !important;
+}
+
+.inc-col-mismatch-mark {
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--coral);
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.inc-cell.inc-cell-mismatch {
+  border-color: color-mix(in oklab, var(--coral) 40%, transparent);
+  box-shadow: inset 0 -2px 0 color-mix(in oklab, var(--coral) 30%, transparent);
+}
+
+.inc-fp-mismatch {
+  position: relative;
+}
+
+.inc-fp-mismatch-mark {
+  color: var(--coral);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  margin-left: 2px;
+}
+
+.inc-matrix-compact-mode .inc-matrix-legend {
+  margin-bottom: 4px;
+}
+
+.stage-dot-rejected {
+  background: var(--coral) !important;
+  border-color: var(--coral) !important;
+  color: var(--white) !important;
+}
+
+.ctrl-fingerprints-toggle {
+  margin-left: auto;
+  font-size: 11px;
+}
+
 /* π detail panel */
 .pi-detail-panel {
   margin-top: 16px;

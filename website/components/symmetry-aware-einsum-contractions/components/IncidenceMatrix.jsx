@@ -37,6 +37,9 @@ export default function IncidenceMatrix({
   animate,         // boolean — enable CSS transitions
   label,           // string | null — title above the matrix (e.g. "M", "σ(M)")
   compact,         // boolean — slightly smaller for modal use
+  rejected,        // boolean — render with red turn-red styling for failed π search (C22)
+  mismatchedLabels,// Set<string> | null — column labels with no matching fingerprint, marked with red border/× overlay (C22)
+  compactMode,     // boolean — collapse the per-row matrix into column signatures only (C22 "Show fingerprints" toggle)
 }) {
   const explorerThemeId = getActiveExplorerThemeId();
   const numRows = matrix.length;
@@ -87,11 +90,27 @@ export default function IncidenceMatrix({
     }
   }
 
+  // C22: classify row/col label semantic role for hover-help tooltips and
+  // domain-mismatch marking. Mismatched labels (those without a fingerprint
+  // partner during π search) are marked with a red border + × overlay so the
+  // user can see exactly which columns broke the σ → π recovery.
+  const mismatchedSet = mismatchedLabels || new Set();
+  const outerClassName = [
+    'inc-matrix-outer',
+    rejected ? 'inc-matrix-rejected' : '',
+    compactMode ? 'inc-matrix-compact-mode' : '',
+  ].filter(Boolean).join(' ');
+
   return (
-    <div className="inc-matrix-outer">
+    <div className={outerClassName} data-rejected={rejected ? 'true' : undefined}>
       {label && (
         <div className="inc-matrix-label">
           <Latex math={label} />
+          {rejected && (
+            <span className="inc-matrix-reject-badge" aria-label="no compatible π — fingerprint mismatch">
+              ✗ no compatible π
+            </span>
+          )}
         </div>
       )}
       <div className="inc-matrix-legend">
@@ -105,76 +124,106 @@ export default function IncidenceMatrix({
           <Latex math={`${notationLatex('l_labels')} = ${notationLatex('v_free')} \\sqcup ${notationLatex('w_summed')}`} />
         </span>
       </div>
-      <div className="inc-matrix" style={{ height: containerH, width: containerW }}>
-        {/* Column headers */}
-        {colLabels.map((lbl, ci) => {
-          const isMoved = movedColSet.has(ci);
-          const isV = freeLabels?.has(lbl);
-          return (
-            <div key={`h-${lbl}`}
-              className={`inc-col-header ${isMoved ? 'inc-moved' : ''} ${isV ? 'inc-col-v' : 'inc-col-w'}`}
-              style={{
-                ...transitionStyle,
-                transform: `translateX(${labelW + ci * cellW}px)`,
-                width: cellW, height: headerH,
-              }}>
-              <Latex math={lbl} />
-            </div>
-          );
-        })}
-
-        {/* Row cards */}
-        {identity.map(uIdx => {
-          const visualRow = positionOf[uIdx];
-          const isMoved = movedUIndices.has(uIdx);
-          const rowData = matrix[visualRow];
-
-          return (
-            <div key={uIdx}
-              className={`inc-row ${isMoved ? 'inc-row-moved' : ''}`}
-              style={{
-                ...transitionStyle,
-                transform: `translateY(${headerH + visualRow * cellH}px)`,
-                height: cellH,
-              }}>
-              {/* Row label — colored by variable */}
-              <div className="inc-row-label" style={{
-                width: labelW,
-                color: (() => {
-                  const opName = example?.operandNames?.[uVertices[uIdx]?.opIdx];
-                  return variableColors?.[opName]?.color || defaultLabelColor;
-                })(),
-              }}>
-                {uLabels[uIdx]}
+      {/* Matrix grid — hidden when compactMode (Show fingerprints) is on */}
+      {!compactMode && (
+        <div className="inc-matrix" style={{ height: containerH, width: containerW }}>
+          {/* Column headers */}
+          {colLabels.map((lbl, ci) => {
+            const isMoved = movedColSet.has(ci);
+            const isV = freeLabels?.has(lbl);
+            const isMismatch = mismatchedSet.has(lbl);
+            const headerClass = [
+              'inc-col-header',
+              isMoved ? 'inc-moved' : '',
+              isV ? 'inc-col-v' : 'inc-col-w',
+              isMismatch ? 'inc-col-mismatch' : '',
+              'cursor-help',
+            ].filter(Boolean).join(' ');
+            const headerTitle = isV
+              ? `Free (visible) label ${lbl} — survives the contraction.`
+              : `Summed label ${lbl} — internal axis the contraction sums over.`;
+            return (
+              <div key={`h-${lbl}`}
+                className={headerClass}
+                title={isMismatch ? `${headerTitle} No matching column fingerprint — π cannot place this label.` : headerTitle}
+                tabIndex={0}
+                style={{
+                  ...transitionStyle,
+                  transform: `translateX(${labelW + ci * cellW}px)`,
+                  width: cellW, height: headerH,
+                }}>
+                <Latex math={lbl} />
+                {isMismatch && (
+                  <span className="inc-col-mismatch-mark" aria-label={`column ${lbl} has no matching fingerprint`}>×</span>
+                )}
               </div>
-              {/* Cells */}
-              {rowData.map((val, ci) => {
-                const xPos = effectiveColPerm[ci];
-                const colMoved = movedColSet.has(ci);
-                return (
-                  <div key={ci}
-                    className={`inc-cell ${val > 0 ? 'inc-cell-active' : ''} ${colMoved ? 'inc-cell-col-moved' : ''}`}
-                    style={{
-                      ...transitionStyle,
-                      transform: `translateX(${labelW + xPos * cellW}px)`,
-                      width: cellW, height: cellH,
-                    }}>
-                    {val}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-      {/* Column fingerprints */}
+            );
+          })}
+
+          {/* Row cards */}
+          {identity.map(uIdx => {
+            const visualRow = positionOf[uIdx];
+            const isMoved = movedUIndices.has(uIdx);
+            const rowData = matrix[visualRow];
+            const opName = example?.operandNames?.[uVertices[uIdx]?.opIdx];
+            const rowTitle = `Axis class ${uLabels[uIdx]} — row of the M incidence matrix; one row per (operand, axis) class${opName ? ` (operand ${opName})` : ''}.`;
+
+            return (
+              <div key={uIdx}
+                className={`inc-row ${isMoved ? 'inc-row-moved' : ''}`}
+                style={{
+                  ...transitionStyle,
+                  transform: `translateY(${headerH + visualRow * cellH}px)`,
+                  height: cellH,
+                }}>
+                {/* Row label — colored by variable */}
+                <div className="inc-row-label cursor-help"
+                  title={rowTitle}
+                  tabIndex={0}
+                  style={{
+                    width: labelW,
+                    color: variableColors?.[opName]?.color || defaultLabelColor,
+                  }}>
+                  {uLabels[uIdx]}
+                </div>
+                {/* Cells */}
+                {rowData.map((val, ci) => {
+                  const xPos = effectiveColPerm[ci];
+                  const colMoved = movedColSet.has(ci);
+                  const colMismatch = mismatchedSet.has(colLabels[ci]);
+                  return (
+                    <div key={ci}
+                      className={`inc-cell ${val > 0 ? 'inc-cell-active' : ''} ${colMoved ? 'inc-cell-col-moved' : ''} ${colMismatch ? 'inc-cell-mismatch' : ''}`}
+                      style={{
+                        ...transitionStyle,
+                        transform: `translateX(${labelW + xPos * cellW}px)`,
+                        width: cellW, height: cellH,
+                      }}>
+                      {val}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {/* Column fingerprints — always rendered (this is the summary the
+          compactMode toggle exposes). When compactMode is on it is the only
+          visible representation of the matrix; otherwise it sits below the
+          grid as a per-column equivalence summary. */}
       <div className="inc-fingerprints-header">Column Fingerprints</div>
       <div className="inc-fingerprints">
         {colLabels.map(lbl => {
           const fp = fingerprints[lbl];
           const eqColor = fpColors[fp];
+          const isMismatch = mismatchedSet.has(lbl);
+          const itemStyle = {
+            ...(eqColor ? { borderColor: eqColor } : {}),
+            ...(isMismatch ? { borderColor: 'var(--coral)', borderWidth: '2px' } : {}),
+          };
           return (
-            <div key={lbl} className="inc-fp-item" style={eqColor ? { borderColor: eqColor } : {}}>
+            <div key={lbl} className={`inc-fp-item ${isMismatch ? 'inc-fp-mismatch' : ''}`} style={itemStyle}>
               <span className={`inc-fp-label ${freeLabels?.has(lbl) ? 'inc-col-v' : 'inc-col-w'}`}>
                 <Latex math={lbl} />
               </span>
@@ -183,6 +232,9 @@ export default function IncidenceMatrix({
                 <span className="inc-fp-eq" style={{ background: eqColor, color: notationColor('m_incidence') }}>
                   ≡
                 </span>
+              )}
+              {isMismatch && (
+                <span className="inc-fp-mismatch-mark" aria-label={`no fingerprint partner for ${lbl}`}>×</span>
               )}
             </div>
           );

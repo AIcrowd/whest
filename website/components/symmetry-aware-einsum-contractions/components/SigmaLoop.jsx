@@ -64,6 +64,10 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const [showRejected, setShowRejected] = useState(false);
   const [showMoreValid, setShowMoreValid] = useState(false);
   const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
+  // C22: "Show fingerprints" toggle — when on, the matrix grid collapses into
+  // its column-signature summary so the user can spot fingerprint
+  // equivalence/mismatch without scanning the full grid.
+  const [showFingerprintsOnly, setShowFingerprintsOnly] = useState(false);
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
   const inlineValidPairs = validPairs.slice(0, VISIBLE_VALID_PAIR_LIMIT);
@@ -92,12 +96,15 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   // Compute the three matrix stages
   const stages = computeStages(selected, originalMatrix, labels, uVertices);
 
+  // C22: max-stage policy. Both ACCEPTED (`isValid`) and REJECTED pairs walk
+  // the full M → σ(M) → π(σ(M)) loop. The third stage is the visual register
+  // for the verdict — green "= M ✓" for accepted, red "✗ no compatible π"
+  // for rejected. Skipped (identity) entries never reach the animation panel.
+  const maxStage = selected ? 2 : 0;
+
   // Playback
   function stepForward() {
-    setStage(s => {
-      const max = selected?.isValid ? 2 : 1;
-      return Math.min(s + 1, max);
-    });
+    setStage(s => Math.min(s + 1, maxStage));
   }
 
   function reset() {
@@ -109,18 +116,17 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   useEffect(() => {
     playRef.current = playing;
     if (!playing) return;
-    const max = selected?.isValid ? 2 : 1;
-    if (stage >= max) return;
+    if (stage >= maxStage) return;
     const timer = setTimeout(() => {
       if (!playRef.current) return;
       setStage(s => {
         const next = s + 1;
-        if (next >= max) setPlaying(false);
-        return Math.min(next, max);
+        if (next >= maxStage) setPlaying(false);
+        return Math.min(next, maxStage);
       });
     }, 900);
     return () => clearTimeout(timer);
-  }, [playing, stage, selected]);
+  }, [playing, stage, maxStage]);
 
   useEffect(() => {
     if (selectedIdx === null) {
@@ -140,7 +146,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   }
 
   function handlePlay() {
-    if (stage >= (selected?.isValid ? 2 : 1)) setStage(0);
+    if (stage >= maxStage) setStage(0);
     setPlaying(true);
   }
 
@@ -217,22 +223,23 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
       {/* Animation panel */}
       {selected && (
-        <div className="anim-panel">
+        <div className="anim-panel" data-pair-status={selected.isValid ? 'accepted' : 'rejected'}>
           {/* Stage indicator */}
           <div className="stage-track">
             {STAGE_LABELS.map((label, i) => {
-              const reachable = selected.isValid || i <= 1;
+              // C22: every selected pair (accepted OR rejected) can walk the
+              // three stages. Rejected pairs land on a red π(σ(M)) verdict.
+              const reachable = true;
               return (
                 <div key={i} className="stage-step-wrapper">
                   {i > 0 && (
-                    <div className={`stage-connector ${stage >= i ? 'stage-connector-done' : ''} ${!reachable ? 'stage-connector-disabled' : ''}`}>
+                    <div className={`stage-connector ${stage >= i ? 'stage-connector-done' : ''}`}>
                       <span className="stage-connector-label">{i === 1 ? <>apply <Latex math={String.raw`\sigma`} inheritColor /></> : <>apply <Latex math={String.raw`\pi`} inheritColor /></>}</span>
                     </div>
                   )}
                   <button
-                    className={`stage-dot ${stage === i ? 'stage-dot-active' : ''} ${stage > i ? 'stage-dot-done' : ''} ${!reachable ? 'stage-dot-disabled' : ''}`}
-                    onClick={() => reachable && setStage(i)}
-                    disabled={!reachable}>
+                    className={`stage-dot ${stage === i ? 'stage-dot-active' : ''} ${stage > i ? 'stage-dot-done' : ''} ${!selected.isValid && i === 2 && stage === 2 ? 'stage-dot-rejected' : ''}`}
+                    onClick={() => reachable && setStage(i)}>
                     {label}
                   </button>
                 </div>
@@ -240,22 +247,33 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
             })}
           </div>
 
-          {/* Playback controls */}
+          {/* Playback controls + Show fingerprints toggle (C22) */}
           <div className="stage-controls">
             <button className="ctrl-btn" onClick={reset} title="Reset">
               ↺ Reset
             </button>
             <button className="ctrl-btn ctrl-play" onClick={handlePlay}
-              disabled={playing || stage >= (selected.isValid ? 2 : 1)}>
+              disabled={playing || stage >= maxStage}>
               ▶ Play
             </button>
             <button className="ctrl-btn" onClick={stepForward}
-              disabled={stage >= (selected.isValid ? 2 : 1)}>
+              disabled={stage >= maxStage}>
               Step →
+            </button>
+            <button
+              className={`ctrl-btn ctrl-fingerprints-toggle ${showFingerprintsOnly ? 'ctrl-btn-active' : ''}`}
+              onClick={() => setShowFingerprintsOnly((v) => !v)}
+              aria-label="Show fingerprints — collapse the matrix grid into its column-signature summary"
+              aria-expanded={showFingerprintsOnly}
+              title="Toggle a compact summary that hides the matrix and shows only the column fingerprints">
+              {showFingerprintsOnly ? '▾' : '▸'} Show fingerprints
             </button>
           </div>
 
-          {/* Animated matrix — uses shared IncidenceMatrix */}
+          {/* Animated matrix — uses shared IncidenceMatrix.
+              C22: pass `rejected` on the third stage when no π exists, and
+              `mismatchedLabels` so domain-mismatch columns get red borders +
+              × overlays. `compactMode` is driven by the toggle. */}
           {stages && (
             <div className="anim-matrix-container">
               <IncidenceMatrix
@@ -271,13 +289,21 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 movedCols={stages[stage].movedCols}
                 animate={true}
                 label={STAGE_LABELS[stage]}
+                rejected={stage === 2 && !selected.isValid}
+                mismatchedLabels={stage >= 1 && !selected.isValid ? computeDomainMismatchedLabels(selected, originalMatrix, labels) : null}
+                compactMode={showFingerprintsOnly}
               />
               {stage === 2 && selected.isValid && (
                 <div className="recovery-badge">= M ✓</div>
               )}
-              {stage >= 1 && !selected.isValid && (
+              {stage === 2 && !selected.isValid && (
+                <div className="recovery-badge-below recovery-fail" data-rejected-verdict="true">
+                  ✗ <Latex math={String.raw`\pi`} inheritColor /> not found — {selected.reason}
+                </div>
+              )}
+              {stage === 1 && !selected.isValid && (
                 <div className="recovery-badge-below recovery-fail">
-                  <Latex math={String.raw`\pi`} inheritColor /> not found — {selected.reason}
+                  Step → to see why <Latex math={String.raw`\pi`} inheritColor /> cannot recover M ({selected.reason})
                 </div>
               )}
             </div>
@@ -556,6 +582,43 @@ function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels,
       {/* Fingerprints are now shown by IncidenceMatrix automatically */}
     </>
   );
+}
+
+/* ── Domain-mismatch labels (C22) ──
+ *
+ * When π search fails with `reason: 'No matching π (fingerprint mismatch)'`,
+ * one or more columns of σ(M) carry a fingerprint that does not appear in the
+ * fingerprint set of M. Those columns are the visual culprit: they cannot be
+ * mapped to any column of M by π, so the σ → π recovery breaks.
+ *
+ * We compute fingerprints from the original M, then flag every column of
+ * σ(M) whose own fingerprint has no matching column in M. The set is
+ * surfaced to IncidenceMatrix as `mismatchedLabels` so those columns get a
+ * red border + × overlay in both the matrix grid and the fingerprint pills.
+ */
+function computeDomainMismatchedLabels(result, originalMatrix, labels) {
+  if (!result || result.isValid) return null;
+  if (!result.sigmaMatrix) return null;
+
+  const numRows = originalMatrix.length;
+
+  // Collect M's column fingerprints (string keys = comma-joined column data).
+  const mFingerprints = new Set();
+  labels.forEach((_, ci) => {
+    const fp = [];
+    for (let r = 0; r < numRows; r++) fp.push(originalMatrix[r][ci]);
+    mFingerprints.add(fp.join(','));
+  });
+
+  // For σ(M), flag any column whose fingerprint is not present in M.
+  const mismatched = new Set();
+  labels.forEach((lbl, ci) => {
+    const fp = [];
+    for (let r = 0; r < numRows; r++) fp.push(result.sigmaMatrix[r][ci]);
+    if (!mFingerprints.has(fp.join(','))) mismatched.add(lbl);
+  });
+
+  return mismatched;
 }
 
 /* ── Compute stage data ── */
