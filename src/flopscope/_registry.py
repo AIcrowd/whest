@@ -2,12 +2,14 @@
 
 Categories
 ----------
-counted_unary      scalar math on each element, cost = numel(output)
-counted_binary     element-wise binary op, cost = numel(output)
-counted_reduction  reduce array, cost = numel(input)
-counted_custom     bespoke cost formulas
-free               zero FLOP cost (allocation, indexing, shape ops, etc.)
-blacklisted        intentionally unsupported
+counted_unary           scalar math on each element, cost = numel(output)
+counted_binary          element-wise binary op, cost = numel(output)
+counted_reduction       reduce array, cost = numel(input)
+counted_custom          bespoke cost formulas
+counted_random_method   method on Generator/RandomState, counted via cost_formula
+free                    zero FLOP cost (allocation, indexing, shape ops, etc.)
+free_random_method      method on Generator/RandomState, no FLOP cost (state, spawn, etc.)
+blacklisted             intentionally unsupported
 """
 
 from __future__ import annotations
@@ -2236,6 +2238,574 @@ REGISTRY: dict[str, dict] = {
         "category": "counted_custom",
         "module": "numpy.random",
         "notes": "Sampling; cost = numel(output).",
+    },
+    # ------------------------------------------------------------------
+    # random.Generator.* — counted method-level entries (issue #18)
+    # category=counted_random_method or free_random_method
+    # ------------------------------------------------------------------
+    "random.Generator.beta": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Beta distribution; cost = numel(output).",
+    },
+    "random.Generator.binomial": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Binomial distribution; cost = numel(output).",
+    },
+    "random.Generator.bytes": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "length",
+        "notes": "Raw bytes; cost = length argument.",
+    },
+    "random.Generator.chisquare": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Chi-square distribution; cost = numel(output).",
+    },
+    "random.Generator.choice": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "choice_cost",
+        "notes": "numel(output) if replace else sort_cost(n).",
+    },
+    "random.Generator.dirichlet": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Dirichlet distribution; cost = numel(output).",
+    },
+    "random.Generator.exponential": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Exponential distribution; cost = numel(output).",
+    },
+    "random.Generator.f": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "F distribution; cost = numel(output).",
+    },
+    "random.Generator.gamma": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Gamma distribution; cost = numel(output).",
+    },
+    "random.Generator.geometric": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Geometric distribution; cost = numel(output).",
+    },
+    "random.Generator.gumbel": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Gumbel distribution; cost = numel(output).",
+    },
+    "random.Generator.hypergeometric": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Hypergeometric distribution; cost = numel(output).",
+    },
+    "random.Generator.integers": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Modern Generator integers (replaces legacy randint).",
+    },
+    "random.Generator.laplace": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Laplace distribution; cost = numel(output).",
+    },
+    "random.Generator.logistic": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Logistic distribution; cost = numel(output).",
+    },
+    "random.Generator.lognormal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Log-normal distribution; cost = numel(output).",
+    },
+    "random.Generator.logseries": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Log-series distribution; cost = numel(output).",
+    },
+    "random.Generator.multinomial": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Multinomial distribution; cost = numel(output).",
+    },
+    "random.Generator.multivariate_hypergeometric": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Multivariate hypergeometric; cost = numel(output).",
+    },
+    "random.Generator.multivariate_normal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Multivariate normal; cost = numel(output).",
+    },
+    "random.Generator.negative_binomial": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Negative binomial distribution; cost = numel(output).",
+    },
+    "random.Generator.noncentral_chisquare": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Noncentral chi-square; cost = numel(output).",
+    },
+    "random.Generator.noncentral_f": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Noncentral F; cost = numel(output).",
+    },
+    "random.Generator.normal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Normal distribution; cost = numel(output).",
+    },
+    "random.Generator.pareto": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Pareto distribution; cost = numel(output).",
+    },
+    "random.Generator.permutation": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "shape[axis]",
+        "notes": "Random permutation; cost = shape[axis] (Fisher-Yates draws).",
+    },
+    "random.Generator.permuted": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(input)",
+        "notes": "Permute along axis; cost from input array size.",
+    },
+    "random.Generator.poisson": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Poisson distribution; cost = numel(output).",
+    },
+    "random.Generator.power": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Power distribution; cost = numel(output).",
+    },
+    "random.Generator.random": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Uniform [0, 1) — modern Generator equivalent of rand/random_sample.",
+    },
+    "random.Generator.rayleigh": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Rayleigh distribution; cost = numel(output).",
+    },
+    "random.Generator.shuffle": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "shape[axis]",
+        "notes": "In-place shuffle; cost = shape[axis] (Fisher-Yates draws).",
+    },
+    "random.Generator.standard_cauchy": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Standard Cauchy distribution; cost = numel(output).",
+    },
+    "random.Generator.standard_exponential": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Standard exponential; cost = numel(output).",
+    },
+    "random.Generator.standard_gamma": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Standard gamma; cost = numel(output).",
+    },
+    "random.Generator.standard_normal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Standard normal; cost = numel(output).",
+    },
+    "random.Generator.standard_t": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Standard Student-t; cost = numel(output).",
+    },
+    "random.Generator.triangular": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Triangular distribution; cost = numel(output).",
+    },
+    "random.Generator.uniform": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Uniform distribution; cost = numel(output).",
+    },
+    "random.Generator.vonmises": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Von Mises distribution; cost = numel(output).",
+    },
+    "random.Generator.wald": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Wald (inverse Gaussian) distribution; cost = numel(output).",
+    },
+    "random.Generator.weibull": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Weibull distribution; cost = numel(output).",
+    },
+    "random.Generator.zipf": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Zipf distribution; cost = numel(output).",
+    },
+    # Free (passthrough; counting happens at the sampler-method level)
+    "random.Generator.bit_generator": {
+        "category": "free_random_method",
+        "module": "numpy.random",
+        "notes": "Underlying BitGenerator; attribute access, no math.",
+    },
+    "random.Generator.spawn": {
+        "category": "free_random_method",
+        "module": "numpy.random",
+        "notes": "Returns child Generators; subclass override wraps them as _CountedGenerator.",
+    },
+    # ------------------------------------------------------------------
+    # random.RandomState.* — counted method-level entries (issue #18)
+    # ------------------------------------------------------------------
+    "random.RandomState.beta": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy beta sampler; cost = numel(output).",
+    },
+    "random.RandomState.binomial": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy binomial sampler; cost = numel(output).",
+    },
+    "random.RandomState.bytes": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "length",
+        "notes": "Legacy bytes sampler; cost = length argument.",
+    },
+    "random.RandomState.chisquare": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy chi-square sampler; cost = numel(output).",
+    },
+    "random.RandomState.choice": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "choice_cost",
+        "notes": "Legacy choice sampler; numel(output) if replace else sort_cost(n).",
+    },
+    "random.RandomState.dirichlet": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Dirichlet sampler; cost = numel(output).",
+    },
+    "random.RandomState.exponential": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy exponential sampler; cost = numel(output).",
+    },
+    "random.RandomState.f": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy F sampler; cost = numel(output).",
+    },
+    "random.RandomState.gamma": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy gamma sampler; cost = numel(output).",
+    },
+    "random.RandomState.geometric": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy geometric sampler; cost = numel(output).",
+    },
+    "random.RandomState.gumbel": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Gumbel sampler; cost = numel(output).",
+    },
+    "random.RandomState.hypergeometric": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy hypergeometric sampler; cost = numel(output).",
+    },
+    "random.RandomState.laplace": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Laplace sampler; cost = numel(output).",
+    },
+    "random.RandomState.logistic": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy logistic sampler; cost = numel(output).",
+    },
+    "random.RandomState.lognormal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy log-normal sampler; cost = numel(output).",
+    },
+    "random.RandomState.logseries": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy log-series sampler; cost = numel(output).",
+    },
+    "random.RandomState.multinomial": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy multinomial sampler; cost = numel(output).",
+    },
+    "random.RandomState.multivariate_normal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy multivariate normal; cost = numel(output).",
+    },
+    "random.RandomState.negative_binomial": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy negative binomial sampler; cost = numel(output).",
+    },
+    "random.RandomState.noncentral_chisquare": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy noncentral chi-square; cost = numel(output).",
+    },
+    "random.RandomState.noncentral_f": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy noncentral F; cost = numel(output).",
+    },
+    "random.RandomState.normal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy normal sampler; cost = numel(output).",
+    },
+    "random.RandomState.pareto": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Pareto sampler; cost = numel(output).",
+    },
+    "random.RandomState.permutation": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "shape[axis]",
+        "notes": "Legacy permutation; cost = shape[axis] (Fisher-Yates draws). RandomState has no axis kwarg; defaults to 0.",
+    },
+    "random.RandomState.poisson": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Poisson sampler; cost = numel(output).",
+    },
+    "random.RandomState.power": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy power sampler; cost = numel(output).",
+    },
+    "random.RandomState.rand": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy uniform [0,1); cost = numel(output).",
+    },
+    "random.RandomState.randint": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy integer sampler; cost = numel(output).",
+    },
+    "random.RandomState.randn": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy standard normal alias; cost = numel(output).",
+    },
+    "random.RandomState.random": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy uniform [0,1) alias for random_sample.",
+    },
+    "random.RandomState.random_integers": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy deprecated integer sampler; cost = numel(output).",
+    },
+    "random.RandomState.random_sample": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy uniform [0,1); cost = numel(output).",
+    },
+    "random.RandomState.rayleigh": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Rayleigh sampler; cost = numel(output).",
+    },
+    "random.RandomState.shuffle": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "shape[axis]",
+        "notes": "Legacy in-place shuffle; cost = shape[axis] (Fisher-Yates draws). RandomState has no axis kwarg; defaults to 0.",
+    },
+    "random.RandomState.standard_cauchy": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy standard Cauchy; cost = numel(output).",
+    },
+    "random.RandomState.standard_exponential": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy standard exponential; cost = numel(output).",
+    },
+    "random.RandomState.standard_gamma": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy standard gamma; cost = numel(output).",
+    },
+    "random.RandomState.standard_normal": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy standard normal; cost = numel(output).",
+    },
+    "random.RandomState.standard_t": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy standard Student-t; cost = numel(output).",
+    },
+    "random.RandomState.tomaxint": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy max-int sampler; cost = numel(output).",
+    },
+    "random.RandomState.triangular": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy triangular distribution; cost = numel(output).",
+    },
+    "random.RandomState.uniform": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy uniform sampler; cost = numel(output).",
+    },
+    "random.RandomState.vonmises": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Von Mises sampler; cost = numel(output).",
+    },
+    "random.RandomState.wald": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Wald sampler; cost = numel(output).",
+    },
+    "random.RandomState.weibull": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Weibull sampler; cost = numel(output).",
+    },
+    "random.RandomState.zipf": {
+        "category": "counted_random_method",
+        "module": "numpy.random",
+        "cost_formula": "numel(output)",
+        "notes": "Legacy Zipf sampler; cost = numel(output).",
+    },
+    # Free RandomState methods
+    "random.RandomState.get_state": {
+        "category": "free_random_method",
+        "module": "numpy.random",
+        "notes": "State accessor; no math.",
+    },
+    "random.RandomState.seed": {
+        "category": "free_random_method",
+        "module": "numpy.random",
+        "notes": "Seed setter; no math.",
+    },
+    "random.RandomState.set_state": {
+        "category": "free_random_method",
+        "module": "numpy.random",
+        "notes": "State setter; no math.",
     },
     # ------------------------------------------------------------------
     # stats distributions (pdf/cdf/ppf)

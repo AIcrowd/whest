@@ -62,8 +62,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_t.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/standard-t/",
                   "kind": "link",
                   "target": "random.Generator.standard_t",
                   "text": "standard_t"
@@ -292,9 +292,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_t.html",
-              "href": "",
-              "label": "random.Generator.standard_t",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/standard-t/",
+              "label": "flops.random.Generator.standard_t",
               "original_target": "random.Generator.standard_t",
               "role": "",
               "target": "random.Generator.standard_t",
@@ -554,7 +554,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.standard_t",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/standard-t/",
   "legacy_href": "/docs/api/ops/random-standard_t/",
   "module": "numpy.random",
@@ -615,9 +615,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_t.html",
-      "href": "",
-      "label": "random.Generator.standard_t",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/standard-t/",
+      "label": "flops.random.Generator.standard_t",
       "original_target": "random.Generator.standard_t",
       "role": "",
       "target": "random.Generator.standard_t",

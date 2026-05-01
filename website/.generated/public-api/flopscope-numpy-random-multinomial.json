@@ -70,8 +70,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multinomial.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/multinomial/",
                   "kind": "link",
                   "target": "random.Generator.multinomial",
                   "text": "multinomial"
@@ -374,9 +374,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multinomial.html",
-              "href": "",
-              "label": "random.Generator.multinomial",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/multinomial/",
+              "label": "flops.random.Generator.multinomial",
               "original_target": "random.Generator.multinomial",
               "role": "",
               "target": "random.Generator.multinomial",
@@ -554,7 +554,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.multinomial",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/multinomial/",
   "import_path": "flopscope.numpy.random.multinomial",
   "is_operation_cost_leaf": true,
@@ -635,9 +635,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.multinomial.html",
-      "href": "",
-      "label": "random.Generator.multinomial",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/multinomial/",
+      "label": "flops.random.Generator.multinomial",
       "original_target": "random.Generator.multinomial",
       "role": "",
       "target": "random.Generator.multinomial",

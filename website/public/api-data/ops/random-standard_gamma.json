@@ -38,8 +38,8 @@
                     "text": "New code should use the\n"
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_gamma.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/standard-gamma/",
                     "kind": "link",
                     "target": "random.Generator.standard_gamma",
                     "text": "standard_gamma"
@@ -290,9 +290,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_gamma.html",
-                "href": "",
-                "label": "random.Generator.standard_gamma",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/standard-gamma/",
+                "label": "flops.random.Generator.standard_gamma",
                 "original_target": "random.Generator.standard_gamma",
                 "role": "",
                 "target": "random.Generator.standard_gamma",
@@ -478,7 +478,7 @@
   "schema_version": 1,
   "slug": "random-standard_gamma",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_gamma.html"
   }
 }

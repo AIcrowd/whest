@@ -63,8 +63,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.f.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/f/",
                   "kind": "link",
                   "target": "random.Generator.f",
                   "text": "f"
@@ -347,9 +347,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.f.html",
-              "href": "",
-              "label": "random.Generator.f",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/f/",
+              "label": "flops.random.Generator.f",
               "original_target": "random.Generator.f",
               "role": "",
               "target": "random.Generator.f",
@@ -519,7 +519,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.f",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/f/",
   "import_path": "flopscope.numpy.random.f",
   "is_operation_cost_leaf": true,
@@ -612,9 +612,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.f.html",
-      "href": "",
-      "label": "random.Generator.f",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/f/",
+      "label": "flops.random.Generator.f",
       "original_target": "random.Generator.f",
       "role": "",
       "target": "random.Generator.f",

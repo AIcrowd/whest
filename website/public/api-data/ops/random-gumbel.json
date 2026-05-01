@@ -38,8 +38,8 @@
                     "text": "New code should use the "
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.gumbel.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/gumbel/",
                     "kind": "link",
                     "target": "random.Generator.gumbel",
                     "text": "gumbel"
@@ -350,9 +350,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.gumbel.html",
-                "href": "",
-                "label": "random.Generator.gumbel",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/gumbel/",
+                "label": "flops.random.Generator.gumbel",
                 "original_target": "random.Generator.gumbel",
                 "role": "",
                 "target": "random.Generator.gumbel",
@@ -662,7 +662,7 @@
   "schema_version": 1,
   "slug": "random-gumbel",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.gumbel.html"
   }
 }

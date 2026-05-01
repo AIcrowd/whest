@@ -911,7 +911,7 @@ class TestRandomGetattr:
     def test_getattr_missing(self):
         from flopscope.numpy import random as merandom
 
-        with pytest.raises(AttributeError, match="does not provide"):
+        with pytest.raises(AttributeError, match="has no attribute"):
             _ = merandom.totally_nonexistent_attr_xyz
 
 

@@ -71,8 +71,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.pareto.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/pareto/",
                   "kind": "link",
                   "target": "random.Generator.pareto",
                   "text": "pareto"
@@ -333,9 +333,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.pareto.html",
-              "href": "",
-              "label": "random.Generator.pareto",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/pareto/",
+              "label": "flops.random.Generator.pareto",
               "original_target": "random.Generator.pareto",
               "role": "",
               "target": "random.Generator.pareto",
@@ -543,7 +543,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.pareto",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/pareto/",
   "legacy_href": "/docs/api/ops/random-pareto/",
   "module": "numpy.random",
@@ -636,9 +636,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.pareto.html",
-      "href": "",
-      "label": "random.Generator.pareto",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/pareto/",
+      "label": "flops.random.Generator.pareto",
       "original_target": "random.Generator.pareto",
       "role": "",
       "target": "random.Generator.pareto",

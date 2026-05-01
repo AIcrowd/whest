@@ -29,8 +29,8 @@
                     "text": "New code should use the "
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.choice.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/choice/",
                     "kind": "link",
                     "target": "random.Generator.choice",
                     "text": "choice"
@@ -386,9 +386,9 @@
                     "text": "which should be used in new code"
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.choice.html",
-                "href": "",
-                "label": "random.Generator.choice",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/choice/",
+                "label": "flops.random.Generator.choice",
                 "original_target": "random.Generator.choice",
                 "role": "",
                 "target": "random.Generator.choice",
@@ -613,7 +613,7 @@
   "schema_version": 1,
   "slug": "random-choice",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L324",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L364",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.choice.html"
   }
 }

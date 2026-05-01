@@ -46,8 +46,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.logseries.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/logseries/",
                   "kind": "link",
                   "target": "random.Generator.logseries",
                   "text": "logseries"
@@ -292,9 +292,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.logseries.html",
-              "href": "",
-              "label": "random.Generator.logseries",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/logseries/",
+              "label": "flops.random.Generator.logseries",
               "original_target": "random.Generator.logseries",
               "role": "",
               "target": "random.Generator.logseries",
@@ -483,7 +483,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.logseries",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/logseries/",
   "legacy_href": "/docs/api/ops/random-logseries/",
   "module": "numpy.random",
@@ -560,9 +560,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.logseries.html",
-      "href": "",
-      "label": "random.Generator.logseries",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/logseries/",
+      "label": "flops.random.Generator.logseries",
       "original_target": "random.Generator.logseries",
       "role": "",
       "target": "random.Generator.logseries",

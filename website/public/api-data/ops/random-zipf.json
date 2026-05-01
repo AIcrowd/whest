@@ -55,8 +55,8 @@
                     "text": "New code should use the "
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.zipf.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/zipf/",
                     "kind": "link",
                     "target": "random.Generator.zipf",
                     "text": "zipf"
@@ -301,9 +301,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.zipf.html",
-                "href": "",
-                "label": "random.Generator.zipf",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/zipf/",
+                "label": "flops.random.Generator.zipf",
                 "original_target": "random.Generator.zipf",
                 "role": "",
                 "target": "random.Generator.zipf",
@@ -532,7 +532,7 @@
   "schema_version": 1,
   "slug": "random-zipf",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.zipf.html"
   }
 }

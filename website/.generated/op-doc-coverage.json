@@ -3147,6 +3147,1289 @@
     ],
     "unsupported_directives": []
   },
+  "random.Generator.beta": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Beta distribution\",\nhttps://en.wikipedia.org/wiki/Beta_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.binomial": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nDalgaard, Peter, \"Introductory Statistics with R\",\nSpringer-Verlag, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nGlantz, Stanton A. \"Primer of Biostatistics.\", McGraw-Hill,\nFifth Edition, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nLentner, Marvin, \"Elementary Applied Statistics\", Bogden\nand Quigley, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWeisstein, Eric W. \"Binomial Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/BinomialDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "5\n\nWikipedia, \"Binomial distribution\",\nhttps://en.wikipedia.org/wiki/Binomial_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.bit_generator": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.bytes": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.chisquare": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nNIST \"Engineering Statistics Handbook\"\nhttps://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.choice": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.dirichlet": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nDavid McKay, \"Information Theory, Inference and Learning\nAlgorithms,\" chapter 23,\nhttps://www.inference.org.uk/mackay/itila/"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Dirichlet distribution\",\nhttps://en.wikipedia.org/wiki/Dirichlet_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.exponential": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[3]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[1]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nPeyton Z. Peebles Jr., \"Probability, Random Variables and\nRandom Signal Principles\", 4th ed, 2001, p. 57."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Poisson process\",\nhttps://en.wikipedia.org/wiki/Poisson_process"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Exponential distribution\",\nhttps://en.wikipedia.org/wiki/Exponential_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.f": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nGlantz, Stanton A. \"Primer of Biostatistics.\", McGraw-Hill,\nFifth Edition, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"F-distribution\",\nhttps://en.wikipedia.org/wiki/F-distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.gamma": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Gamma Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/GammaDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Gamma distribution\",\nhttps://en.wikipedia.org/wiki/Gamma_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.geometric": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Geometric distribution\",\nhttps://en.wikipedia.org/wiki/Geometric_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.gumbel": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nGumbel, E. J., \"Statistics of Extremes,\"\nNew York: Columbia University Press, 1958."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nReiss, R.-D. and Thomas, M., \"Statistical Analysis of Extreme\nValues from Insurance, Finance, Hydrology and Other Fields,\"\nBasel: Birkhauser Verlag, 2001."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.hypergeometric": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[4]_"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nLentner, Marvin, \"Elementary Applied Statistics\", Bogden\nand Quigley, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWeisstein, Eric W. \"Hypergeometric Distribution.\" From\nMathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/HypergeometricDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Hypergeometric distribution\",\nhttps://en.wikipedia.org/wiki/Hypergeometric_distribution"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nStadlober, Ernst, \"The ratio of uniforms approach for generating\ndiscrete random variates\", Journal of Computational and Applied\nMathematics, 31, pp. 181-189 (1990)."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.integers": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nDaniel Lemire., \"Fast Random Integer Generation in an Interval\",\nACM Transactions on Modeling and Computer Simulation 29 (1), 2019,\nhttps://arxiv.org/abs/1805.10941."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.laplace": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nAbramowitz, M. and Stegun, I. A. (Eds.). \"Handbook of\nMathematical Functions with Formulas, Graphs, and Mathematical\nTables, 9th printing,\" New York: Dover, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nKotz, Samuel, et. al. \"The Laplace Distribution and\nGeneralizations, \" Birkhauser, 2001."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWeisstein, Eric W. \"Laplace Distribution.\"\nFrom MathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/LaplaceDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWikipedia, \"Laplace distribution\",\nhttps://en.wikipedia.org/wiki/Laplace_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.logistic": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nReiss, R.-D. and Thomas M. (2001), \"Statistical Analysis of\nExtreme Values, from Insurance, Finance, Hydrology and Other\nFields,\" Birkhauser Verlag, Basel, pp 132-133."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWeisstein, Eric W. \"Logistic Distribution.\" From\nMathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/LogisticDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Logistic-distribution\",\nhttps://en.wikipedia.org/wiki/Logistic_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.lognormal": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nLimpert, E., Stahel, W. A., and Abbt, M., \"Log-normal\nDistributions across the Sciences: Keys and Clues,\"\nBioScience, Vol. 51, No. 5, May, 2001.\nhttps://stat.ethz.ch/~stahel/lognormal/bioscience.pdf"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nReiss, R.D. and Thomas, M., \"Statistical Analysis of Extreme\nValues,\" Basel: Birkhauser Verlag, 2001, pp. 31-32."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.logseries": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nBuzas, Martin A.; Culver, Stephen J.,  Understanding regional\nspecies diversity through the log series distribution of\noccurrences: BIODIVERSITY RESEARCH Diversity & Distributions,\nVolume 5, Number 5, September 1999 , pp. 187-195(9)."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nFisher, R.A,, A.S. Corbet, and C.B. Williams. 1943. The\nrelation between the number of species and the number of\nindividuals in a random sample of an animal population.\nJournal of Animal Ecology, 12:42-58."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nD. J. Hand, F. Daly, D. Lunn, E. Ostrowski, A Handbook of Small\nData Sets, CRC Press, 1994."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWikipedia, \"Logarithmic distribution\",\nhttps://en.wikipedia.org/wiki/Logarithmic_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.multinomial": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.multivariate_hypergeometric": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.multivariate_normal": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nPapoulis, A., \"Probability, Random Variables, and Stochastic\nProcesses,\" 3rd ed., New York: McGraw-Hill, 1991."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nDuda, R. O., Hart, P. E., and Stork, D. G., \"Pattern\nClassification,\" 2nd ed., New York: Wiley, 2001."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.negative_binomial": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Negative Binomial Distribution.\" From\nMathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/NegativeBinomialDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Negative binomial distribution\",\nhttps://en.wikipedia.org/wiki/Negative_binomial_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.noncentral_chisquare": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Noncentral chi-squared distribution\"\nhttps://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.noncentral_f": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Noncentral F-Distribution.\"\nFrom MathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/NoncentralF-Distribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Noncentral F-distribution\",\nhttps://en.wikipedia.org/wiki/Noncentral_F-distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.normal": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Normal distribution\",\nhttps://en.wikipedia.org/wiki/Normal_distribution"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nP. R. Peebles Jr., \"Central Limit Theorem\" in \"Probability,\nRandom Variables and Random Signal Principles\", 4th ed., 2001,\npp. 51, 51, 125."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.pareto": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nFrancis Hunt and Paul Johnson, On the Pareto Distribution of\nSourceforge projects."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nPareto, V. (1896). Course of Political Economy. Lausanne."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nReiss, R.D., Thomas, M.(2001), Statistical Analysis of Extreme\nValues, Birkhauser Verlag, Basel, pp 23-30."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWikipedia, \"Pareto distribution\",\nhttps://en.wikipedia.org/wiki/Pareto_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.permutation": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.permuted": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.poisson": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Poisson Distribution.\"\nFrom MathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/PoissonDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Poisson distribution\",\nhttps://en.wikipedia.org/wiki/Poisson_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.power": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nChristian Kleiber, Samuel Kotz, \"Statistical size distributions\nin economics and actuarial sciences\", Wiley, 2003."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nHeckert, N. A. and Filliben, James J. \"NIST Handbook 148:\nDataplot Reference Manual, Volume 2: Let Subcommands and Library\nFunctions\", National Institute of Standards and Technology\nHandbook Series, June 2003.\nhttps://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/powpdf.pdf"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.random": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.rayleigh": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nBrighton Webs Ltd., \"Rayleigh Distribution,\"\nhttps://web.archive.org/web/20090514091424/http://brighton-webs.co.uk:80/distributions/rayleigh.asp"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Rayleigh distribution\"\nhttps://en.wikipedia.org/wiki/Rayleigh_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.shuffle": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.spawn": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.standard_cauchy": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nNIST/SEMATECH e-Handbook of Statistical Methods, \"Cauchy\nDistribution\",\nhttps://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWeisstein, Eric W. \"Cauchy Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/CauchyDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Cauchy distribution\"\nhttps://en.wikipedia.org/wiki/Cauchy_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.standard_exponential": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.standard_gamma": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Gamma Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/GammaDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Gamma distribution\",\nhttps://en.wikipedia.org/wiki/Gamma_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.standard_normal": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.standard_t": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nDalgaard, Peter, \"Introductory Statistics With R\",\nSpringer, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Student's t-distribution\"\nhttps://en.wikipedia.org/wiki/Student's_t-distribution"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[1]_"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.triangular": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Triangular distribution\"\nhttps://en.wikipedia.org/wiki/Triangular_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.uniform": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.vonmises": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nAbramowitz, M. and Stegun, I. A. (Eds.). \"Handbook of\nMathematical Functions with Formulas, Graphs, and Mathematical\nTables, 9th printing,\" New York: Dover, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nvon Mises, R., \"Mathematical Theory of Probability\nand Statistics\", New York: Academic Press, 1964."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.wald": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nBrighton Webs Ltd., Wald Distribution,\nhttps://web.archive.org/web/20090423014010/http://www.brighton-webs.co.uk:80/distributions/wald.asp"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nChhikara, Raj S., and Folks, J. Leroy, \"The Inverse Gaussian\nDistribution: Theory : Methodology, and Applications\", CRC Press,\n1988."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Inverse Gaussian distribution\"\nhttps://en.wikipedia.org/wiki/Inverse_Gaussian_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.weibull": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWaloddi Weibull, Royal Technical University, Stockholm,\n1939 \"A Statistical Theory Of The Strength Of Materials\",\nIngeniorsvetenskapsakademiens Handlingar Nr 151, 1939,\nGeneralstabens Litografiska Anstalts Forlag, Stockholm."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWaloddi Weibull, \"A Statistical Distribution Function of\nWide Applicability\", Journal Of Applied Mechanics ASME Paper\n1951."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Weibull distribution\",\nhttps://en.wikipedia.org/wiki/Weibull_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.Generator.zipf": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nZipf, G. K., \"Selected Studies of the Principle of Relative\nFrequency in Language,\" Cambridge, MA: Harvard Univ. Press,\n1932."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.beta": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.binomial": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nDalgaard, Peter, \"Introductory Statistics with R\",\nSpringer-Verlag, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nGlantz, Stanton A. \"Primer of Biostatistics.\", McGraw-Hill,\nFifth Edition, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nLentner, Marvin, \"Elementary Applied Statistics\", Bogden\nand Quigley, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWeisstein, Eric W. \"Binomial Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/BinomialDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "5\n\nWikipedia, \"Binomial distribution\",\nhttps://en.wikipedia.org/wiki/Binomial_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.bytes": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.chisquare": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nNIST \"Engineering Statistics Handbook\"\nhttps://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.choice": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.dirichlet": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nDavid McKay, \"Information Theory, Inference and Learning\nAlgorithms,\" chapter 23,\nhttps://www.inference.org.uk/mackay/itila/"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Dirichlet distribution\",\nhttps://en.wikipedia.org/wiki/Dirichlet_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.exponential": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[3]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[1]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nPeyton Z. Peebles Jr., \"Probability, Random Variables and\nRandom Signal Principles\", 4th ed, 2001, p. 57."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Poisson process\",\nhttps://en.wikipedia.org/wiki/Poisson_process"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Exponential distribution\",\nhttps://en.wikipedia.org/wiki/Exponential_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.f": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nGlantz, Stanton A. \"Primer of Biostatistics.\", McGraw-Hill,\nFifth Edition, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"F-distribution\",\nhttps://en.wikipedia.org/wiki/F-distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.gamma": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Gamma Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/GammaDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Gamma distribution\",\nhttps://en.wikipedia.org/wiki/Gamma_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.geometric": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.get_state": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.gumbel": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nGumbel, E. J., \"Statistics of Extremes,\"\nNew York: Columbia University Press, 1958."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nReiss, R.-D. and Thomas, M., \"Statistical Analysis of Extreme\nValues from Insurance, Finance, Hydrology and Other Fields,\"\nBasel: Birkhauser Verlag, 2001."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.hypergeometric": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nLentner, Marvin, \"Elementary Applied Statistics\", Bogden\nand Quigley, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWeisstein, Eric W. \"Hypergeometric Distribution.\" From\nMathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/HypergeometricDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Hypergeometric distribution\",\nhttps://en.wikipedia.org/wiki/Hypergeometric_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.laplace": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nAbramowitz, M. and Stegun, I. A. (Eds.). \"Handbook of\nMathematical Functions with Formulas, Graphs, and Mathematical\nTables, 9th printing,\" New York: Dover, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nKotz, Samuel, et. al. \"The Laplace Distribution and\nGeneralizations, \" Birkhauser, 2001."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWeisstein, Eric W. \"Laplace Distribution.\"\nFrom MathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/LaplaceDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWikipedia, \"Laplace distribution\",\nhttps://en.wikipedia.org/wiki/Laplace_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.logistic": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nReiss, R.-D. and Thomas M. (2001), \"Statistical Analysis of\nExtreme Values, from Insurance, Finance, Hydrology and Other\nFields,\" Birkhauser Verlag, Basel, pp 132-133."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWeisstein, Eric W. \"Logistic Distribution.\" From\nMathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/LogisticDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Logistic-distribution\",\nhttps://en.wikipedia.org/wiki/Logistic_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.lognormal": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nLimpert, E., Stahel, W. A., and Abbt, M., \"Log-normal\nDistributions across the Sciences: Keys and Clues,\"\nBioScience, Vol. 51, No. 5, May, 2001.\nhttps://stat.ethz.ch/~stahel/lognormal/bioscience.pdf"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nReiss, R.D. and Thomas, M., \"Statistical Analysis of Extreme\nValues,\" Basel: Birkhauser Verlag, 2001, pp. 31-32."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.logseries": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nBuzas, Martin A.; Culver, Stephen J.,  Understanding regional\nspecies diversity through the log series distribution of\noccurrences: BIODIVERSITY RESEARCH Diversity & Distributions,\nVolume 5, Number 5, September 1999 , pp. 187-195(9)."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nFisher, R.A,, A.S. Corbet, and C.B. Williams. 1943. The\nrelation between the number of species and the number of\nindividuals in a random sample of an animal population.\nJournal of Animal Ecology, 12:42-58."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nD. J. Hand, F. Daly, D. Lunn, E. Ostrowski, A Handbook of Small\nData Sets, CRC Press, 1994."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWikipedia, \"Logarithmic distribution\",\nhttps://en.wikipedia.org/wiki/Logarithmic_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.multinomial": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.multivariate_normal": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nPapoulis, A., \"Probability, Random Variables, and Stochastic\nProcesses,\" 3rd ed., New York: McGraw-Hill, 1991."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nDuda, R. O., Hart, P. E., and Stork, D. G., \"Pattern\nClassification,\" 2nd ed., New York: Wiley, 2001."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.negative_binomial": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Negative Binomial Distribution.\" From\nMathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/NegativeBinomialDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Negative binomial distribution\",\nhttps://en.wikipedia.org/wiki/Negative_binomial_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.noncentral_chisquare": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Noncentral chi-squared distribution\"\nhttps://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.noncentral_f": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Noncentral F-Distribution.\"\nFrom MathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/NoncentralF-Distribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Noncentral F-distribution\",\nhttps://en.wikipedia.org/wiki/Noncentral_F-distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.normal": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Normal distribution\",\nhttps://en.wikipedia.org/wiki/Normal_distribution"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nP. R. Peebles Jr., \"Central Limit Theorem\" in \"Probability,\nRandom Variables and Random Signal Principles\", 4th ed., 2001,\npp. 51, 51, 125."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.pareto": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[1]_"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nFrancis Hunt and Paul Johnson, On the Pareto Distribution of\nSourceforge projects."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nPareto, V. (1896). Course of Political Economy. Lausanne."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nReiss, R.D., Thomas, M.(2001), Statistical Analysis of Extreme\nValues, Birkhauser Verlag, Basel, pp 23-30."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "4\n\nWikipedia, \"Pareto distribution\",\nhttps://en.wikipedia.org/wiki/Pareto_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.permutation": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.poisson": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Poisson Distribution.\"\nFrom MathWorld--A Wolfram Web Resource.\nhttps://mathworld.wolfram.com/PoissonDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Poisson distribution\",\nhttps://en.wikipedia.org/wiki/Poisson_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.power": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nChristian Kleiber, Samuel Kotz, \"Statistical size distributions\nin economics and actuarial sciences\", Wiley, 2003."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nHeckert, N. A. and Filliben, James J. \"NIST Handbook 148:\nDataplot Reference Manual, Volume 2: Let Subcommands and Library\nFunctions\", National Institute of Standards and Technology\nHandbook Series, June 2003.\nhttps://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/powpdf.pdf"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.rand": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.randint": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.randn": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.random": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.random_integers": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.random_sample": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.rayleigh": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nBrighton Webs Ltd., \"Rayleigh Distribution,\"\nhttps://web.archive.org/web/20090514091424/http://brighton-webs.co.uk:80/distributions/rayleigh.asp"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Rayleigh distribution\"\nhttps://en.wikipedia.org/wiki/Rayleigh_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.seed": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.set_state": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[1]_"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nM. Matsumoto and T. Nishimura, \"Mersenne Twister: A\n623-dimensionally equidistributed uniform pseudorandom number\ngenerator,\" ACM Trans. on Modeling and Computer Simulation,\nVol. 8, No. 1, pp. 3-30, Jan. 1998."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.shuffle": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.standard_cauchy": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nNIST/SEMATECH e-Handbook of Statistical Methods, \"Cauchy\nDistribution\",\nhttps://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWeisstein, Eric W. \"Cauchy Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/CauchyDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Cauchy distribution\"\nhttps://en.wikipedia.org/wiki/Cauchy_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.standard_exponential": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.standard_gamma": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWeisstein, Eric W. \"Gamma Distribution.\" From MathWorld--A\nWolfram Web Resource.\nhttps://mathworld.wolfram.com/GammaDistribution.html"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Gamma distribution\",\nhttps://en.wikipedia.org/wiki/Gamma_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.standard_normal": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.standard_t": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nDalgaard, Peter, \"Introductory Statistics With R\",\nSpringer, 2002."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWikipedia, \"Student's t-distribution\"\nhttps://en.wikipedia.org/wiki/Student's_t-distribution"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[1]_"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.tomaxint": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.triangular": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWikipedia, \"Triangular distribution\"\nhttps://en.wikipedia.org/wiki/Triangular_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.uniform": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.vonmises": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nAbramowitz, M. and Stegun, I. A. (Eds.). \"Handbook of\nMathematical Functions with Formulas, Graphs, and Mathematical\nTables, 9th printing,\" New York: Dover, 1972."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nvon Mises, R., \"Mathematical Theory of Probability\nand Statistics\", New York: Academic Press, 1964."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.wald": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nBrighton Webs Ltd., Wald Distribution,\nhttps://web.archive.org/web/20090423014010/http://www.brighton-webs.co.uk:80/distributions/wald.asp"
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nChhikara, Raj S., and Folks, J. Leroy, \"The Inverse Gaussian\nDistribution: Theory : Methodology, and Applications\", CRC Press,\n1988."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Inverse Gaussian distribution\"\nhttps://en.wikipedia.org/wiki/Inverse_Gaussian_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.weibull": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nWaloddi Weibull, Royal Technical University, Stockholm,\n1939 \"A Statistical Theory Of The Strength Of Materials\",\nIngeniorsvetenskapsakademiens Handlingar Nr 151, 1939,\nGeneralstabens Litografiska Anstalts Forlag, Stockholm."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "2\n\nWaloddi Weibull, \"A Statistical Distribution Function of\nWide Applicability\", Journal Of Applied Mechanics ASME Paper\n1951."
+      },
+      {
+        "kind": "footnote",
+        "raw_text": "3\n\nWikipedia, \"Weibull distribution\",\nhttps://en.wikipedia.org/wiki/Weibull_distribution"
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "random.RandomState.zipf": {
+    "has_issues": true,
+    "raw_blocks": [
+      {
+        "kind": "footnote",
+        "raw_text": "1\n\nZipf, G. K., \"Selected Studies of the Principle of Relative\nFrequency in Language,\" Cambridge, MA: Harvard Univ. Press,\n1932."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
   "random.beta": {
     "has_issues": false,
     "raw_blocks": [],

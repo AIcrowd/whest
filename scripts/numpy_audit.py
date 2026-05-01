@@ -411,6 +411,30 @@ def compare(
     return result
 
 
+def audit_random_class(cls_name: str, cls: type, op_prefix: str) -> list[str]:
+    """Diff numpy class method set against the registry slice for that class.
+
+    Returns an empty list when the registry is in sync with numpy. Otherwise
+    returns lines of the form ``+ Generator.foo`` (numpy added a method)
+    or ``- Generator.bar`` (registry has an entry numpy no longer exposes).
+    """
+    from flopscope._registry import REGISTRY
+
+    registry_methods = {
+        n[len(op_prefix) :]
+        for n, e in REGISTRY.items()
+        if n.startswith(op_prefix)
+        and e.get("category") in {"counted_random_method", "free_random_method"}
+    }
+    numpy_methods = {n for n in dir(cls) if not n.startswith("_")}
+
+    added = numpy_methods - registry_methods
+    removed = registry_methods - numpy_methods
+    return [f"+ {cls_name}.{m}" for m in sorted(added)] + [
+        f"- {cls_name}.{m}" for m in sorted(removed)
+    ]
+
+
 # ---------------------------------------------------------------------------
 # Output helpers
 # ---------------------------------------------------------------------------
@@ -589,6 +613,17 @@ def main() -> None:
         }
         print(json.dumps(output, indent=2))
         return
+
+    # Issue #18: ensure Generator / RandomState method coverage stays in sync.
+    random_diffs = audit_random_class(
+        "Generator", np.random.Generator, "random.Generator."
+    ) + audit_random_class("RandomState", np.random.RandomState, "random.RandomState.")
+    if random_diffs:
+        print("\n=== random class method drift ===", file=sys.stderr)
+        for line in random_diffs:
+            print(line, file=sys.stderr)
+        if args.ci:
+            sys.exit(1)
 
     if args.ci:
         print_plain_report(

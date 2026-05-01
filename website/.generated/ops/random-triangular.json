@@ -46,8 +46,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.triangular.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/triangular/",
                   "kind": "link",
                   "target": "random.Generator.triangular",
                   "text": "triangular"
@@ -384,9 +384,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.triangular.html",
-              "href": "",
-              "label": "random.Generator.triangular",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/triangular/",
+              "label": "flops.random.Generator.triangular",
               "original_target": "random.Generator.triangular",
               "role": "",
               "target": "random.Generator.triangular",
@@ -500,7 +500,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.triangular",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/triangular/",
   "legacy_href": "/docs/api/ops/random-triangular/",
   "module": "numpy.random",
@@ -576,9 +576,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.triangular.html",
-      "href": "",
-      "label": "random.Generator.triangular",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/triangular/",
+      "label": "flops.random.Generator.triangular",
       "original_target": "random.Generator.triangular",
       "role": "",
       "target": "random.Generator.triangular",

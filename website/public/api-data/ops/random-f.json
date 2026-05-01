@@ -63,8 +63,8 @@
                     "text": "New code should use the "
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.f.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/f/",
                     "kind": "link",
                     "target": "random.Generator.f",
                     "text": "f"
@@ -347,9 +347,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.f.html",
-                "href": "",
-                "label": "random.Generator.f",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/f/",
+                "label": "flops.random.Generator.f",
                 "original_target": "random.Generator.f",
                 "role": "",
                 "target": "random.Generator.f",
@@ -509,7 +509,7 @@
   "schema_version": 1,
   "slug": "random-f",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.f.html"
   }
 }

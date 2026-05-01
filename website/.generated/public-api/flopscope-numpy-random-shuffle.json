@@ -38,8 +38,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.shuffle.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/shuffle/",
                   "kind": "link",
                   "target": "random.Generator.shuffle",
                   "text": "shuffle"
@@ -151,9 +151,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.shuffle.html",
-              "href": "",
-              "label": "random.Generator.shuffle",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/shuffle/",
+              "label": "flops.random.Generator.shuffle",
               "original_target": "random.Generator.shuffle",
               "role": "",
               "target": "random.Generator.shuffle",
@@ -255,7 +255,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.shuffle",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L307",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L347",
   "href": "/docs/api/numpy/random/shuffle/",
   "import_path": "flopscope.numpy.random.shuffle",
   "is_operation_cost_leaf": true,
@@ -311,9 +311,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.shuffle.html",
-      "href": "",
-      "label": "random.Generator.shuffle",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/shuffle/",
+      "label": "flops.random.Generator.shuffle",
       "original_target": "random.Generator.shuffle",
       "role": "",
       "target": "random.Generator.shuffle",

@@ -68,8 +68,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.beta.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/beta/",
                   "kind": "link",
                   "target": "random.Generator.beta",
                   "text": "beta"
@@ -336,9 +336,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.beta.html",
-              "href": "",
-              "label": "random.Generator.beta",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/beta/",
+              "label": "flops.random.Generator.beta",
               "original_target": "random.Generator.beta",
               "role": "",
               "target": "random.Generator.beta",
@@ -365,7 +365,7 @@
   "example": null,
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.beta",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/beta/",
   "legacy_href": "/docs/api/ops/random-beta/",
   "module": "numpy.random",
@@ -404,8 +404,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/numpy/radians/",
-    "label": "fnp.radians"
+    "href": "/docs/api/numpy/random/random-state/zipf/",
+    "label": "fnp.random.RandomState.zipf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_ref": "np.random.beta",
@@ -428,9 +428,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.beta.html",
-      "href": "",
-      "label": "random.Generator.beta",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/beta/",
+      "label": "flops.random.Generator.beta",
       "original_target": "random.Generator.beta",
       "role": "",
       "target": "random.Generator.beta",

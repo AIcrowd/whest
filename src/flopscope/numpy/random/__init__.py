@@ -1,14 +1,34 @@
 """Counted wrappers for ``numpy.random``.
 
-Most samplers deduct ``numel(output)`` FLOPs from the active budget.
-Shuffle-like operations (``permutation``, ``shuffle``, ``choice`` without
-replacement) deduct ``n * ceil(log2(n))`` FLOPs.
+Policy (issue #18):
 
-Configuration helpers (``seed``, ``get_state``, ``set_state``,
-``default_rng``, ``RandomState``, ``SeedSequence``) are free.
+* **Module-level samplers** (``randn``, ``normal``, ``uniform``,
+  ``choice``, ``shuffle``, ``bytes``, ...): same semantics as numpy plus
+  FLOP accounting. Most deduct ``numel(output)`` FLOPs;
+  ``permutation``/``shuffle``/``choice(replace=False)`` deduct
+  ``n * ceil(log2(n))``; ``bytes(n)`` deducts ``n``. No deprecation —
+  flopscope mirrors numpy's runtime behavior.
 
-Any attribute not listed here is forwarded to ``numpy.random`` via
-``__getattr__`` without budget deduction.
+* **``default_rng(seed)``** returns a counted ``Generator`` subclass
+  (``_CountedGenerator``) whose sampler methods deduct FLOPs and return
+  ``FlopscopeArray``. The constructor itself costs 0 FLOPs.
+
+* **``RandomState(seed)``** is a counted subclass of
+  ``numpy.random.RandomState`` (``_CountedRandomState``) — same shape as
+  the modern Generator path, legacy method names. Constructor is 0 FLOPs.
+
+* **Configuration / state methods** (``seed``, ``get_state``,
+  ``set_state``, ``Generator.spawn``, ``Generator.bit_generator``)
+  are free.
+
+* **``__getattr__`` fallback**: bit-generator classes
+  (``BitGenerator``, ``MT19937``, ``PCG64``, ``PCG64DXSM``, ``Philox``,
+  ``SFC64``) pass through unchanged; everything else raises
+  ``AttributeError``. New numpy methods are invisible to user code until
+  they are explicitly added to the registry — ``scripts/numpy_audit.py
+  --ci`` flags this on every numpy version bump.
+
+* **``SeedSequence``** passes through unchanged (pure utility, no math).
 """
 
 from __future__ import annotations
@@ -16,17 +36,22 @@ from __future__ import annotations
 import builtins as _builtins
 import inspect as _inspect
 from collections.abc import Callable, Sequence
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as _np
 import numpy.random as _npr
-from numpy.random import Generator, RandomState, SeedSequence
+from numpy.random import SeedSequence
 
+# Public exports below; concrete counted classes pulled in lazily to avoid
+# circular import with _counted_classes.py.
 from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._flops import _ceil_log2, sort_cost  # noqa: F401
 from flopscope._ndarray import FlopscopeArray
 from flopscope._perm_group import SymmetryGroup
 from flopscope._validation import require_budget
+
+if TYPE_CHECKING:
+    from flopscope.numpy.random._counted_classes import _CountedGenerator
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -123,9 +148,16 @@ def _counted_dims_sampler(
 # ---------------------------------------------------------------------------
 
 
-def default_rng(seed: Any = None) -> Generator:
-    """Construct a numpy random Generator. Cost: 0 FLOPs."""
-    return _npr.default_rng(seed)
+def default_rng(seed: Any = None) -> _CountedGenerator:
+    """Construct a flopscope-counted Generator. Cost: 0 FLOPs.
+
+    The returned Generator's sampler methods deduct FLOPs from the active
+    BudgetContext and return ``FlopscopeArray``. See issue #18.
+    """
+    from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+    raw = _npr.default_rng(seed)
+    return _CountedGenerator(raw.bit_generator)
 
 
 def seed(seed: int | None = None) -> None:
@@ -200,6 +232,16 @@ __all__ = [
     "bytes",
 ]
 
+
+# ---------------------------------------------------------------------------
+# Counted class re-exports (issue #18)
+# ---------------------------------------------------------------------------
+from flopscope.numpy.random._counted_classes import (  # noqa: E402
+    _CountedGenerator as Generator,
+)
+from flopscope.numpy.random._counted_classes import (  # noqa: E402
+    _CountedRandomState as RandomState,
+)
 
 # ---------------------------------------------------------------------------
 # Dims-based samplers (rand, randn)
@@ -534,11 +576,30 @@ def bytes(length):
 # Fallback __getattr__ for anything not explicitly listed
 # ---------------------------------------------------------------------------
 
+# Explicit allowlist of numpy.random types that pass through without counting:
+# these are bit-generator classes (no math; FLOP counting happens at the
+# sampler-method level on the resulting Generator) and the SeedSequence utility.
+_PASSTHROUGH_TYPES: frozenset[str] = frozenset(
+    {
+        "BitGenerator",
+        "MT19937",
+        "PCG64",
+        "PCG64DXSM",
+        "Philox",
+        "SFC64",
+    }
+)
+
 
 def __getattr__(name):
-    if hasattr(_npr, name):
+    if name in _PASSTHROUGH_TYPES:
         return getattr(_npr, name)
-    raise AttributeError(f"flopscope.numpy.random does not provide '{name}'")
+    raise AttributeError(
+        f"flopscope.numpy.random has no attribute '{name}'.\n"
+        f"For new code: rng = fnp.random.default_rng(seed); rng.<sampler>(...).\n"
+        f"If '{name}' should be supported, please file an issue at "
+        f"https://github.com/AIcrowd/flopscope/issues."
+    )
 
 
 import sys as _sys  # noqa: E402

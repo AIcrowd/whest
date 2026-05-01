@@ -365,6 +365,8 @@ CATEGORY_LABELS = {
         r"$\text{numel}(\text{input})$",
     ),
     "counted_custom": ("Counted Custom Operations", "Per-operation formula"),
+    "counted_random_method": ("Counted Random Methods", "Per-method formula"),
+    "free_random_method": ("Free Random Methods", "0 FLOPs"),
     "blacklisted": ("Blacklisted Operations", "Not available"),
 }
 
@@ -374,6 +376,8 @@ CATEGORY_EMOJI = {
     "counted_binary": "\U0001f7e1",
     "counted_reduction": "\U0001f7e1",
     "counted_custom": "\U0001f7e0",  # orange circle
+    "counted_random_method": "\U0001f7e1",  # yellow circle, like other counted_*
+    "free_random_method": "\U0001f7e2",  # green circle, like free
     "blacklisted": "\U0001f534",  # red circle
 }
 
@@ -499,6 +503,8 @@ CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
     "counted_binary": ("numel(output)", r"$\text{numel}(\text{output})$"),
     "counted_reduction": ("numel(input)", r"$\text{numel}(\text{input})$"),
     "counted_custom": ("per-operation", "varies"),
+    "counted_random_method": ("per-method formula", "varies — see cost_formula"),
+    "free_random_method": ("0", "$0$"),
     "blacklisted": ("N/A", "N/A"),
 }
 
@@ -803,7 +809,7 @@ def display_type_for_category(category: str) -> str:
     """Return the UI display type for a registry category."""
     if category == "blacklisted":
         return "blocked"
-    if category == "free":
+    if category == "free" or category == "free_random_method":
         return "free"
     if category.startswith("counted_") and category != "counted_custom":
         return "counted"
@@ -898,8 +904,32 @@ PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
 }
 
 
+COST_FORMULA_LABELS: dict[str, tuple[str, str]] = {
+    "numel(output)": ("numel(output)", r"$\text{numel}(\text{output})$"),
+    "numel(input)": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "shape[axis]": ("shape[axis]", r"$\text{shape}[\text{axis}]$"),
+    "length": ("length", r"$\text{length}$"),
+    "sort_cost(n)": ("sort_cost(n)", r"$n \cdot \lceil \log_2 n \rceil$"),
+    "choice_cost": (
+        "numel(output) if replace, else sort_cost(n)",
+        r"$\text{numel}(\text{output})$ if replace, else $n \cdot \lceil \log_2 n \rceil$",
+    ),
+}
+
+
 def cost_for_op(name: str, category: str) -> tuple[str, str]:
-    """Return (plain_text, latex) cost formula for an operation."""
+    """Return the cost-string + LaTeX-string pair for an op.
+
+    For method-level random ops, defer to the per-op ``cost_formula`` field
+    in the registry; for everything else, use the per-category fallback.
+    """
+    if category == "free_random_method":
+        return ("0", "$0$")
+    if category == "counted_random_method":
+        from flopscope._registry import REGISTRY
+
+        formula = REGISTRY.get(name, {}).get("cost_formula", "")
+        return COST_FORMULA_LABELS.get(formula, ("per-method", "varies"))
     if name in CUSTOM_COSTS:
         return CUSTOM_COSTS[name]
     return CATEGORY_COST_LATEX.get(category, ("unknown", "unknown"))
@@ -2557,7 +2587,21 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
         return getattr(fnp.fft, short_name), getattr(np.fft, short_name, None)
     if module == "numpy.random":
         short_name = name.removeprefix("random.")
-        return getattr(fnp.random, short_name), getattr(np.random, short_name, None)
+        if "." in short_name:
+            # Method-level entry: "Generator.beta" or "RandomState.randn".
+            # Class-level getattr bypasses the instance-only __getattribute__
+            # gate, so this returns the wrapped method directly.
+            cls_short, method_name = short_name.split(".", 1)
+            cls_fnp = getattr(fnp.random, cls_short)
+            cls_np = getattr(np.random, cls_short, None)
+            return (
+                getattr(cls_fnp, method_name),
+                getattr(cls_np, method_name, None) if cls_np is not None else None,
+            )
+        np_obj = getattr(np.random, short_name, None)
+        fnp_obj = getattr(fnp.random, short_name, None)
+        # Fall back to upstream numpy object when flopscope wraps it as deprecated/unimplemented.
+        return fnp_obj if fnp_obj is not None else np_obj, np_obj
     if module == "flopscope.stats":
         try:
             from scipy import stats as scipy_stats

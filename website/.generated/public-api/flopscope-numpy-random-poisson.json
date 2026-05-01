@@ -38,8 +38,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.poisson.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/poisson/",
                   "kind": "link",
                   "target": "random.Generator.poisson",
                   "text": "poisson"
@@ -268,9 +268,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.poisson.html",
-              "href": "",
-              "label": "random.Generator.poisson",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/poisson/",
+              "label": "flops.random.Generator.poisson",
               "original_target": "random.Generator.poisson",
               "role": "",
               "target": "random.Generator.poisson",
@@ -481,7 +481,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.poisson",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/poisson/",
   "import_path": "flopscope.numpy.random.poisson",
   "is_operation_cost_leaf": true,
@@ -556,9 +556,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.poisson.html",
-      "href": "",
-      "label": "random.Generator.poisson",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/poisson/",
+      "label": "flops.random.Generator.poisson",
       "original_target": "random.Generator.poisson",
       "role": "",
       "target": "random.Generator.poisson",

@@ -46,8 +46,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.rayleigh.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/rayleigh/",
                   "kind": "link",
                   "target": "random.Generator.rayleigh",
                   "text": "rayleigh"
@@ -276,9 +276,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.rayleigh.html",
-              "href": "",
-              "label": "random.Generator.rayleigh",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/rayleigh/",
+              "label": "flops.random.Generator.rayleigh",
               "original_target": "random.Generator.rayleigh",
               "role": "",
               "target": "random.Generator.rayleigh",
@@ -443,7 +443,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.rayleigh",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L62",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
   "href": "/docs/api/numpy/random/rayleigh/",
   "legacy_href": "/docs/api/ops/random-rayleigh/",
   "module": "numpy.random",
@@ -503,9 +503,9 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.rayleigh.html",
-      "href": "",
-      "label": "random.Generator.rayleigh",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/rayleigh/",
+      "label": "flops.random.Generator.rayleigh",
       "original_target": "random.Generator.rayleigh",
       "role": "",
       "target": "random.Generator.rayleigh",

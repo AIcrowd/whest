@@ -3786,8 +3786,413 @@
       "href": "/docs/api/numpy/random/generator/",
       "import_path": "flopscope.numpy.random.Generator",
       "kind": "class",
-      "module": "numpy.random._generator",
+      "module": "flopscope.numpy.random._counted_classes",
       "slug": "flopscope-numpy-random-generator"
+    },
+    "/docs/api/numpy/random/generator/beta/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.beta",
+      "href": "/docs/api/numpy/random/generator/beta/",
+      "import_path": "flopscope.numpy.random.Generator.beta",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-beta"
+    },
+    "/docs/api/numpy/random/generator/binomial/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.binomial",
+      "href": "/docs/api/numpy/random/generator/binomial/",
+      "import_path": "flopscope.numpy.random.Generator.binomial",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-binomial"
+    },
+    "/docs/api/numpy/random/generator/bit-generator/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.bit_generator",
+      "href": "/docs/api/numpy/random/generator/bit-generator/",
+      "import_path": "flopscope.numpy.random.Generator.bit_generator",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-bit-generator"
+    },
+    "/docs/api/numpy/random/generator/bytes/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.bytes",
+      "href": "/docs/api/numpy/random/generator/bytes/",
+      "import_path": "flopscope.numpy.random.Generator.bytes",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-bytes"
+    },
+    "/docs/api/numpy/random/generator/chisquare/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.chisquare",
+      "href": "/docs/api/numpy/random/generator/chisquare/",
+      "import_path": "flopscope.numpy.random.Generator.chisquare",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-chisquare"
+    },
+    "/docs/api/numpy/random/generator/choice/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.choice",
+      "href": "/docs/api/numpy/random/generator/choice/",
+      "import_path": "flopscope.numpy.random.Generator.choice",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-choice"
+    },
+    "/docs/api/numpy/random/generator/dirichlet/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.dirichlet",
+      "href": "/docs/api/numpy/random/generator/dirichlet/",
+      "import_path": "flopscope.numpy.random.Generator.dirichlet",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-dirichlet"
+    },
+    "/docs/api/numpy/random/generator/exponential/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.exponential",
+      "href": "/docs/api/numpy/random/generator/exponential/",
+      "import_path": "flopscope.numpy.random.Generator.exponential",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-exponential"
+    },
+    "/docs/api/numpy/random/generator/f/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.f",
+      "href": "/docs/api/numpy/random/generator/f/",
+      "import_path": "flopscope.numpy.random.Generator.f",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-f"
+    },
+    "/docs/api/numpy/random/generator/gamma/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.gamma",
+      "href": "/docs/api/numpy/random/generator/gamma/",
+      "import_path": "flopscope.numpy.random.Generator.gamma",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-gamma"
+    },
+    "/docs/api/numpy/random/generator/geometric/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.geometric",
+      "href": "/docs/api/numpy/random/generator/geometric/",
+      "import_path": "flopscope.numpy.random.Generator.geometric",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-geometric"
+    },
+    "/docs/api/numpy/random/generator/gumbel/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.gumbel",
+      "href": "/docs/api/numpy/random/generator/gumbel/",
+      "import_path": "flopscope.numpy.random.Generator.gumbel",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-gumbel"
+    },
+    "/docs/api/numpy/random/generator/hypergeometric/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.hypergeometric",
+      "href": "/docs/api/numpy/random/generator/hypergeometric/",
+      "import_path": "flopscope.numpy.random.Generator.hypergeometric",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-hypergeometric"
+    },
+    "/docs/api/numpy/random/generator/integers/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.integers",
+      "href": "/docs/api/numpy/random/generator/integers/",
+      "import_path": "flopscope.numpy.random.Generator.integers",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-integers"
+    },
+    "/docs/api/numpy/random/generator/laplace/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.laplace",
+      "href": "/docs/api/numpy/random/generator/laplace/",
+      "import_path": "flopscope.numpy.random.Generator.laplace",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-laplace"
+    },
+    "/docs/api/numpy/random/generator/logistic/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.logistic",
+      "href": "/docs/api/numpy/random/generator/logistic/",
+      "import_path": "flopscope.numpy.random.Generator.logistic",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-logistic"
+    },
+    "/docs/api/numpy/random/generator/lognormal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.lognormal",
+      "href": "/docs/api/numpy/random/generator/lognormal/",
+      "import_path": "flopscope.numpy.random.Generator.lognormal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-lognormal"
+    },
+    "/docs/api/numpy/random/generator/logseries/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.logseries",
+      "href": "/docs/api/numpy/random/generator/logseries/",
+      "import_path": "flopscope.numpy.random.Generator.logseries",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-logseries"
+    },
+    "/docs/api/numpy/random/generator/multinomial/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.multinomial",
+      "href": "/docs/api/numpy/random/generator/multinomial/",
+      "import_path": "flopscope.numpy.random.Generator.multinomial",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-multinomial"
+    },
+    "/docs/api/numpy/random/generator/multivariate-hypergeometric/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.multivariate_hypergeometric",
+      "href": "/docs/api/numpy/random/generator/multivariate-hypergeometric/",
+      "import_path": "flopscope.numpy.random.Generator.multivariate_hypergeometric",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-multivariate-hypergeometric"
+    },
+    "/docs/api/numpy/random/generator/multivariate-normal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.multivariate_normal",
+      "href": "/docs/api/numpy/random/generator/multivariate-normal/",
+      "import_path": "flopscope.numpy.random.Generator.multivariate_normal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-multivariate-normal"
+    },
+    "/docs/api/numpy/random/generator/negative-binomial/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.negative_binomial",
+      "href": "/docs/api/numpy/random/generator/negative-binomial/",
+      "import_path": "flopscope.numpy.random.Generator.negative_binomial",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-negative-binomial"
+    },
+    "/docs/api/numpy/random/generator/noncentral-chisquare/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.noncentral_chisquare",
+      "href": "/docs/api/numpy/random/generator/noncentral-chisquare/",
+      "import_path": "flopscope.numpy.random.Generator.noncentral_chisquare",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-noncentral-chisquare"
+    },
+    "/docs/api/numpy/random/generator/noncentral-f/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.noncentral_f",
+      "href": "/docs/api/numpy/random/generator/noncentral-f/",
+      "import_path": "flopscope.numpy.random.Generator.noncentral_f",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-noncentral-f"
+    },
+    "/docs/api/numpy/random/generator/normal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.normal",
+      "href": "/docs/api/numpy/random/generator/normal/",
+      "import_path": "flopscope.numpy.random.Generator.normal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-normal"
+    },
+    "/docs/api/numpy/random/generator/pareto/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.pareto",
+      "href": "/docs/api/numpy/random/generator/pareto/",
+      "import_path": "flopscope.numpy.random.Generator.pareto",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-pareto"
+    },
+    "/docs/api/numpy/random/generator/permutation/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.permutation",
+      "href": "/docs/api/numpy/random/generator/permutation/",
+      "import_path": "flopscope.numpy.random.Generator.permutation",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-permutation"
+    },
+    "/docs/api/numpy/random/generator/permuted/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.permuted",
+      "href": "/docs/api/numpy/random/generator/permuted/",
+      "import_path": "flopscope.numpy.random.Generator.permuted",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-permuted"
+    },
+    "/docs/api/numpy/random/generator/poisson/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.poisson",
+      "href": "/docs/api/numpy/random/generator/poisson/",
+      "import_path": "flopscope.numpy.random.Generator.poisson",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-poisson"
+    },
+    "/docs/api/numpy/random/generator/power/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.power",
+      "href": "/docs/api/numpy/random/generator/power/",
+      "import_path": "flopscope.numpy.random.Generator.power",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-power"
+    },
+    "/docs/api/numpy/random/generator/random/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.random",
+      "href": "/docs/api/numpy/random/generator/random/",
+      "import_path": "flopscope.numpy.random.Generator.random",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-random"
+    },
+    "/docs/api/numpy/random/generator/rayleigh/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.rayleigh",
+      "href": "/docs/api/numpy/random/generator/rayleigh/",
+      "import_path": "flopscope.numpy.random.Generator.rayleigh",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-rayleigh"
+    },
+    "/docs/api/numpy/random/generator/shuffle/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.shuffle",
+      "href": "/docs/api/numpy/random/generator/shuffle/",
+      "import_path": "flopscope.numpy.random.Generator.shuffle",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-shuffle"
+    },
+    "/docs/api/numpy/random/generator/spawn/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.spawn",
+      "href": "/docs/api/numpy/random/generator/spawn/",
+      "import_path": "flopscope.numpy.random.Generator.spawn",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-spawn"
+    },
+    "/docs/api/numpy/random/generator/standard-cauchy/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.standard_cauchy",
+      "href": "/docs/api/numpy/random/generator/standard-cauchy/",
+      "import_path": "flopscope.numpy.random.Generator.standard_cauchy",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-standard-cauchy"
+    },
+    "/docs/api/numpy/random/generator/standard-exponential/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.standard_exponential",
+      "href": "/docs/api/numpy/random/generator/standard-exponential/",
+      "import_path": "flopscope.numpy.random.Generator.standard_exponential",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-standard-exponential"
+    },
+    "/docs/api/numpy/random/generator/standard-gamma/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.standard_gamma",
+      "href": "/docs/api/numpy/random/generator/standard-gamma/",
+      "import_path": "flopscope.numpy.random.Generator.standard_gamma",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-standard-gamma"
+    },
+    "/docs/api/numpy/random/generator/standard-normal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.standard_normal",
+      "href": "/docs/api/numpy/random/generator/standard-normal/",
+      "import_path": "flopscope.numpy.random.Generator.standard_normal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-standard-normal"
+    },
+    "/docs/api/numpy/random/generator/standard-t/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.standard_t",
+      "href": "/docs/api/numpy/random/generator/standard-t/",
+      "import_path": "flopscope.numpy.random.Generator.standard_t",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-standard-t"
+    },
+    "/docs/api/numpy/random/generator/triangular/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.triangular",
+      "href": "/docs/api/numpy/random/generator/triangular/",
+      "import_path": "flopscope.numpy.random.Generator.triangular",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-triangular"
+    },
+    "/docs/api/numpy/random/generator/uniform/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.uniform",
+      "href": "/docs/api/numpy/random/generator/uniform/",
+      "import_path": "flopscope.numpy.random.Generator.uniform",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-uniform"
+    },
+    "/docs/api/numpy/random/generator/vonmises/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.vonmises",
+      "href": "/docs/api/numpy/random/generator/vonmises/",
+      "import_path": "flopscope.numpy.random.Generator.vonmises",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-vonmises"
+    },
+    "/docs/api/numpy/random/generator/wald/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.wald",
+      "href": "/docs/api/numpy/random/generator/wald/",
+      "import_path": "flopscope.numpy.random.Generator.wald",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-wald"
+    },
+    "/docs/api/numpy/random/generator/weibull/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.weibull",
+      "href": "/docs/api/numpy/random/generator/weibull/",
+      "import_path": "flopscope.numpy.random.Generator.weibull",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-weibull"
+    },
+    "/docs/api/numpy/random/generator/zipf/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator.zipf",
+      "href": "/docs/api/numpy/random/generator/zipf/",
+      "import_path": "flopscope.numpy.random.Generator.zipf",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-generator-zipf"
     },
     "/docs/api/numpy/random/geometric/": {
       "callable": true,
@@ -4002,8 +4407,449 @@
       "href": "/docs/api/numpy/random/random-state/",
       "import_path": "flopscope.numpy.random.RandomState",
       "kind": "class",
-      "module": "numpy.random.mtrand",
+      "module": "flopscope.numpy.random._counted_classes",
       "slug": "flopscope-numpy-random-random-state"
+    },
+    "/docs/api/numpy/random/random-state/beta/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.beta",
+      "href": "/docs/api/numpy/random/random-state/beta/",
+      "import_path": "flopscope.numpy.random.RandomState.beta",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-beta"
+    },
+    "/docs/api/numpy/random/random-state/binomial/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.binomial",
+      "href": "/docs/api/numpy/random/random-state/binomial/",
+      "import_path": "flopscope.numpy.random.RandomState.binomial",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-binomial"
+    },
+    "/docs/api/numpy/random/random-state/bytes/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.bytes",
+      "href": "/docs/api/numpy/random/random-state/bytes/",
+      "import_path": "flopscope.numpy.random.RandomState.bytes",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-bytes"
+    },
+    "/docs/api/numpy/random/random-state/chisquare/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.chisquare",
+      "href": "/docs/api/numpy/random/random-state/chisquare/",
+      "import_path": "flopscope.numpy.random.RandomState.chisquare",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-chisquare"
+    },
+    "/docs/api/numpy/random/random-state/choice/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.choice",
+      "href": "/docs/api/numpy/random/random-state/choice/",
+      "import_path": "flopscope.numpy.random.RandomState.choice",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-choice"
+    },
+    "/docs/api/numpy/random/random-state/dirichlet/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.dirichlet",
+      "href": "/docs/api/numpy/random/random-state/dirichlet/",
+      "import_path": "flopscope.numpy.random.RandomState.dirichlet",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-dirichlet"
+    },
+    "/docs/api/numpy/random/random-state/exponential/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.exponential",
+      "href": "/docs/api/numpy/random/random-state/exponential/",
+      "import_path": "flopscope.numpy.random.RandomState.exponential",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-exponential"
+    },
+    "/docs/api/numpy/random/random-state/f/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.f",
+      "href": "/docs/api/numpy/random/random-state/f/",
+      "import_path": "flopscope.numpy.random.RandomState.f",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-f"
+    },
+    "/docs/api/numpy/random/random-state/gamma/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.gamma",
+      "href": "/docs/api/numpy/random/random-state/gamma/",
+      "import_path": "flopscope.numpy.random.RandomState.gamma",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-gamma"
+    },
+    "/docs/api/numpy/random/random-state/geometric/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.geometric",
+      "href": "/docs/api/numpy/random/random-state/geometric/",
+      "import_path": "flopscope.numpy.random.RandomState.geometric",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-geometric"
+    },
+    "/docs/api/numpy/random/random-state/get-state/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.get_state",
+      "href": "/docs/api/numpy/random/random-state/get-state/",
+      "import_path": "flopscope.numpy.random.RandomState.get_state",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-get-state"
+    },
+    "/docs/api/numpy/random/random-state/gumbel/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.gumbel",
+      "href": "/docs/api/numpy/random/random-state/gumbel/",
+      "import_path": "flopscope.numpy.random.RandomState.gumbel",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-gumbel"
+    },
+    "/docs/api/numpy/random/random-state/hypergeometric/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.hypergeometric",
+      "href": "/docs/api/numpy/random/random-state/hypergeometric/",
+      "import_path": "flopscope.numpy.random.RandomState.hypergeometric",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-hypergeometric"
+    },
+    "/docs/api/numpy/random/random-state/laplace/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.laplace",
+      "href": "/docs/api/numpy/random/random-state/laplace/",
+      "import_path": "flopscope.numpy.random.RandomState.laplace",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-laplace"
+    },
+    "/docs/api/numpy/random/random-state/logistic/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.logistic",
+      "href": "/docs/api/numpy/random/random-state/logistic/",
+      "import_path": "flopscope.numpy.random.RandomState.logistic",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-logistic"
+    },
+    "/docs/api/numpy/random/random-state/lognormal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.lognormal",
+      "href": "/docs/api/numpy/random/random-state/lognormal/",
+      "import_path": "flopscope.numpy.random.RandomState.lognormal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-lognormal"
+    },
+    "/docs/api/numpy/random/random-state/logseries/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.logseries",
+      "href": "/docs/api/numpy/random/random-state/logseries/",
+      "import_path": "flopscope.numpy.random.RandomState.logseries",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-logseries"
+    },
+    "/docs/api/numpy/random/random-state/multinomial/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.multinomial",
+      "href": "/docs/api/numpy/random/random-state/multinomial/",
+      "import_path": "flopscope.numpy.random.RandomState.multinomial",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-multinomial"
+    },
+    "/docs/api/numpy/random/random-state/multivariate-normal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.multivariate_normal",
+      "href": "/docs/api/numpy/random/random-state/multivariate-normal/",
+      "import_path": "flopscope.numpy.random.RandomState.multivariate_normal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-multivariate-normal"
+    },
+    "/docs/api/numpy/random/random-state/negative-binomial/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.negative_binomial",
+      "href": "/docs/api/numpy/random/random-state/negative-binomial/",
+      "import_path": "flopscope.numpy.random.RandomState.negative_binomial",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-negative-binomial"
+    },
+    "/docs/api/numpy/random/random-state/noncentral-chisquare/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.noncentral_chisquare",
+      "href": "/docs/api/numpy/random/random-state/noncentral-chisquare/",
+      "import_path": "flopscope.numpy.random.RandomState.noncentral_chisquare",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-noncentral-chisquare"
+    },
+    "/docs/api/numpy/random/random-state/noncentral-f/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.noncentral_f",
+      "href": "/docs/api/numpy/random/random-state/noncentral-f/",
+      "import_path": "flopscope.numpy.random.RandomState.noncentral_f",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-noncentral-f"
+    },
+    "/docs/api/numpy/random/random-state/normal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.normal",
+      "href": "/docs/api/numpy/random/random-state/normal/",
+      "import_path": "flopscope.numpy.random.RandomState.normal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-normal"
+    },
+    "/docs/api/numpy/random/random-state/pareto/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.pareto",
+      "href": "/docs/api/numpy/random/random-state/pareto/",
+      "import_path": "flopscope.numpy.random.RandomState.pareto",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-pareto"
+    },
+    "/docs/api/numpy/random/random-state/permutation/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.permutation",
+      "href": "/docs/api/numpy/random/random-state/permutation/",
+      "import_path": "flopscope.numpy.random.RandomState.permutation",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-permutation"
+    },
+    "/docs/api/numpy/random/random-state/poisson/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.poisson",
+      "href": "/docs/api/numpy/random/random-state/poisson/",
+      "import_path": "flopscope.numpy.random.RandomState.poisson",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-poisson"
+    },
+    "/docs/api/numpy/random/random-state/power/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.power",
+      "href": "/docs/api/numpy/random/random-state/power/",
+      "import_path": "flopscope.numpy.random.RandomState.power",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-power"
+    },
+    "/docs/api/numpy/random/random-state/rand/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.rand",
+      "href": "/docs/api/numpy/random/random-state/rand/",
+      "import_path": "flopscope.numpy.random.RandomState.rand",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-rand"
+    },
+    "/docs/api/numpy/random/random-state/randint/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.randint",
+      "href": "/docs/api/numpy/random/random-state/randint/",
+      "import_path": "flopscope.numpy.random.RandomState.randint",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-randint"
+    },
+    "/docs/api/numpy/random/random-state/randn/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.randn",
+      "href": "/docs/api/numpy/random/random-state/randn/",
+      "import_path": "flopscope.numpy.random.RandomState.randn",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-randn"
+    },
+    "/docs/api/numpy/random/random-state/random-integers/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.random_integers",
+      "href": "/docs/api/numpy/random/random-state/random-integers/",
+      "import_path": "flopscope.numpy.random.RandomState.random_integers",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-random-integers"
+    },
+    "/docs/api/numpy/random/random-state/random-sample/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.random_sample",
+      "href": "/docs/api/numpy/random/random-state/random-sample/",
+      "import_path": "flopscope.numpy.random.RandomState.random_sample",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-random-sample"
+    },
+    "/docs/api/numpy/random/random-state/random/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.random",
+      "href": "/docs/api/numpy/random/random-state/random/",
+      "import_path": "flopscope.numpy.random.RandomState.random",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-random"
+    },
+    "/docs/api/numpy/random/random-state/rayleigh/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.rayleigh",
+      "href": "/docs/api/numpy/random/random-state/rayleigh/",
+      "import_path": "flopscope.numpy.random.RandomState.rayleigh",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-rayleigh"
+    },
+    "/docs/api/numpy/random/random-state/seed/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.seed",
+      "href": "/docs/api/numpy/random/random-state/seed/",
+      "import_path": "flopscope.numpy.random.RandomState.seed",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-seed"
+    },
+    "/docs/api/numpy/random/random-state/set-state/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.set_state",
+      "href": "/docs/api/numpy/random/random-state/set-state/",
+      "import_path": "flopscope.numpy.random.RandomState.set_state",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-set-state"
+    },
+    "/docs/api/numpy/random/random-state/shuffle/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.shuffle",
+      "href": "/docs/api/numpy/random/random-state/shuffle/",
+      "import_path": "flopscope.numpy.random.RandomState.shuffle",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-shuffle"
+    },
+    "/docs/api/numpy/random/random-state/standard-cauchy/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.standard_cauchy",
+      "href": "/docs/api/numpy/random/random-state/standard-cauchy/",
+      "import_path": "flopscope.numpy.random.RandomState.standard_cauchy",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-standard-cauchy"
+    },
+    "/docs/api/numpy/random/random-state/standard-exponential/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.standard_exponential",
+      "href": "/docs/api/numpy/random/random-state/standard-exponential/",
+      "import_path": "flopscope.numpy.random.RandomState.standard_exponential",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-standard-exponential"
+    },
+    "/docs/api/numpy/random/random-state/standard-gamma/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.standard_gamma",
+      "href": "/docs/api/numpy/random/random-state/standard-gamma/",
+      "import_path": "flopscope.numpy.random.RandomState.standard_gamma",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-standard-gamma"
+    },
+    "/docs/api/numpy/random/random-state/standard-normal/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.standard_normal",
+      "href": "/docs/api/numpy/random/random-state/standard-normal/",
+      "import_path": "flopscope.numpy.random.RandomState.standard_normal",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-standard-normal"
+    },
+    "/docs/api/numpy/random/random-state/standard-t/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.standard_t",
+      "href": "/docs/api/numpy/random/random-state/standard-t/",
+      "import_path": "flopscope.numpy.random.RandomState.standard_t",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-standard-t"
+    },
+    "/docs/api/numpy/random/random-state/tomaxint/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.tomaxint",
+      "href": "/docs/api/numpy/random/random-state/tomaxint/",
+      "import_path": "flopscope.numpy.random.RandomState.tomaxint",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-tomaxint"
+    },
+    "/docs/api/numpy/random/random-state/triangular/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.triangular",
+      "href": "/docs/api/numpy/random/random-state/triangular/",
+      "import_path": "flopscope.numpy.random.RandomState.triangular",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-triangular"
+    },
+    "/docs/api/numpy/random/random-state/uniform/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.uniform",
+      "href": "/docs/api/numpy/random/random-state/uniform/",
+      "import_path": "flopscope.numpy.random.RandomState.uniform",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-uniform"
+    },
+    "/docs/api/numpy/random/random-state/vonmises/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.vonmises",
+      "href": "/docs/api/numpy/random/random-state/vonmises/",
+      "import_path": "flopscope.numpy.random.RandomState.vonmises",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-vonmises"
+    },
+    "/docs/api/numpy/random/random-state/wald/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.wald",
+      "href": "/docs/api/numpy/random/random-state/wald/",
+      "import_path": "flopscope.numpy.random.RandomState.wald",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-wald"
+    },
+    "/docs/api/numpy/random/random-state/weibull/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.weibull",
+      "href": "/docs/api/numpy/random/random-state/weibull/",
+      "import_path": "flopscope.numpy.random.RandomState.weibull",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-weibull"
+    },
+    "/docs/api/numpy/random/random-state/zipf/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.RandomState.zipf",
+      "href": "/docs/api/numpy/random/random-state/zipf/",
+      "import_path": "flopscope.numpy.random.RandomState.zipf",
+      "kind": "function",
+      "module": "numpy.random",
+      "slug": "flopscope-numpy-random-random-state-zipf"
     },
     "/docs/api/numpy/random/random/": {
       "callable": true,
