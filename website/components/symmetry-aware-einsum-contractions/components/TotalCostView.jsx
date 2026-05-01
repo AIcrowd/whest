@@ -689,9 +689,9 @@ function EditorialComparisonSpread({ topMetrics, supportingMetrics, themeOverrid
   return (
     <div className="section5-editorial-spread mx-auto max-w-[44rem] bg-white px-[6px] py-[6px] text-center">
       <div className="section5-editorial-header mb-2 flex items-center justify-center gap-[14px]">
-        <span aria-hidden className="h-px w-[64px] bg-[#f3c5bf]" />
+        <span aria-hidden className="h-px w-[64px] bg-coral-light" />
         <h3 className="font-serif text-[24px] text-gray-800">Cost Savings</h3>
-        <span aria-hidden className="h-px w-[64px] bg-[#f3c5bf]" />
+        <span aria-hidden className="h-px w-[64px] bg-coral-light" />
       </div>
 
       <div className="section5-band-top relative grid grid-cols-1 sm:grid-cols-2">

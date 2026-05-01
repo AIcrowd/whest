@@ -196,8 +196,9 @@ test('OrbitRepMatrix renders permanent axis labels Orbit O and Rep Q', () => {
 test('OrbitRepMatrix renders the label-legend', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   assert.match(src, /data-testid="orbit-rep-matrix-legend"/);
-  // Uses #64748B as the legend's default text color (design token).
-  assert.match(src, /#64748B/);
+  // Uses the W/einstein-summation token as the legend's default text color.
+  assert.match(src, /summed:\s*'var\(--ein-w\)'/);
+  assert.match(src, /style=\{\{ color: COLOR\.summed \}\}/);
   // Surfaces n.
   assert.match(src, /n\s*=/);
 });

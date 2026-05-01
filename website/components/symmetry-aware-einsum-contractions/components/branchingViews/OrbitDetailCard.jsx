@@ -13,11 +13,12 @@ import { flipPosition } from './floatingPosition.js';
 const COLOR = {
   bg: '#FFFFFF',
   border: '#D9DCDC',
-  divider: '#ECEFEF',
-  coral: '#F0524D',
-  coralMuted: 'rgba(240,82,77,0.85)',
-  coralLight: '#FEF2F1',
+  divider: 'var(--grid-faint)',
+  coral: 'var(--coral)',
+  coralMuted: 'color-mix(in oklab, var(--coral) 85%, transparent)',
+  coralLight: 'var(--coral-light)',
   empty: '#F8F9F9',
+  summed: 'var(--ein-w)',
 };
 
 // Padding from the hover point to the card edge.
@@ -285,7 +286,7 @@ function OrbitDetailCard({
                 className="ml-2 inline-flex items-center rounded border px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-[0.08em] font-sans transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
                 style={{
                   borderColor: coefficientView ? COLOR.coral : COLOR.border,
-                  color: coefficientView ? COLOR.coral : '#64748B',
+                  color: coefficientView ? COLOR.coral : COLOR.summed,
                   background: coefficientView ? COLOR.coralLight : COLOR.bg,
                 }}
               >

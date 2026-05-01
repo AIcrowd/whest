@@ -93,11 +93,9 @@ test('C38: TotalCostView does not introduce raw hex outside LaTeX textcolor help
     .replace(/\\textcolor\{#[0-9A-Fa-f]{3,8}\}/g, '')
     .replace(/textcolor\{[^}]+\}/g, '');
 
-  // #f3c5bf is a pre-existing design accent used in the Cost Savings header
-  // dividers (EditorialComparisonSpread). It pre-dates V3.1 and is not
-  // introduced by the C38 polish. Allowlist it exactly as ComponentCostView's
-  // test does for its own pre-existing hex.
-  const ALLOWED_HEX = new Set(['#f3c5bf']);
+  // Cost Savings dividers are tokenized as bg-coral-light; raw CSS hex should
+  // only appear inside stripped LaTeX textcolor helpers.
+  const ALLOWED_HEX = new Set();
 
   const bareHexMatches = (withoutLatexColors.match(/#[0-9A-Fa-f]{6}\b/g) ?? [])
     .filter((h) => !ALLOWED_HEX.has(h.toLowerCase()));

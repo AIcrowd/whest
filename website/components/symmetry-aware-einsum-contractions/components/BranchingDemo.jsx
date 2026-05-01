@@ -121,7 +121,7 @@ export default function BranchingDemo({
         <div
           data-testid="branching-alpha-counter-strip"
           className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-md border px-3 py-2 font-mono text-[12px]"
-          style={{ borderColor: '#ECEFEF', color: '#1F2526', background: '#F8F9F9' }}
+          style={{ borderColor: 'var(--grid-faint)', color: '#1F2526', background: '#F8F9F9' }}
         >
           {cumulativeMode ? (
             <>
@@ -166,8 +166,8 @@ export default function BranchingDemo({
             className="ml-auto inline-flex items-center rounded border px-2 py-0.5 text-[11px] font-sans font-medium tracking-tight transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
             style={{
               borderColor: '#D9DCDC',
-              background: cumulativeMode ? '#FEF2F1' : '#FFFFFF',
-              color: cumulativeMode ? '#F0524D' : '#1F2526',
+              background: cumulativeMode ? 'var(--coral-light)' : '#FFFFFF',
+              color: cumulativeMode ? 'var(--coral)' : '#1F2526',
               cursor: 'pointer',
             }}
           >
@@ -181,7 +181,7 @@ export default function BranchingDemo({
         <div
           className="mt-6 pt-4 border-t"
           data-testid="branching-alpha-total"
-          style={{ borderColor: '#ECEFEF' }}
+          style={{ borderColor: 'var(--grid-faint)' }}
         >
           <div className="text-[28px] font-semibold tracking-tight text-gray-900 leading-none font-sans">
             α = {liveAlpha}

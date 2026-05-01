@@ -33,3 +33,43 @@ test('visual pass 2 uses a sticky-aware scroll-margin utility instead of scroll-
   assert.match(surfaceCss, /\.symmetry-aware-einsum-contractions-page-shell\s+\.scroll-mt-sticky/);
   assert.match(surfaceCss, /scroll-margin-top:\s*var\(--einsum-sticky-anchor-offset\)/);
 });
+
+test('visual pass 2 routes orbit-matrix grid and coral accents through tokens', () => {
+  const tokenCss = read('app/design-system/tokens.css');
+  assert.match(tokenCss, /--grid-faint:\s*#F4F6F6/);
+
+  const tokenFiles = [
+    'components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx',
+    'components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx',
+    'components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx',
+    'components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrixModal.jsx',
+    'components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx',
+    'components/symmetry-aware-einsum-contractions/engine/componentPalette.js',
+  ];
+  const notationHexes = [
+    '#F0524D',
+    '#64748B',
+    '#4A7CFF',
+    '#FA9E33',
+    '#23B761',
+    '#292C2D',
+    '#5D5F60',
+  ];
+
+  for (const file of tokenFiles) {
+    const src = read(file);
+    assert.doesNotMatch(src, /#ECEFEF/i, `${file} still hardcodes the old heavy grid line`);
+    assert.doesNotMatch(src, /#f3c5bf/i, `${file} still hardcodes the cost-savings coral tint`);
+    for (const hex of notationHexes) {
+      assert.doesNotMatch(src, new RegExp(hex, 'i'), `${file} still hardcodes notation hex ${hex}`);
+    }
+  }
+
+  const orbitSrc = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(orbitSrc, /resolveCanvasToken/);
+  assert.match(orbitSrc, /'--grid-faint'/);
+  assert.match(orbitSrc, /'--coral'/);
+
+  const themeSrc = read('components/symmetry-aware-einsum-contractions/lib/explorerTheme.js');
+  assert.match(themeSrc, /Explorer shell intentionally strengthens --coral-light/);
+});

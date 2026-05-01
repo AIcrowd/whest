@@ -34,14 +34,47 @@ function useReducedMotion() {
 // `cellFilled` is now bright enough to read at small cell sizes; `cellPinned` is the
 // stronger "this cell is the reading anchor" treatment when hover-focused.
 const COLOR = {
-  bg: '#FFFFFF',
-  cellGrid: '#F4F6F6',
-  cellFilled: 'rgba(240, 82, 77, 0.55)',
-  cellPinned: '#F0524D',
-  hoverMarker: '#F0524D',
-  branchOutline: 'rgba(240, 82, 77, 0.55)',
-  border: '#D9DCDC',
+  bg: 'var(--white)',
+  cellGrid: 'var(--grid-faint)',
+  cellPinned: 'var(--coral)',
+  hoverMarker: 'var(--coral)',
+  branchOutline: 'var(--coral)',
+  border: 'var(--gray-200)',
+  summed: 'var(--ein-w)',
+  muted: '#9AA0A0',
 };
+
+function resolveCanvasToken(node, token, fallback) {
+  if (typeof window === 'undefined') return fallback;
+  const scope = node instanceof Element ? node : document.documentElement;
+  return getComputedStyle(scope).getPropertyValue(token).trim() || fallback;
+}
+
+function toRgba(color, alpha, fallback) {
+  const trimmed = color.trim();
+  const hex = trimmed.match(/^#([0-9a-f]{6})$/i);
+  if (hex) {
+    const value = hex[1];
+    const r = Number.parseInt(value.slice(0, 2), 16);
+    const g = Number.parseInt(value.slice(2, 4), 16);
+    const b = Number.parseInt(value.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+  const rgb = trimmed.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+  if (rgb) return `rgba(${rgb[1]}, ${rgb[2]}, ${rgb[3]}, ${alpha})`;
+  return fallback;
+}
+
+function resolveOrbitCanvasColors(node) {
+  const coral = resolveCanvasToken(node, '--coral', 'rgb(240, 82, 77)');
+  return {
+    bg: resolveCanvasToken(node, '--white', 'rgb(255, 255, 255)'),
+    cellGrid: resolveCanvasToken(node, '--grid-faint', 'rgb(244, 246, 246)'),
+    cellFilled: toRgba(coral, 0.55, 'rgba(240, 82, 77, 0.55)'),
+    cellPinned: coral,
+    branchOutline: toRgba(coral, 0.55, 'rgba(240, 82, 77, 0.55)'),
+  };
+}
 
 function OrbitRepMatrix({
   orbitRows = [],
@@ -185,9 +218,10 @@ function OrbitRepMatrix({
     const ctx = off.getContext('2d');
     const cw = layout.cellWidth;
     const ch = layout.cellHeight;
+    const canvasColor = resolveOrbitCanvasColors(containerRef.current);
 
     // Clear (logical coords; DPR scale already applied in stage 1).
-    ctx.fillStyle = COLOR.bg;
+    ctx.fillStyle = canvasColor.bg;
     ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
     // Filled cells with a 1px darker top edge — gives subtle depth without
@@ -200,10 +234,10 @@ function OrbitRepMatrix({
         if (coeff === null) continue;
         const x = c * cw;
         const y = r * ch;
-        ctx.fillStyle = COLOR.cellFilled;
+        ctx.fillStyle = canvasColor.cellFilled;
         ctx.fillRect(x, y, cw, ch);
         if (showDepthLip) {
-          ctx.fillStyle = 'rgba(178, 62, 58, 0.18)'; // a darker variant of the coral tone
+          ctx.fillStyle = 'rgba(178, 62, 58, 0.18)'; // darker coral-derived depth lip
           ctx.fillRect(x, y, cw, 1);
         }
       }
@@ -213,7 +247,7 @@ function OrbitRepMatrix({
     // cells are too small to leave room for a 1-px grid line (≤ 2 px cells:
     // grid would dominate the cell).
     if (cw > 2 && ch > 2) {
-      ctx.strokeStyle = COLOR.cellGrid;
+      ctx.strokeStyle = canvasColor.cellGrid;
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let r = 0; r <= orbitRows.length; r += 1) {
@@ -242,6 +276,7 @@ function OrbitRepMatrix({
     const cw = layout.cellWidth;
     const ch = layout.cellHeight;
     const hoverCell = hoverRef.current;
+    const canvasColor = resolveOrbitCanvasColors(containerRef.current);
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(off, 0, 0);
@@ -251,12 +286,12 @@ function OrbitRepMatrix({
     if (focus && cw > 2 && ch > 2 && cells[focus.row]?.[focus.col] !== null) {
       // Strong-coral fill on the focused cell — done here so BASE doesn't
       // re-paint on every hover change.
-      ctx.fillStyle = COLOR.cellPinned;
+      ctx.fillStyle = canvasColor.cellPinned;
       ctx.fillRect(focus.col * cw, focus.row * ch, cw, ch);
     }
 
     if (focus && cw > 2 && ch > 2) {
-      ctx.strokeStyle = COLOR.branchOutline;
+      ctx.strokeStyle = canvasColor.branchOutline;
       ctx.lineWidth = 1;
       for (let c = 0; c < reps.length; c += 1) {
         if (c === focus.col) continue;
@@ -405,7 +440,7 @@ function OrbitRepMatrix({
   const yAxisHighlighted = hasHoveredLabels && allLabels.some((l) => vLabelSet.has(l) && hoveredLabels.has(l));
   const xAxisHighlighted = hasHoveredLabels && allLabels.some((l) => wLabelSet.has(l) && hoveredLabels.has(l));
   const axisHighlightClass = 'underline decoration-2 underline-offset-2';
-  const axisHighlightStyle = { color: '#F0524D' }; // design-system coral token
+  const axisHighlightStyle = { color: COLOR.cellPinned };
 
   return (
     <div
@@ -418,7 +453,7 @@ function OrbitRepMatrix({
       <div
         data-testid="orbit-rep-matrix-legend"
         className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[11px]"
-        style={{ color: '#64748B' }}
+        style={{ color: COLOR.summed }}
       >
         {(() => {
           const visibleLabels = allLabels.filter((l) => vLabelSet.has(l));
@@ -469,7 +504,7 @@ function OrbitRepMatrix({
                 gridColumn: 1, gridRow: 1,
                 writingMode: 'vertical-rl',
                 transform: 'rotate(180deg)',
-                color: yAxisHighlighted ? '#F0524D' : '#9AA0A0',
+                color: yAxisHighlighted ? COLOR.cellPinned : COLOR.muted,
                 transition: reducedMotion ? 'none' : 'color 120ms ease-out',
               }}
               className={`flex items-center justify-center text-[10px] font-medium tracking-[0.04em] font-sans${yAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}
@@ -498,7 +533,7 @@ function OrbitRepMatrix({
                       top: y,
                       transform: 'translateY(-50%)',
                       fontSize: 9,
-                      color: '#9AA0A0',
+                      color: COLOR.muted,
                       whiteSpace: 'nowrap',
                     }}
                   >
@@ -519,7 +554,7 @@ function OrbitRepMatrix({
                         top: y,
                         width: 4,
                         height: 1,
-                        background: '#D9DCDC',
+                        background: COLOR.border,
                         transform: 'translateY(-50%)',
                       }}
                     />
@@ -593,7 +628,7 @@ function OrbitRepMatrix({
                   width: layout.cellWidth || 0,
                   height: layout.cellHeight || 0,
                   boxSizing: 'border-box',
-                  border: '2px solid #F0524D',
+                  border: `2px solid ${COLOR.cellPinned}`,
                   borderRadius: 2,
                   opacity: hover ? 1 : 0,
                   transition: reducedMotion
@@ -638,7 +673,7 @@ function OrbitRepMatrix({
                       width: layout.cellWidth,
                       height: layout.cellHeight,
                       boxSizing: 'border-box',
-                      border: '2px dashed var(--coral, #F0524D)',
+                      border: `2px dashed ${COLOR.cellPinned}`,
                       borderRadius: 2,
                       pointerEvents: 'none',
                       transition: reducedMotion ? 'none' : 'top 80ms ease-out, left 80ms ease-out',
@@ -686,7 +721,7 @@ function OrbitRepMatrix({
                       left: x,
                       transform: 'translateX(-50%)',
                       fontSize: 9,
-                      color: '#9AA0A0',
+                      color: COLOR.muted,
                       whiteSpace: 'nowrap',
                     }}
                   >
@@ -707,7 +742,7 @@ function OrbitRepMatrix({
                         left: x,
                         width: 1,
                         height: 4,
-                        background: '#D9DCDC',
+                        background: COLOR.border,
                         transform: 'translateX(-50%)',
                       }}
                     />
@@ -720,7 +755,7 @@ function OrbitRepMatrix({
             <div
               style={{
                 gridColumn: 3, gridRow: 3,
-                color: xAxisHighlighted ? '#F0524D' : '#9AA0A0',
+                color: xAxisHighlighted ? COLOR.cellPinned : COLOR.muted,
                 transition: reducedMotion ? 'none' : 'color 120ms ease-out',
               }}
               className={`text-center text-[10px] font-medium tracking-[0.04em] font-sans pt-1${xAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}

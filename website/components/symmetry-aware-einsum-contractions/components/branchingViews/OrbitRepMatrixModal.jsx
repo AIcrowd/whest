@@ -52,7 +52,7 @@ export default function OrbitRepMatrixModal({
         >
           ×
         </button>
-        <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: '#F0524D' }}>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--coral)' }}>
           The O → Q matrix · expanded
         </div>
         <div className="mt-3 grid gap-6 grid-cols-1 lg:grid-cols-[2fr_1fr]">
