@@ -196,16 +196,20 @@ class _NamespaceScope:
         self._segment = segment
 
     def __enter__(self) -> BudgetContext:
-        t0 = time.perf_counter()
-        self._budget._push_namespace(self._segment)
-        self._budget._total_flopscope_overhead_time += time.perf_counter() - t0
-        return self._budget
+        fs_t0 = time.perf_counter()
+        try:
+            self._budget._push_namespace(self._segment)
+            return self._budget
+        finally:
+            self._budget._total_flopscope_overhead_time += time.perf_counter() - fs_t0
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> Literal[False]:
-        t0 = time.perf_counter()
-        self._budget._pop_namespace(self._segment)
-        self._budget._total_flopscope_overhead_time += time.perf_counter() - t0
-        return False
+        fs_t0 = time.perf_counter()
+        try:
+            self._budget._pop_namespace(self._segment)
+            return False
+        finally:
+            self._budget._total_flopscope_overhead_time += time.perf_counter() - fs_t0
 
 
 def _validate_namespace_segment(name: str) -> str:
@@ -361,6 +365,11 @@ class BudgetContext:
         namespace: str | None = None,
         wall_time_limit_s: float | None = None,
     ):
+        # Capture creation time as the very first thing so any work done in
+        # __init__ (validation, list/dict allocation) is included in the
+        # eventual wall_time_s span, billed to flopscope_overhead_time. See
+        # issue #82.
+        self._creation_time = time.perf_counter()
         if flop_budget <= 0:
             raise ValueError(f"flop_budget must be > 0, got {flop_budget}")
         self._flop_budget = flop_budget
@@ -377,6 +386,7 @@ class BudgetContext:
         self._wall_time_s: float | None = None
         self._total_tracked_time: float = 0.0
         self._total_flopscope_overhead_time: float = 0.0
+        self._pre_enter_overhead: float = 0.0
         self._current_op_timer: _OpTimer | None = None
         self._recorded_flops_used = 0
         self._recorded_op_count = 0
@@ -420,6 +430,18 @@ class BudgetContext:
 
     @property
     def wall_time_s(self) -> float | None:
+        """Total wall-clock seconds spanned by the context.
+
+        Measured from ``__init__`` start to the end of ``__exit__`` (after the
+        accumulator-record and active-budget restoration work). ``None`` until
+        ``__exit__`` has run.
+
+        The decomposition ``wall_time_s == tracked_time + flopscope_overhead_time
+        + untracked_time`` holds within numerical tolerance. The pre-``__enter__``
+        slice (``__init__`` body + banner print) and the post-``__exit__`` body
+        slice (accumulator-record, active-budget restore) are both attributed
+        to ``flopscope_overhead_time``.
+        """
         return self._wall_time_s
 
     @property
@@ -629,11 +651,8 @@ class BudgetContext:
             raise RuntimeError("Cannot nest BudgetContexts")
         self._previous_budget = current  # save (may be global default or None)
         _thread_local.active_budget = self
-        self._start_time = time.perf_counter()
         self._wall_time_s = None
         self._deadline = None
-        if self._wall_time_limit_s is not None:
-            self._deadline = self._start_time + self._wall_time_limit_s
         if not self._quiet:
             import sys
 
@@ -647,13 +666,32 @@ class BudgetContext:
             if self._wall_time_limit_s is not None:
                 banner += f" | time limit: {self._wall_time_limit_s:.1f}s"
             print(banner, file=sys.stderr)
+        # Mark wall start AFTER all enter setup (including the banner print).
+        # The slice from _creation_time → _start_time is pre-enter overhead;
+        # __exit__ adds it to flopscope_overhead_time. See issue #82.
+        self._start_time = time.perf_counter()
+        self._pre_enter_overhead = self._start_time - self._creation_time
+        if self._wall_time_limit_s is not None:
+            self._deadline = self._start_time + self._wall_time_limit_s
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        # body_end snapshots the user-code window (start_time → here). Then
+        # we do the post-exit accumulator work and snapshot post_exit_end.
+        # wall_time_s spans creation → post_exit_end, and the pre-enter +
+        # post-exit slices are billed to flopscope_overhead_time. See #82.
+        body_end = time.perf_counter()
         if self._start_time is not None:
-            self._wall_time_s = time.perf_counter() - self._start_time
-        _accumulator.record(self)
-        _thread_local.active_budget = self._previous_budget  # restore previous
+            _accumulator.record(self)
+            _thread_local.active_budget = self._previous_budget
+            post_exit_end = time.perf_counter()
+            self._wall_time_s = post_exit_end - self._creation_time
+            self._total_flopscope_overhead_time += self._pre_enter_overhead + (
+                post_exit_end - body_end
+            )
+        else:
+            # Defensive: __exit__ called without __enter__.
+            _thread_local.active_budget = self._previous_budget
         return None
 
     def __call__(self, func):

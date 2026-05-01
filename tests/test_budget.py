@@ -1004,3 +1004,98 @@ def test_untracked_time_property_agrees_with_summary_dict():
         ctx.wall_time_s - ctx.total_tracked_time - ctx.flopscope_overhead_time  # type: ignore[operator]
     )
     assert prop_value == pytest.approx(max(expected, 0.0), abs=1e-9)
+
+
+def test_budget_context_init_and_exit_billed_as_overhead():
+    """Empty BudgetContext: pre-enter and post-exit work are flopscope_overhead,
+    not untracked. The Python ``with`` protocol itself adds ~1-2 µs of strictly-
+    user-controlled time between ``__enter__`` returning and ``__exit__`` being
+    called; that legitimately lands in untracked. The bulk should be overhead.
+    Issue #82.
+    """
+    import flopscope as flops
+
+    ctx = flops.BudgetContext(flop_budget=int(1e12), quiet=True)
+    with ctx:
+        pass
+
+    assert ctx.wall_time_s is not None
+    assert ctx.wall_time_s > 0
+    assert ctx.total_tracked_time == 0.0
+    # Most of the wall should be overhead. Allow a few µs of untracked for the
+    # Python ``with`` protocol's enter→exit gap.
+    assert ctx.flopscope_overhead_time > 0
+    assert ctx.flopscope_overhead_time >= ctx.untracked_time, (  # type: ignore[operator]
+        f"overhead ({ctx.flopscope_overhead_time}) "
+        f"should dominate untracked ({ctx.untracked_time})"
+    )
+    assert ctx.untracked_time < 5e-6, (  # type: ignore[operator]
+        f"empty BudgetContext leaked >5µs into untracked: {ctx.untracked_time}"
+    )
+    # Decomposition invariant.
+    assert (
+        abs(
+            ctx.wall_time_s
+            - ctx.total_tracked_time
+            - ctx.flopscope_overhead_time
+            - ctx.untracked_time  # type: ignore[operator]
+        )
+        < 1e-9
+    )
+
+
+def test_namespace_scope_billed_as_overhead_amplified():
+    """1000 namespace enter/exit pairs add measurable overhead, not untracked.
+    Issue #82.
+    """
+    import flopscope as flops
+
+    ctx = flops.BudgetContext(flop_budget=int(1e12), quiet=True)
+    with ctx:
+        overhead_before = ctx.flopscope_overhead_time
+        for _ in range(1000):
+            with flops.namespace("foo"):
+                pass
+        overhead_after = ctx.flopscope_overhead_time
+
+    delta = overhead_after - overhead_before
+    # 1000 pairs × O(100ns) each → at least 100 μs of overhead growth.
+    assert delta > 1e-4, f"namespace overhead not billed: delta={delta}"
+    # Decomposition invariant still holds after exit.
+    assert (
+        abs(
+            ctx.wall_time_s  # type: ignore[operator]
+            - ctx.total_tracked_time
+            - ctx.flopscope_overhead_time
+            - ctx.untracked_time  # type: ignore[operator]
+        )
+        < 1e-9
+    )
+
+
+def test_namespace_scope_exit_exception_still_charges_overhead(monkeypatch):
+    """If _pop_namespace raises, the __exit__ try/finally still bills overhead.
+    Issue #82.
+    """
+    import flopscope as flops
+
+    ctx = flops.BudgetContext(flop_budget=int(1e12), quiet=True)
+    original = type(ctx)._pop_namespace
+    raised = {"flag": False}
+
+    def boom(self, expected):
+        raised["flag"] = True
+        raise RuntimeError("synthetic pop failure")
+
+    with ctx:
+        overhead_before = ctx.flopscope_overhead_time
+        monkeypatch.setattr(type(ctx), "_pop_namespace", boom)
+        with pytest.raises(RuntimeError, match="synthetic pop failure"):
+            with flops.namespace("foo"):
+                pass
+        # Restore so the outer with-block exits cleanly. Manually pop the
+        # orphaned "foo" so the namespace stack is consistent.
+        monkeypatch.setattr(type(ctx), "_pop_namespace", original)
+        ctx._namespace_stack.pop()
+    assert raised["flag"]
+    assert ctx.flopscope_overhead_time > overhead_before
