@@ -156,6 +156,17 @@ class TestCountedGeneratorMethods:
             rng.shuffle(a, axis=1)
         assert budget.flops_used == 10  # shape[1], not 50
 
+    def test_shuffle_2d_positional_axis(self):
+        """rng.shuffle(arr, 1) (positional axis) charges shape[1]."""
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        bg = np.random.default_rng(42).bit_generator
+        rng = _CountedGenerator(bg)
+        a = np.arange(50).reshape(5, 10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rng.shuffle(a, 1)
+        assert budget.flops_used == 10  # shape[1], not 5 (shape[0]) or 50 (numel)
+
 
 class TestCountedGeneratorOverrides:
     def test_spawn_returns_counted_children(self):

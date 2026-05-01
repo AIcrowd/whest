@@ -227,3 +227,16 @@ class TestCrossApiFlopParity:
         with BudgetContext(flop_budget=10**6, quiet=True) as b3:
             merandom.RandomState(42).uniform(0, 1, size=(8, 8))
         assert b1.flops_used == b2.flops_used == b3.flops_used
+
+    def test_shuffle_positional_axis_parity_across_apis(self):
+        """rng.shuffle(arr, 1) charges the same across APIs."""
+        from flopscope._weights import load_weights
+
+        load_weights()
+        a = numpy.arange(50).reshape(5, 10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as b1:
+            merandom.default_rng(42).shuffle(a.copy(), 1)
+        with BudgetContext(flop_budget=10**6, quiet=True) as b2:
+            merandom.default_rng(42).shuffle(a.copy(), axis=1)
+        # Positional and keyword forms charge identically; both should be shape[1]=10
+        assert b1.flops_used == b2.flops_used == 10

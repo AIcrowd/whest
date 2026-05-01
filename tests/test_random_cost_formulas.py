@@ -178,6 +178,23 @@ class TestShapeAxis:
         # Defensive: don't crash, return at least 1
         assert formula((a,), {}, None) >= 1
 
+    def test_2d_positional_axis(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        a = np.zeros((5, 10))
+        # Positional axis (numpy: shuffle(x, axis=0))
+        assert formula((a, 1), {}, None) == 10  # shape[1]
+        assert formula((a, 0), {}, None) == 5  # shape[0]
+
+    def test_2d_positional_none_axis(self):
+        from flopscope.numpy.random._cost_formulas import COST_FORMULAS
+
+        formula = COST_FORMULAS["shape[axis]"]
+        a = np.zeros((5, 10))
+        # Positional axis=None means flatten → numel
+        assert formula((a, None), {}, None) == 50
+
 
 class TestShapeAxisRegistration:
     def test_shape_axis_in_formulas(self):

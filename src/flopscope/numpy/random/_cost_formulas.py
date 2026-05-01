@@ -66,7 +66,7 @@ def _shape_axis(args: tuple, kwargs: dict, result: Any) -> int:
     if isinstance(a, (int, _np.integer)):
         return _builtins.max(int(a), 1)
 
-    axis = kwargs.get("axis", 0)
+    axis = args[1] if len(args) >= 2 else kwargs.get("axis", 0)
     if axis is None:
         if isinstance(a, _np.ndarray):
             return _builtins.max(int(a.size), 1)
