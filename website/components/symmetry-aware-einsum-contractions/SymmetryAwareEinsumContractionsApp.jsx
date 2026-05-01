@@ -125,6 +125,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
   // `labels` → halo those characters in the StickyBar einsum equation;
   // `leafKeys` → spotlight matching leaves in the DecisionLadder.
   const [graphHover, setGraphHover] = useState(null);
+  // Bidirectional label-hover bus: StickyBar can also emit hovered labels
+  // (Behavior 1 — C01). When the strip fires onHoveredLabelsChange, we merge
+  // it into the shared hoveredLabelSet. The graphHover payload from the
+  // Interaction Graph takes precedence when both are active.
+  const [stripHoveredLabels, setStripHoveredLabels] = useState(null);
+  // α-method hover state (Behavior 3 — C01): StickyBar emits method id on
+  // badge hover; classification tree reads this to spotlight the matching leaf.
+  const [activeAlphaMethodHover, setActiveAlphaMethodHover] = useState(null);
   const [exprModalOpen, setExprModalOpen] = useState(false);
   const [isThemeDockVisible, setIsThemeDockVisible] = useState(false);
   const appendixReturnHashRef = useRef(APPENDIX_RETURN_HASH);
@@ -134,10 +142,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
     () => EXPLORER_THEME_RECOMMENDED_ID,
   );
   const handleGraphHover = useCallback((payload) => setGraphHover(payload), []);
-  const hoveredLabelSet = useMemo(
-    () => (graphHover?.labels?.length ? new Set(graphHover.labels) : null),
-    [graphHover],
-  );
+  // Merge graph hover + strip hover — graph takes precedence
+  const hoveredLabelSet = useMemo(() => {
+    if (graphHover?.labels?.length) return new Set(graphHover.labels);
+    if (stripHoveredLabels instanceof Set && stripHoveredLabels.size > 0) return stripHoveredLabels;
+    return null;
+  }, [graphHover, stripHoveredLabels]);
   const spotlightLeafSet = useMemo(
     () => (graphHover?.leafKeys?.length ? new Set(graphHover.leafKeys) : null),
     [graphHover],
@@ -355,6 +365,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
         activeActId={activeActId}
         hoveredLabels={hoveredLabelSet}
         dimensionN={dimensionN}
+        onDimensionNChange={setDefaultSize}
+        onHoveredLabelsChange={setStripHoveredLabels}
+        activeAlphaMethod={activeAlphaMethodHover}
+        onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
       />
       {isThemeDockVisible ? (
         <ExplorerThemeDock explorerThemeId={explorerThemeId} onChange={setActiveExplorerTheme} />

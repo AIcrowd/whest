@@ -13,7 +13,7 @@ import SymmetryBadge from './SymmetryBadge.jsx';
 // pitch black with a coral underline; everything else passes through.
 // Layout is stable: no bold (glyph widths stay fixed), no padding/ring
 // (no per-char circle outlines).
-function SubscriptTokens({ text, hoveredLabels }) {
+function SubscriptTokens({ text, hoveredLabels, onHoveredLabelsChange }) {
   const chars = Array.from(String(text ?? ''));
   const hasHover = hoveredLabels instanceof Set && hoveredLabels.size > 0;
   return (
@@ -21,15 +21,30 @@ function SubscriptTokens({ text, hoveredLabels }) {
       {chars.map((ch, idx) => {
         const isLetter = /[A-Za-z]/.test(ch);
         const isHit = hasHover && isLetter && hoveredLabels.has(ch);
-        if (!isHit) return <span key={idx}>{ch}</span>;
-        // `decoration-coral` / `text-coral` are NOT defined in this Tailwind
-        // theme — only `--primary` / `--color-primary` resolve to the coral
-        // hex. `text-black` gives the strong contrast against the coral-tint
-        // badge background that plain coral text can't.
+        if (!isLetter || !onHoveredLabelsChange) {
+          return (
+            <span
+              key={idx}
+              className={isHit ? 'text-black underline decoration-primary decoration-2 underline-offset-2' : undefined}
+            >
+              {ch}
+            </span>
+          );
+        }
+        // Interactive letter: hover fires the cross-highlighting bus
         return (
           <span
             key={idx}
-            className="text-black underline decoration-primary decoration-2 underline-offset-2"
+            className={cn(
+              'cursor-default',
+              isHit
+                ? 'text-black underline decoration-primary decoration-2 underline-offset-2'
+                : 'hover:text-black hover:underline hover:decoration-primary hover:decoration-2 hover:underline-offset-2',
+            )}
+            onMouseEnter={() => onHoveredLabelsChange(new Set([ch]))}
+            onMouseLeave={() => onHoveredLabelsChange(null)}
+            onFocus={() => onHoveredLabelsChange(new Set([ch]))}
+            onBlur={() => onHoveredLabelsChange(null)}
           >
             {ch}
           </span>
@@ -44,7 +59,7 @@ function SubscriptTokens({ text, hoveredLabels }) {
 // label like `i` no longer lights up the `i` in "einsum". We rebuild from
 // `example.expression` (structured) rather than walking the display string,
 // so the visible formula always matches the authoritative subscripts.
-export function FormulaHighlighted({ example, hoveredLabels }) {
+export function FormulaHighlighted({ example, hoveredLabels, onHoveredLabelsChange }) {
   const expr = example?.expression;
   if (!expr || typeof expr.subscripts !== 'string') {
     // Pre-normalized or malformed example — fall back to the raw string
@@ -55,12 +70,12 @@ export function FormulaHighlighted({ example, hoveredLabels }) {
   return (
     <>
       <span>{"einsum('"}</span>
-      <SubscriptTokens text={expr.subscripts} hoveredLabels={hoveredLabels} />
+      <SubscriptTokens text={expr.subscripts} hoveredLabels={hoveredLabels} onHoveredLabelsChange={onHoveredLabelsChange} />
       {/* Arrow is the one coral accent inside the neutral stadium-pill —
           matches `.formula-live .arr { color: var(--coral) }` in
           design-system/preview/components.html. */}
       <span className="mx-1 text-coral">{'→'}</span>
-      <SubscriptTokens text={expr.output ?? ''} hoveredLabels={hoveredLabels} />
+      <SubscriptTokens text={expr.output ?? ''} hoveredLabels={hoveredLabels} onHoveredLabelsChange={onHoveredLabelsChange} />
       <span>{`', ${expr.operandNames ?? ''})`}</span>
     </>
   );
@@ -187,7 +202,82 @@ function StickyMetadataPopover({ anchorRect, operands, groupLabel }) {
   );
 }
 
-export default function StickyBar({ example, group, activeActId, hoveredLabels = null, dimensionN = null }) {
+// Inline dimension stepper — 28px tall, gray border, mono font.
+// Keyboard arrow-up/down increments within [min, max].
+// Fires onDimensionNChange(newValue) when the value changes.
+// Falls back to static display when onDimensionNChange is null.
+function DimensionStepper({ dimensionN, onDimensionNChange, min = 2, max = 8 }) {
+  const value = dimensionN ?? '—';
+  const canInteract = typeof onDimensionNChange === 'function' && typeof dimensionN === 'number';
+
+  const decrement = () => {
+    if (!canInteract) return;
+    onDimensionNChange(Math.max(min, dimensionN - 1));
+  };
+  const increment = () => {
+    if (!canInteract) return;
+    onDimensionNChange(Math.min(max, dimensionN + 1));
+  };
+
+  if (!canInteract) {
+    // Read-only badge (legacy: no setter provided)
+    return (
+      <Badge
+        variant="outline"
+        aria-label={`n=${dimensionN ?? '—'}`}
+        className="shrink-0 border-gray-200 bg-white font-mono text-gray-500 shadow-none"
+      >
+        {`n=${dimensionN ?? '—'}`}
+      </Badge>
+    );
+  }
+
+  return (
+    <div
+      className="inline-flex h-7 items-center gap-0 overflow-hidden rounded-md border border-gray-200 bg-white font-mono text-xs text-gray-700 shadow-none"
+      role="group"
+      aria-label={`n=${dimensionN ?? '—'}`}
+    >
+      <button
+        type="button"
+        aria-label="Decrease dimension"
+        onClick={decrement}
+        disabled={dimensionN <= min}
+        className="flex h-7 w-6 items-center justify-center border-r border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
+      >
+        −
+      </button>
+      <span
+        aria-live="polite"
+        aria-atomic="true"
+        className="min-w-[2.5rem] px-2 text-center text-[12px] font-mono leading-7 text-gray-700"
+      >
+        {`n=${dimensionN ?? '—'}`}
+      </span>
+      <button
+        type="button"
+        aria-label="Increase dimension"
+        onClick={increment}
+        disabled={dimensionN >= max}
+        className="flex h-7 w-6 items-center justify-center border-l border-gray-200 text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
+      >
+        +
+      </button>
+    </div>
+  );
+}
+
+export default function StickyBar({
+  example,
+  group,
+  activeActId,
+  hoveredLabels = null,
+  dimensionN = null,
+  onDimensionNChange = null,
+  onHoveredLabelsChange = null,
+  activeAlphaMethod = null,
+  onActiveAlphaMethodHoverChange = null,
+}) {
   const [showMetadataPopover, setShowMetadataPopover] = useState(false);
   const [metadataAnchorRect, setMetadataAnchorRect] = useState(null);
   const metadataTriggerRef = useRef(null);
@@ -196,6 +286,36 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
     () => buildMetadataItems({ example, group }),
     [example, group],
   );
+
+  // Behavior 4 — Compact-on-scroll
+  // Detect prefers-reduced-motion once at mount (no re-render; purely CSS gate)
+  const prefersReducedMotionRef = useRef(
+    typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false,
+  );
+  const [isCompact, setIsCompact] = useState(false);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const onScroll = () => {
+      if (rafRef.current) return;
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null;
+        setIsCompact(window.scrollY > 200);
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Sync immediately in case the page is already scrolled (e.g., back-navigation)
+    onScroll();
+    return () => {
+      window.removeEventListener('scroll', onScroll, { passive: true });
+      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   const clearCloseTimer = () => {
     if (closeTimerRef.current) {
@@ -245,9 +365,28 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
     };
   }, [showMetadataPopover]);
 
+  // Behavior 4 — CSS transition guard: no transition if prefers-reduced-motion
+  const compactTransitionClass = prefersReducedMotionRef.current
+    ? ''
+    : 'transition-[height,opacity] duration-200 ease-out';
+
   return (
-    <div className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-[1460px] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+    <div
+      className={cn(
+        'sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-sm',
+        compactTransitionClass,
+        isCompact ? 'sticky-bar--compact' : 'sticky-bar--expanded',
+      )}
+      data-compact={isCompact ? 'true' : 'false'}
+    >
+      <div
+        className={cn(
+          'mx-auto flex max-w-[1460px] px-6 py-4 md:px-8',
+          isCompact
+            ? 'flex-row items-center justify-between gap-4'
+            : 'flex-col gap-4 md:flex-row md:items-center md:justify-between',
+        )}
+      >
         {/* Whest wordmark — the one in-product brand anchor. Matches the
             `.brand` slot of design-system/Whest Einsum Explorer.html and
             the nav wordmark in lib/layout.shared.tsx. Reuses the global
@@ -260,7 +399,12 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
         >
           Whest<span className="whest-wordmark__dot">.</span>
         </Link>
-        <nav className="flex shrink-0 items-center gap-1 overflow-x-auto pb-1 md:pb-0">
+        <nav
+          className={cn(
+            'flex shrink-0 items-center gap-1 overflow-x-auto pb-1 md:pb-0',
+            isCompact && 'hidden md:flex',
+          )}
+        >
           {EXPLORER_ACTS.map((act, idx) => {
             const isActive = activeActId === act.id;
             return (
@@ -295,12 +439,28 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
         <div className="flex min-w-0 shrink flex-col items-start gap-2 self-end md:max-w-[42rem] md:items-end md:self-auto">
           {example && (
             <div className="flex flex-wrap items-center gap-2">
-              <Badge
-                variant="outline"
-                className="shrink-0 border-gray-200 bg-white text-gray-500 shadow-none"
-              >
-                {`n=${dimensionN ?? '—'}`}
-              </Badge>
+              {/* Behavior 2 — Dimension knob: interactive stepper when
+                  onDimensionNChange is provided, static badge otherwise. */}
+              <DimensionStepper
+                dimensionN={dimensionN}
+                onDimensionNChange={onDimensionNChange}
+              />
+
+              {/* Behavior 3 — α-method badge: hover fires the tree-leaf bus */}
+              {activeAlphaMethod && (
+                <Badge
+                  variant="outline"
+                  className="shrink-0 cursor-default border-gray-200 bg-white font-mono text-[11px] text-gray-600 shadow-none transition-colors hover:border-primary/30 hover:bg-primary/5"
+                  aria-label={`Alpha method: ${activeAlphaMethod}`}
+                  onMouseEnter={() => onActiveAlphaMethodHoverChange?.(activeAlphaMethod)}
+                  onMouseLeave={() => onActiveAlphaMethodHoverChange?.(null)}
+                  onFocus={() => onActiveAlphaMethodHoverChange?.(activeAlphaMethod)}
+                  onBlur={() => onActiveAlphaMethodHoverChange?.(null)}
+                >
+                  α: {activeAlphaMethod}
+                </Badge>
+              )}
+
               {/* Neutral stadium pill per design-system `.formula-live`:
                   gray-100 ground, gray-600 ink, 1px gray-200 border,
                   rounded-full (=20px stadium). The only coral moment
@@ -323,7 +483,13 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
                 }}
                 className="block rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-left text-sm font-mono font-medium text-gray-600 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
               >
-                <FormulaHighlighted example={example} hoveredLabels={hoveredLabels} />
+                {/* Behavior 1 — label-hover bus: FormulaHighlighted now also
+                    calls onHoveredLabelsChange when hovering letter tokens */}
+                <FormulaHighlighted
+                  example={example}
+                  hoveredLabels={hoveredLabels}
+                  onHoveredLabelsChange={onHoveredLabelsChange}
+                />
               </button>
               {showMetadataPopover && (
                 <StickyMetadataPopover
