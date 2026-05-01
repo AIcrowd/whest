@@ -63,6 +63,13 @@ const DEFAULT_DIMENSION_N = 5;
 const APPENDIX_ROOT_HASH = '#appendix';
 const APPENDIX_SECTION_HASH_PREFIX = '#appendix-section-';
 const APPENDIX_RETURN_HASH = '#assemble-cost';
+const APPENDIX_MAP = [
+  { letter: 'A', title: 'Product-side certification', hash: '#appendix-section-1' },
+  { letter: 'B', title: 'Classification-tree cases', hash: '#appendix-section-7' },
+  { letter: 'C', title: 'Typed partition theorem', hash: '#appendix-section-6' },
+  { letter: 'D', title: 'Completed-expression formal symmetry', hash: '#appendix-section-4' },
+  { letter: 'E', title: 'Scope, assumptions, and exactness', hash: '#appendix-section-8' },
+];
 
 function isAppendixHash(hash = '') {
   return hash === APPENDIX_ROOT_HASH || hash.startsWith(APPENDIX_SECTION_HASH_PREFIX);
@@ -481,9 +488,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
           <div
             className="mb-5 font-sans text-[10px] font-semibold uppercase text-gray-400"
             style={{ letterSpacing: '0.2em' }}
-          >
-            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300" />
-            An interactive walkthrough
+	          >
+	            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300" />
+	            An interactive paper
           </div>
 
           <h1
@@ -496,7 +503,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               lineHeight: 1.05,
             }}
           >
-            Symmetry-aware einsum contractions<span style={{ color: 'var(--coral)' }}>.</span>
+	            Counting symmetry-aware einsums<span style={{ color: 'var(--coral)' }}>.</span>
           </h1>
 
           <p
@@ -507,11 +514,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
               lineHeight: 1.6,
             }}
           >
-            Given a tensor contraction written in explicit einsum notation, this explorer
-            detects structural pointwise relabelings certified by the declared operand
-            symmetries, then counts the representative products and accumulation updates into stored output representatives
-            required by a direct symmetry-aware evaluator. The visualizations update as
-            the contraction, declared symmetries, and label sizes change.
+	            Multiply once; accumulate wherever the orbit projects. The page builds
+	            <Latex math={String.raw`G_{\text{pt}}`} /> product rows <Latex math="O" />,
+	            <Latex math="H" /> stored-output columns <Latex math="Q" />, and the filled
+	            <Latex math={String.raw`O \to Q`} /> cells that make
+	            <Latex math={String.raw`\mathrm{Total}=\mu+\alpha`} /> an exact direct-event count.
           </p>
         </header>
 
@@ -978,12 +985,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={9} anchorId={EXPLORER_ACTS[8].id} />}
                     title={EXPLORER_ACTS[8].heading}
-                    description={<InlineMathText>{EXPLORER_ACTS[8].question}</InlineMathText>}
-                    className="border-gray-200 bg-white"
-                    contentClassName="pt-5"
-                  >
-                    <TotalCostView
-                      componentCosts={componentCosts}
+	                    description={<InlineMathText>{EXPLORER_ACTS[8].question}</InlineMathText>}
+	                    className="border-gray-200 bg-white"
+	                    contentClassName="pt-5"
+	                  >
+	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[8].introParagraphs} />
+	                    <TotalCostView
+	                      componentCosts={componentCosts}
                       componentData={componentData}
                       dimensionN={dimensionN}
                       numTerms={normalizedExample?.subscripts?.length ?? 1}
@@ -1017,11 +1025,28 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     description={<InlineMathText>{EXPLORER_ACTS[9].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
-                  >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[9].introParagraphs} />
-                    <div className="mt-4">
-                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[9].produces}</NarrativeCallout>
-                    </div>
+	                  >
+	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[9].introParagraphs} />
+	                    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5" aria-label="Appendix A-E map">
+	                      {APPENDIX_MAP.map((item) => (
+	                        <button
+	                          key={item.letter}
+	                          type="button"
+	                          onClick={() => openAppendix(item.hash)}
+	                          className="min-h-[96px] cursor-pointer rounded-md border border-gray-200 bg-white p-4 text-left transition-colors hover:border-coral/50 hover:bg-coral-light/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+	                        >
+	                          <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-coral">
+	                            Appendix {item.letter}
+	                          </span>
+	                          <span className="mt-2 block text-[13px] font-semibold leading-5 text-gray-900">
+	                            {item.title}
+	                          </span>
+	                        </button>
+	                      ))}
+	                    </div>
+	                    <div className="mt-4">
+	                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[9].produces}</NarrativeCallout>
+	                    </div>
                   </ExplorerSectionCard>
                 </section>
               </>

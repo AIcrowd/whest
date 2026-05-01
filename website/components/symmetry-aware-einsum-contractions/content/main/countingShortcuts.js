@@ -9,7 +9,7 @@ const countingShortcuts = {
       p('The classification tree asks a single question: what is the cheapest exact way to count the filled cells of the local $O \\to Q$ matrix? It runs component by component. Each leaf returns $\\alpha_a$, the same local incidence count, using the strongest valid shortcut. The cases fall into three regimes: the matrix collapses to a simple count; the matrix branches but has a special closed form; or the matrix branches generically and requires typed partition counting.'),
     ],
     produces: [
-      p('A per-component regime assignment and the corresponding $\\alpha_a$ count: trivial, all-visible, all-summed, functional projection, single visible label, full symmetric multiset, typed partition count, corrected brute force, or unavailable.'),
+      p('A per-component regime assignment and the corresponding $\\alpha_a$ count: trivial, all-visible, all-summed, functional projection, single visible label, full symmetric multiset, typed partition count, corrected brute force, or unavailable. When the ladder falls through to generic branching, Section 8 counts equality patterns instead of assignments.'),
     ],
   },
 };

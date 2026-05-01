@@ -2,7 +2,7 @@ const p = (text) => ({ kind: 'paragraph', text });
 
 const preamble = {
   title: 'Counting symmetry-aware einsums',
-  deck: 'An interactive paper building the exact direct-event count: representative products plus accumulation updates.',
+  deck: 'Multiply once; accumulate wherever the orbit projects. This interactive paper counts exact direct events as representative-product multiplication chains plus $O \\to Q$ accumulation updates.',
   slots: {
     einsumIntroBeforeSummed: [
       p('A direct einsum visits assignments of index labels. Labels that appear on inputs but not on the output are '),
@@ -38,7 +38,7 @@ const preamble = {
       p('The explorer detects this structural pointwise group $G_{\\text{pt}}$ and derives the output representative action $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ from it. It reports $M$ (product-orbit representatives), $\\mu = (k-1)M$ (multiplication-chain events), and $\\alpha$ (accumulation updates from product-orbit representatives into stored output representatives).'),
     ],
     handoffBeforeSectionLink: [
-      p('The rest of this page builds the exact count $\\mathrm{Total} = \\mu + \\alpha$, where $\\mu$ counts representative-product multiplication chains and $\\alpha$ counts projection-induced accumulation updates. Start with '),
+      p('Every figure below recomputes the same chain: $G_{\\text{pt}}$ partitions full assignments into product rows $O$, $H$ partitions stored outputs into columns $Q$, and $\\mathrm{Total}=\\mu+\\alpha$ adds multiplication-chain events to filled $O \\to Q$ cells. Start with '),
     ],
     handoffAfterSectionLink: [
       p(' below to pick or build a contraction.'),

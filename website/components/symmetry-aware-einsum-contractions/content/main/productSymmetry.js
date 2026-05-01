@@ -5,11 +5,12 @@ const productSymmetry = {
   deck: 'What can be multiplied once?',
   slots: {
     intro: [
-      p('The first question is pointwise: when do two full assignments produce the same pre-summation product? Once the contraction is fixed, we forget numerical entries and keep only incidence. Let $U$ be the set of operand-axis classes, one for each axis of each operand occurrence. The bipartite graph on $U$ and $L$ records which axis slots carry which labels, and the incidence matrix gives each label a fingerprint.'),
-      p('Declared per-operand symmetry and repeated operand names define the candidate row moves. They do not yet prove a label relabeling is valid; they only say which axis/operand rearrangements are allowed to be tested. Label-size compatibility is part of the setup: a relabeling can only map labels with the same domain size. The same domain constraint will apply when a detected symmetry is restricted to output labels: only same-domain labels may be permuted.'),
+      p('The first quotient is product-side reuse: when do two full assignments produce the same pre-summation product? The detected pointwise group $G_{\\mathrm{pt}}$ acts on the full assignment grid $X$, and each orbit $O \\in X/G_{\\mathrm{pt}}$ has one representative product. The representative-product count is $M = |X/G_{\\mathrm{pt}}|$.'),
+      p('Burnside is the right mental model for $M$. If every non-identity relabeling moved every assignment, the count would shrink by $|G_{\\mathrm{pt}}|$; tensor-index grids have diagonals and fixed points, so the exact count averages fixed assignments instead. The orbit lens shows one row: representative, members, orbit size, and whether the row is fixed or non-fixed.'),
+      p('The bipartite graph and incidence matrix remain the structural audit trail. They record which operand-axis slots carry which labels and which same-domain relabelings are eligible to test. Candidate row moves are not proof yet; certification in Section 6 will decide which moves actually generate $G_{\\mathrm{pt}}$.'),
     ],
     produces: [
-      p('A structural candidate space: labels, axis classes, incidence fingerprints, declared slot actions, and the size constraints any valid relabeling must preserve.'),
+      p('The product rows $O = X/G_{\\mathrm{pt}}$ and the structural candidate space used to certify them: labels, axis classes, incidence fingerprints, declared slot actions, and same-domain constraints. Section 3 projects those rows onto stored output columns.'),
     ],
   },
 };

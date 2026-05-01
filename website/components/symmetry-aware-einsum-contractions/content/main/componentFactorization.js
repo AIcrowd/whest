@@ -9,7 +9,7 @@ const componentFactorization = {
       p('Under this certified independent direct-product decomposition, the assignment space, product-orbit count, output action, and incidence relation factor componentwise. Then $M = \\prod_a M_a$ and $\\alpha = \\prod_a \\alpha_a$. This factorization is mathematical, not merely visual. A diagonal action such as a single generator $(i\\,j)(k\\,l)$ remains coupled unless the certified group actually factors into an independent action on $\\{i,j\\}$ and an independent action on $\\{k,l\\}$.'),
     ],
     produces: [
-      p('A certified decomposition into independent components: for each component $a$, the local label set $L_a$, local visible labels $V_a = V \\cap L_a$, local summed labels $W_a = W \\cap L_a$, local group $G_a$, and local inherited output action $H_a = \\mathrm{Stab}_{G_a}(V_a)|_{V_a}$. The classification tree runs on each certified independent component.'),
+      p('A certified decomposition into independent components: for each component $a$, the local label set $L_a$, local visible labels $V_a = V \\cap L_a$, local summed labels $W_a = W \\cap L_a$, local group $G_a$, and local inherited output action $H_a = \\mathrm{Stab}_{G_a}(V_a)|_{V_a}$. Section 6 audits how the detected group was certified.'),
     ],
   },
 };

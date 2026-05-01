@@ -10,7 +10,7 @@ const projection = {
       p('For Cross S2, the product orbit $O = \\{(0,1,0),(1,0,0)\\}$ has one representative product $A[0,1]B[0] = A[1,0]B[0]$. But its members project to two different output entries: $(0,1,0) \\mapsto R[0,0]$ and $(1,0,0) \\mapsto R[1,0]$. So this row has two filled cells: one representative product, two stored-output updates. This is the central phenomenon: multiply once; accumulate wherever the orbit projects.'),
     ],
     produces: [
-      p('The $O \\to Q$ incidence matrix: rows are product orbits, columns are stored output representatives, filled cells are accumulation updates. The count $\\alpha$ is the number of filled cells.'),
+      p('The $O \\to Q$ incidence matrix: rows are product orbits, columns are stored output representatives, filled cells are accumulation updates. Section 4 separates the row quotient from the column quotient so update count is not mistaken for product count.'),
     ],
   },
 };

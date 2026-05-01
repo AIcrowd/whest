@@ -42,6 +42,7 @@ test('EXPLORER_ACTS sources main-page copy from registry modules', () => {
   assert.match(src, /question:\s*mainEinsumGlance\.deck/);
   assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainEinsumGlance\.slots\.intro\)/);
   assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainProductSymmetry\.slots\.intro\)/);
+  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainAssembleCost\.slots\.intro\)/);
   assert.match(src, /produces:\s*getFirstParagraphText\(mainEinsumGlance\.slots\.produces\)/);
   assert.doesNotMatch(src, /The first step is to fix the mathematical object/);
   assert.doesNotMatch(src, /Once the contraction is fixed, we forget the numerical entries/);

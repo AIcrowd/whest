@@ -69,12 +69,15 @@ test('approved mathematically safer prose appears in the narrative data', () => 
   const section3 = EXPLORER_ACTS[5].introParagraphs.join(' '); // §6 Certification (was old §3)
   const section4 = EXPLORER_ACTS[3].introParagraphs.join(' '); // §4 Rows and Columns (was old §4)
 
-  assert.match(section2, /forget numerical entries and keep only incidence/i);
-  assert.match(section2, /operand-axis classes/i);
+  assert.match(section2, /product-side reuse/i);
+  assert.match(section2, /one representative product/i);
+  assert.match(section2, /Burnside/i);
+  assert.match(section2, /orbit lens/i);
   assert.match(section2, /bipartite graph/i);
   assert.match(section2, /incidence matrix/i);
-  assert.match(section2, /Declared per-operand symmetry and repeated operand names define the candidate row moves/i);
-  assert.match(section2, /Label-size compatibility is part of the setup/i);
+  assert.match(section2, /structural audit trail/i);
+  assert.match(section2, /Candidate row moves are not proof yet/i);
+  assert.match(section2, /same-domain constraints/i);
   assert.doesNotMatch(section2, /purely combinatorial encoding/i);
 
   assert.match(section3, /wreath product/i);

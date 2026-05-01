@@ -86,6 +86,8 @@ export const EXPLORER_ACTS = [
     navTitle: 'Assemble the Cost',
     heading: mainAssembleCost.title,
     question: mainAssembleCost.deck,
+    introParagraphs: getParagraphTexts(mainAssembleCost.slots.intro),
+    produces: getFirstParagraphText(mainAssembleCost.slots.produces),
   },
   {
     id: 'appendix-transition',

@@ -17,18 +17,16 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
     'utf8',
   );
   assert.match(appSource, /import SectionIntroProse from '\.\/components\/SectionIntroProse\.jsx';/);
-  // V3.1 topology: 10 sections. §9 assemble-cost (index 8) goes straight into
-  // TotalCostView with no introParagraphs in the JSX; §10 appendix-transition
-  // (index 9) uses introParagraphs. §4/§5/§7 use introParagraphs.
-  // §6 certification (index 5) also uses introParagraphs.
+  // V3.1 topology: 10 sections. The publish-readiness pass gives §9
+  // assemble-cost its own prose lead-in before TotalCostView.
   // The regex [0-9] covers all 10 acts (indices 0-9).
-  assert.ok(countMatches(appSource, /EXPLORER_ACTS\[[0-9]\]\.introParagraphs/g) >= 8);
+  assert.ok(countMatches(appSource, /EXPLORER_ACTS\[[0-9]\]\.introParagraphs/g) >= 9);
   assert.match(appSource, /title={EXPLORER_ACTS\[9\]\.heading}/);
   assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[9\]\.question}<\/InlineMathText>}/);
   assert.match(introSource, /md:grid-cols-2/);
   assert.match(introSource, /textAlign:\s*'justify'/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[8\]\.supportingSentence/);
-  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[8\]\.introParagraphs/);
+  assert.match(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[8\]\.introParagraphs\} \/>/);
   assert.equal(countMatches(appSource, /label="Interpretation"/g), 0);
   assert.equal(countMatches(appSource, /label="Approach"/g), 0);
   // "What this produces" callout in sections that have it.
@@ -39,6 +37,24 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   assert.equal(countMatches(appSource, /label="What the model accepts"/g), 0);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[8\]\.why/);
   assert.doesNotMatch(appSource, /onOpenModalSection=\{/);
+});
+
+test('masthead lands the result and appendix transition exposes an A-E map', () => {
+  const appSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(appSource, /An interactive paper/);
+  assert.match(appSource, /Counting symmetry-aware einsums/);
+  assert.match(appSource, /Multiply once; accumulate wherever the orbit projects/);
+  assert.match(appSource, /APPENDIX_MAP/);
+  assert.match(appSource, /letter: 'A', title: 'Product-side certification', hash: '#appendix-section-1'/);
+  assert.match(appSource, /letter: 'B', title: 'Classification-tree cases', hash: '#appendix-section-7'/);
+  assert.match(appSource, /letter: 'C', title: 'Typed partition theorem', hash: '#appendix-section-6'/);
+  assert.match(appSource, /letter: 'D', title: 'Completed-expression formal symmetry', hash: '#appendix-section-4'/);
+  assert.match(appSource, /letter: 'E', title: 'Scope, assumptions, and exactness', hash: '#appendix-section-8'/);
+  assert.match(appSource, /onClick=\{\(\) => openAppendix\(item\.hash\)\}/);
 });
 
 test('"What this produces" callout uses shared vertical centering on desktop', () => {
