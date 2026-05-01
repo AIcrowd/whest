@@ -673,6 +673,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           variableColors={variableColors}
                           group={group}
                           onSelectedPairChange={setSelectedSigmaPairIndex}
+                          onSwitchToDirectedTriangle={() => {
+                            // C25 — Witness gallery CTA: jump to the canonical
+                            // Directed triangle preset which has both an accepted
+                            // (rotation) and a rejected (reflection) σ. We resolve
+                            // the index by id so the call is robust to preset reorder.
+                            const idx = EXAMPLES.findIndex((ex) => ex.id === 'triangle');
+                            if (idx >= 0) handleSelect(idx);
+                          }}
                         />
                       </div>
                       <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">

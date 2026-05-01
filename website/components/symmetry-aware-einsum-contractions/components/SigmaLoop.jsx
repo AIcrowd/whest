@@ -4,12 +4,13 @@ import IncidenceMatrix from './IncidenceMatrix.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
 import CertificationCard from './CertificationCard.jsx';
+import WitnessGallery from './WitnessGallery.jsx';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
 const VISIBLE_VALID_PAIR_LIMIT = 4;
 
-export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange }) {
+export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange, onSwitchToDirectedTriangle }) {
   const allPairs = results.filter((result) => !result.skipped);
   const validPairs = allPairs.filter((result) => result.isValid);
   const rejectedPairs = allPairs.filter((result) => !result.isValid);
@@ -42,11 +43,12 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
       results={results}
       group={group}
       onSelectedPairChange={onSelectedPairChange}
+      onSwitchToDirectedTriangle={onSwitchToDirectedTriangle}
     />
   );
 }
 
-function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results, group, onSelectedPairChange }) {
+function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results, group, onSelectedPairChange, onSwitchToDirectedTriangle }) {
   const { uVertices, freeLabels } = graph;
   const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
@@ -166,6 +168,23 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           {`Each $${notationLatex('sigma_row_move')}$ is a wreath element; each accepted pair shows a row move together with its matching relabeling $${notationLatex('pi_relabeling')}$.`}
         </InlineMathText>
       </div>
+
+      {/* C25: Witness gallery — accepted vs rejected (σ, π) cards side-by-side
+          so the reader can compare what the certifier admits and what it
+          refuses without having to click through individual pairs. Hover
+          handlers feed the same matrix-highlight bus that CertificationCard
+          uses (certHoverRows / certHoverLabels). */}
+      <div className="witness-gallery-mount mb-3">
+        <WitnessGallery
+          pairs={allPairs}
+          uLabels={uLabels}
+          group={group}
+          onHoverSigma={setCertHoverRows}
+          onHoverPi={setCertHoverLabels}
+          onSwitchToDirectedTriangle={onSwitchToDirectedTriangle}
+        />
+      </div>
+
       {/* Summary stats */}
       <div className="sigma-summary">
         <div className="sigma-stat">
