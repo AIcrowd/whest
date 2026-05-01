@@ -82,3 +82,52 @@ class TestSpecificCostFormulaAssignments:
 
     def test_standard_normal_uses_numel_output(self):
         assert REGISTRY["random.Generator.standard_normal"]["cost_formula"] == "numel(output)"
+
+
+# Methods on numpy.random.RandomState that are NOT counted (free).
+RANDOMSTATE_FREE = {"get_state", "seed", "set_state"}
+
+# All other public attributes on RandomState are counted samplers.
+RANDOMSTATE_COUNTED = {
+    "beta", "binomial", "bytes", "chisquare", "choice", "dirichlet",
+    "exponential", "f", "gamma", "geometric", "gumbel", "hypergeometric",
+    "laplace", "logistic", "lognormal", "logseries", "multinomial",
+    "multivariate_normal", "negative_binomial", "noncentral_chisquare",
+    "noncentral_f", "normal", "pareto", "permutation", "poisson", "power",
+    "rand", "randint", "randn", "random", "random_integers", "random_sample",
+    "rayleigh", "shuffle", "standard_cauchy", "standard_exponential",
+    "standard_gamma", "standard_normal", "standard_t", "tomaxint",
+    "triangular", "uniform", "vonmises", "wald", "weibull", "zipf",
+}
+
+
+class TestRandomStateRegistryCoverage:
+    def test_every_public_method_has_a_registry_entry(self):
+        public = {
+            n for n in dir(np.random.RandomState)
+            if not n.startswith("_")
+        }
+        registered = {
+            n[len("random.RandomState."):]
+            for n in REGISTRY
+            if n.startswith("random.RandomState.")
+        }
+        missing = public - registered
+        assert not missing, f"RandomState methods missing from registry: {sorted(missing)}"
+
+    def test_counted_entries_have_required_fields(self):
+        for short in RANDOMSTATE_COUNTED:
+            op = f"random.RandomState.{short}"
+            assert op in REGISTRY, f"missing entry: {op}"
+            entry = REGISTRY[op]
+            assert entry["category"] == "counted_random_method", op
+            assert entry["module"] == "numpy.random", op
+            assert "cost_formula" in entry, op
+
+    def test_free_entries_have_required_fields(self):
+        for short in RANDOMSTATE_FREE:
+            op = f"random.RandomState.{short}"
+            assert op in REGISTRY, f"missing entry: {op}"
+            entry = REGISTRY[op]
+            assert entry["category"] == "free_random_method", op
+            assert entry["module"] == "numpy.random", op
