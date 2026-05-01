@@ -130,6 +130,32 @@ class TestCountedGeneratorMethods:
         assert "bit_generator" in _CountedGenerator._FREE
         assert "spawn" in _CountedGenerator._FREE
 
+    def test_shuffle_2d_charges_shape_axis_not_numel(self):
+        """Issue #18 follow-up: shuffle on 2D charges shape[0], not numel.
+
+        Fisher-Yates does shape[axis] RNG draws regardless of slice width.
+        Memory moves don't count as FLOPs.
+        """
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        bg = np.random.default_rng(42).bit_generator
+        rng = _CountedGenerator(bg)
+        a = np.arange(50).reshape(5, 10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rng.shuffle(a)
+        assert budget.flops_used == 5  # shape[0], not 50
+
+    def test_shuffle_2d_explicit_axis(self):
+        """shuffle(arr, axis=1) charges shape[1] (per-column shuffle)."""
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        bg = np.random.default_rng(42).bit_generator
+        rng = _CountedGenerator(bg)
+        a = np.arange(50).reshape(5, 10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rng.shuffle(a, axis=1)
+        assert budget.flops_used == 10  # shape[1], not 50
+
 
 class TestCountedGeneratorOverrides:
     def test_spawn_returns_counted_children(self):
