@@ -98,6 +98,14 @@ def _reconstruct_counted_generator(bit_generator: Any) -> "_CountedGenerator":
     return _CountedGenerator(bit_generator)
 
 
+def _reconstruct_counted_random_state(state: tuple) -> "_CountedRandomState":
+    """Pickle helper — reconstruct a _CountedRandomState from its full state tuple."""
+    # Construct with default seed; the state we just received will overwrite.
+    rs = _CountedRandomState(seed=None)
+    rs.set_state(state)
+    return rs
+
+
 class _CountedGenerator(_np.random.Generator):
     """numpy Generator subclass with FLOP-counted sampler methods."""
 
@@ -144,6 +152,14 @@ class _CountedRandomState(_np.random.RandomState):
             f"This is either a new numpy method or one not yet wrapped. "
             f"See https://github.com/AIcrowd/flopscope/issues/18"
         )
+
+    # Round-trip pickling back to _CountedRandomState (numpy's default
+    # __reduce__ hardcodes __randomstate_ctor which returns plain RandomState,
+    # silently losing FLOP counting).
+    def __reduce__(self) -> tuple:
+        # get_state() is in _FREE so the gate lets it through.
+        # set_state() is also in _FREE, used by the helper on the other side.
+        return (_reconstruct_counted_random_state, (self.get_state(),))
 
 
 # Wire counted methods at import time.

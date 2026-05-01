@@ -92,6 +92,48 @@ class TestPickleRoundtrip:
             revived.standard_normal(7)
         assert budget.flops_used == 7
 
+    def test_pickle_RandomState_preserves_counted_class(self):
+        rs = merandom.RandomState(42)
+        revived = pickle.loads(pickle.dumps(rs))
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        assert isinstance(revived, _CountedRandomState)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            revived.randn(11)
+        assert budget.flops_used == 11
+
+    def test_pickle_RandomState_preserves_state(self):
+        # Pickle round-trip must preserve full state for bit-identical streams.
+        rs1 = merandom.RandomState(42)
+        rs1.randn(5)  # advance state, populate Box-Muller cache
+        rs2 = pickle.loads(pickle.dumps(rs1))
+        with BudgetContext(flop_budget=10**6, quiet=True):
+            a = rs1.randn(7)
+            b = rs2.randn(7)
+        assert (a == b).all(), f"streams diverge after pickle round-trip: {a} vs {b}"
+
+    def test_copy_copy_default_rng_preserves_counted_class(self):
+        import copy as _copy
+        from flopscope.numpy.random._counted_classes import _CountedGenerator
+
+        rng = merandom.default_rng(42)
+        clone = _copy.copy(rng)
+        assert isinstance(clone, _CountedGenerator)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            clone.standard_normal(9)
+        assert budget.flops_used == 9
+
+    def test_copy_deepcopy_RandomState_preserves_counted_class(self):
+        import copy as _copy
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = merandom.RandomState(42)
+        clone = _copy.deepcopy(rs)
+        assert isinstance(clone, _CountedRandomState)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            clone.randn(13)
+        assert budget.flops_used == 13
+
 
 class TestSpawn:
     def test_spawned_children_are_counted(self):
