@@ -440,42 +440,54 @@ class BudgetContext:
         self, op_name: str, *, flop_cost: int, subscripts: str | None, shapes: tuple
     ) -> _OpTimer:
         """Deduct FLOPs from the budget and return a timer context manager."""
-        from flopscope._weights import get_weight
+        fs_t0 = time.perf_counter()
+        appended = False
+        try:
+            from flopscope._weights import get_weight
 
-        weight = get_weight(op_name)
-        adjusted_cost = int(flop_cost * self._flop_multiplier * weight)
-        if adjusted_cost > self.flops_remaining:
-            raise BudgetExhaustedError(
-                op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining
+            weight = get_weight(op_name)
+            adjusted_cost = int(flop_cost * self._flop_multiplier * weight)
+            if adjusted_cost > self.flops_remaining:
+                raise BudgetExhaustedError(
+                    op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining
+                )
+            self._flops_used += adjusted_cost
+
+            now = time.perf_counter()
+            timestamp = now - self._start_time if self._start_time is not None else None
+
+            self._op_log.append(
+                OpRecord(
+                    op_name=op_name,
+                    subscripts=subscripts,
+                    shapes=shapes,
+                    flop_cost=adjusted_cost,
+                    cumulative=self._flops_used,
+                    namespace=self.namespace,
+                    timestamp=timestamp,
+                )
             )
-        self._flops_used += adjusted_cost
+            appended = True
 
-        now = time.perf_counter()
-        timestamp = now - self._start_time if self._start_time is not None else None
+            if self._deadline is not None and now > self._deadline:
+                from flopscope.errors import TimeExhaustedError
 
-        self._op_log.append(
-            OpRecord(
-                op_name=op_name,
-                subscripts=subscripts,
-                shapes=shapes,
-                flop_cost=adjusted_cost,
-                cumulative=self._flops_used,
-                namespace=self.namespace,
-                timestamp=timestamp,
-            )
-        )
+                raise TimeExhaustedError(
+                    op_name,
+                    elapsed_s=now - self._start_time,  # type: ignore[operator]
+                    limit_s=self._wall_time_limit_s,  # type: ignore[arg-type]
+                )
 
-        if self._deadline is not None and now > self._deadline:
-            from flopscope.errors import TimeExhaustedError
-
-            raise TimeExhaustedError(
-                op_name,
-                elapsed_s=now - self._start_time,  # type: ignore[operator]
-                limit_s=self._wall_time_limit_s,  # type: ignore[arg-type]
-            )
-
-        op_index = len(self._op_log) - 1
-        return _OpTimer(self, op_index=op_index)
+            op_index = len(self._op_log) - 1
+            return _OpTimer(self, op_index=op_index)
+        finally:
+            deduct_body_time = time.perf_counter() - fs_t0
+            self._total_flopscope_overhead_time += deduct_body_time
+            if appended:
+                op = self._op_log[-1]
+                self._op_log[-1] = op._replace(
+                    flopscope_overhead=(op.flopscope_overhead or 0.0) + deduct_body_time
+                )
 
     def summary_dict(self, by_namespace: bool = False) -> dict:
         """Return structured summary data for this budget context."""

@@ -717,3 +717,17 @@ def test_optimer_splits_block_into_tracked_and_overhead():
     # in-block overhead = block - tracked, includes the two 0.005 sleeps
     assert op.flopscope_overhead is not None
     assert op.flopscope_overhead >= 0.008
+
+
+def test_deduct_self_charges_body_to_overhead_and_oprecord():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        baseline = b.flopscope_overhead_time
+        # Call deduct directly without entering the timer
+        timer = b.deduct("x", flop_cost=1, subscripts=None, shapes=())
+        # The deduct body itself should have charged some overhead
+        assert b.flopscope_overhead_time > baseline
+        # And the OpRecord should reflect it
+        assert b.op_log[-1].flopscope_overhead is not None
+        assert b.op_log[-1].flopscope_overhead > 0
