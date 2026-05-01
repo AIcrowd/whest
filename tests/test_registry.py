@@ -24,7 +24,9 @@ def test_all_entries_have_required_fields():
             "counted_binary",
             "counted_reduction",
             "counted_custom",
+            "counted_random_method",
             "free",
+            "free_random_method",
             "blacklisted",
             "unclassified",
         ), f"{name} has invalid category: {entry['category']}"

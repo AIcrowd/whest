@@ -44,7 +44,7 @@ class TestGeneratorRegistryCoverage:
             assert op in REGISTRY, f"missing entry: {op}"
             entry = REGISTRY[op]
             assert entry["category"] == "counted_random_method", op
-            assert entry["module"] == "numpy", op
+            assert entry["module"] == "numpy.random", op
             assert "cost_formula" in entry, op
             assert "notes" in entry, op
 
@@ -54,7 +54,7 @@ class TestGeneratorRegistryCoverage:
             assert op in REGISTRY, f"missing entry: {op}"
             entry = REGISTRY[op]
             assert entry["category"] == "free_random_method", op
-            assert entry["module"] == "numpy", op
+            assert entry["module"] == "numpy.random", op
 
     def test_cost_formula_is_known(self):
         from flopscope.numpy.random._cost_formulas import COST_FORMULAS
