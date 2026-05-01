@@ -5,6 +5,7 @@ import { parseCycleNotation } from './engine/cycleParser.js';
 import { buildVariableColors } from './engine/colorPalette.js';
 import { analyzeExample } from './engine/pipeline.js';
 import { pickDefaultOrbitRow } from './engine/teachingModel.js';
+import { restrictStabilizerToPositions } from './engine/outputOrbit.js';
 import StickyBar from './components/StickyBar.jsx';
 import ExpressionLevelModal from './components/ExpressionLevelModal.jsx';
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
@@ -305,6 +306,19 @@ export default function SymmetryAwareEinsumContractionsApp() {
     const orbitRows = cost?.orbitRows ?? [];
     return orbitRows[lockedProductOrbitId] ?? null;
   }, [lockedProductOrbitId, cost]);
+
+  const outputActionSize = useMemo(() => {
+    const labels = group?.allLabels ?? [];
+    const vLabels = group?.vLabels ?? [];
+    const elements = group?.fullElements ?? [];
+    if (elements.length === 0) return 1;
+
+    const positionByLabel = new Map(labels.map((label, idx) => [label, idx]));
+    const visiblePositions = vLabels.map((label) => positionByLabel.get(label));
+    if (visiblePositions.some((position) => !Number.isInteger(position))) return 1;
+
+    return restrictStabilizerToPositions(elements, visiblePositions).length;
+  }, [group]);
 
   useEffect(() => {
     resetActiveExplorerTheme();
@@ -804,7 +818,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         identityOnly={(sigmaResults ?? []).filter((r) => r.skipped).length}
                         rejected={(sigmaResults ?? []).filter((r) => !r.skipped && !r.isValid).length}
                         gPtSize={group?.fullElements?.length ?? 1}
-                        hSize={group?.fullElements?.length ?? 1}
+                        hSize={outputActionSize}
                         componentsCount={(componentData?.components ?? []).length}
                         setActiveComponentId={setActiveComponentId}
                       />
@@ -839,7 +853,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         dimensionN={dimensionN}
                         allLabels={group?.allLabels ?? []}
                         groupSize={group?.fullElements?.length ?? 1}
-                        hSize={group?.fullElements?.length ?? 1}
+                        hSize={outputActionSize}
                       />
                     </div>
                     <div className="mt-4">

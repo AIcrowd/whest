@@ -30,6 +30,16 @@ test('restrictStabilizerToPositions includes coupled stabilizer restrictions', (
   assert.deepEqual(keys, new Set(['0,1', '1,0']));
 });
 
+test('derived output action size is restricted stabilizer image, not |G_pt|', () => {
+  const s01 = new Permutation([1, 0, 2]);
+  const s12 = new Permutation([0, 2, 1]);
+  const elements = dimino([s01, s12]);
+  const h = restrictStabilizerToPositions(elements, [0, 1]);
+
+  assert.equal(elements.length, 6);
+  assert.equal(h.length, 2);
+});
+
 test('canonicalTupleUnderGroup canonicalizes output representatives', () => {
   const h = [new Permutation([0, 1]), new Permutation([1, 0])];
   assert.equal(canonicalTupleUnderGroup([7, 3], h), '3|7');

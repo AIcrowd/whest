@@ -188,6 +188,18 @@ test('App — NaiveAlphaCostMeter receives dimensionN prop', () => {
   assert.match(mountBlock, /dimensionN=/);
 });
 
+test('App — NaiveAlphaCostMeter receives derived outputActionSize for hSize', () => {
+  const src = read(APP_PATH);
+  const start = src.indexOf('<NaiveAlphaCostMeter');
+  assert.ok(start > -1, '<NaiveAlphaCostMeter not found in App');
+  const end = src.indexOf('/>', start);
+  const mountBlock = src.slice(start, end + 2);
+
+  assert.match(mountBlock, /groupSize=\{group\?\.fullElements\?\.length \?\? 1\}/);
+  assert.match(mountBlock, /hSize=\{outputActionSize\}/);
+  assert.doesNotMatch(mountBlock, /hSize=\{group\?\.fullElements\?\.length \?\? 1\}/);
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 9. Stories file: ≥3 named exports
 // ─────────────────────────────────────────────────────────────────────────────

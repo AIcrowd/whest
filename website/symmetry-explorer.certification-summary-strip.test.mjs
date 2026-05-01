@@ -179,6 +179,19 @@ test('App — passes the seven live props plus setActiveComponentId to the strip
   assert.match(mountBlock, /setActiveComponentId=\{setActiveComponentId\}/);
 });
 
+test('App — CertificationSummaryStrip receives derived outputActionSize for hSize', () => {
+  const src = read(APP_PATH);
+  assert.match(src, /import\s+\{\s*restrictStabilizerToPositions\s*\}\s+from\s+['"]\.\/engine\/outputOrbit\.js['"]/);
+  assert.match(src, /const outputActionSize = useMemo\(/);
+
+  const mountIdx = src.indexOf('<CertificationSummaryStrip');
+  assert.ok(mountIdx > -1, '<CertificationSummaryStrip mount not found');
+  const closeIdx = src.indexOf('/>', mountIdx);
+  const mountBlock = src.slice(mountIdx, closeIdx + 2);
+  assert.match(mountBlock, /hSize=\{outputActionSize\}/);
+  assert.doesNotMatch(mountBlock, /hSize=\{group\?\.fullElements\?\.length \?\? 1\}/);
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 6. No raw notation hex literals — TOKEN map only
 // ─────────────────────────────────────────────────────────────────────────────
