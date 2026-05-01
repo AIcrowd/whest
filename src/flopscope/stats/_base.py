@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import numpy as _np
 
+from flopscope._budget import _counted_wrapper
 from flopscope._ndarray import _asflopscope
 from flopscope._validation import require_budget
 
@@ -33,6 +34,7 @@ class ContinuousDistribution:
     def name(self) -> str:
         return self._name
 
+    @_counted_wrapper
     def _deduct_and_call(self, method: str, cost_per_elem: int, x, *args, **kwargs):
         """Deduct FLOPs then call the pure-numpy implementation.
 

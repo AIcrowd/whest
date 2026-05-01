@@ -7,6 +7,7 @@ from typing import Any
 
 import numpy as _np
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._config import get_setting
 from flopscope._ndarray import FlopscopeArray, _to_base_ndarray
 from flopscope._perm_group import SymmetryGroup
@@ -182,7 +183,7 @@ def _execute_pairwise(path_info, operands: list):
         # Pop operands in reverse sorted order (same as opt_einsum convention)
         inds = sorted(contract_inds, reverse=True)
         tensors = [ops.pop(i) for i in inds]
-        result = _np.einsum(step.subscript, *[_to_base_ndarray(t) for t in tensors])
+        result = _call_numpy(_np.einsum, step.subscript, *[_to_base_ndarray(t) for t in tensors])
         ops.append(result)
     return ops[0]
 
@@ -299,6 +300,7 @@ def _resolve_output_symmetry(
     return _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
 
 
+@_counted_wrapper
 def einsum(
     subscripts: str,
     *operands: _np.ndarray,
@@ -389,7 +391,8 @@ def einsum(
         if path_info.steps:
             result = _execute_pairwise(path_info, list(operands))
         else:
-            result = _np.einsum(
+            result = _call_numpy(
+                _np.einsum,
                 canonical_subscripts, *[_to_base_ndarray(o) for o in operands]
             )
 
@@ -409,6 +412,7 @@ def einsum(
     return result  # type: ignore[return-value]
 
 
+@_counted_wrapper
 def einsum_path(
     subscripts: str,
     *operands: _np.ndarray,
