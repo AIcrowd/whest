@@ -156,6 +156,37 @@ function describeBlocks(partition, labels) {
     .join(', ');
 }
 
+// Render the same partition as a readable equality family. The raw canonical
+// key (0|0|1) remains in data attributes; the visible UI uses labels like
+// "i=j | k" so the reader sees the mathematical grouping directly.
+function describePatternFamily(partition, labels) {
+  const blockToLabels = new Map();
+  partition.forEach((block, position) => {
+    if (!blockToLabels.has(block)) blockToLabels.set(block, []);
+    blockToLabels.get(block).push(labels[position] ?? `p${position}`);
+  });
+  const sortedBlocks = [...blockToLabels.keys()].sort((a, b) => a - b);
+  return sortedBlocks
+    .map((block) => blockToLabels.get(block).join('='))
+    .join(' | ');
+}
+
+function describeMemberAssignment(tuple, partition, labels) {
+  const blockToPositions = new Map();
+  partition.forEach((block, position) => {
+    if (!blockToPositions.has(block)) blockToPositions.set(block, []);
+    blockToPositions.get(block).push(position);
+  });
+  const sortedBlocks = [...blockToPositions.keys()].sort((a, b) => a - b);
+  return sortedBlocks
+    .map((block) => {
+      const positions = blockToPositions.get(block);
+      const lhs = positions.map((position) => labels[position] ?? `p${position}`).join('=');
+      return `${lhs}=${tuple[positions[0]]}`;
+    })
+    .join(' · ');
+}
+
 // V3.1 §36 helper. Wraps a formula sub-expression in a hover-bus span that
 // sets the parent's formulaTermHover state on mouse OR focus events (so
 // keyboard users get the same column-highlight cue as mouse users). The
@@ -222,6 +253,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
 
   const chips = orbitReps.map((partition) => ({
     key: partitionKey(partition),
+    familyLabel: describePatternFamily(partition, activeComponent?.labels ?? []),
     partition,
     blocks: numBlocks(partition),
     labelings: typedLabelingCount(partition, sizes),
@@ -348,122 +380,300 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         {DECK}
       </p>
 
-      {/* V3.1 §36 Appendix-Linked Partition Formula Card.
-          The formula is composed from four hover-target sub-expressions.
-          Each span sets `formulaTermHover` on enter/leave/focus/blur and
-          carries an aria-label describing what hovering will highlight.
-          The matching column in the per-pattern table tints coral-light. */}
-      <div className="mt-3 overflow-x-auto">
-        <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2 text-[18px]">
-          <Latex math={FORMULA_LEAD} />
-          <FormulaHoverSpan
-            term="pattern"
-            activeTerm={formulaTermHover}
-            setTerm={setFormulaTermHover}
-          >
-            <Latex math={FORMULA_PATTERN} />
-          </FormulaHoverSpan>
-          <span className="inline-flex flex-col items-center px-1">
-            <FormulaHoverSpan
-              term="fallingFactorial"
-              activeTerm={formulaTermHover}
-              setTerm={setFormulaTermHover}
-            >
-              <Latex math={FORMULA_FALLING_FACTORIAL} />
-            </FormulaHoverSpan>
-            <span
-              aria-hidden="true"
-              className="my-0.5 block w-full"
-              style={{
-                borderTop: `1px solid ${explorerThemeColor(themeId, 'body')}`,
-                minWidth: '2.5rem',
-              }}
-            />
-            <FormulaHoverSpan
-              term="divisor"
-              activeTerm={formulaTermHover}
-              setTerm={setFormulaTermHover}
-            >
-              <Latex math={FORMULA_DIVISOR} />
-            </FormulaHoverSpan>
-          </span>
-          <span aria-hidden="true" className="px-0.5">·</span>
-          <FormulaHoverSpan
-            term="outputReach"
-            activeTerm={formulaTermHover}
-            setTerm={setFormulaTermHover}
-          >
-            <Latex math={FORMULA_OUTPUT_REACH} />
-          </FormulaHoverSpan>
-        </div>
-        <div className="mt-2 text-center text-[11px]">
-          <a
-            href="#appendix-section-6"
-            data-formula-link="appendix-c"
-            aria-label="Read Appendix C — Typed partition counting theorem"
-            className="font-semibold text-coral underline decoration-coral/30 underline-offset-4 transition-colors hover:decoration-coral"
-          >
-            Full statement → Appendix C
-          </a>
-        </div>
-      </div>
-
-      <div className="mt-4">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-          Equality pattern
-        </div>
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
-          {/* Pattern chips render as design-system .chip pills:
-              rounded-full, 1px border, mono 11–12px, gray text on white.
-              Active state uses the .chip--coral recipe — coral-light fill,
-              coral-tinted border, coral-hover text. */}
-          {visibleChips.map((chip) => {
-            const isActive = chip.key === activeChip?.key;
-            return (
-              <button
-                type="button"
-                key={chip.key}
-                data-pattern-chip={chip.key}
-                onClick={() => setSelectedPatternKey(chip.key)}
-                className="rounded-full border px-2.5 py-1 font-mono text-[11px] font-medium transition-colors"
-                style={{
-                  background: isActive ? explorerThemeTint(themeId, 'hero', 0.08) : explorerThemeColor(themeId, 'surface'),
-                  color: isActive ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'muted'),
-                  borderColor: isActive ? explorerThemeTint(themeId, 'hero', 0.25) : explorerThemeColor(themeId, 'border'),
-                }}
+      <div
+        data-testid="partition-workbench"
+        className="mt-3 grid gap-3 min-[1180px]:grid-cols-[minmax(0,1fr)_minmax(320px,0.66fr)]"
+      >
+        <div
+          data-testid="partition-formula-panel"
+          className="min-w-0 rounded-lg border bg-white p-3"
+          style={{ borderColor: explorerThemeColor(themeId, 'border') }}
+        >
+          {/* V3.1 §36 Appendix-Linked Partition Formula Card.
+              The formula is composed from four hover-target sub-expressions.
+              Each span sets `formulaTermHover` on enter/leave/focus/blur and
+              carries an aria-label describing what hovering will highlight.
+              The matching column in the per-pattern table tints coral-light. */}
+          <div className="overflow-x-auto">
+            <div className="flex min-w-max items-center justify-center gap-x-1 gap-y-2 text-[18px]">
+              <Latex math={FORMULA_LEAD} />
+              <FormulaHoverSpan
+                term="pattern"
+                activeTerm={formulaTermHover}
+                setTerm={setFormulaTermHover}
               >
-                {chip.key}
-              </button>
-            );
-          })}
-          {hiddenChipCount > 0 && (
+                <Latex math={FORMULA_PATTERN} />
+              </FormulaHoverSpan>
+              <span className="inline-flex flex-col items-center px-1">
+                <FormulaHoverSpan
+                  term="fallingFactorial"
+                  activeTerm={formulaTermHover}
+                  setTerm={setFormulaTermHover}
+                >
+                  <Latex math={FORMULA_FALLING_FACTORIAL} />
+                </FormulaHoverSpan>
+                <span
+                  aria-hidden="true"
+                  className="my-0.5 block w-full"
+                  style={{
+                    borderTop: `1px solid ${explorerThemeColor(themeId, 'body')}`,
+                    minWidth: '2.5rem',
+                  }}
+                />
+                <FormulaHoverSpan
+                  term="divisor"
+                  activeTerm={formulaTermHover}
+                  setTerm={setFormulaTermHover}
+                >
+                  <Latex math={FORMULA_DIVISOR} />
+                </FormulaHoverSpan>
+              </span>
+              <span aria-hidden="true" className="px-0.5">·</span>
+              <FormulaHoverSpan
+                term="outputReach"
+                activeTerm={formulaTermHover}
+                setTerm={setFormulaTermHover}
+              >
+                <Latex math={FORMULA_OUTPUT_REACH} />
+              </FormulaHoverSpan>
+            </div>
+          </div>
+          <div className="mt-2 text-center text-[11px]">
+            <a
+              href="#appendix-section-6"
+              data-formula-link="appendix-c"
+              aria-label="Read Appendix C — Typed partition counting theorem"
+              className="font-semibold text-coral underline decoration-coral/30 underline-offset-4 transition-colors hover:decoration-coral"
+            >
+              Full statement → Appendix C
+            </a>
+          </div>
+
+          <div className="mt-4">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              Equality groups
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              {/* Pattern chips render as design-system .chip pills:
+                  rounded-full, 1px border, mono 11–12px, gray text on white.
+                  Active state uses the .chip--coral recipe — coral-light fill,
+                  coral-tinted border, coral-hover text. */}
+              {visibleChips.map((chip) => {
+                const isActive = chip.key === activeChip?.key;
+                return (
+                  <button
+                    type="button"
+                    key={chip.key}
+                    data-pattern-chip={chip.key}
+                    onClick={() => setSelectedPatternKey(chip.key)}
+                    className="rounded-full border px-2.5 py-1 font-mono text-[11px] font-medium transition-colors"
+                    title={`Raw equality key: ${chip.key}`}
+                    aria-label={`Select equality group ${chip.familyLabel}; raw key ${chip.key}`}
+                    style={{
+                      background: isActive ? explorerThemeTint(themeId, 'hero', 0.08) : explorerThemeColor(themeId, 'surface'),
+                      color: isActive ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'muted'),
+                      borderColor: isActive ? explorerThemeTint(themeId, 'hero', 0.25) : explorerThemeColor(themeId, 'border'),
+                    }}
+                  >
+                    {chip.familyLabel}
+                  </button>
+                );
+              })}
+              {hiddenChipCount > 0 && (
+                <button
+                  type="button"
+                  data-action="toggle-all-chips"
+                  onClick={toggleChips}
+                  className="rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors"
+                  style={{
+                    color: explorerThemeColor(themeId, 'muted'),
+                    background: 'transparent',
+                  }}
+                >
+                  {showAllChips ? 'show fewer patterns' : `+${hiddenChipCount} more patterns`}
+                </button>
+              )}
+              {chips.length === 0 && (
+                <span className="text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                  no partition data available for this preset
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div
+          data-testid="partition-cumulative-table"
+          className="min-w-0 self-start rounded-lg border p-3"
+          style={{
+            background: explorerThemeColor(themeId, 'surface'),
+            borderColor: explorerThemeColor(themeId, 'border'),
+          }}
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              Sum over patterns · live
+            </div>
+            <div className="font-mono text-[11px] font-semibold" style={{ color: explorerThemeColor(themeId, 'body') }}>
+              α = <strong data-testid="partition-alpha-total" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</strong>
+            </div>
+          </div>
+          {/* V3.1 §36 per-pattern table.
+              Each column carries a `data-pattern-column` matching the four
+              FORMULA hover targets (pattern, fallingFactorial, divisor,
+              outputReach). When `formulaTermHover` matches the column, the
+              cells tint coral-light so readers can locate the column the
+              hovered formula term contributes to.
+
+              V3.1 §34 reverse direction. The four <th> headers are themselves
+              keyboard-focusable hover surfaces — hovering or focusing a
+              column header sets formulaTermHover, which highlights the
+              matching term in the formula card above. C36 wires
+              formula → table; this is the reverse arrow (table → formula). */}
+          <div className="mt-2 overflow-x-auto">
+            <table className="w-full min-w-[280px] font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
+                  <th
+                    className="p-1 text-left cursor-help"
+                    data-pattern-column="pattern"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the pattern term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('pattern')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('pattern')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    family
+                  </th>
+                  <th
+                    className="p-1 text-right cursor-help"
+                    data-pattern-column="fallingFactorial"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the concrete labelings term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('fallingFactorial')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    labelings
+                  </th>
+                  <th
+                    className="p-1 text-right cursor-help"
+                    data-pattern-column="divisor"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the block-symmetry divisor term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('divisor')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('divisor')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    |Ḡ|
+                  </th>
+                  <th
+                    className="p-1 text-right cursor-help"
+                    data-pattern-column="outputReach"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the output reach term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('outputReach')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('outputReach')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    |A_x̃/H|
+                  </th>
+                  <th className="p-1 text-right">contrib.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleRows.map((row) => {
+                  const rowSelected = row.key === activeChip?.key;
+                  const rowBackground = rowSelected
+                    ? explorerThemeTint(themeId, 'hero', 0.06)
+                    : 'transparent';
+                  const tintFor = (column) =>
+                    formulaTermHover === column ? FORMULA_HOVER_TINT : rowBackground;
+                  return (
+                    <tr
+                      key={row.key}
+                      onMouseEnter={() => setSelectedPatternKey(row.key)}
+                    >
+                      <td
+                        className="p-1"
+                        data-pattern-column="pattern"
+                        title={`Raw equality key: ${row.key}`}
+                        style={{ background: tintFor('pattern') }}
+                      >
+                        {row.familyLabel}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        data-pattern-column="fallingFactorial"
+                        style={{ background: tintFor('fallingFactorial') }}
+                      >
+                        {row.labelings}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        data-pattern-column="divisor"
+                        style={{ background: tintFor('divisor') }}
+                      >
+                        {row.blockActionSize}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        data-pattern-column="outputReach"
+                        style={{ background: tintFor('outputReach') }}
+                      >
+                        {row.reach}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        style={{ background: rowBackground }}
+                      >
+                        {row.contribution}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot>
+                <tr style={{ borderTop: `1.5px solid ${explorerThemeColor(themeId, 'ink')}` }}>
+                  <td className="p-1 font-semibold" colSpan={4}>α =</td>
+                  <td className="p-1 text-right font-semibold" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          {hiddenRowCount > 0 && (
             <button
               type="button"
-              data-action="toggle-all-chips"
-              onClick={toggleChips}
-              className="rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors"
-              style={{
-                color: explorerThemeColor(themeId, 'muted'),
-                background: 'transparent',
-              }}
+              data-action="toggle-all-rows"
+              onClick={toggleRows}
+              className="mt-2 text-[11px] font-medium underline-offset-2 hover:underline"
+              style={{ color: explorerThemeColor(themeId, 'muted') }}
             >
-              {showAllChips ? 'show fewer patterns' : `+${hiddenChipCount} more patterns`}
+              {showAllRows ? 'show fewer rows' : `+${hiddenRowCount} more rows`}
             </button>
           )}
-          {chips.length === 0 && (
-            <span className="text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-              no partition data available for this preset
-            </span>
+          {caption && (
+            <p className="mt-2 text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              {caption}
+            </p>
           )}
         </div>
       </div>
 
       <div
-        data-testid="partition-workbench"
-        className="mt-3 grid gap-3 min-[1180px]:grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)]"
+        data-testid="partition-detail-grid"
+        className="mt-3 grid gap-3 min-[1180px]:grid-cols-2"
       >
         {activeChip && (
-          <div className="min-w-0 space-y-3">
+          <>
             {/* Breakdown + selected-pattern detail share one surface so the
                 reader can keep the current pattern, formula terms, and
                 contribution arithmetic in view together. */}
@@ -481,7 +691,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
                     Block structure
                   </div>
                   <div className="mt-1 font-mono text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'body') }}>
-                    pattern: <strong>{activeChip.key}</strong><br/>
+                    groups: <strong>{activeChip.familyLabel}</strong><br/>
                     blocks: <strong>{activeChip.blocks}</strong><br/>
                     labelings: <strong>{activeChip.labelings}</strong><br/>
                     |Ḡ_x̃|: <strong>{activeChip.blockActionSize}</strong>
@@ -531,7 +741,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
                     onFocus={() => setFormulaTermHover('pattern')}
                     onBlur={() => setFormulaTermHover(null)}
                   >
-                    <dt className="inline font-semibold">Pattern:</dt> <dd className="inline">{activeChip.key}</dd>
+                    <dt className="inline font-semibold">Pattern:</dt> <dd className="inline">{activeChip.familyLabel}</dd>
                   </div>
                   <div
                     data-detail-field="blocks"
@@ -653,12 +863,12 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
               }}
             >
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                Worked mini-ledger · {activeChip.key}
+                Worked mini-ledger · {activeChip.familyLabel}
               </div>
               <div className="mt-2 grid gap-3 font-mono text-[11px] leading-5 md:grid-cols-[minmax(0,1fr)_minmax(190px,0.65fr)]" style={{ color: explorerThemeColor(themeId, 'body') }}>
                 <div className="min-w-0">
                   <div>
-                    <span className="font-semibold">Pattern:</span> {activeChip.key}
+                    <span className="font-semibold">Pattern:</span> {activeChip.familyLabel}
                   </div>
                   <div>
                     <span className="font-semibold">Meaning:</span>{' '}
@@ -708,7 +918,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
                           borderColor: explorerThemeColor(themeId, 'border'),
                         }}
                       >
-                        ({tuple.join(',')})
+                        {describeMemberAssignment(tuple, activeChip.partition, activeLabels)}
                       </li>
                     ))}
                     {activeChip.labelings > ledgerExamples.length && (
@@ -766,10 +976,10 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
                       {cumulativeRows.map((row, idx) => (
                         <span key={`full-alpha-term-${row.key}`} data-full-alpha-term={row.key}>
                           {idx > 0 ? ' + ' : ''}
-                          <span title={`${row.key}: ${row.labelings}/${row.blockActionSize} · ${row.reach} = ${row.contribution}`}>
+                          <span title={`${row.familyLabel}: ${row.labelings}/${row.blockActionSize} · ${row.reach} = ${row.contribution}`}>
                             {row.contribution}
                             <span className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                              {' '}({row.key})
+                              {' '}({row.familyLabel})
                             </span>
                           </span>
                         </span>
@@ -781,172 +991,8 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
                 )}
               </div>
             </div>
-          </div>
+          </>
         )}
-
-        <div
-          data-testid="partition-cumulative-table"
-          className="min-w-0 self-start rounded-lg border p-3 min-[1180px]:sticky top-32"
-          style={{
-            background: explorerThemeColor(themeId, 'surface'),
-            borderColor: explorerThemeColor(themeId, 'border'),
-          }}
-        >
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-              Sum over patterns · live
-            </div>
-            <div className="font-mono text-[11px] font-semibold" style={{ color: explorerThemeColor(themeId, 'body') }}>
-              α = <strong data-testid="partition-alpha-total" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</strong>
-            </div>
-          </div>
-          {/* V3.1 §36 per-pattern table.
-              Each column carries a `data-pattern-column` matching the four
-              FORMULA hover targets (pattern, fallingFactorial, divisor,
-              outputReach). When `formulaTermHover` matches the column, the
-              cells tint coral-light so readers can locate the column the
-              hovered formula term contributes to.
-
-              V3.1 §34 reverse direction. The four <th> headers are themselves
-              keyboard-focusable hover surfaces — hovering or focusing a
-              column header sets formulaTermHover, which highlights the
-              matching term in the formula card above. C36 wires
-              formula → table; this is the reverse arrow (table → formula). */}
-          <div className="mt-2 overflow-x-auto">
-            <table className="w-full min-w-[280px] font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
-                  <th
-                    className="p-1 text-left cursor-help"
-                    data-pattern-column="pattern"
-                    tabIndex={0}
-                    aria-label="Hover or focus to highlight the pattern term in the formula above"
-                    onMouseEnter={() => setFormulaTermHover('pattern')}
-                    onMouseLeave={() => setFormulaTermHover(null)}
-                    onFocus={() => setFormulaTermHover('pattern')}
-                    onBlur={() => setFormulaTermHover(null)}
-                    style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : undefined }}
-                  >
-                    pattern x̃
-                  </th>
-                  <th
-                    className="p-1 text-right cursor-help"
-                    data-pattern-column="fallingFactorial"
-                    tabIndex={0}
-                    aria-label="Hover or focus to highlight the concrete labelings term in the formula above"
-                    onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
-                    onMouseLeave={() => setFormulaTermHover(null)}
-                    onFocus={() => setFormulaTermHover('fallingFactorial')}
-                    onBlur={() => setFormulaTermHover(null)}
-                    style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : undefined }}
-                  >
-                    labelings
-                  </th>
-                  <th
-                    className="p-1 text-right cursor-help"
-                    data-pattern-column="divisor"
-                    tabIndex={0}
-                    aria-label="Hover or focus to highlight the block-symmetry divisor term in the formula above"
-                    onMouseEnter={() => setFormulaTermHover('divisor')}
-                    onMouseLeave={() => setFormulaTermHover(null)}
-                    onFocus={() => setFormulaTermHover('divisor')}
-                    onBlur={() => setFormulaTermHover(null)}
-                    style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : undefined }}
-                  >
-                    |Ḡ|
-                  </th>
-                  <th
-                    className="p-1 text-right cursor-help"
-                    data-pattern-column="outputReach"
-                    tabIndex={0}
-                    aria-label="Hover or focus to highlight the output reach term in the formula above"
-                    onMouseEnter={() => setFormulaTermHover('outputReach')}
-                    onMouseLeave={() => setFormulaTermHover(null)}
-                    onFocus={() => setFormulaTermHover('outputReach')}
-                    onBlur={() => setFormulaTermHover(null)}
-                    style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : undefined }}
-                  >
-                    |A_x̃/H|
-                  </th>
-                  <th className="p-1 text-right">contrib.</th>
-                </tr>
-              </thead>
-              <tbody>
-                {visibleRows.map((row) => {
-                  const rowSelected = row.key === activeChip?.key;
-                  const rowBackground = rowSelected
-                    ? explorerThemeTint(themeId, 'hero', 0.06)
-                    : 'transparent';
-                  const tintFor = (column) =>
-                    formulaTermHover === column ? FORMULA_HOVER_TINT : rowBackground;
-                  return (
-                    <tr
-                      key={row.key}
-                      onMouseEnter={() => setSelectedPatternKey(row.key)}
-                    >
-                      <td
-                        className="p-1"
-                        data-pattern-column="pattern"
-                        style={{ background: tintFor('pattern') }}
-                      >
-                        {row.key}
-                      </td>
-                      <td
-                        className="p-1 text-right"
-                        data-pattern-column="fallingFactorial"
-                        style={{ background: tintFor('fallingFactorial') }}
-                      >
-                        {row.labelings}
-                      </td>
-                      <td
-                        className="p-1 text-right"
-                        data-pattern-column="divisor"
-                        style={{ background: tintFor('divisor') }}
-                      >
-                        {row.blockActionSize}
-                      </td>
-                      <td
-                        className="p-1 text-right"
-                        data-pattern-column="outputReach"
-                        style={{ background: tintFor('outputReach') }}
-                      >
-                        {row.reach}
-                      </td>
-                      <td
-                        className="p-1 text-right"
-                        style={{ background: rowBackground }}
-                      >
-                        {row.contribution}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot>
-                <tr style={{ borderTop: `1.5px solid ${explorerThemeColor(themeId, 'ink')}` }}>
-                  <td className="p-1 font-semibold" colSpan={4}>α =</td>
-                  <td className="p-1 text-right font-semibold" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-          {hiddenRowCount > 0 && (
-            <button
-              type="button"
-              data-action="toggle-all-rows"
-              onClick={toggleRows}
-              className="mt-2 text-[11px] font-medium underline-offset-2 hover:underline"
-              style={{ color: explorerThemeColor(themeId, 'muted') }}
-            >
-              {showAllRows ? 'show fewer rows' : `+${hiddenRowCount} more rows`}
-            </button>
-          )}
-          {caption && (
-            <p className="mt-2 text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-              {caption}
-            </p>
-          )}
-        </div>
       </div>
     </div>
   );

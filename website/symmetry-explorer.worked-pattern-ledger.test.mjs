@@ -197,6 +197,21 @@ test('"Show full α sum" expansion renders the stacked per-pattern α sum', () =
   );
   assert.match(
     source,
+    /function describeMemberAssignment\(tuple, partition, labels\)/,
+    'describeMemberAssignment(tuple, partition, labels) helper must render member examples as label-aware assignments',
+  );
+  assert.match(
+    source,
+    /describeMemberAssignment\(tuple, activeChip\.partition, activeLabels\)/,
+    'Mini-ledger examples must show label-aware assignments instead of raw tuple.join output',
+  );
+  assert.doesNotMatch(
+    source,
+    /tuple\.join\(',?'\)/,
+    'Mini-ledger examples must not render raw tuple notation',
+  );
+  assert.match(
+    source,
     /const MINI_LEDGER_EXAMPLE_LIMIT = 5/,
     'MINI_LEDGER_EXAMPLE_LIMIT must cap the Member assignments list at 5 examples',
   );

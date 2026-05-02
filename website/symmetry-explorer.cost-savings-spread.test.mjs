@@ -1,9 +1,10 @@
 // V3.1 §40 — Cost Savings Spread (L5.T2.6 / C40).
 //
 // Source-grep tests pinning the V3.1 §40 contract for the new
-// CostSavingsSpread component + its mount in TotalCostView. The spread
-// is the big-picture "how much did symmetry buy us?" snapshot that sits
-// between the §41 prose sentence and the formula breakdown.
+// CostSavingsSpread component + the Section 9 consolidation contract.
+// The component remains available as the original C40 card/table spread,
+// but TotalCostView now presents the dense-vs-symmetry comparison once,
+// using the later Cost Savings editorial spread before the formula breakdown.
 //
 //   1. CostSavingsSpread.jsx exists and exports a default React component.
 //   2. Renders the verbatim "Dense Direct" column heading.
@@ -11,7 +12,8 @@
 //   4. Has data-savings-row attributes for at least 5 rows.
 //   5. Renders a log-scale toggle button (Linear / Log).
 //   6. Computes "Speedup" and "Savings" labels.
-//   7. TotalCostView imports + mounts CostSavingsSpread.
+//   7. TotalCostView does not mount CostSavingsSpread; it mounts one
+//      EditorialComparisonSpread before SectionFiveIntroBlock.
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -130,51 +132,31 @@ test('§40 — CostSavingsSpread computes "Speedup" and "Savings" labels', () =>
   );
 });
 
-// ─── 7. TotalCostView imports + mounts CostSavingsSpread ────────────────────
+// ─── 7. TotalCostView uses one consolidated comparison spread ───────────────
 
-test('§40 — TotalCostView imports and mounts CostSavingsSpread', () => {
+test('§40 — TotalCostView leaves CostSavingsSpread unmounted after consolidation', () => {
   const src = read(TOTAL_COST_VIEW);
-  // Import statement.
-  assert.match(
+  assert.doesNotMatch(
     src,
     /import CostSavingsSpread from '\.\/CostSavingsSpread\.jsx'/,
-    'TotalCostView must import CostSavingsSpread from its sibling file',
+    'TotalCostView should not import the older C40 card/table spread after consolidation',
   );
-  // Mount with the spec-named props.
-  const mountMatch = src.match(/<CostSavingsSpread[\s\S]*?\/>/);
-  assert(mountMatch, 'TotalCostView must mount <CostSavingsSpread ... />');
-  const mount = mountMatch[0];
-  for (const prop of [
-    'mu=',
-    'alpha=',
-    'total=',
-    'denseBaseline=',
-    'k=',
-    'assignmentSpaceSize=',
-    'activeAlphaMethod=',
-  ]) {
-    assert.ok(
-      mount.includes(prop),
-      `<CostSavingsSpread /> mount must pass the prop "${prop}" — found mount: ${mount}`,
-    );
-  }
+  assert.doesNotMatch(src, /<CostSavingsSpread[\s\S]*?\/>/, 'TotalCostView should not mount <CostSavingsSpread />');
 });
 
-test('§40 — TotalCostView mounts CostSavingsSpread BELOW LiveResultSentence and ABOVE SectionFiveIntroBlock', () => {
+test('§40 — TotalCostView mounts one EditorialComparisonSpread before SectionFiveIntroBlock', () => {
   const src = read(TOTAL_COST_VIEW);
-  // Render order: LiveResultSentence (prose) → CostSavingsSpread (snapshot)
-  // → SectionFiveIntroBlock (formula breakdown). Pin the order so a future
-  // rearrange can't silently sink the spread above the prose or below the
-  // formula breakdown.
-  const liveIdx = src.indexOf('<LiveResultSentence');
-  const spreadIdx = src.indexOf('<CostSavingsSpread');
+  const spreads = src.match(/<EditorialComparisonSpread[\s\S]*?\/>/g) ?? [];
+  assert.equal(spreads.length, 1, 'Section 9 should render exactly one dense-vs-symmetry comparison surface');
+  const recapIdx = src.indexOf('<ComponentRecap');
+  const spreadIdx = src.indexOf('<EditorialComparisonSpread');
   const introIdx = src.indexOf('<SectionFiveIntroBlock');
-  assert.ok(liveIdx > 0, '<LiveResultSentence must be mounted in TotalCostView');
-  assert.ok(spreadIdx > 0, '<CostSavingsSpread must be mounted in TotalCostView');
+  assert.ok(recapIdx > 0, '<ComponentRecap must remain mounted');
+  assert.ok(spreadIdx > 0, '<EditorialComparisonSpread must be mounted in TotalCostView');
   assert.ok(introIdx > 0, '<SectionFiveIntroBlock must remain mounted');
   assert.ok(
-    liveIdx < spreadIdx && spreadIdx < introIdx,
-    `Render order must be LiveResultSentence < CostSavingsSpread < SectionFiveIntroBlock; got liveIdx=${liveIdx}, spreadIdx=${spreadIdx}, introIdx=${introIdx}`,
+    recapIdx < spreadIdx && spreadIdx < introIdx,
+    `Render order must be ComponentRecap < EditorialComparisonSpread < SectionFiveIntroBlock; got recapIdx=${recapIdx}, spreadIdx=${spreadIdx}, introIdx=${introIdx}`,
   );
 });
 

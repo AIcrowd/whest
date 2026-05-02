@@ -1,12 +1,11 @@
 // V3.1 §41 — Live Result Sentence (L5.T2.1).
 //
 // Source-grep tests pinning the V3.1 §41 prose contract for
-// LiveResultSentence + its mount in TotalCostView. The sentence is the
-// friendliest entry point to the cost-savings story: prose first, then
-// the formula, then the per-component table. Each test pins one piece
-// of the spec contract so cosmetic edits survive but structural drift
-// (a missing line, a paraphrased verbatim phrase, a lost aria-live)
-// trips immediately.
+// LiveResultSentence plus the Section 9 consolidation contract. The sentence
+// remains available as the original §41 prose component, but TotalCostView now
+// avoids repeating the dense-vs-symmetry result before the Cost Savings spread.
+// Each test pins one piece of the component/spec contract so cosmetic edits
+// survive but structural drift trips immediately.
 //
 //   1. LiveResultSentence file exists and exports a default React component.
 //   2. Verbatim phrase "For the selected contraction" (line 1).
@@ -14,8 +13,9 @@
 //   4. Verbatim phrase "this is a" (line 4 savings clause).
 //   5. V3.1 unavailable-explanation sentence renders when applicable.
 //   6. aria-live region present on at least one value-bearing span.
-//   7. TotalCostView imports + mounts LiveResultSentence above the
-//      formula card (i.e. before SectionFiveIntroBlock in render order).
+//   7. TotalCostView does not mount LiveResultSentence after Section 9
+//      consolidation; the EditorialComparisonSpread is the single summary
+//      before the formula card.
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -133,51 +133,27 @@ test('§41 — LiveResultSentence has an aria-live region on the value-bearing a
   );
 });
 
-// ─── 7. TotalCostView imports + mounts LiveResultSentence above the formula ─
+// ─── 7. TotalCostView uses the consolidated Cost Savings spread ─────────────
 
-test('§41 — TotalCostView imports and mounts LiveResultSentence', () => {
+test('§41 — TotalCostView leaves LiveResultSentence unmounted after consolidation', () => {
   const src = read(TOTAL_COST_VIEW);
-  // Import statement.
-  assert.match(
+  assert.doesNotMatch(
     src,
     /import LiveResultSentence from '\.\/LiveResultSentence\.jsx'/,
-    'TotalCostView must import LiveResultSentence from its sibling file',
+    'TotalCostView should not import the standalone prose sentence after consolidation',
   );
-  // Mount with the spec-named props (presetName, productMethod, alphaMethod,
-  // mu, alpha, total, denseBaseline, componentUnavailable).
-  const mountMatch = src.match(/<LiveResultSentence[\s\S]*?\/>/);
-  assert(mountMatch, 'TotalCostView must mount <LiveResultSentence ... />');
-  const mount = mountMatch[0];
-  for (const prop of [
-    'presetName=',
-    'productMethod=',
-    'alphaMethod=',
-    'mu=',
-    'alpha=',
-    'total=',
-    'denseBaseline=',
-    'componentUnavailable=',
-  ]) {
-    assert.ok(
-      mount.includes(prop),
-      `<LiveResultSentence /> mount must pass the prop "${prop}" — found mount: ${mount}`,
-    );
-  }
+  assert.doesNotMatch(src, /<LiveResultSentence[\s\S]*?\/>/, 'TotalCostView should not mount <LiveResultSentence />');
 });
 
-test('§41 — TotalCostView mounts LiveResultSentence ABOVE the formula card (before SectionFiveIntroBlock)', () => {
+test('§41 — TotalCostView renders the consolidated Cost Savings spread above the formula card', () => {
   const src = read(TOTAL_COST_VIEW);
-  // The §41 sentence is the friendly prose entry point — readers see prose
-  // first, then the formula card, then the per-component table. Pin the
-  // render order so a future rearrange can't silently sink the sentence
-  // below the formula.
-  const liveIdx = src.indexOf('<LiveResultSentence');
+  const spreadIdx = src.indexOf('<EditorialComparisonSpread');
   const introIdx = src.indexOf('<SectionFiveIntroBlock');
-  assert.ok(liveIdx > 0, '<LiveResultSentence must be mounted in TotalCostView');
+  assert.ok(spreadIdx > 0, '<EditorialComparisonSpread must be mounted in TotalCostView');
   assert.ok(introIdx > 0, '<SectionFiveIntroBlock (the formula card) must remain mounted');
   assert.ok(
-    liveIdx < introIdx,
-    `<LiveResultSentence must render before <SectionFiveIntroBlock; got liveIdx=${liveIdx}, introIdx=${introIdx}`,
+    spreadIdx < introIdx,
+    `<EditorialComparisonSpread must render before <SectionFiveIntroBlock; got spreadIdx=${spreadIdx}, introIdx=${introIdx}`,
   );
 });
 

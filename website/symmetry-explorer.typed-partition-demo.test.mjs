@@ -44,13 +44,20 @@ test('TypedPartitionDemo imports the engine partition exports', () => {
 test('TypedPartitionDemo renders pattern chips area with chip-id attributes', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
   assert.match(src, /data-pattern-chip/);
-  assert.match(src, /Equality pattern/i);
+  assert.match(src, /Equality groups/i);
+  assert.match(src, /function describePatternFamily\(partition, labels\)/);
+  assert.match(src, /\{chip\.familyLabel\}/);
+  assert.match(src, /\{row\.familyLabel\}/);
+  assert.match(src, /Raw equality key: \$\{chip\.key\}/);
 });
 
-test('TypedPartitionDemo renders a 2-column breakdown panel for the selected pattern', () => {
+test('TypedPartitionDemo renders equation/table row plus two-column detail grid', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
   assert.match(src, /data-testid="partition-workbench"/);
-  assert.match(src, /min-\[1180px\]:grid-cols-\[minmax\(0,1fr\)_minmax\(300px,0\.72fr\)\]/);
+  assert.match(src, /data-testid="partition-formula-panel"/);
+  assert.match(src, /data-testid="partition-detail-grid"/);
+  assert.match(src, /min-\[1180px\]:grid-cols-\[minmax\(0,1fr\)_minmax\(320px,0\.66fr\)\]/);
+  assert.match(src, /min-\[1180px\]:grid-cols-2/);
   assert.match(src, /data-testid="partition-breakdown-panel"/);
   assert.match(src, /Block structure/i);
   assert.match(src, /Projection reach/i);

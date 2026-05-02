@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import CaseBadge from './CaseBadge.jsx';
-import CostSavingsSpread from './CostSavingsSpread.jsx';
 import { AnchorLink } from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
-import LiveResultSentence from './LiveResultSentence.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import { componentColor } from '../engine/componentPalette.js';
 import {
@@ -755,7 +753,6 @@ export default function TotalCostView({
   dimensionN,
   numTerms = 1,
   explorerThemeId,
-  presetName = null,
 }) {
   if (!componentCosts || !componentData) return null;
 
@@ -823,24 +820,6 @@ export default function TotalCostView({
     },
   ];
 
-  // §41 LiveResultSentence — derive method-badge metadata from the live
-  // components. The product method is always the Burnside orbit count in
-  // this engine; the α method is the regime fired for the *first* (or
-  // representative) component. When a preset has multiple components with
-  // different α regimes, the per-component table below remains the source
-  // of truth — the sentence is a high-level entry point, not a drill-down.
-  const firstComponent = components[0] ?? null;
-  const firstAlphaRegimeId = firstComponent?.accumulation?.regimeId
-    ?? firstComponent?.shape
-    ?? null;
-  const firstAlphaPresentation = firstAlphaRegimeId
-    ? getRegimePresentation(firstAlphaRegimeId, SECTION_FIVE_THEME_OVERRIDE)
-    : null;
-  const liveAlphaMethod = firstAlphaRegimeId
-    ? { regimeId: firstAlphaRegimeId, label: firstAlphaPresentation?.label ?? firstAlphaRegimeId }
-    : { label: 'the selected α regime' };
-  const liveProductMethod = { label: 'Burnside orbit count' };
-
   return (
     <div className="space-y-8" style={sectionFiveThemeCssVars}>
       {/* §C50 accessibility — off-screen announcer for screen-reader users. */}
@@ -848,44 +827,15 @@ export default function TotalCostView({
 
       <ComponentRecap components={components} />
 
-      {/* §41 — Live Result Sentence. Friendly prose entry point for the
-          cost-savings story; sits ABOVE the formula card so readers meet
-          prose first, then the formula, then the per-component table. */}
-      <LiveResultSentence
-        presetName={presetName}
-        productMethod={liveProductMethod}
-        alphaMethod={liveAlphaMethod}
-        mu={mu}
-        alpha={alpha}
-        total={totalCost}
-        denseBaseline={denseTotalCost}
-        componentUnavailable={null}
-      />
-
-      {/* §40 — C40 Cost Savings Spread. Sits between the prose entry point
-          (LiveResultSentence) and the formula breakdown so readers see a
-          big-picture "how much did symmetry buy us?" snapshot before
-          drilling down. Reuses the live μ/α/total/dense values plus the
-          first-component α regime as the active method badge. */}
-      <CostSavingsSpread
-        mu={mu}
-        alpha={alpha}
-        total={totalCost}
-        denseBaseline={denseTotalCost}
-        k={numTerms}
-        assignmentSpaceSize={denseTuples}
-        activeAlphaMethod={liveAlphaMethod}
-      />
-
-      <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
-
-      <AggregationExplainer themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
-
       <EditorialComparisonSpread
         topMetrics={TOP_COMPARISON_METRICS}
         supportingMetrics={SUPPORTING_METRICS}
         themeOverride={SECTION_FIVE_THEME_OVERRIDE}
       />
+
+      <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
+
+      <AggregationExplainer themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
     </div>
   );
 }
