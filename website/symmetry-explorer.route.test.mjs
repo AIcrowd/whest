@@ -17,16 +17,17 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
     'utf8',
   );
   assert.match(appSource, /import SectionIntroProse from '\.\/components\/SectionIntroProse\.jsx';/);
-  // V3.1 topology: 10 sections. The publish-readiness pass gives §9
-  // assemble-cost its own prose lead-in before TotalCostView.
+  // V3.1 topology: 10 sections. Section 9 now folds its prose into
+  // TotalCostView so the component recap can lead the section body.
   // The regex [0-9] covers all 10 acts (indices 0-9).
-  assert.ok(countMatches(appSource, /EXPLORER_ACTS\[[0-9]\]\.introParagraphs/g) >= 9);
+  assert.ok(countMatches(appSource, /EXPLORER_ACTS\[[0-9]\]\.introParagraphs/g) >= 8);
   assert.match(appSource, /title={EXPLORER_ACTS\[9\]\.heading}/);
   assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[9\]\.question}<\/InlineMathText>}/);
   assert.match(introSource, /md:grid-cols-2/);
   assert.match(introSource, /textAlign:\s*'justify'/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[8\]\.supportingSentence/);
-  assert.match(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[8\]\.introParagraphs\} \/>/);
+  assert.doesNotMatch(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[8\]\.introParagraphs\} \/>/);
+  assert.match(appSource, /<TotalCostView[\s\S]*componentCosts=\{componentCosts\}/);
   assert.equal(countMatches(appSource, /label="Interpretation"/g), 0);
   assert.equal(countMatches(appSource, /label="Approach"/g), 0);
   // "What this produces" callout in sections that have it.

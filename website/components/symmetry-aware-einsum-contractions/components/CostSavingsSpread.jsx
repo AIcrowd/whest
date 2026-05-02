@@ -1,8 +1,9 @@
 // V3.1 §40 — Cost Savings Spread (L5.T2.6 / C40).
 //
-// Two large columns side-by-side that summarise the cost story in a single
-// glance, sitting between the §41 LiveResultSentence (prose entry point)
-// and the existing formula breakdown (per-component drill-down).
+// Standalone C40 card/table spread retained for the V3.1 component contract.
+// Section 9's publish-ready page now uses the later EditorialComparisonSpread
+// as the single visible dense-vs-symmetry summary, so TotalCostView does not
+// mount this component directly.
 //
 //   Dense Direct            = (k-1)|X| + |X|
 //   Symmetry-Aware Direct   = μ + α

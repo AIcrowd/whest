@@ -145,15 +145,17 @@ test('§41 — TotalCostView leaves LiveResultSentence unmounted after consolida
   assert.doesNotMatch(src, /<LiveResultSentence[\s\S]*?\/>/, 'TotalCostView should not mount <LiveResultSentence />');
 });
 
-test('§41 — TotalCostView renders the consolidated Cost Savings spread above the formula card', () => {
+test('§41 — TotalCostView renders the consolidated Cost Savings spread after the formula glossary', () => {
   const src = read(TOTAL_COST_VIEW);
-  const spreadIdx = src.indexOf('<EditorialComparisonSpread');
   const introIdx = src.indexOf('<SectionFiveIntroBlock');
-  assert.ok(spreadIdx > 0, '<EditorialComparisonSpread must be mounted in TotalCostView');
+  const glossaryIdx = src.indexOf('<AggregationExplainer');
+  const spreadIdx = src.indexOf('<EditorialComparisonSpread');
   assert.ok(introIdx > 0, '<SectionFiveIntroBlock (the formula card) must remain mounted');
+  assert.ok(glossaryIdx > 0, '<AggregationExplainer (formula glossary) must remain mounted');
+  assert.ok(spreadIdx > 0, '<EditorialComparisonSpread must be mounted in TotalCostView');
   assert.ok(
-    spreadIdx < introIdx,
-    `<EditorialComparisonSpread must render before <SectionFiveIntroBlock; got spreadIdx=${spreadIdx}, introIdx=${introIdx}`,
+    introIdx < glossaryIdx && glossaryIdx < spreadIdx,
+    `<EditorialComparisonSpread must render after <AggregationExplainer; got introIdx=${introIdx}, glossaryIdx=${glossaryIdx}, spreadIdx=${spreadIdx}`,
   );
 });
 

@@ -6,8 +6,8 @@ const assembleCost = {
   deck: 'What is the final direct-event cost of the symmetry-aware computation?',
   slots: {
     intro: [
-      p('We can now assemble the direct-event count. For each independent component, $M_a$ counts representative products and $\\alpha_a$ counts filled local $O \\to Q$ cells. Globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.'),
-      p('The final number is $\\mathrm{Total} = \\mu + \\alpha = (k - 1)\\prod_a M_a + \\prod_a \\alpha_a$. It is a direct indexed scalar-event count: multiplication-chain events plus output updates, not a contraction-path or BLAS runtime model.'),
+      p('All the pieces are now in place. The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. For each independent component, $M_a$ counts representative products and $\\alpha_a$ counts filled local $O \\to Q$ cells; globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.'),
+      p('The final number is $\\mathrm{Total} = \\mu + \\alpha = (k - 1)\\prod_a M_a + \\prod_a \\alpha_a$. This is a direct indexed scalar-event count: multiplication-chain events plus output updates, not a contraction-path or BLAS runtime model.'),
     ],
     appendixNoteTitle: [
       l('Appendix note'),

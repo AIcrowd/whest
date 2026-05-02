@@ -34,11 +34,12 @@ const CAPTION_ADDED_NOT_MULTIPLIED =
 // Tooltip text for hovering the product term in the hero formula.
 const BURNSIDE_PRODUCT_TOOLTIP =
   'M_a is a Burnside orbit count: representative products per component.';
-const SECTION_FIVE_INTRO_PARAGRAPH =
-  'The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. The final step is to combine the two quantities a direct symmetry-aware evaluator needs: representative products and accumulation updates from those product-orbit representatives into stored output representatives.';
-
+const SECTION_FIVE_INTRO_OPEN =
+  String.raw`All the pieces are now in place. The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. For each independent component, $M_a$ counts representative products and $\alpha_a$ counts filled local $O \to Q$ cells; globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.`;
+const SECTION_FIVE_INTRO_RESULT =
+  String.raw`The final number is $\mathrm{Total} = \mu + \alpha = (k - 1)\prod_a M_a + \prod_a \alpha_a$. This is a direct indexed scalar-event count: multiplication-chain events plus output updates, not a contraction-path or BLAS runtime model.`;
 const SECTION_FIVE_INTRO_LEAD =
-  String.raw`For component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via $H_a = \mathrm{Stab}_{G_a}(V_a)|_{V_a}$. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
+  String.raw`Equivalently, for component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via $H_a = \mathrm{Stab}_{G_a}(V_a)|_{V_a}$. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
 
 const SECTION_FIVE_INTRO_CLOSE =
   String.raw`$M_a$ is a size-aware Burnside orbit count when a closed form applies; $\alpha_a$ is selected by the shape and regime ladder. If a mixed component falls outside the analytic regimes and exceeds the brute-force budget, the count is reported unavailable instead of being guessed.`;
@@ -538,7 +539,14 @@ function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) 
         className="font-serif text-[17px] leading-[1.75] text-gray-700"
         style={{ textAlign: 'justify' }}
       >
-        <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_PARAGRAPH}</InlineMathText>
+        <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_OPEN}</InlineMathText>
+      </p>
+
+      <p
+        className="font-serif text-[17px] leading-[1.75] text-gray-700"
+        style={{ textAlign: 'justify' }}
+      >
+        <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_RESULT}</InlineMathText>
       </p>
 
       <div className="space-y-7">
@@ -827,15 +835,15 @@ export default function TotalCostView({
 
       <ComponentRecap components={components} />
 
+      <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
+
+      <AggregationExplainer themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
+
       <EditorialComparisonSpread
         topMetrics={TOP_COMPARISON_METRICS}
         supportingMetrics={SUPPORTING_METRICS}
         themeOverride={SECTION_FIVE_THEME_OVERRIDE}
       />
-
-      <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
-
-      <AggregationExplainer themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
     </div>
   );
 }

@@ -1,9 +1,9 @@
 // V3.1 §41 — Live Result Sentence.
 //
-// A four-line prose summary of the selected preset's final accounting that
-// sits ABOVE the formula card in §9. It's the friendliest possible entry
-// point to the cost-savings story: prose first, then the formula, then the
-// table. Especially valuable for non-expert readers after the formula map.
+// A standalone four-line prose summary of the selected preset's final
+// accounting, retained for the V3.1 §41 component contract. Section 9's
+// publish-ready page now avoids repeating the dense-vs-symmetry result and
+// mounts the later EditorialComparisonSpread as its single summary instead.
 //
 // Spec template (V3.1 §41, verbatim phrasing the test pins):
 //   For the selected contraction, product representatives are counted by

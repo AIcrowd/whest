@@ -144,19 +144,21 @@ test('§40 — TotalCostView leaves CostSavingsSpread unmounted after consolidat
   assert.doesNotMatch(src, /<CostSavingsSpread[\s\S]*?\/>/, 'TotalCostView should not mount <CostSavingsSpread />');
 });
 
-test('§40 — TotalCostView mounts one EditorialComparisonSpread before SectionFiveIntroBlock', () => {
+test('§40 — TotalCostView mounts one EditorialComparisonSpread after the formula glossary', () => {
   const src = read(TOTAL_COST_VIEW);
   const spreads = src.match(/<EditorialComparisonSpread[\s\S]*?\/>/g) ?? [];
   assert.equal(spreads.length, 1, 'Section 9 should render exactly one dense-vs-symmetry comparison surface');
   const recapIdx = src.indexOf('<ComponentRecap');
-  const spreadIdx = src.indexOf('<EditorialComparisonSpread');
   const introIdx = src.indexOf('<SectionFiveIntroBlock');
+  const glossaryIdx = src.indexOf('<AggregationExplainer');
+  const spreadIdx = src.indexOf('<EditorialComparisonSpread');
   assert.ok(recapIdx > 0, '<ComponentRecap must remain mounted');
-  assert.ok(spreadIdx > 0, '<EditorialComparisonSpread must be mounted in TotalCostView');
   assert.ok(introIdx > 0, '<SectionFiveIntroBlock must remain mounted');
+  assert.ok(glossaryIdx > 0, '<AggregationExplainer must remain mounted');
+  assert.ok(spreadIdx > 0, '<EditorialComparisonSpread must be mounted in TotalCostView');
   assert.ok(
-    recapIdx < spreadIdx && spreadIdx < introIdx,
-    `Render order must be ComponentRecap < EditorialComparisonSpread < SectionFiveIntroBlock; got recapIdx=${recapIdx}, spreadIdx=${spreadIdx}, introIdx=${introIdx}`,
+    recapIdx < introIdx && introIdx < glossaryIdx && glossaryIdx < spreadIdx,
+    `Render order must be ComponentRecap < SectionFiveIntroBlock < AggregationExplainer < EditorialComparisonSpread; got recapIdx=${recapIdx}, introIdx=${introIdx}, glossaryIdx=${glossaryIdx}, spreadIdx=${spreadIdx}`,
   );
 });
 
