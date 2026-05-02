@@ -104,8 +104,9 @@ test('approved mathematically safer prose appears in the narrative data', () => 
   assert.match(section3, /\\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}/);
   assert.doesNotMatch(section3, /derivePi/);
 
-  assert.match(section4, /two quotients/i);
-  assert.match(section4, /Start with full assignments/i);
+  assert.match(section4, /single assignments into product rows/i);
+  assert.match(section4, /Read one dense assignment first/i);
+  assert.match(section4, /shows only examples from \$X\$/i);
   assert.match(section4, /product-orbit rows/i);
   // Output-orbit refactor banned "output bin"; α is now defined as the count of
   // (O, Q) pairs in X/G × Y/H where the projection meets Q.

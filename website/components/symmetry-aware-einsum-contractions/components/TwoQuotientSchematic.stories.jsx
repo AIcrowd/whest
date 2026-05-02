@@ -3,6 +3,9 @@ import TwoQuotientSchematic from './TwoQuotientSchematic.jsx';
 const CURRENT_SAMPLE = {
   presetName: 'Trilinear trace',
   dimensionN: 5,
+  labelOrder: ['i', 'k', 'j', 'l', 'm', 'n'],
+  visibleLabels: ['i', 'j', 'm'],
+  denseAssignmentCount: 15625,
   rowCount: 165,
   columnCount: 56,
   alpha: 165,
@@ -61,7 +64,7 @@ export const TripleOuterAllVisible = {
 };
 
 // ---------------------------------------------------------------------------
-// Story 4: Narrow viewport — verifies SVG scales correctly
+// Story 4: Narrow viewport — verifies the microscope stacks cleanly
 // ---------------------------------------------------------------------------
 export const NarrowViewport = {
   parameters: {

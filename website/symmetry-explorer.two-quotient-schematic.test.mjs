@@ -21,14 +21,15 @@ test('TwoQuotientSchematic — component file exists and exports default', () =>
   assert.match(src, /export default function TwoQuotientSchematic\(\{ current = null \}\)/);
 });
 
-test('TwoQuotientSchematic — renders a DOM lane schematic', () => {
+test('TwoQuotientSchematic — renders a DOM microscope plus formal quotient summary', () => {
   const src = read(COMPONENT_PATH);
   assert.match(src, /<figure/);
-  assert.match(src, /function QuotientLane/);
-  assert.match(src, /function ReachRelationPanel/);
-  assert.match(src, /Row quotient/);
-  assert.match(src, /Column quotient/);
-  assert.match(src, /Projection reach/);
+  assert.match(src, /function OneRowMicroscope/);
+  assert.match(src, /function FormalQuotientSummary/);
+  assert.match(src, /One row microscope/);
+  assert.match(src, /A tuple is one dense assignment/);
+  assert.match(src, /X → X\/G_pt/);
+  assert.match(src, /Y → Y\/H/);
 });
 
 test('TwoQuotientSchematic — defaults to current selected preset plus non-duplicate references', () => {
@@ -50,33 +51,37 @@ test('TwoQuotientSchematic — reference examples preserve the three pedagogical
   assert.match(src, /Projection drops nothing/);
 });
 
-test('TwoQuotientSchematic — has reader-facing row and column labels', () => {
+test('TwoQuotientSchematic — explains single assignments, samples, rows, and columns', () => {
   const src = read(COMPONENT_PATH);
-  assert.match(src, /Full product assignments/);
-  assert.match(src, /Product-orbit rows/);
-  assert.match(src, /Visible output assignments/);
-  assert.match(src, /Stored-output columns/);
-  assert.match(src, /Projection is not a third quotient/);
-  assert.match(src, /marks the filled row-column cells counted by α/);
+  assert.match(src, /one choice of values for all labels/);
+  assert.match(src, /not the whole space/);
+  assert.match(src, /Example assignments from X/);
+  assert.match(src, /Group equal products into O/);
+  assert.match(src, /Record reached Q columns/);
+  assert.match(src, /Projection marks which row-column cells are filled/);
+  assert.match(src, /A\[0,1\] \* B\[0\] = A\[1,0\] \* B\[0\]/);
 });
 
-test('TwoQuotientSchematic — current summary includes n, M, |Y/H|, α, H, and branching state', () => {
+test('TwoQuotientSchematic — current summary includes n, M, |Y/H|, α, dense X, H, and branching state', () => {
   const src = read(COMPONENT_PATH);
   assert.match(src, /hStatus = hSize > 1 \? 'H nontrivial' : 'H trivial'/);
   assert.match(src, /projectionStatus = branchRows > 0 \? 'projection branches' : 'projection functional'/);
+  assert.match(src, /denseAssignmentCount/);
+  assert.match(src, /labelOrder/);
+  assert.match(src, /visibleLabels/);
   assert.match(src, /\{ label: 'n', value: formatNumber\(dimensionN\) \}/);
   assert.match(src, /\{ label: 'M', value: `\$\{formatNumber\(rowCount\)\} rows` \}/);
   assert.match(src, /\{ label: '\|Y\/H\|', value: `\$\{formatNumber\(columnCount\)\} columns` \}/);
   assert.match(src, /\{ label: 'α', value: `\$\{formatNumber\(alpha\)\} filled cells` \}/);
 });
 
-test('TwoQuotientSchematic — hover states for G_pt, H, and pi are still wired', () => {
+test('TwoQuotientSchematic — microscope chooses a useful row and explains the flow', () => {
   const src = read(COMPONENT_PATH);
-  assert.match(src, /startHover\('gpt'\)/);
-  assert.match(src, /startHover\('h'\)/);
-  assert.match(src, /startHover\('pi'\)/);
-  assert.match(src, /aria-label=\{`Highlight \$\{label\}`\}/);
-  assert.match(src, /aria-label="Highlight projection reach relation"/);
+  assert.match(src, /microscopeRowIndex = orbitRows\.findIndex/);
+  assert.match(src, /outputCount/);
+  assert.match(src, /same product under G_pt/);
+  assert.match(src, /Projection reach/);
+  assert.match(src, /This product row fills/);
 });
 
 test('TwoQuotientSchematic — uses design-system token recipe, no raw hex', () => {
@@ -102,6 +107,9 @@ test('App — computes and passes current preset data into the schematic', () =>
   assert.match(src, /branchRows/);
   assert.match(src, /outputKeys\.size/);
   assert.match(src, /dimensionN/);
+  assert.match(src, /labelOrder/);
+  assert.match(src, /visibleLabels/);
+  assert.match(src, /denseAssignmentCount/);
   assert.match(src, /<TwoQuotientSchematic current=\{twoQuotientCurrent\} \/>/);
 });
 

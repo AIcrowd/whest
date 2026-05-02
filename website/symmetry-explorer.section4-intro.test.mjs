@@ -21,7 +21,10 @@ test('rowsCols intro uses concept-first blocks with display equations', () => {
 
 test('rowsCols intro defines rows, columns, and reach without inline long alpha formula', () => {
   const src = read('components/symmetry-aware-einsum-contractions/content/main/rowsCols.js');
-  assert.match(src, /The \$O \\\\to Q\$ matrix has two quotients/);
+  assert.match(src, /Read one dense assignment first/);
+  assert.match(src, /one choice of values for every label, not a whole row/);
+  assert.match(src, /shows only examples from \$X\$/);
+  assert.match(src, /Cross \$S_2\$ has \$5\^3=125\$/);
   assert.match(src, /h\('Rows: product orbits', 1\)/);
   assert.match(src, /h\('Columns: stored output representatives', 2\)/);
   assert.match(src, /h\('Projection: filled cells', 'full'\)/);

@@ -334,20 +334,20 @@ export default function SymmetryAwareEinsumContractionsApp() {
       const nextExample = EXAMPLES[idx];
       startCommitTransition(() => {
         setExampleIdx(idx);
+        setPreviewExample(nextExample ?? null);
         if (nextExample) setDefaultSize(presetDefaultSize(nextExample));
         setIsDirty(false);
         setSelectedOrbitIdx(-1);
         setSelectedSigmaPairIndex(null);
         setClusterSizes({});
       });
-    }, 0);
+    }, 80);
   }, [startCommitTransition]);
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
     const nextExample = EXAMPLES[idx] ?? null;
     if (!nextExample) return;
-    setPreviewExample(nextExample);
     setAnalysisState((prev) => ({
       ...prev,
       status: 'updating',
@@ -367,12 +367,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
       selectionTimerRef.current = null;
       startCommitTransition(() => {
         setCustomExample(ex);
+        setPreviewExample(ex);
         setExampleIdx(CUSTOM_IDX);
         setSelectedOrbitIdx(-1);
         setSelectedSigmaPairIndex(null);
         setClusterSizes({});
       });
-    }, 0);
+    }, 80);
   }, [startCommitTransition]);
 
   const commitCustomMode = useCallback(() => {
@@ -385,7 +386,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         setSelectedSigmaPairIndex(null);
         setClusterSizes({});
       });
-    }, 0);
+    }, 80);
   }, [startCommitTransition]);
 
   const handleDimensionChange = useCallback((nextSize) => {
@@ -403,7 +404,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
   // Handle custom example submission
   const handleCustomExample = useCallback((ex) => {
-    setPreviewExample(ex);
     setAnalysisState((prev) => ({
       ...prev,
       status: 'updating',
@@ -568,9 +568,17 @@ export default function SymmetryAwareEinsumContractionsApp() {
     const branchRows = orbitRows.filter((row) => (
       (row?.outputCount ?? row?.outputs?.length ?? 0) > 1
     )).length;
+    const labelOrder = group?.allLabels ?? [];
+    const visibleLabels = group?.vLabels ?? [];
+    const denseAssignmentCount = Number.isFinite(analysisDimensionN) && labelOrder.length > 0
+      ? Math.pow(analysisDimensionN, labelOrder.length)
+      : null;
     return {
       presetName: analysisExample?.name ?? 'custom contraction',
       orbitRows,
+      labelOrder,
+      visibleLabels,
+      denseAssignmentCount,
       rowCount: cost?.orbitCount ?? orbitRows.length,
       columnCount: outputKeys.size,
       alpha: cost?.reductionCostExact,
@@ -578,7 +586,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
       hSize: outputActionSize,
       dimensionN: analysisDimensionN,
     };
-  }, [analysisDimensionN, analysisExample?.name, cost, outputActionSize]);
+  }, [analysisDimensionN, analysisExample?.name, cost, group, outputActionSize]);
 
   const activeLeafIds = useMemo(() => {
     return (componentData?.components ?? [])

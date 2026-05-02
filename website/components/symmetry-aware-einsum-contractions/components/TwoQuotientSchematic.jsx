@@ -37,6 +37,9 @@ const REFERENCE_PRESETS = {
     title: 'Cross S₂ reference',
     caption: 'H is trivial. Columns are ordinary output assignments, and some product rows branch to multiple columns.',
     dimensionN: 2,
+    labelOrder: ['i', 'j', 'k'],
+    visibleLabels: ['i', 'k'],
+    denseAssignmentCount: 8,
     hStatus: 'H trivial',
     projectionStatus: 'projection branches',
     metrics: [
@@ -44,10 +47,10 @@ const REFERENCE_PRESETS = {
       { label: '|Y/H|', value: '4 columns' },
       { label: 'α', value: '5 filled cells' },
     ],
-    productAssignments: ['(0,0,0)', '(0,1,0)', '(1,0,0)'],
-    productRows: ['O₀', 'O₁', 'O₂'],
-    outputAssignments: ['(0,0)', '(0,1)', '(1,0)'],
-    outputColumns: ['Q₀', 'Q₁', 'Q₂'],
+    productAssignments: [{ i: 0, j: 1, k: 0 }, { i: 1, j: 0, k: 0 }],
+    productRows: ['O: {(i=0, j=1, k=0), (i=1, j=0, k=0)}'],
+    outputAssignments: [{ i: 0, k: 0 }, { i: 1, k: 0 }],
+    outputColumns: ['Q: (i=0, k=0)', 'Q: (i=1, k=0)'],
     reachTargets: 2,
   },
   bilinearTrace: {
@@ -56,6 +59,9 @@ const REFERENCE_PRESETS = {
     title: 'Bilinear trace reference',
     caption: 'H is nontrivial. Some output assignments share one stored representative, and projection is functional.',
     dimensionN: 2,
+    labelOrder: ['i', 'k', 'j', 'l'],
+    visibleLabels: ['i', 'j'],
+    denseAssignmentCount: 16,
     hStatus: 'H nontrivial',
     projectionStatus: 'projection functional',
     metrics: [
@@ -63,10 +69,10 @@ const REFERENCE_PRESETS = {
       { label: '|Y/H|', value: '3 columns' },
       { label: 'α', value: '3 filled cells' },
     ],
-    productAssignments: ['(0,0,0,0)', '(0,1,0,1)', '(1,0,1,0)'],
-    productRows: ['O₀', 'O₁', 'O₂'],
-    outputAssignments: ['(0,0)', '(0,1)', '(1,0)'],
-    outputColumns: ['Q₀', 'Q₁=(0,1)/(1,0)', 'Q₂'],
+    productAssignments: ['(i=0, k=0, j=0, l=0)', '(i=0, k=1, j=0, l=1)'],
+    productRows: ['O0: (i=0, k=0, j=0, l=0)'],
+    outputAssignments: ['(i=0, j=0)', '(i=0, j=1)', '(i=1, j=0)'],
+    outputColumns: ['Q0: (i=0, j=0)'],
     reachTargets: 1,
   },
   tripleOuter: {
@@ -75,6 +81,9 @@ const REFERENCE_PRESETS = {
     title: 'Triple outer reference',
     caption: 'All labels are visible. Projection drops nothing, so product-orbit rows and stored-output columns line up.',
     dimensionN: 2,
+    labelOrder: ['a', 'b', 'c'],
+    visibleLabels: ['a', 'b', 'c'],
+    denseAssignmentCount: 8,
     hStatus: 'H nontrivial',
     projectionStatus: 'rows and columns line up',
     metrics: [
@@ -82,10 +91,10 @@ const REFERENCE_PRESETS = {
       { label: '|Y/H|', value: '3 columns' },
       { label: 'α', value: '3 filled cells' },
     ],
-    productAssignments: ['(0,0)', '(0,1)', '(1,0)'],
-    productRows: ['O₀', 'O₁', 'O₂'],
-    outputAssignments: ['(0,0)', '(0,1)', '(1,0)'],
-    outputColumns: ['Q₀', 'Q₁', 'Q₂'],
+    productAssignments: ['(a=0, b=0, c=0)', '(a=0, b=1, c=0)'],
+    productRows: ['O0: (a=0, b=0, c=0)'],
+    outputAssignments: ['(a=0, b=0, c=0)', '(a=0, b=1, c=0)', '(a=1, b=0, c=0)'],
+    outputColumns: ['Q0: (a=0, b=0, c=0)'],
     reachTargets: 1,
   },
 };
@@ -125,20 +134,43 @@ function formatNumber(value, fallback = '—') {
   return Number.isFinite(value) ? value.toLocaleString() : fallback;
 }
 
-function formatTuple(tuple) {
-  if (Array.isArray(tuple)) return `(${tuple.join(',')})`;
+function uniqueLabels(...groups) {
+  const labels = [];
+  const seen = new Set();
+  for (const group of groups) {
+    for (const label of group ?? []) {
+      if (!seen.has(label)) {
+        labels.push(label);
+        seen.add(label);
+      }
+    }
+  }
+  return labels;
+}
+
+function formatTuple(tuple, labels = null) {
+  if (Array.isArray(tuple)) {
+    if (Array.isArray(labels) && labels.length === tuple.length) {
+      return `(${labels.map((label, idx) => `${label}=${tuple[idx]}`).join(', ')})`;
+    }
+    return `(${tuple.join(',')})`;
+  }
   if (tuple && typeof tuple === 'object') {
-    return `(${Object.entries(tuple).map(([key, value]) => `${key}=${value}`).join(', ')})`;
+    const orderedLabels = uniqueLabels(labels, Object.keys(tuple));
+    return `(${orderedLabels
+      .filter((key) => Object.prototype.hasOwnProperty.call(tuple, key))
+      .map((key) => `${key}=${tuple[key]}`)
+      .join(', ')})`;
   }
   return String(tuple ?? '—');
 }
 
-function uniqueOutputSamples(orbitRows = []) {
+function uniqueOutputSamples(orbitRows = [], visibleLabels = null) {
   const seen = new Map();
   for (const row of orbitRows) {
     for (const output of row?.outputs ?? []) {
-      const key = output?.outKey ?? formatTuple(output?.outTuple);
-      if (!seen.has(key)) seen.set(key, formatTuple(output?.outTuple ?? key));
+      const key = output?.outKey ?? formatTuple(output?.outTuple, visibleLabels);
+      if (!seen.has(key)) seen.set(key, formatTuple(output?.outTuple ?? key, visibleLabels));
     }
   }
   return [...seen.values()];
@@ -151,18 +183,27 @@ function takeSamples(values, fallback) {
 
 function buildCurrentView(current) {
   const orbitRows = current?.orbitRows ?? [];
+  const labelOrder = current?.labelOrder ?? [];
+  const visibleLabels = current?.visibleLabels ?? [];
+  let microscopeRowIndex = orbitRows.findIndex((row) => (row?.outputCount ?? row?.outputs?.length ?? 0) > 1);
+  if (microscopeRowIndex < 0) microscopeRowIndex = orbitRows.findIndex((row) => (row?.orbitTuples?.length ?? 0) > 1);
+  if (microscopeRowIndex < 0 && orbitRows.length > 0) microscopeRowIndex = 0;
+  const microscopeRow = microscopeRowIndex >= 0 ? orbitRows[microscopeRowIndex] : null;
   const productAssignments = takeSamples(
-    orbitRows[0]?.orbitTuples?.map(formatTuple) ?? [],
+    microscopeRow?.orbitTuples?.map((tuple) => formatTuple(tuple, labelOrder)) ?? [],
     ['full assignments in X'],
   );
   const productRows = takeSamples(
-    orbitRows.map((row, index) => `O${index}: ${formatTuple(row?.repTuple)}`),
+    microscopeRow
+      ? [`O${microscopeRowIndex}: ${formatTuple(microscopeRow?.repTuple, labelOrder)}`]
+      : orbitRows.map((row, index) => `O${index}: ${formatTuple(row?.repTuple, labelOrder)}`),
     ['product-orbit rows O'],
   );
-  const outputSamples = uniqueOutputSamples(orbitRows);
-  const outputAssignments = takeSamples(outputSamples, ['output assignments in Y']);
+  const outputSamples = uniqueOutputSamples(orbitRows, visibleLabels);
+  const microscopeOutputs = microscopeRow?.outputs?.map((output) => formatTuple(output?.outTuple, visibleLabels)) ?? [];
+  const outputAssignments = takeSamples(microscopeOutputs.length ? microscopeOutputs : outputSamples, ['output assignments in Y']);
   const outputColumns = takeSamples(
-    outputSamples.map((sample, index) => `Q${index}: ${sample}`),
+    (microscopeOutputs.length ? microscopeOutputs : outputSamples).map((sample, index) => `Q${index}: ${sample}`),
     ['stored-output columns Q'],
   );
   const rowCount = current?.rowCount ?? orbitRows.length;
@@ -182,6 +223,8 @@ function buildCurrentView(current) {
       : 'H is trivial; projection is functional';
   const presetName = current?.presetName ?? 'selected preset';
   const dimensionN = current?.dimensionN;
+  const denseAssignmentCount = current?.denseAssignmentCount
+    ?? (Number.isFinite(dimensionN) && labelOrder.length > 0 ? Math.pow(dimensionN, labelOrder.length) : null);
 
   return {
     id: 'current',
@@ -190,6 +233,9 @@ function buildCurrentView(current) {
     title: `Current preset — ${presetName}`,
     caption: `${captionLead}. These counts come from the selected contraction${Number.isFinite(dimensionN) ? ` at n=${dimensionN}` : ''}.`,
     dimensionN,
+    denseAssignmentCount,
+    labelOrder,
+    visibleLabels,
     hStatus,
     projectionStatus,
     metrics: [
@@ -501,6 +547,177 @@ function CurrentPresetSummary({ view }) {
   );
 }
 
+function countLabel(count, singular, plural = `${singular}s`) {
+  if (!Number.isFinite(count)) return null;
+  return `${formatNumber(count)} ${count === 1 ? singular : plural}`;
+}
+
+function visibleAssignmentCount(view) {
+  return Number.isFinite(view.dimensionN) && (view.visibleLabels?.length ?? 0) > 0
+    ? Math.pow(view.dimensionN, view.visibleLabels.length)
+    : null;
+}
+
+function AssignmentList({ items, active = false }) {
+  return (
+    <div className="mt-3 grid gap-1.5">
+      {items.slice(0, 3).map((item, index) => (
+        <div
+          key={`${item}-${index}`}
+          className="rounded-[var(--radius-sm)] border bg-white px-2.5 py-1.5 font-mono text-[11px] font-semibold leading-4 text-gray-700"
+          style={{ borderColor: active ? TOKEN.coral : TOKEN.gray200 }}
+          title={item}
+        >
+          <span className="block truncate">{item}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MicroscopeCard({ eyebrow, title, formula, note, items, active = false }) {
+  return (
+    <div
+      className="min-w-0 rounded-[var(--radius-lg)] border bg-white p-4"
+      style={{
+        borderColor: active ? TOKEN.coral : TOKEN.gray200,
+        background: active ? TOKEN.coralLight : TOKEN.white,
+      }}
+    >
+      <div className="font-sans text-[10px] font-semibold uppercase text-gray-400" style={{ letterSpacing: '0.14em' }}>
+        {eyebrow}
+      </div>
+      <h4 className="mt-2 font-sans text-[14px] font-semibold leading-5 text-gray-900">{title}</h4>
+      {formula ? <div className="mt-2 font-mono text-[13px] font-semibold text-gray-800">{formula}</div> : null}
+      {note ? <p className="mt-2 font-serif text-[14px] leading-6 text-gray-700">{note}</p> : null}
+      {items?.length ? <AssignmentList items={items} active={active} /> : null}
+    </div>
+  );
+}
+
+function FlowArrow({ label }) {
+  return (
+    <div className="flex items-center justify-center gap-2 text-center text-gray-500 max-lg:py-1 lg:flex-col">
+      <div className="h-px w-8 bg-gray-300 lg:h-8 lg:w-px" />
+      <div className="rounded-full border border-gray-200 bg-white px-2.5 py-1 font-sans text-[11px] font-semibold leading-4 text-gray-600">
+        {label}
+      </div>
+      <div className="flex items-center gap-1 lg:flex-col">
+        <div className="h-px w-8 bg-gray-300 lg:h-8 lg:w-px" />
+        <div
+          className="h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent lg:rotate-90"
+          style={{ borderLeftColor: TOKEN.gray400 }}
+          aria-hidden
+        />
+      </div>
+    </div>
+  );
+}
+
+function isCrossS2View(view) {
+  return normalizePresetId(view?.title ?? view?.tabLabel ?? '') === 'crossS2'
+    || normalizePresetId(view?.referenceId ?? '') === 'crossS2';
+}
+
+function productRowNote(view) {
+  if (isCrossS2View(view)) {
+    return 'For the Cross S2 microscope, symmetry of A makes these two assignments the same representative product: A[0,1] * B[0] = A[1,0] * B[0].';
+  }
+  return view.reachTargets > 1
+    ? 'These assignments share one representative product row before projection branches to stored outputs.'
+    : 'These assignments share one representative product row; the evaluator multiplies that row once.';
+}
+
+function OneRowMicroscope({ view }) {
+  const denseText = countLabel(view.denseAssignmentCount, 'assignment');
+  const visibleText = countLabel(visibleAssignmentCount(view), 'visible output');
+  const reachedCount = Math.max(1, Math.min(view.outputColumns.length, view.reachTargets));
+  const reachText = reachedCount === 1
+    ? 'This product row fills one stored column, so this row contributes 1 to α.'
+    : `This product row fills ${reachedCount} stored columns, so this row contributes ${reachedCount} to α.`;
+
+  return (
+    <section className="rounded-[var(--radius-lg)] border border-gray-200 bg-gray-50 p-4 md:p-5">
+      <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0">
+          <Kicker>One row microscope</Kicker>
+          <h3 className="mt-2 font-sans text-[16px] font-semibold text-gray-900">A tuple is one dense assignment</h3>
+          <p className="mt-2 max-w-[48rem] font-serif text-[15px] leading-7 text-gray-700">
+            Each tuple below is one choice of values for all labels, not the whole space. {denseText ? `The full space X has ${denseText} at n=${view.dimensionN}; this panel shows members of one product row.` : 'This panel shows members of one product row.'}
+          </p>
+        </div>
+        <div className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-mono text-[12px] font-semibold text-gray-700 md:shrink-0">
+          {view.labelOrder?.length ? `labels in X: ${view.labelOrder.join(', ')}` : 'labels in X'}
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0">
+            <Kicker>1. Example assignments from X</Kicker>
+            <p className="mt-2 font-serif text-[15px] leading-7 text-gray-700">
+              A dense evaluator would visit these as separate assignments. Here they are members of the same product row.
+            </p>
+          </div>
+          <div className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 font-sans text-[11px] font-semibold text-gray-600">
+            showing examples, not all of X
+          </div>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          {view.productAssignments.slice(0, 2).map((item, index) => (
+            <div
+              key={`${item}-${index}`}
+              className="rounded-[var(--radius-md)] border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-[12px] font-semibold text-gray-800"
+            >
+              {item}
+            </div>
+          ))}
+          <div className="rounded-full border border-[var(--coral)] bg-[var(--coral-light)] px-3 py-1.5 font-sans text-[11px] font-semibold text-[var(--coral)]">
+            same product under G_pt
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 grid gap-3 lg:grid-cols-2">
+        <MicroscopeCard
+          eyebrow="2. Product row"
+          title="Group equal products into O"
+          formula="O ∈ X/G_pt"
+          note={productRowNote(view)}
+          items={view.productRows.slice(0, 1)}
+          active
+        />
+        <MicroscopeCard
+          eyebrow="3. Projection reach"
+          title="Record reached Q columns"
+          formula="π_V(O) meets Q"
+          note={`${visibleText ? `Y has ${visibleText} at n=${view.dimensionN}. ` : ''}${reachText}`}
+          items={view.outputColumns.slice(0, reachedCount)}
+          active={reachedCount > 1}
+        />
+      </div>
+    </section>
+  );
+}
+
+function FormalQuotientSummary() {
+  return (
+    <section className="grid gap-3 md:grid-cols-3">
+      {[
+        ['Rows', 'X → X/G_pt', 'Group full assignments that produce the same pre-summation product.'],
+        ['Columns', 'Y → Y/H', 'Group visible output assignments that share stored output representatives.'],
+        ['Reach', 'X/G_pt ⇢ Y/H', 'Projection marks which row-column cells are filled; it may be a relation, not a function.'],
+      ].map(([eyebrow, formula, text]) => (
+        <div key={eyebrow} className="rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4">
+          <Kicker>{eyebrow}</Kicker>
+          <div className="mt-2 font-mono text-[14px] font-semibold text-gray-900">{formula}</div>
+          <p className="mt-2 font-serif text-[14px] leading-6 text-gray-700">{text}</p>
+        </div>
+      ))}
+    </section>
+  );
+}
+
 export default function TwoQuotientSchematic({ current = null }) {
   const [activeId, setActiveId] = useState('current');
   const [hoverTarget, setHoverTarget] = useState(null);
@@ -534,7 +751,7 @@ export default function TwoQuotientSchematic({ current = null }) {
           <div className="min-w-0">
             <Kicker>Two quotient spaces</Kicker>
             <figcaption className="mt-2 max-w-[42rem] font-serif text-[16px] leading-7 text-gray-700">
-              First compress full products into rows. Separately compress visible outputs into stored columns. Then projection marks the filled row-column cells counted by α.
+              Read one row first: a full assignment is one tuple of label values. Symmetry groups equal-product tuples into a product row, and projection shows which stored output columns that row fills.
             </figcaption>
           </div>
           <ExampleTabs entries={tabEntries} activeId={activeId} onSelect={setActiveId} />
@@ -542,45 +759,8 @@ export default function TwoQuotientSchematic({ current = null }) {
 
         <CurrentPresetSummary view={view} />
 
-        <div className="grid min-w-0 gap-3 rounded-[var(--radius-lg)] border border-gray-200 bg-gray-50 p-3 md:p-4">
-          <QuotientLane
-            kicker="Row quotient"
-            fromTitle="Full product assignments"
-            fromFormula="X"
-            fromItems={view.productAssignments}
-            toTitle="Product-orbit rows"
-            toFormula="O ∈ X/G_pt"
-            toItems={view.productRows}
-            processLabel="quotient by G_pt"
-            processDetail="same product value"
-            active={isGptActive}
-            onHoverStart={() => startHover('gpt')}
-            onHoverEnd={endHover}
-            reducedMotion={reducedMotion}
-          />
-          <QuotientLane
-            kicker="Column quotient"
-            fromTitle="Visible output assignments"
-            fromFormula="Y"
-            fromItems={view.outputAssignments}
-            toTitle="Stored-output columns"
-            toFormula="Q ∈ Y/H"
-            toItems={view.outputColumns}
-            processLabel="quotient by H"
-            processDetail="same stored output"
-            active={isHActive}
-            onHoverStart={() => startHover('h')}
-            onHoverEnd={endHover}
-            reducedMotion={reducedMotion}
-          />
-          <ReachRelationPanel
-            view={view}
-            active={isPiActive}
-            onHoverStart={() => startHover('pi')}
-            onHoverEnd={endHover}
-            reducedMotion={reducedMotion}
-          />
-        </div>
+        <OneRowMicroscope view={view} />
+        <FormalQuotientSummary />
       </div>
     </figure>
   );

@@ -13,9 +13,9 @@ const rowsCols = {
   deck: 'How does $G_{\\text{pt}}$ become rows, and $H$ become columns?',
   slots: {
     intro: [
-      p('The $O \\to Q$ matrix has two quotients: one quotient turns product assignments into rows, and the other turns output assignments into stored columns. The projection step only asks which row reaches which column.', 'full', { lead: true, align: 'left' }),
+      p('Read one dense assignment first. A tuple such as $(i=0,j=1,k=0)$ is one choice of values for every label, not a whole row. The $O \\to Q$ matrix starts by grouping those single assignments into product rows, then asks which stored output columns each row reaches.', 'full', { lead: true, align: 'left' }),
       h('Rows: product orbits', 1),
-      p('Start with full assignments. The detected pointwise group $G_{\\text{pt}}$ relabels assignments that produce the same representative product, so one matrix row is one orbit $O$.', 1, { align: 'left' }),
+      p('Start with the full assignment space $X$. The schematic shows only examples from $X$; at $n=5$, Cross $S_2$ has $5^3=125$ such assignments. The detected pointwise group $G_{\\text{pt}}$ relabels assignments that produce the same representative product, so one matrix row is one orbit $O$.', 1, { align: 'left' }),
       eq('\\displaystyle O \\in X/G_{\\text{pt}}', 1, false, 'Row quotient'),
       p('Counting rows gives $M$: the number of representative products the evaluator multiplies once.', 1, { align: 'left' }),
       h('Columns: stored output representatives', 2),
