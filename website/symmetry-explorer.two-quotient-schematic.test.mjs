@@ -27,7 +27,8 @@ test('TwoQuotientSchematic — renders a DOM microscope plus formal quotient sum
   assert.match(src, /function OneRowMicroscope/);
   assert.match(src, /function FormalQuotientSummary/);
   assert.match(src, /One row microscope/);
-  assert.match(src, /A tuple is one dense assignment/);
+  assert.match(src, /One product row/);
+  assert.match(src, /Each pill is one dense assignment/);
   assert.match(src, /X → X\/G_pt/);
   assert.match(src, /Y → Y\/H/);
 });
@@ -55,10 +56,11 @@ test('TwoQuotientSchematic — explains single assignments, samples, rows, and c
   const src = read(COMPONENT_PATH);
   assert.match(src, /one choice of values for all labels/);
   assert.match(src, /not the whole space/);
-  assert.match(src, /Example assignments from X/);
-  assert.match(src, /Group equal products into O/);
-  assert.match(src, /Record reached Q columns/);
+  assert.match(src, /Two example tuples from X/);
+  assert.match(src, /One row O/);
+  assert.match(src, /Which output cells get filled\?/);
   assert.match(src, /Projection marks which row-column cells are filled/);
+  assert.match(src, /This product row contributes/);
   assert.match(src, /A\[0,1\] \* B\[0\] = A\[1,0\] \* B\[0\]/);
 });
 
@@ -79,9 +81,10 @@ test('TwoQuotientSchematic — microscope chooses a useful row and explains the 
   const src = read(COMPONENT_PATH);
   assert.match(src, /microscopeRowIndex = orbitRows\.findIndex/);
   assert.match(src, /outputCount/);
-  assert.match(src, /same product under G_pt/);
-  assert.match(src, /Projection reach/);
-  assert.match(src, /This product row fills/);
+  assert.match(src, /same product/);
+  assert.match(src, /project to V/);
+  assert.match(src, /Filled output cells/);
+  assert.match(src, /The row fills/);
 });
 
 test('TwoQuotientSchematic — uses design-system token recipe, no raw hex', () => {
@@ -94,11 +97,11 @@ test('TwoQuotientSchematic — uses design-system token recipe, no raw hex', () 
   assert.deepEqual(hexes, [], `Raw hex in schematic source: ${hexes.join(', ')}`);
 });
 
-test('TwoQuotientSchematic — uses prefers-reduced-motion / matchMedia', () => {
+test('TwoQuotientSchematic — removes the older lane UI in favor of one microscope flow', () => {
   const src = read(COMPONENT_PATH);
-  assert.ok(/prefers-reduced-motion|matchMedia/.test(src));
-  assert.match(src, /reducedMotion/);
-  assert.match(src, /transition.*none/);
+  assert.doesNotMatch(src, /function QuotientLane/);
+  assert.doesNotMatch(src, /function ReachRelationPanel/);
+  assert.doesNotMatch(src, /Record reached Q columns/);
 });
 
 test('App — computes and passes current preset data into the schematic', () => {

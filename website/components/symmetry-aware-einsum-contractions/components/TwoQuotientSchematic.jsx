@@ -113,23 +113,6 @@ function normalizePresetId(name = '') {
   return null;
 }
 
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  });
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const handler = (e) => setReduced(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  return reduced;
-}
-
 function formatNumber(value, fallback = '—') {
   return Number.isFinite(value) ? value.toLocaleString() : fallback;
 }
@@ -287,7 +270,7 @@ function MetricStrip({ view }) {
   return (
     <dl
       className="grid grid-cols-1 rounded-[var(--radius-md)] border-y border-gray-200 bg-white/70 py-1 sm:grid-cols-4 sm:py-3"
-      aria-label="Current two-quotient metrics"
+      aria-label="Selected two-quotient metrics"
     >
       {metrics.map((metric) => (
         <div
@@ -312,190 +295,6 @@ function MetricStrip({ view }) {
         </div>
       ))}
     </dl>
-  );
-}
-
-function SampleList({ items }) {
-  return (
-    <div className="mt-3 grid gap-1.5">
-      {items.slice(0, 3).map((item, index) => (
-        <div
-          key={`${item}-${index}`}
-          className="min-w-0 rounded-[var(--radius-sm)] border border-gray-200 bg-gray-50 px-2 py-1 font-mono text-[11px] leading-4 text-gray-600"
-          title={item}
-        >
-          <span className="block truncate">{item}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function QuotientBox({ title, formula, items, active = false, result = false, reducedMotion }) {
-  return (
-    <div
-      className="min-w-0 rounded-[var(--radius-lg)] border bg-white p-3"
-      style={{
-        borderColor: active ? TOKEN.coral : TOKEN.gray200,
-        background: active ? TOKEN.coralLight : TOKEN.white,
-        transition: reducedMotion ? 'none' : 'border-color 160ms ease, background 160ms ease',
-      }}
-    >
-      <div className="font-sans text-[13px] font-semibold leading-5 text-gray-900">{title}</div>
-      <div
-        className="mt-1 font-mono text-[13px] font-semibold leading-5"
-        style={{ color: active ? TOKEN.coral : result ? TOKEN.gray900 : TOKEN.gray700 }}
-      >
-        {formula}
-      </div>
-      <SampleList items={items} />
-    </div>
-  );
-}
-
-function ProcessArrow({ label, detail, active, onHoverStart, onHoverEnd, reducedMotion }) {
-  return (
-    <button
-      type="button"
-      aria-pressed={active}
-      aria-label={`Highlight ${label}`}
-      onMouseEnter={onHoverStart}
-      onMouseLeave={onHoverEnd}
-      onFocus={onHoverStart}
-      onBlur={onHoverEnd}
-      className="group flex min-w-[7rem] flex-col items-center justify-center gap-1 self-stretch rounded-[var(--radius-md)] px-2 py-2 text-center focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20"
-      style={{ color: active ? TOKEN.coral : TOKEN.gray600 }}
-    >
-      <div className="flex w-full items-center gap-2 max-md:flex-col">
-        <div className="h-px flex-1 bg-gray-300 max-md:h-5 max-md:w-px max-md:flex-none" />
-        <div
-          className="rounded-full border bg-white px-2 py-1 font-sans text-[11px] font-semibold leading-4"
-          style={{
-            borderColor: active ? TOKEN.coral : TOKEN.gray200,
-            transition: reducedMotion ? 'none' : 'border-color 160ms ease',
-          }}
-        >
-          {label}
-        </div>
-        <div className="flex items-center gap-1 max-md:flex-col">
-          <div className="h-px w-5 bg-gray-300 max-md:h-5 max-md:w-px" />
-          <div
-            className="h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent max-md:rotate-90"
-            style={{ borderLeftColor: active ? TOKEN.coral : TOKEN.gray400 }}
-            aria-hidden
-          />
-        </div>
-      </div>
-      <div className="max-w-[11rem] font-sans text-[10.5px] leading-4 text-gray-500">{detail}</div>
-    </button>
-  );
-}
-
-function QuotientLane({
-  kicker,
-  fromTitle,
-  fromFormula,
-  fromItems,
-  toTitle,
-  toFormula,
-  toItems,
-  processLabel,
-  processDetail,
-  active,
-  onHoverStart,
-  onHoverEnd,
-  reducedMotion,
-}) {
-  return (
-    <div className="rounded-[var(--radius-lg)] border border-gray-200 bg-white p-3 md:p-4">
-      <Kicker>{kicker}</Kicker>
-      <div className="mt-3 grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(8rem,10rem)_minmax(0,1fr)] md:items-center">
-        <QuotientBox
-          title={fromTitle}
-          formula={fromFormula}
-          items={fromItems}
-          reducedMotion={reducedMotion}
-        />
-        <ProcessArrow
-          label={processLabel}
-          detail={processDetail}
-          active={active}
-          onHoverStart={onHoverStart}
-          onHoverEnd={onHoverEnd}
-          reducedMotion={reducedMotion}
-        />
-        <QuotientBox
-          title={toTitle}
-          formula={toFormula}
-          items={toItems}
-          active={active}
-          result
-          reducedMotion={reducedMotion}
-        />
-      </div>
-    </div>
-  );
-}
-
-function ReachRelationPanel({ view, active, onHoverStart, onHoverEnd, reducedMotion }) {
-  const outputTargets = view.outputColumns.slice(0, Math.max(1, Math.min(3, view.reachTargets)));
-  const reachesMany = view.reachTargets > 1;
-
-  return (
-    <div
-      className="rounded-[var(--radius-lg)] border border-dashed bg-white p-3 md:p-4"
-      style={{
-        borderColor: active ? TOKEN.coral : TOKEN.gray300,
-        background: active ? TOKEN.coralLight : TOKEN.white,
-        transition: reducedMotion ? 'none' : 'border-color 160ms ease, background 160ms ease',
-      }}
-    >
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="min-w-0">
-          <Kicker>Projection reach</Kicker>
-          <p className="mt-2 font-serif text-[15px] leading-7 text-gray-700">
-            Projection is not a third quotient. It asks which stored columns each product-orbit row reaches after dropping summed labels.
-          </p>
-        </div>
-        <button
-          type="button"
-          aria-pressed={active}
-          aria-label="Highlight projection reach relation"
-          className="self-start rounded-full border bg-white px-3 py-1.5 font-sans text-[12px] font-semibold focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20"
-          style={{ borderColor: active ? TOKEN.coral : TOKEN.gray200, color: active ? TOKEN.coral : TOKEN.gray600 }}
-          onMouseEnter={onHoverStart}
-          onMouseLeave={onHoverEnd}
-          onFocus={onHoverStart}
-          onBlur={onHoverEnd}
-        >
-          π_V reach
-        </button>
-      </div>
-      <div className="mt-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center">
-        <div className="rounded-[var(--radius-md)] border border-gray-200 bg-gray-50 px-3 py-2">
-          <div className="font-sans text-[11px] font-semibold uppercase text-gray-400" style={{ letterSpacing: '0.14em' }}>One row</div>
-          <div className="mt-1 truncate font-mono text-[12px] font-semibold text-gray-900">{view.productRows[0] ?? 'O'}</div>
-        </div>
-        <div className="flex items-center justify-center gap-2 text-center max-md:flex-col">
-          <div className="h-px w-8 bg-gray-300 max-md:h-5 max-md:w-px" />
-          <div className="font-sans text-[11px] font-semibold text-gray-500">
-            {reachesMany ? 'may fill multiple cells' : 'fills one cell here'}
-          </div>
-          <div className="h-px w-8 bg-gray-300 max-md:h-5 max-md:w-px" />
-        </div>
-        <div className="grid gap-1.5">
-          {outputTargets.map((target, index) => (
-            <div
-              key={`${target}-${index}`}
-              className="rounded-[var(--radius-sm)] border bg-white px-2 py-1 font-mono text-[11px] font-semibold text-gray-700"
-              style={{ borderColor: reachesMany ? TOKEN.coral : TOKEN.gray200 }}
-            >
-              {target}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -529,19 +328,21 @@ function ExampleTabs({ entries, activeId, onSelect }) {
   );
 }
 
-function CurrentPresetSummary({ view }) {
+function CurrentPresetCounts({ view }) {
   return (
-    <section className="rounded-[var(--radius-lg)] border border-gray-200 bg-gray-50 p-4">
-      <div className="grid gap-4">
+    <section className="rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4">
+      <div className="grid gap-3">
         <div className="min-w-0">
-          <Kicker>{view.id === 'current' ? 'Current preset' : 'Reference example'}</Kicker>
-          <h3 className="mt-2 font-sans text-[15px] font-semibold text-gray-900">{view.title}</h3>
-          <p className="mt-2 max-w-[46rem] font-serif text-[15px] leading-7 text-gray-700">{view.caption}</p>
+          <Kicker>Selected counts</Kicker>
+          <div className="mt-2 flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
+            <h3 className="font-sans text-[14px] font-semibold text-gray-900">{view.title}</h3>
+            <p className="font-serif text-[14px] leading-6 text-gray-600">{view.caption}</p>
+          </div>
         </div>
         <MetricStrip view={view} />
-        <div className="rounded-[var(--radius-md)] border-l-[3px] border-[var(--coral)] bg-[var(--coral-light)] px-3 py-2 font-sans text-[12px] leading-5 text-gray-800">
+        <p className="font-sans text-[12px] leading-5 text-gray-600">
           Count rows for <span className="font-mono font-semibold">M</span>. Count filled <span className="font-mono font-semibold">O→Q</span> cells for <span className="font-mono font-semibold">α</span>.
-        </div>
+        </p>
       </div>
     </section>
   );
@@ -575,40 +376,57 @@ function AssignmentList({ items, active = false }) {
   );
 }
 
-function MicroscopeCard({ eyebrow, title, formula, note, items, active = false }) {
+function AssignmentPill({ item }) {
   return (
-    <div
-      className="min-w-0 rounded-[var(--radius-lg)] border bg-white p-4"
-      style={{
-        borderColor: active ? TOKEN.coral : TOKEN.gray200,
-        background: active ? TOKEN.coralLight : TOKEN.white,
-      }}
-    >
-      <div className="font-sans text-[10px] font-semibold uppercase text-gray-400" style={{ letterSpacing: '0.14em' }}>
-        {eyebrow}
+    <div className="rounded-[var(--radius-md)] border border-gray-200 bg-white px-3 py-2">
+      <div className="font-sans text-[9px] font-semibold uppercase text-gray-400" style={{ letterSpacing: '0.12em' }}>
+        one assignment
       </div>
-      <h4 className="mt-2 font-sans text-[14px] font-semibold leading-5 text-gray-900">{title}</h4>
-      {formula ? <div className="mt-2 font-mono text-[13px] font-semibold text-gray-800">{formula}</div> : null}
-      {note ? <p className="mt-2 font-serif text-[14px] leading-6 text-gray-700">{note}</p> : null}
-      {items?.length ? <AssignmentList items={items} active={active} /> : null}
+      <div className="mt-1 font-mono text-[12px] font-semibold leading-4 text-gray-900">{item}</div>
     </div>
   );
 }
 
-function FlowArrow({ label }) {
+function FlowCell({ eyebrow, title, formula, children }) {
   return (
-    <div className="flex items-center justify-center gap-2 text-center text-gray-500 max-lg:py-1 lg:flex-col">
-      <div className="h-px w-8 bg-gray-300 lg:h-8 lg:w-px" />
-      <div className="rounded-full border border-gray-200 bg-white px-2.5 py-1 font-sans text-[11px] font-semibold leading-4 text-gray-600">
-        {label}
-      </div>
-      <div className="flex items-center gap-1 lg:flex-col">
-        <div className="h-px w-8 bg-gray-300 lg:h-8 lg:w-px" />
+    <div className="min-w-0 bg-white p-4 md:p-5">
+      <Kicker>{eyebrow}</Kicker>
+      <h4 className="mt-2 font-sans text-[15px] font-semibold leading-5 text-gray-900">{title}</h4>
+      {formula ? <div className="mt-2 font-mono text-[13px] font-semibold text-gray-800">{formula}</div> : null}
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
+function ResultAssignmentList({ items }) {
+  return (
+    <div className="mt-3 grid gap-1.5">
+      {items.map((item, index) => (
         <div
-          className="h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent lg:rotate-90"
-          style={{ borderLeftColor: TOKEN.gray400 }}
-          aria-hidden
-        />
+          key={`${item}-${index}`}
+          className="rounded-[var(--radius-sm)] border bg-white px-2.5 py-1.5 font-mono text-[11px] font-semibold leading-4 text-gray-800"
+          style={{ borderColor: TOKEN.coral }}
+        >
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ResultPunchline({ reachedCount }) {
+  return (
+    <div className="mt-3 rounded-[var(--radius-md)] border-l-[3px] border-[var(--coral)] bg-white px-3 py-2 font-sans text-[12px] leading-5 text-gray-800">
+      This product row contributes <span className="font-mono font-semibold text-[var(--coral)]">{reachedCount}</span> to <span className="font-mono font-semibold">α</span>.
+    </div>
+  );
+}
+
+function MicroscopeConnector({ children }) {
+  return (
+    <div className="hidden items-center justify-center border-l border-gray-200 px-2 lg:flex">
+      <div className="rounded-full border border-gray-200 bg-white px-2.5 py-1 font-sans text-[10.5px] font-semibold leading-4 text-gray-500">
+        {children}
       </div>
     </div>
   );
@@ -621,7 +439,7 @@ function isCrossS2View(view) {
 
 function productRowNote(view) {
   if (isCrossS2View(view)) {
-    return 'For the Cross S2 microscope, symmetry of A makes these two assignments the same representative product: A[0,1] * B[0] = A[1,0] * B[0].';
+    return 'For the Cross S₂ microscope, symmetry of A makes these two assignments the same representative product: A[0,1] * B[0] = A[1,0] * B[0].';
   }
   return view.reachTargets > 1
     ? 'These assignments share one representative product row before projection branches to stored outputs.'
@@ -632,18 +450,22 @@ function OneRowMicroscope({ view }) {
   const denseText = countLabel(view.denseAssignmentCount, 'assignment');
   const visibleText = countLabel(visibleAssignmentCount(view), 'visible output');
   const reachedCount = Math.max(1, Math.min(view.outputColumns.length, view.reachTargets));
-  const reachText = reachedCount === 1
-    ? 'This product row fills one stored column, so this row contributes 1 to α.'
-    : `This product row fills ${reachedCount} stored columns, so this row contributes ${reachedCount} to α.`;
+  const reachesMany = reachedCount > 1;
+  const headline = reachesMany
+    ? `One product row, ${reachedCount} output columns`
+    : 'One product row, one output column';
+  const fillText = reachesMany
+    ? `The row fills ${reachedCount} stored columns after projection.`
+    : 'The row fills one stored column after projection.';
 
   return (
-    <section className="rounded-[var(--radius-lg)] border border-gray-200 bg-gray-50 p-4 md:p-5">
+    <section className="rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4 md:p-5">
       <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
           <Kicker>One row microscope</Kicker>
-          <h3 className="mt-2 font-sans text-[16px] font-semibold text-gray-900">A tuple is one dense assignment</h3>
-          <p className="mt-2 max-w-[48rem] font-serif text-[15px] leading-7 text-gray-700">
-            Each tuple below is one choice of values for all labels, not the whole space. {denseText ? `The full space X has ${denseText} at n=${view.dimensionN}; this panel shows members of one product row.` : 'This panel shows members of one product row.'}
+          <h3 className="mt-2 font-serif text-[24px] font-semibold leading-8 text-gray-900">{headline}</h3>
+          <p className="mt-2 max-w-[50rem] font-serif text-[16px] leading-7 text-gray-700">
+            Each pill is one dense assignment: one choice of values for all labels. We show two members from one product row; projection then tells which stored output cells that row fills.
           </p>
         </div>
         <div className="rounded-full border border-gray-200 bg-white px-3 py-1.5 font-mono text-[12px] font-semibold text-gray-700 md:shrink-0">
@@ -651,50 +473,48 @@ function OneRowMicroscope({ view }) {
         </div>
       </div>
 
-      <div className="mt-5 rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="min-w-0">
-            <Kicker>1. Example assignments from X</Kicker>
-            <p className="mt-2 font-serif text-[15px] leading-7 text-gray-700">
-              A dense evaluator would visit these as separate assignments. Here they are members of the same product row.
+      <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-gray-200 bg-white">
+        <div className="grid lg:grid-cols-[minmax(0,1.05fr)_auto_minmax(0,0.9fr)_auto_minmax(0,1fr)]">
+          <FlowCell
+            eyebrow="1. Dense assignments"
+            title="Two example tuples from X"
+            formula="x ∈ X"
+          >
+            <p className="font-serif text-[14px] leading-6 text-gray-700">
+              {denseText ? `The full space X has ${denseText} at n=${view.dimensionN}. ` : ''}These two examples are not the whole space.
             </p>
-          </div>
-          <div className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 font-sans text-[11px] font-semibold text-gray-600">
-            showing examples, not all of X
-          </div>
-        </div>
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          {view.productAssignments.slice(0, 2).map((item, index) => (
-            <div
-              key={`${item}-${index}`}
-              className="rounded-[var(--radius-md)] border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-[12px] font-semibold text-gray-800"
-            >
-              {item}
+            <div className="mt-3 grid gap-2">
+              {view.productAssignments.slice(0, 2).map((item, index) => (
+                <AssignmentPill key={`${item}-${index}`} item={item} />
+              ))}
             </div>
-          ))}
-          <div className="rounded-full border border-[var(--coral)] bg-[var(--coral-light)] px-3 py-1.5 font-sans text-[11px] font-semibold text-[var(--coral)]">
-            same product under G_pt
-          </div>
-        </div>
-      </div>
+          </FlowCell>
 
-      <div className="mt-3 grid gap-3 lg:grid-cols-2">
-        <MicroscopeCard
-          eyebrow="2. Product row"
-          title="Group equal products into O"
-          formula="O ∈ X/G_pt"
-          note={productRowNote(view)}
-          items={view.productRows.slice(0, 1)}
-          active
-        />
-        <MicroscopeCard
-          eyebrow="3. Projection reach"
-          title="Record reached Q columns"
-          formula="π_V(O) meets Q"
-          note={`${visibleText ? `Y has ${visibleText} at n=${view.dimensionN}. ` : ''}${reachText}`}
-          items={view.outputColumns.slice(0, reachedCount)}
-          active={reachedCount > 1}
-        />
+          <MicroscopeConnector>same product</MicroscopeConnector>
+
+          <FlowCell
+            eyebrow="2. Product row"
+            title="One row O"
+            formula="O ∈ X/G_pt"
+          >
+            <p className="font-serif text-[14px] leading-6 text-gray-700">{productRowNote(view)}</p>
+            <AssignmentList items={view.productRows.slice(0, 1)} />
+          </FlowCell>
+
+          <MicroscopeConnector>project to V</MicroscopeConnector>
+
+          <FlowCell
+            eyebrow="3. Filled output cells"
+            title="Which output cells get filled?"
+            formula="π_V(O) meets Q"
+          >
+            <p className="font-serif text-[14px] leading-6 text-gray-800">
+              {visibleText ? `Y has ${visibleText} at n=${view.dimensionN}. ` : ''}{fillText}
+            </p>
+            <ResultAssignmentList items={view.outputColumns.slice(0, reachedCount)} />
+            <ResultPunchline reachedCount={reachedCount} />
+          </FlowCell>
+        </div>
       </div>
     </section>
   );
@@ -720,8 +540,6 @@ function FormalQuotientSummary() {
 
 export default function TwoQuotientSchematic({ current = null }) {
   const [activeId, setActiveId] = useState('current');
-  const [hoverTarget, setHoverTarget] = useState(null);
-  const reducedMotion = usePrefersReducedMotion();
   const currentView = useMemo(() => buildCurrentView(current), [current]);
   const tabEntries = useMemo(() => [
     currentView,
@@ -735,11 +553,6 @@ export default function TwoQuotientSchematic({ current = null }) {
   }, [activeId, tabEntries]);
 
   const view = activeId === 'current' ? currentView : REFERENCE_PRESETS[activeId] ?? currentView;
-  const isGptActive = hoverTarget === 'gpt';
-  const isHActive = hoverTarget === 'h';
-  const isPiActive = hoverTarget === 'pi';
-  const startHover = (target) => setHoverTarget(target);
-  const endHover = () => setHoverTarget(null);
 
   return (
     <figure
@@ -757,9 +570,8 @@ export default function TwoQuotientSchematic({ current = null }) {
           <ExampleTabs entries={tabEntries} activeId={activeId} onSelect={setActiveId} />
         </div>
 
-        <CurrentPresetSummary view={view} />
-
         <OneRowMicroscope view={view} />
+        <CurrentPresetCounts view={view} />
         <FormalQuotientSummary />
       </div>
     </figure>
