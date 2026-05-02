@@ -269,7 +269,7 @@ function MetricStrip({ view }) {
   const metrics = metricListForView(view);
   return (
     <dl
-      className="grid grid-cols-1 rounded-[var(--radius-md)] border-y border-gray-200 bg-white/70 py-1 sm:grid-cols-4 sm:py-3"
+      className="grid grid-cols-1 border-y border-gray-200 py-1 sm:grid-cols-4 sm:py-3"
       aria-label="Selected two-quotient metrics"
     >
       {metrics.map((metric) => (
@@ -330,7 +330,7 @@ function ExampleTabs({ entries, activeId, onSelect }) {
 
 function CurrentPresetCounts({ view }) {
   return (
-    <section className="rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4">
+    <section className="border-t border-gray-200 pt-4">
       <div className="grid gap-3">
         <div className="min-w-0">
           <Kicker>Selected counts</Kicker>
@@ -387,9 +387,9 @@ function AssignmentPill({ item }) {
   );
 }
 
-function FlowCell({ eyebrow, title, formula, children }) {
+function FlowCell({ eyebrow, title, formula, children, className = '' }) {
   return (
-    <div className="min-w-0 bg-white p-4 md:p-5">
+    <div className={`min-w-0 bg-white py-4 md:py-5 ${className}`}>
       <Kicker>{eyebrow}</Kicker>
       <h4 className="mt-2 font-sans text-[15px] font-semibold leading-5 text-gray-900">{title}</h4>
       {formula ? <div className="mt-2 font-mono text-[13px] font-semibold text-gray-800">{formula}</div> : null}
@@ -424,8 +424,8 @@ function ResultPunchline({ reachedCount }) {
 
 function MicroscopeConnector({ children }) {
   return (
-    <div className="hidden items-center justify-center border-l border-gray-200 px-2 lg:flex">
-      <div className="rounded-full border border-gray-200 bg-white px-2.5 py-1 font-sans text-[10.5px] font-semibold leading-4 text-gray-500">
+    <div className="hidden items-center justify-center px-3 lg:flex">
+      <div className="font-sans text-[10.5px] font-semibold uppercase leading-4 text-gray-400" style={{ letterSpacing: '0.08em' }}>
         {children}
       </div>
     </div>
@@ -459,7 +459,7 @@ function OneRowMicroscope({ view }) {
     : 'The row fills one stored column after projection.';
 
   return (
-    <section className="rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4 md:p-5">
+    <section className="border-t border-gray-200 pt-5">
       <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0">
           <Kicker>One row microscope</Kicker>
@@ -473,12 +473,13 @@ function OneRowMicroscope({ view }) {
         </div>
       </div>
 
-      <div className="mt-5 overflow-hidden rounded-[var(--radius-lg)] border border-gray-200 bg-white">
+      <div className="mt-5 border-y border-gray-200">
         <div className="grid lg:grid-cols-[minmax(0,1.05fr)_auto_minmax(0,0.9fr)_auto_minmax(0,1fr)]">
           <FlowCell
             eyebrow="1. Dense assignments"
             title="Two example tuples from X"
             formula="x ∈ X"
+            className="lg:pr-5"
           >
             <p className="font-serif text-[14px] leading-6 text-gray-700">
               {denseText ? `The full space X has ${denseText} at n=${view.dimensionN}. ` : ''}These two examples are not the whole space.
@@ -496,6 +497,7 @@ function OneRowMicroscope({ view }) {
             eyebrow="2. Product row"
             title="One row O"
             formula="O ∈ X/G_pt"
+            className="border-t border-gray-200 lg:border-l lg:border-t-0 lg:px-5"
           >
             <p className="font-serif text-[14px] leading-6 text-gray-700">{productRowNote(view)}</p>
             <AssignmentList items={view.productRows.slice(0, 1)} />
@@ -507,6 +509,7 @@ function OneRowMicroscope({ view }) {
             eyebrow="3. Filled output cells"
             title="Which output cells get filled?"
             formula="π_V(O) meets Q"
+            className="border-t border-gray-200 lg:border-l lg:border-t-0 lg:pl-5"
           >
             <p className="font-serif text-[14px] leading-6 text-gray-800">
               {visibleText ? `Y has ${visibleText} at n=${view.dimensionN}. ` : ''}{fillText}
@@ -522,13 +525,16 @@ function OneRowMicroscope({ view }) {
 
 function FormalQuotientSummary() {
   return (
-    <section className="grid gap-3 md:grid-cols-3">
+    <section className="grid border-t border-gray-200 md:grid-cols-3 md:divide-x md:divide-gray-200">
       {[
         ['Rows', 'X → X/G_pt', 'Group full assignments that produce the same pre-summation product.'],
         ['Columns', 'Y → Y/H', 'Group visible output assignments that share stored output representatives.'],
         ['Reach', 'X/G_pt ⇢ Y/H', 'Projection marks which row-column cells are filled; it may be a relation, not a function.'],
-      ].map(([eyebrow, formula, text]) => (
-        <div key={eyebrow} className="rounded-[var(--radius-lg)] border border-gray-200 bg-white p-4">
+      ].map(([eyebrow, formula, text], index) => (
+        <div
+          key={eyebrow}
+          className={`border-t border-gray-100 py-4 first:border-t-0 md:border-t-0 ${index === 0 ? 'md:pr-4' : 'md:px-4'}`}
+        >
           <Kicker>{eyebrow}</Kicker>
           <div className="mt-2 font-mono text-[14px] font-semibold text-gray-900">{formula}</div>
           <p className="mt-2 font-serif text-[14px] leading-6 text-gray-700">{text}</p>
