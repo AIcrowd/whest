@@ -31,9 +31,9 @@ const AGGREGATION_FORMULA = String.raw`\text{Total Cost} \;=\; (k-1) \cdot \prod
 const CAPTION_ADDED_NOT_MULTIPLIED =
   'Multiplication-chain events and accumulation-update events are added, not multiplied.';
 
-// Tooltip text for hovering the product term in the hero formula.
-const BURNSIDE_PRODUCT_TOOLTIP =
-  'M_a is a Burnside orbit count: representative products per component.';
+// Tooltip text for hovering the total formula.
+const TOTAL_FORMULA_TOOLTIP =
+  'The first term counts multiplication-chain events from representative product orbits; the second term counts accumulation updates into stored output representatives.';
 const SECTION_FIVE_INTRO_LEAD =
   String.raw`The preceding sections have produced the two quantities needed for the direct cost model. For each independent component, $M_a$ counts representative products and $\alpha_a$ counts filled local $O \to Q$ cells; globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.`;
 const SECTION_FIVE_INTRO_SCOPE =
@@ -267,110 +267,62 @@ function HeroFormulaBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   const aggregationLeaves = getAggregationLeaves(themeOverride);
   const piecewiseRowSpan = getPiecewiseRowSpan();
 
-  // Compact / full formula toggle (default: full)
-  const [formulaMode, setFormulaMode] = useState('full');
-
-  // Hover-product-term → Burnside tooltip
-  const productTermRef = useRef(null);
-  const [showBurnsideTooltip, setShowBurnsideTooltip] = useState(false);
-
-  const compactLine = String.raw`\mathrm{Total} \;=\; \mu + \alpha \;=\; (k-1)\!\prod_a M_a \;+\; \prod_a \alpha_a`;
+  // Hover-total-formula → term summary tooltip.
+  const formulaRef = useRef(null);
+  const [showFormulaTooltip, setShowFormulaTooltip] = useState(false);
 
   return (
     <div className="space-y-7">
-      {/* Compact / full toggle — matches TwoQuotientSchematic preset-button register */}
-      <div
-        role="group"
-        aria-label="Formula detail level"
-        className="flex justify-center gap-2"
-      >
-        {[
-          { id: 'compact', label: 'Compact' },
-          { id: 'full', label: 'Full formula' },
-        ].map(({ id, label }) => {
-          const active = formulaMode === id;
-          return (
-            <button
-              key={id}
-              type="button"
-              aria-pressed={active}
-              onClick={() => setFormulaMode(id)}
-              className={[
-                'rounded-md border px-3 py-1 text-[13px] transition-colors',
-                active
-                  ? 'border-coral bg-coral/10 font-semibold text-coral'
-                  : 'border-border bg-white font-normal text-muted-foreground hover:border-gray-300',
-              ].join(' ')}
-            >
-              {label}
-            </button>
-          );
-        })}
+      <div className="flex justify-center overflow-x-auto overflow-y-visible">
+        <div className="min-w-0 text-[17px] sm:text-[19px]">
+          <span
+            ref={formulaRef}
+            className="inline-block cursor-help"
+            tabIndex={0}
+            role="button"
+            aria-label="Hover to learn how the total formula combines multiplication and accumulation terms"
+            onMouseEnter={() => setShowFormulaTooltip(true)}
+            onMouseLeave={() => setShowFormulaTooltip(false)}
+            onFocus={() => setShowFormulaTooltip(true)}
+            onBlur={() => setShowFormulaTooltip(false)}
+          >
+            <Latex display math={topLine} themeOverride={themeOverride} />
+          </span>
+          <SimpleTooltip
+            anchorRef={formulaRef}
+            text={TOTAL_FORMULA_TOOLTIP}
+            visible={showFormulaTooltip}
+          />
+        </div>
       </div>
 
-      {formulaMode === 'compact' ? (
-        /* Compact mode: one-line summary */
-        <div className="flex justify-center overflow-x-auto overflow-y-visible">
-          <div className="min-w-0 text-[17px] sm:text-[19px]">
-            <Latex display math={compactLine} themeOverride={themeOverride} />
-          </div>
+      {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
+      <div className="text-center">
+        <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
+          <InlineMathText themeOverride={themeOverride}>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
         </div>
-      ) : (
-        <>
-          {/* Full mode: top line with hover-product-term */}
-          <div className="flex justify-center overflow-x-auto overflow-y-visible">
-            <div className="min-w-0 text-[17px] sm:text-[19px]">
-              {/* Hover wrapper for the product term → Burnside tooltip */}
-              <span
-                ref={productTermRef}
-                className="inline-block cursor-help"
-                tabIndex={0}
-                role="button"
-                aria-label="Hover to learn about Burnside orbit counts"
-                onMouseEnter={() => setShowBurnsideTooltip(true)}
-                onMouseLeave={() => setShowBurnsideTooltip(false)}
-                onFocus={() => setShowBurnsideTooltip(true)}
-                onBlur={() => setShowBurnsideTooltip(false)}
-              >
-                <Latex display math={topLine} themeOverride={themeOverride} />
-              </span>
-              <SimpleTooltip
-                anchorRef={productTermRef}
-                text={BURNSIDE_PRODUCT_TOOLTIP}
-                visible={showBurnsideTooltip}
-              />
-            </div>
+      </div>
+      <div className="flex justify-center overflow-x-auto overflow-y-visible">
+        <div
+          className="grid items-center gap-x-5 gap-y-2 text-[14px]"
+          style={{ gridTemplateColumns: 'auto auto 1fr auto' }}
+        >
+          {/* Keep α_a, =, and the brace in one KaTeX fragment so alignment comes from math layout, not CSS boxes. */}
+          <div
+            className="flex items-center justify-center self-stretch overflow-visible pr-1"
+            style={{
+              gridColumn: '1 / span 2',
+              gridRow: `1 / span ${piecewiseRowSpan}`,
+            }}
+          >
+            <Latex math={piecewisePrefix} themeOverride={themeOverride} />
           </div>
 
-          {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
-          <div className="text-center">
-            <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
-              <InlineMathText themeOverride={themeOverride}>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
-            </div>
-          </div>
-          <div className="flex justify-center overflow-x-auto overflow-y-visible">
-            <div
-              className="grid items-center gap-x-5 gap-y-2 text-[14px]"
-              style={{ gridTemplateColumns: 'auto auto 1fr auto' }}
-            >
-              {/* Keep α_a, =, and the brace in one KaTeX fragment so alignment comes from math layout, not CSS boxes. */}
-              <div
-                className="flex items-center justify-center self-stretch overflow-visible pr-1"
-                style={{
-                  gridColumn: '1 / span 2',
-                  gridRow: `1 / span ${piecewiseRowSpan}`,
-                }}
-              >
-                <Latex math={piecewisePrefix} themeOverride={themeOverride} />
-              </div>
-
-              {aggregationLeaves.map((leaf) => (
-                <FormulaRow key={leaf.id} leaf={leaf} themeOverride={themeOverride} />
-              ))}
-            </div>
-          </div>
-        </>
-      )}
+          {aggregationLeaves.map((leaf) => (
+            <FormulaRow key={leaf.id} leaf={leaf} themeOverride={themeOverride} />
+          ))}
+        </div>
+      </div>
 
       {/* V3.1 §9 editorial caption — MUST appear verbatim */}
       <p className="text-center font-serif text-[13px] italic leading-[1.6] text-gray-500">

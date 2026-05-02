@@ -4,14 +4,13 @@
  * Coverage:
  *  1. Caption "Multiplication-chain events and accumulation-update events are
  *     added, not multiplied." appears verbatim.
- *  2. Compact/full toggle has 2 buttons with aria-pressed.
- *  3. Hover-product-term has onMouseEnter / onMouseLeave handlers (source-grep).
+ *  2. Formula hero always renders the full formula; no compact/full toggle.
+ *  3. Hover-total-formula has onMouseEnter / onMouseLeave handlers (source-grep).
  *  4. Hover-α-row — CaseBadge wraps formula for tooltip; hover handlers exist
  *     via CaseBadge passthrough.
  *  5. Click-α-row has a wrapping <a href="#appendix-section-7"> link (Appendix B).
  *  6. Hex audit — no raw hex outside the LaTeX color-helper context.
- *  7. Accessibility — toggle buttons have aria-pressed; hover target has
- *     tabIndex and role="button".
+ *  7. Accessibility — hover target has tabIndex and role="button".
  */
 
 import test from 'node:test';
@@ -36,30 +35,31 @@ test('C38: caption "Multiplication-chain events and accumulation-update events a
   );
 });
 
-// ─── 2. Compact / full toggle has exactly 2 buttons ──────────────────────────
-test('C38: compact/full toggle renders 2 labelled buttons', () => {
+// ─── 2. Always render full formula, with no compact/full toggle ───────────────
+test('C38: formula hero always renders the full formula without a detail toggle', () => {
   const src = read(COMPONENT_PATH);
-  // The toggle array must have both 'compact' and 'full' id entries
-  assert.match(src, /id:\s*'compact'/);
-  assert.match(src, /id:\s*'full'/);
-  // Both must sit inside a role="group" aria-label block
-  assert.match(src, /role="group"/);
-  assert.match(src, /aria-label="Formula detail level"/);
-  // Two button labels
-  assert.match(src, /label:\s*'Compact'/);
-  assert.match(src, /label:\s*'Full formula'/);
+  assert.doesNotMatch(src, /formulaMode/);
+  assert.doesNotMatch(src, /setFormulaMode/);
+  assert.doesNotMatch(src, /compactLine/);
+  assert.doesNotMatch(src, /label:\s*'Compact'/);
+  assert.doesNotMatch(src, /label:\s*'Full formula'/);
+  assert.doesNotMatch(src, /aria-label="Formula detail level"/);
+  assert.match(src, /<Latex display math=\{topLine\} themeOverride=\{themeOverride\}/);
 });
 
-// ─── 3. Hover-product-term: onMouseEnter / onMouseLeave on the span ──────────
-test('C38: hero formula top line has onMouseEnter and onMouseLeave hover handlers', () => {
+// ─── 3. Hover-total-formula: onMouseEnter / onMouseLeave on the span ─────────
+test('C38: hero formula top line has an accurate total-formula tooltip', () => {
   const src = read(COMPONENT_PATH);
-  // The product-term hover span wraps the Burnside tooltip
-  assert.match(src, /onMouseEnter=\{.*setShowBurnsideTooltip.*true/);
-  assert.match(src, /onMouseLeave=\{.*setShowBurnsideTooltip.*false/);
+  // The hover span wraps a tooltip describing both the multiplication and accumulation terms.
+  assert.match(src, /onMouseEnter=\{.*setShowFormulaTooltip.*true/);
+  assert.match(src, /onMouseLeave=\{.*setShowFormulaTooltip.*false/);
   // The tooltip state variable exists
-  assert.match(src, /showBurnsideTooltip/);
-  // SimpleTooltip is rendered with BURNSIDE_PRODUCT_TOOLTIP text
-  assert.match(src, /BURNSIDE_PRODUCT_TOOLTIP/);
+  assert.match(src, /showFormulaTooltip/);
+  // SimpleTooltip is rendered with total-formula tooltip text.
+  assert.match(src, /TOTAL_FORMULA_TOOLTIP/);
+  assert.match(src, /multiplication-chain events/);
+  assert.match(src, /accumulation updates/);
+  assert.doesNotMatch(src, /BURNSIDE_PRODUCT_TOOLTIP/);
 });
 
 // ─── 4. Hover-α-row: CaseBadge passthrough provides tooltip on hover ─────────
@@ -108,10 +108,9 @@ test('C38: TotalCostView does not introduce raw hex outside LaTeX textcolor help
 });
 
 // ─── 7. Accessibility ─────────────────────────────────────────────────────────
-test('C38: toggle buttons have aria-pressed; hover target has tabIndex and role="button"', () => {
+test('C38: hover target has tabIndex and role="button"', () => {
   const src = read(COMPONENT_PATH);
-  // Toggle buttons
-  assert.match(src, /aria-pressed=\{active\}/);
+  assert.doesNotMatch(src, /aria-pressed=\{active\}/);
   // Product-term hover span
   assert.match(src, /tabIndex=\{0\}/);
   assert.match(src, /role="button"/);
