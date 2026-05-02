@@ -37,7 +37,7 @@ const BURNSIDE_PRODUCT_TOOLTIP =
 const SECTION_FIVE_INTRO_LEAD =
   String.raw`The preceding sections have produced the two quantities needed for the direct cost model. For each independent component, $M_a$ counts representative products and $\alpha_a$ counts filled local $O \to Q$ cells; globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.`;
 const SECTION_FIVE_INTRO_SCOPE =
-  String.raw`Here $\mu$ counts the multiplication-chain events needed to combine each representative product across $k$ operands, while $\alpha$ counts the output updates reached by those product representatives. The result is a direct indexed scalar-event count, not a contraction-path, BLAS runtime, or memory-traffic model. If an exact component count exceeds the analytic regimes or interactive budget, the count is reported unavailable instead of being guessed.`;
+  String.raw`Here $\mu$ counts the multiplication-chain events needed to combine each representative product across $k$ operands, while $\alpha$ counts the output updates reached by those product representatives.`;
 const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
@@ -531,7 +531,8 @@ function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) 
   return (
     <div className="mx-auto max-w-[48rem] space-y-7 text-center">
       <p
-        className="text-left font-serif text-[17px] leading-[1.75] text-gray-700"
+        className="font-serif text-[17px] leading-[1.75] text-gray-700"
+        style={{ textAlign: 'justify' }}
       >
         <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_LEAD}</InlineMathText>
       </p>
@@ -563,7 +564,8 @@ function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) 
         </div>
 
         <p
-          className="text-left font-serif text-[17px] leading-[1.75] text-gray-700"
+          className="font-serif text-[17px] leading-[1.75] text-gray-700"
+          style={{ textAlign: 'justify' }}
         >
           <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_SCOPE}</InlineMathText>
         </p>

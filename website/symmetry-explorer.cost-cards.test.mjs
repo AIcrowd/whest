@@ -149,6 +149,8 @@ test('Section 5 piecewise brace renders as valid KaTeX', () => {
 
 test('TotalCostView compares dense and symmetry-aware direct event counts with product-size formulas', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');
+  const assembleCost = read('components/symmetry-aware-einsum-contractions/content/main/assembleCost.js');
+  const sectionNineCopy = `${src}\n${assembleCost}`;
 
   assert.match(src, /denseDirectEventCostFromComponents/);
   assert.match(src, /denseTupleCountFromComponents/);
@@ -161,9 +163,10 @@ test('TotalCostView compares dense and symmetry-aware direct event counts with p
   assert.match(src, /For each independent component, \$M_a\$ counts representative products and \$\\alpha_a\$ counts filled local \$O \\to Q\$ cells/);
   assert.match(src, /accumulation reach multiplies across independent incidence relations/);
   assert.match(src, /multiplication-chain events needed to combine each representative product across \$k\$ operands/);
-  assert.match(src, /direct indexed scalar-event count/);
+  assert.match(src, /style=\{\{ textAlign: 'justify' \}\}/);
+  assert.doesNotMatch(sectionNineCopy, /The result is a direct indexed scalar-event count/);
+  assert.doesNotMatch(sectionNineCopy, /If an exact component count exceeds the analytic regimes or interactive budget/);
   assert.doesNotMatch(src, /The final number is/);
   assert.doesNotMatch(src, /Equivalently, for component/);
   assert.doesNotMatch(src, /SECTION_FIVE_INTRO_RESULT/);
-  assert.match(src, /reported unavailable instead of being guessed/);
 });

@@ -7,7 +7,7 @@ const assembleCost = {
   slots: {
     intro: [
       p('The preceding sections have produced the two quantities needed for the direct cost model. For each independent component, $M_a$ counts representative products and $\\alpha_a$ counts filled local $O \\to Q$ cells; globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.'),
-      p('Here $\\mu$ counts the multiplication-chain events needed to combine each representative product across $k$ operands, while $\\alpha$ counts the output updates reached by those product representatives. The result is a direct indexed scalar-event count, not a contraction-path, BLAS runtime, or memory-traffic model. If an exact component count exceeds the analytic regimes or interactive budget, the count is reported unavailable instead of being guessed.'),
+      p('Here $\\mu$ counts the multiplication-chain events needed to combine each representative product across $k$ operands, while $\\alpha$ counts the output updates reached by those product representatives.'),
     ],
     appendixNoteTitle: [
       l('Appendix note'),
