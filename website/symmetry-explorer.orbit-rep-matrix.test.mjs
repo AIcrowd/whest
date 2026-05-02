@@ -18,6 +18,13 @@ function read(rel) {
   return readFileSync(resolve(__dirname, rel), 'utf-8');
 }
 
+function assertClose(actual, expected, epsilon = 1e-9) {
+  assert.ok(
+    Math.abs(actual - expected) <= epsilon,
+    `expected ${actual} to be within ${epsilon} of ${expected}`,
+  );
+}
+
 test('tupleKey is a stable JSON form', () => {
   assert.equal(tupleKey({ i: 0, j: 1 }), '{"i":0,"j":1}');
   assert.equal(tupleKey({ j: 1, i: 0 }), '{"j":1,"i":0}');
@@ -33,7 +40,7 @@ test('labelledTuple keeps k=v form', () => {
   assert.equal(labelledTuple({ i: 0, j: 0, k: 1 }), '(i=0, j=0, k=1)');
 });
 
-test('layoutFor: viewport stays fixed while tall matrices keep readable row cells', () => {
+test('layoutFor: viewport stays fixed while tall matrices compress rows without scroll', () => {
   // 6 × 6 (square): cellWidth = floor(360/6) = 60, cellHeight = floor(360/6) = 60.
   assert.deepEqual(layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 6, numCols: 6 }), {
     cellWidth: 60, cellHeight: 60,
@@ -51,15 +58,15 @@ test('layoutFor: viewport stays fixed while tall matrices keep readable row cell
     needsVerticalScroll: false,
   });
   // 165 × 10 (Trilinear, very tall): row cells clamp to the 8px spacing unit
-  // instead of collapsing to the old 2px strips; the 360px viewport scrolls.
+  // no longer triggers an internal scrollport; row height compresses instead.
   const trilinear = layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 165, numCols: 10 });
   assert.equal(trilinear.cellWidth, 36);
-  assert.equal(trilinear.cellHeight, 8);
+  assertClose(trilinear.cellHeight, 360 / 165);
   assert.equal(trilinear.canvasW, 360);
-  assert.equal(trilinear.canvasH, 1320); // 165 × 8
-  assert.equal(trilinear.contentHeight, 1320);
+  assert.equal(trilinear.canvasH, 360);
+  assert.equal(trilinear.contentHeight, 360);
   assert.equal(trilinear.viewportH, 360);
-  assert.equal(trilinear.needsVerticalScroll, true);
+  assert.equal(trilinear.needsVerticalScroll, false);
 });
 
 test('layoutFor floors at MIN_CELL=1 (no zero-size cells)', () => {
@@ -79,12 +86,12 @@ test('cellAtPoint maps pixel coords to (row, col)', () => {
   assert.equal(cellAtPoint({ x: 0, y: 250 }, layout), null);
 });
 
-test('cellAtPoint handles rectangular cells (cellWidth ≠ cellHeight)', () => {
-  // Rectangular cells: 36 wide × 8 tall.
-  const layout = { cellWidth: 36, cellHeight: 8, canvasW: 360, canvasH: 1320 };
+test('cellAtPoint handles compressed fractional row cells', () => {
+  // Rectangular cells: 36 wide × (360 / 165) tall.
+  const layout = { cellWidth: 36, cellHeight: 360 / 165, canvasW: 360, canvasH: 360 };
   assert.deepEqual(cellAtPoint({ x: 5, y: 1 }, layout), { row: 0, col: 0 });
   assert.deepEqual(cellAtPoint({ x: 38, y: 1 }, layout), { row: 0, col: 1 });
-  assert.deepEqual(cellAtPoint({ x: 5, y: 100 }, layout), { row: 12, col: 0 });
+  assert.deepEqual(cellAtPoint({ x: 5, y: 100 }, layout), { row: 45, col: 0 });
 });
 
 test('derivePreReps + deriveCells pull stored reps + filled-coeff matrix', () => {
@@ -242,11 +249,12 @@ test('OrbitRepMatrix renders Y/X axis tick gutters with computeAxisTicks', () =>
   assert.match(src, /data-testid="orbit-rep-matrix-x-ticks"/);
 });
 
-test('OrbitRepMatrix uses an internal vertical scrollport and symmetric 48px chrome', () => {
+test('OrbitRepMatrix uses a fixed-height non-scrolling matrix frame and symmetric 48px chrome', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /data-testid="orbit-rep-matrix-scrollport"/);
-  assert.match(src, /overflowY:\s*layout\.needsVerticalScroll \? 'auto' : 'visible'/);
-  assert.match(src, /maxHeight:\s*FIXED_CANVAS_HEIGHT/);
+  assert.match(src, /data-testid="orbit-rep-matrix-frame"/);
+  assert.match(src, /overflowY:\s*'hidden'/);
+  assert.doesNotMatch(src, /overflowY:\s*layout\.needsVerticalScroll \? 'auto' : 'visible'/);
+  assert.doesNotMatch(src, /data-testid="orbit-rep-matrix-scrollport"/);
   assert.match(src, /gridTemplateColumns:\s*'20px minmax\(0, 1fr\)'/);
   assert.match(src, /gridTemplateColumns:\s*'28px minmax\(0, 1fr\)'/);
   assert.match(src, /gridTemplateRows:\s*'auto 24px 24px'/);

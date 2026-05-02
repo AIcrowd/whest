@@ -1,18 +1,17 @@
 // Pure layout / hit-testing math for the O → Q matrix.
 // No React, no DOM — easily unit-tested.
 //
-// Design-system call: the visible matrix viewport is a fixed 360px frame, but
-// rows never compress below the 8px spacing unit. Tall matrices render a larger
-// canvas inside that viewport and scroll vertically.
+// Design-system call: the visible matrix frame is a fixed 360px height. Large
+// orbit sets compress row height inside that same frame instead of introducing
+// an internal scrollport.
 //
 // Used by:
 //   - components/branchingViews/OrbitRepMatrix.jsx (canvas component)
 //   - components/BranchingDemo.jsx (parent that owns hover/pin state)
 
 export const SQUARE_FRAME = 360;       // default canvas width on lg
-export const FIXED_CANVAS_HEIGHT = 360; // viewport height; tall content scrolls within it
+export const FIXED_CANVAS_HEIGHT = 360; // fixed matrix height; no internal vertical scroll
 export const MIN_CELL = 1;             // 1-px floor — never invisible
-export const MIN_INTERACTIVE_CELL = 8;  // design-system --space-2: smallest readable row
 
 export function tupleKey(tuple) {
   return JSON.stringify(tuple ?? {});
@@ -53,10 +52,10 @@ export function deriveCells(orbitRows = [], reps = []) {
  * `viewportW = canvasWidth` (responsive to the container)
  * `viewportH = canvasHeight` (fixed — defaults to FIXED_CANVAS_HEIGHT)
  * `cellWidth  = floor(canvasW / numCols)`
- * `cellHeight = max(8, floor(viewportH / numRows))`
+ * `cellHeight = viewportH / numRows`
  *
- * Compact matrices fill the viewport. Tall matrices keep an 8px row floor,
- * expand the content canvas vertically, and scroll within the viewport.
+ * Every matrix fills the same fixed-height frame. Tall matrices get thinner
+ * rows, so the O → Q matrix remains a single non-scrolling figure.
  */
 export function layoutFor({ canvasWidth, canvasHeight, numRows, numCols }) {
   const safeWidth = Math.max(canvasWidth || SQUARE_FRAME, MIN_CELL * 2);
@@ -73,17 +72,17 @@ export function layoutFor({ canvasWidth, canvasHeight, numRows, numCols }) {
     };
   }
   const cellWidth = Math.max(MIN_CELL, Math.floor(safeWidth / safeCols));
-  const cellHeight = Math.max(MIN_INTERACTIVE_CELL, Math.floor(safeHeight / safeRows));
+  const cellHeight = safeHeight / safeRows;
   const contentWidth = cellWidth * safeCols;
-  const contentHeight = cellHeight * safeRows;
+  const contentHeight = safeHeight;
   const viewportWidth = Math.min(contentWidth, safeWidth);
-  const viewportHeight = Math.min(contentHeight, safeHeight);
+  const viewportHeight = safeHeight;
   return {
     cellWidth, cellHeight,
     canvasW: contentWidth, canvasH: contentHeight,
     contentWidth, contentHeight,
     viewportW: viewportWidth, viewportH: viewportHeight,
-    needsVerticalScroll: contentHeight > safeHeight,
+    needsVerticalScroll: false,
   };
 }
 
@@ -121,8 +120,7 @@ export function computeAxisTicks(n, maxTicks = 6) {
  * Map canvas-relative pixel coords (origin at top-left of the canvas) to a
  * (row, col) cell index. Returns null if outside the rendered cell area.
  *
- * In scroll mode, coords are still content-relative because callers measure
- * against the scrolled canvas node, not the fixed viewport wrapper.
+ * Coords are content-relative against the fixed-height canvas.
  */
 export function cellAtPoint({ x, y }, layout) {
   if (!layout) return null;

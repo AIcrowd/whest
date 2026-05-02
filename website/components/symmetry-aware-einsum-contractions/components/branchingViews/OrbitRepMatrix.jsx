@@ -115,7 +115,6 @@ function OrbitRepMatrix({
   const canvasRef = useRef(null);
   const offscreenRef = useRef(null); // cached base layer (grid + filled cells)
   const containerRef = useRef(null);
-  const scrollportRef = useRef(null);
   const rafRef = useRef(null);
   // Hover lives in a ref, not React state. Mousemove updates the ref and
   // schedules a manual rAF paint that reads from the ref. No React re-render
@@ -322,8 +321,8 @@ function OrbitRepMatrix({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout, orbitRows, reps, cells, hover]);
 
-  // Pointer event helpers. In scroll mode the canvas node itself is taller
-  // than the viewport, so mouse-relative-to-canvas coords are content coords.
+  // Pointer event helpers. The matrix uses a fixed-height canvas; large orbit
+  // sets compress row height instead of moving through an internal scrollport.
   function pointerCoords(e) {
     const canvas = canvasRef.current;
     if (!canvas) return null;
@@ -393,17 +392,6 @@ function OrbitRepMatrix({
   // card flips correctly even when keyboard-driven.
   const numRows = orbitRows.length;
   const numCols = reps.length;
-  const scrollCellIntoView = useCallback((row) => {
-    const scrollport = scrollportRef.current;
-    if (!scrollport || !layout.cellHeight) return;
-    const top = row * layout.cellHeight;
-    const bottom = top + layout.cellHeight;
-    if (top < scrollport.scrollTop) {
-      scrollport.scrollTop = top;
-    } else if (bottom > scrollport.scrollTop + scrollport.clientHeight) {
-      scrollport.scrollTop = bottom - scrollport.clientHeight;
-    }
-  }, [layout.cellHeight]);
   const handleKeyDown = useCallback((e) => {
     if (numRows === 0 || numCols === 0) return;
     let nextRow = focusedCell.row;
@@ -434,8 +422,7 @@ function OrbitRepMatrix({
     }
     e.preventDefault();
     setFocusedCell({ row: nextRow, col: nextCol });
-    scrollCellIntoView(nextRow);
-  }, [focusedCell, numRows, numCols, layout.cellWidth, layout.cellHeight, onHoverChange, scrollCellIntoView]);
+  }, [focusedCell, numRows, numCols, layout.cellWidth, layout.cellHeight, onHoverChange]);
 
   if (orbitRows.length === 0) {
     return (
@@ -541,19 +528,17 @@ function OrbitRepMatrix({
               orbit <Latex math="O" />
             </div>
 
-            {/* Scrollport — col 2, row 1. It owns both Y tick gutter and canvas
-                so tick labels scroll in lockstep with tall matrix rows. */}
+            {/* Matrix frame — col 2, row 1. It owns both Y tick gutter and canvas.
+                Tall matrices compress row height to keep this frame fixed. */}
             <div
-              ref={scrollportRef}
-              data-testid="orbit-rep-matrix-scrollport"
+              data-testid="orbit-rep-matrix-frame"
               style={{
                 gridColumn: 2, gridRow: 1,
                 display: 'grid',
                 gridTemplateColumns: '28px minmax(0, 1fr)',
                 width: bodyWidth,
                 height: layout.viewportH,
-                maxHeight: FIXED_CANVAS_HEIGHT,
-                overflowY: layout.needsVerticalScroll ? 'auto' : 'visible',
+                overflowY: 'hidden',
                 overflowX: 'hidden',
               }}
             >
@@ -612,8 +597,8 @@ function OrbitRepMatrix({
                 </div>
               </div>
 
-              {/* Canvas — inner col 2. The content canvas may exceed the viewport
-                  height; chart-style axes remain on the visible frame. */}
+              {/* Canvas — inner col 2. The content canvas always matches the
+                  fixed frame height; rows compress as the orbit count grows. */}
               <div
                 style={{
                   gridColumn: 2, gridRow: 1,
