@@ -44,9 +44,10 @@ test('Each preset card wires a mini-preview hover handler with V3.1 signature te
   const src = read(SIDEBAR);
   // onMouseEnter / onFocus handlers must be attached, hovered state tracked,
   // and the mini-preview signature lines defined per the V3.1 §2 spec.
-  assert.match(src, /onMouseEnter=\{\(\) => setHoveredIdx\(idx\)\}/);
-  assert.match(src, /onFocus=\{\(\) => setHoveredIdx\(idx\)\}/);
-  assert.match(src, /data-mini-preview-text=\{previewText\}/);
+  assert.match(src, /const hasPreview = Boolean\(previewText\)/);
+  assert.match(src, /onMouseEnter=\{hasPreview \? \(\) => setHoveredIdx\(idx\) : undefined\}/);
+  assert.match(src, /onFocus=\{hasPreview \? \(\) => setHoveredIdx\(idx\) : undefined\}/);
+  assert.match(src, /data-mini-preview-text=\{previewText \?\? undefined\}/);
   assert.match(src, /export const PRESET_MINI_PREVIEW/);
   assert.match(src, /'cross-s2':[^,}]*'mini O→Q row with two filled cells'/);
   assert.match(src, /'triple-outer':[^,}]*'row count equals filled-cell count'/);
@@ -99,4 +100,14 @@ test('All five V3.1 lens presets receive at least one tag and a mini-preview sig
     assert.match(src, tagPattern, `${id} missing in PRESET_TAGS`);
     assert.match(src, previewPattern, `${id} missing in PRESET_MINI_PREVIEW`);
   }
+});
+
+test('Reference presets do not show generic TBD mini-preview copy', () => {
+  const src = read(SIDEBAR);
+  assert.match(src, /PRESET_MINI_PREVIEW\[summary\.id\] \?\? null/);
+  assert.match(src, /const hasPreview = Boolean\(previewText\)/);
+  assert.match(src, /onMouseEnter=\{hasPreview \? \(\) => setHoveredIdx\(idx\) : undefined\}/);
+  assert.match(src, /visible=\{hasPreview && isHovered\}/);
+  assert.doesNotMatch(src, /pedagogical signature TBD/i);
+  assert.doesNotMatch(src, /GENERIC_MINI_PREVIEW/);
 });

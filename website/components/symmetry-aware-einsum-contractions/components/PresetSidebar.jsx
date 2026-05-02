@@ -34,14 +34,12 @@ export const PRESET_MINI_PREVIEW = {
   'bilinear-trace':   'formal-symmetry mismatch',
 };
 
-const GENERIC_MINI_PREVIEW = 'reference contraction — pedagogical signature TBD';
-
 function tagsForPreset(summary) {
   return PRESET_TAGS[summary.id] ?? [];
 }
 
 function miniPreviewFor(summary) {
-  return PRESET_MINI_PREVIEW[summary.id] ?? GENERIC_MINI_PREVIEW;
+  return PRESET_MINI_PREVIEW[summary.id] ?? null;
 }
 
 function SidebarGroupHeading({ children }) {
@@ -156,6 +154,7 @@ export default function PresetSidebar({
   function renderPresetItem({ summary, idx }) {
     const tags = tagsForPreset(summary);
     const previewText = miniPreviewFor(summary);
+    const hasPreview = Boolean(previewText);
     const isHovered = hoveredIdx === idx;
     return (
       <div key={summary.id} className="relative">
@@ -168,13 +167,13 @@ export default function PresetSidebar({
           formula={summary.formula}
           className={selectedPresetIdx === idx ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
           onClick={() => onSelect(idx)}
-          onMouseEnter={() => setHoveredIdx(idx)}
-          onMouseLeave={() => setHoveredIdx((cur) => (cur === idx ? null : cur))}
-          onFocus={() => setHoveredIdx(idx)}
-          onBlur={() => setHoveredIdx((cur) => (cur === idx ? null : cur))}
+          onMouseEnter={hasPreview ? () => setHoveredIdx(idx) : undefined}
+          onMouseLeave={hasPreview ? () => setHoveredIdx((cur) => (cur === idx ? null : cur)) : undefined}
+          onFocus={hasPreview ? () => setHoveredIdx(idx) : undefined}
+          onBlur={hasPreview ? () => setHoveredIdx((cur) => (cur === idx ? null : cur)) : undefined}
           data-preset-id={summary.id}
-          data-mini-preview-text={previewText}
-          aria-describedby={isHovered ? `preset-mini-preview-${summary.id}` : undefined}
+          data-mini-preview-text={previewText ?? undefined}
+          aria-describedby={hasPreview && isHovered ? `preset-mini-preview-${summary.id}` : undefined}
         >
           {selectedPresetIdx === idx && (
             <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
@@ -190,7 +189,7 @@ export default function PresetSidebar({
             <TagPill key={tag} tag={tag} />
           ))}
         </ExplorerSidebarItem>
-        <MiniPreviewTooltip text={previewText} visible={isHovered} />
+        <MiniPreviewTooltip text={previewText} visible={hasPreview && isHovered} />
       </div>
     );
   }
