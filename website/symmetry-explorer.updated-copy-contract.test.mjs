@@ -19,7 +19,7 @@ test('main copy distinguishes M, μ, and α', () => {
   // α = #{(O,Q) ∈ X/G_pt × Y/H : π_V(O) ∩ Q ≠ ∅} with H = Stab_{G_pt}(V)|_V.
   assert.match(rowsCols, /\\\\alpha = \\\\#\\\\\{\(O, Q\) \\\\in X\/G_\{\\\\text\{pt\}\}/);
   assert.match(rowsCols, /\\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)/);
-  assert.match(total, /let \$M_a\$ be the number of product orbits/);
+  assert.match(total, /For each independent component, \$M_a\$ counts representative products and \$\\alpha_a\$ counts filled local \$O \\to Q\$ cells/);
 });
 
 test('main copy does not overclaim n^5 divided by group order', () => {

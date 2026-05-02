@@ -34,15 +34,10 @@ const CAPTION_ADDED_NOT_MULTIPLIED =
 // Tooltip text for hovering the product term in the hero formula.
 const BURNSIDE_PRODUCT_TOOLTIP =
   'M_a is a Burnside orbit count: representative products per component.';
-const SECTION_FIVE_INTRO_OPEN =
-  String.raw`All the pieces are now in place. The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. For each independent component, $M_a$ counts representative products and $\alpha_a$ counts filled local $O \to Q$ cells; globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.`;
-const SECTION_FIVE_INTRO_RESULT =
-  String.raw`The final number is $\mathrm{Total} = \mu + \alpha = (k - 1)\prod_a M_a + \prod_a \alpha_a$. This is a direct indexed scalar-event count: multiplication-chain events plus output updates, not a contraction-path or BLAS runtime model.`;
 const SECTION_FIVE_INTRO_LEAD =
-  String.raw`Equivalently, for component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via $H_a = \mathrm{Stab}_{G_a}(V_a)|_{V_a}$. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
-
-const SECTION_FIVE_INTRO_CLOSE =
-  String.raw`$M_a$ is a size-aware Burnside orbit count when a closed form applies; $\alpha_a$ is selected by the shape and regime ladder. If a mixed component falls outside the analytic regimes and exceeds the brute-force budget, the count is reported unavailable instead of being guessed.`;
+  String.raw`The preceding sections have produced the two quantities needed for the direct cost model. For each independent component, $M_a$ counts representative products and $\alpha_a$ counts filled local $O \to Q$ cells; globally, representative products multiply across components, and accumulation reach multiplies across independent incidence relations.`;
+const SECTION_FIVE_INTRO_SCOPE =
+  String.raw`Here $\mu$ counts the multiplication-chain events needed to combine each representative product across $k$ operands, while $\alpha$ counts the output updates reached by those product representatives. The result is a direct indexed scalar-event count, not a contraction-path, BLAS runtime, or memory-traffic model. If an exact component count exceeds the analytic regimes or interactive budget, the count is reported unavailable instead of being guessed.`;
 const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
@@ -536,27 +531,12 @@ function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) 
   return (
     <div className="mx-auto max-w-[48rem] space-y-7 text-center">
       <p
-        className="font-serif text-[17px] leading-[1.75] text-gray-700"
-        style={{ textAlign: 'justify' }}
+        className="text-left font-serif text-[17px] leading-[1.75] text-gray-700"
       >
-        <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_OPEN}</InlineMathText>
-      </p>
-
-      <p
-        className="font-serif text-[17px] leading-[1.75] text-gray-700"
-        style={{ textAlign: 'justify' }}
-      >
-        <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_RESULT}</InlineMathText>
+        <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_LEAD}</InlineMathText>
       </p>
 
       <div className="space-y-7">
-        <p
-          className="font-serif text-[17px] leading-[1.75] text-gray-700"
-          style={{ textAlign: 'justify' }}
-        >
-          <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_LEAD}</InlineMathText>
-        </p>
-
         <div className="space-y-6">
           <div className="flex justify-center overflow-x-auto overflow-y-visible">
             <div className="min-w-0 text-[18px] sm:text-[20px]">
@@ -583,10 +563,9 @@ function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) 
         </div>
 
         <p
-          className="font-serif text-[17px] leading-[1.75] text-gray-700"
-          style={{ textAlign: 'justify' }}
+          className="text-left font-serif text-[17px] leading-[1.75] text-gray-700"
         >
-          <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_CLOSE}</InlineMathText>
+          <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_SCOPE}</InlineMathText>
         </p>
       </div>
     </div>

@@ -158,9 +158,12 @@ test('TotalCostView compares dense and symmetry-aware direct event counts with p
   assert.doesNotMatch(src, /label:\s*'Dense Cost'/);
   assert.doesNotMatch(src, /label:\s*'Symmetry-Aware Cost'/);
   assert.doesNotMatch(src, /n\^\{\|L\|\}/);
-  assert.match(src, /support-connected component decomposition/);
-  assert.match(src, /All the pieces are now in place/);
-  assert.match(src, /let \$M_a\$ be the number of product orbits and let \$\\alpha_a\$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via \$H_a = \\mathrm\{Stab\}_\{G_a\}\(V_a\)\|_\{V_a\}\$/);
-  assert.match(src, /Under the independent-component factorization, \$M = \\prod_a M_a\$ and \$\\alpha = \\prod_a \\alpha_a\$/);
+  assert.match(src, /For each independent component, \$M_a\$ counts representative products and \$\\alpha_a\$ counts filled local \$O \\to Q\$ cells/);
+  assert.match(src, /accumulation reach multiplies across independent incidence relations/);
+  assert.match(src, /multiplication-chain events needed to combine each representative product across \$k\$ operands/);
+  assert.match(src, /direct indexed scalar-event count/);
+  assert.doesNotMatch(src, /The final number is/);
+  assert.doesNotMatch(src, /Equivalently, for component/);
+  assert.doesNotMatch(src, /SECTION_FIVE_INTRO_RESULT/);
   assert.match(src, /reported unavailable instead of being guessed/);
 });
