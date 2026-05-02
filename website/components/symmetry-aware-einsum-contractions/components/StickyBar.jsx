@@ -2,11 +2,9 @@ import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { restrictStabilizerToPositions } from '../engine/outputOrbit.js';
 import { formatGeneratorNotation } from '../lib/symmetryLabel.js';
-import { EXPLORER_ACTS } from './explorerNarrative.js';
-import SymmetryBadge from './SymmetryBadge.jsx';
 
 // Character-by-character renderer for a subscript/output *label region*
 // (e.g. "ia,ib,ic" or "abc"). Letters matching `hoveredLabels` swap to
@@ -122,6 +120,38 @@ function symmetryLabelFromPerOp(perOpSymmetry) {
   }
 }
 
+function factorial(n) {
+  let out = 1;
+  for (let i = 2; i <= n; i += 1) out *= i;
+  return out;
+}
+
+function isCyclicFullLabelAction(elements, degree) {
+  if (degree <= 2 || elements.length !== degree) return false;
+  return elements.some((element) => (
+    element.cyclicForm().length === 1
+      && element.cyclicForm()[0].length === degree
+  ));
+}
+
+function outputSymmetryLabel(group) {
+  const labels = group?.allLabels ?? [];
+  const vLabels = group?.vLabels ?? [];
+  const elements = group?.fullElements ?? [];
+  if (vLabels.length === 0) return 'scalar';
+  if (labels.length === 0 || elements.length === 0) return 'trivial';
+
+  const positionByLabel = new Map(labels.map((label, idx) => [label, idx]));
+  const visiblePositions = vLabels.map((label) => positionByLabel.get(label));
+  if (visiblePositions.some((position) => !Number.isInteger(position))) return 'trivial';
+
+  const outputElements = restrictStabilizerToPositions(elements, visiblePositions);
+  if (outputElements.length <= 1) return 'trivial';
+  if (outputElements.length === factorial(vLabels.length)) return `S${vLabels.length}`;
+  if (isCyclicFullLabelAction(outputElements, vLabels.length)) return `C${vLabels.length}`;
+  return `|H|=${outputElements.length}`;
+}
+
 function buildMetadataItems({ example, group }) {
   const operandNames = Array.isArray(example?.operandNames)
     ? example.operandNames
@@ -141,7 +171,7 @@ function buildMetadataItems({ example, group }) {
   }));
   return {
     operands,
-    groupLabel: group?.fullGroupName || 'trivial',
+    outputLabel: outputSymmetryLabel(group),
   };
 }
 
@@ -155,7 +185,39 @@ export function SymmetryChip({ name, symmetry }) {
   );
 }
 
-function StickyMetadataPopover({ anchorRect, operands, groupLabel }) {
+function CompactSymmetrySummary({ operands, outputLabel, className }) {
+  if (!operands.length && !outputLabel) return null;
+
+  return (
+    <div
+      aria-label="Input and output symmetries"
+      className={cn(
+        'flex min-w-0 shrink-0 items-center gap-1.5 whitespace-nowrap font-mono text-[12px] leading-5 text-stone-600',
+        className,
+      )}
+      data-sticky-symmetry-summary="true"
+    >
+      {operands.map((operand, idx) => (
+        <span key={`sticky-input-${operand.name}-${idx}`} className="inline-flex items-center gap-1">
+          {idx > 0 && <span className="text-stone-400">×</span>}
+          <span className="font-semibold text-primary">{operand.name}</span>
+          <span className="text-stone-400">:</span>
+          <span className="font-semibold text-coral">{operand.symmetry}</span>
+        </span>
+      ))}
+      {operands.length > 0 && outputLabel && <span className="mx-0.5 text-stone-400">→</span>}
+      {outputLabel && (
+        <span className="inline-flex items-center gap-1">
+          <span className="font-semibold text-primary">R</span>
+          <span className="text-stone-400">:</span>
+          <span className="font-semibold text-coral">{outputLabel}</span>
+        </span>
+      )}
+    </div>
+  );
+}
+
+function StickyMetadataPopover({ anchorRect, operands, outputLabel }) {
   if (!anchorRect || typeof document === 'undefined') return null;
 
   const viewportWidth = document.documentElement.clientWidth;
@@ -180,16 +242,7 @@ function StickyMetadataPopover({ anchorRect, operands, groupLabel }) {
         transform: 'translateX(-50%)',
       }}
     >
-      <div className="flex flex-wrap items-center gap-1.5 font-mono text-[12px] leading-6 text-stone-700">
-        {operands.map((operand, idx) => (
-          <span key={`sticky-metadata-${operand.name}-${idx}`} className="contents">
-            {idx > 0 && <span className="text-stone-400">,</span>}
-            <SymmetryChip name={operand.name} symmetry={operand.symmetry} />
-          </span>
-        ))}
-        <span className="text-stone-500">→</span>
-        <SymmetryBadge value={groupLabel} className="h-6 px-2.5 text-[11px] leading-5 shadow-none" />
-      </div>
+      <CompactSymmetrySummary operands={operands} outputLabel={outputLabel} className="text-[13px] leading-6 text-stone-700" />
       <div
         className="absolute left-1/2 top-[-6px] h-1.5 w-3 bg-white"
         style={{
@@ -234,7 +287,7 @@ function DimensionStepper({ dimensionN, onDimensionNChange, min = 2, max = 8 }) 
 
   return (
     <div
-      className="inline-flex h-7 items-center gap-0 overflow-hidden rounded-md border border-gray-200 bg-white font-mono text-xs text-gray-700 shadow-none"
+      className="inline-flex h-7 shrink-0 items-center gap-0 overflow-hidden rounded-md border border-gray-200 bg-white font-mono text-xs text-gray-700 shadow-none"
       role="group"
       aria-label={`n=${dimensionN ?? '—'}`}
     >
@@ -270,7 +323,6 @@ function DimensionStepper({ dimensionN, onDimensionNChange, min = 2, max = 8 }) 
 export default function StickyBar({
   example,
   group,
-  activeActId,
   hoveredLabels = null,
   dimensionN = null,
   onDimensionNChange = null,
@@ -380,12 +432,7 @@ export default function StickyBar({
       data-compact={isCompact ? 'true' : 'false'}
     >
       <div
-        className={cn(
-          'mx-auto flex max-w-[1460px] px-6 py-4 md:px-8',
-          isCompact
-            ? 'flex-row items-center justify-between gap-4'
-            : 'flex-col gap-4 md:flex-row md:items-center md:justify-between',
-        )}
+        className="mx-auto flex max-w-[1460px] items-center justify-between gap-4 px-6 py-4 md:px-8"
       >
         {/* Whest wordmark — the one in-product brand anchor. Matches the
             `.brand` slot of design-system/Whest Einsum Explorer.html and
@@ -399,106 +446,77 @@ export default function StickyBar({
         >
           Whest<span className="whest-wordmark__dot">.</span>
         </Link>
-        <nav
-          className={cn(
-            'flex shrink-0 items-center gap-1 overflow-x-auto pb-1 md:pb-0',
-            isCompact && 'hidden md:flex',
-          )}
-        >
-          {EXPLORER_ACTS.map((act, idx) => {
-            const isActive = activeActId === act.id;
-            return (
-              <a
-                key={act.id}
-                href={`#${act.id}`}
-                className={cn(
-                  buttonVariants({ size: 'sm', variant: 'ghost' }),
-                  'inline-flex h-9 min-h-9 items-center gap-2 rounded-full border px-3 transition-colors',
-                  isActive
-                    ? 'border-[var(--coral)] bg-white text-[var(--coral-hover)] hover:border-[var(--coral)] hover:bg-[color:color-mix(in_oklab,var(--coral)_8%,white)]'
-                    : 'border-transparent text-muted-foreground hover:border-primary/25 hover:bg-primary/8 hover:text-primary',
-                )}
-              >
-                <Badge
-                  variant={isActive ? 'default' : 'outline'}
-                  className={cn(
-                    'flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 py-0 text-[11px] font-semibold leading-none',
-                    isActive
-                      ? 'border-[var(--coral)] bg-[var(--coral)] text-white'
-                      : 'border-primary/20 bg-background text-muted-foreground',
-                  )}
-                >
-                  {idx + 1}
-                </Badge>
-                {act.navTitle}
-              </a>
-            );
-          })}
-        </nav>
 
-        <div className="flex min-w-0 shrink flex-col items-start gap-2 self-end md:max-w-[42rem] md:items-end md:self-auto">
+        <div className="ml-auto flex min-w-0 flex-1 items-center justify-end">
           {example && (
-            <div className="flex flex-wrap items-center gap-2">
-              {/* Behavior 2 — Dimension knob: interactive stepper when
-                  onDimensionNChange is provided, static badge otherwise. */}
-              <DimensionStepper
-                dimensionN={dimensionN}
-                onDimensionNChange={onDimensionNChange}
-              />
+              <div className="flex min-w-0 flex-nowrap items-center justify-start gap-2 overflow-x-auto">
+                {/* Behavior 2 — Dimension knob: interactive stepper when
+                    onDimensionNChange is provided, static badge otherwise. */}
+                <DimensionStepper
+                  dimensionN={dimensionN}
+                  onDimensionNChange={onDimensionNChange}
+                />
 
-              {/* Behavior 3 — α-method badge: hover fires the tree-leaf bus */}
-              {activeAlphaMethod && (
-                <Badge
-                  variant="outline"
-                  className="shrink-0 cursor-default border-gray-200 bg-white font-mono text-[11px] text-gray-600 shadow-none transition-colors hover:border-primary/30 hover:bg-primary/5"
-                  aria-label={`Alpha method: ${activeAlphaMethod}`}
-                  onMouseEnter={() => onActiveAlphaMethodHoverChange?.(activeAlphaMethod)}
-                  onMouseLeave={() => onActiveAlphaMethodHoverChange?.(null)}
-                  onFocus={() => onActiveAlphaMethodHoverChange?.(activeAlphaMethod)}
-                  onBlur={() => onActiveAlphaMethodHoverChange?.(null)}
+                <span aria-hidden="true" className="h-5 w-px shrink-0 bg-gray-200" />
+
+                {/* Behavior 3 — α-method badge: hover fires the tree-leaf bus */}
+                {activeAlphaMethod && (
+                  <Badge
+                    variant="outline"
+                    className="shrink-0 cursor-default border-gray-200 bg-white font-mono text-[11px] text-gray-600 shadow-none transition-colors hover:border-primary/30 hover:bg-primary/5"
+                    aria-label={`Alpha method: ${activeAlphaMethod}`}
+                    onMouseEnter={() => onActiveAlphaMethodHoverChange?.(activeAlphaMethod)}
+                    onMouseLeave={() => onActiveAlphaMethodHoverChange?.(null)}
+                    onFocus={() => onActiveAlphaMethodHoverChange?.(activeAlphaMethod)}
+                    onBlur={() => onActiveAlphaMethodHoverChange?.(null)}
+                  >
+                    α: {activeAlphaMethod}
+                  </Badge>
+                )}
+
+                {/* Neutral stadium pill per design-system `.formula-live`:
+                    gray-100 ground, gray-600 ink, 1px gray-200 border,
+                    rounded-full (=20px stadium). The only coral moment
+                    inside is the arrow (see FormulaHighlighted above). */}
+                <button
+                  ref={metadataTriggerRef}
+                  type="button"
+                  aria-haspopup="dialog"
+                  aria-expanded={showMetadataPopover}
+                  onPointerEnter={openMetadataPopover}
+                  onPointerLeave={scheduleMetadataClose}
+                  onFocus={openMetadataPopover}
+                  onBlur={scheduleMetadataClose}
+                  onClick={() => {
+                    if (showMetadataPopover) {
+                      setShowMetadataPopover(false);
+                      return;
+                    }
+                    openMetadataPopover();
+                  }}
+                  className="block max-w-full shrink-0 whitespace-nowrap rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-left text-sm font-mono font-medium text-gray-600 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
                 >
-                  α: {activeAlphaMethod}
-                </Badge>
-              )}
-
-              {/* Neutral stadium pill per design-system `.formula-live`:
-                  gray-100 ground, gray-600 ink, 1px gray-200 border,
-                  rounded-full (=20px stadium). The only coral moment
-                  inside is the arrow (see FormulaHighlighted above). */}
-              <button
-                ref={metadataTriggerRef}
-                type="button"
-                aria-haspopup="dialog"
-                aria-expanded={showMetadataPopover}
-                onPointerEnter={openMetadataPopover}
-                onPointerLeave={scheduleMetadataClose}
-                onFocus={openMetadataPopover}
-                onBlur={scheduleMetadataClose}
-                onClick={() => {
-                  if (showMetadataPopover) {
-                    setShowMetadataPopover(false);
-                    return;
-                  }
-                  openMetadataPopover();
-                }}
-                className="block rounded-full border border-gray-200 bg-gray-100 px-3 py-1 text-left text-sm font-mono font-medium text-gray-600 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
-              >
-                {/* Behavior 1 — label-hover bus: FormulaHighlighted now also
-                    calls onHoveredLabelsChange when hovering letter tokens */}
-                <FormulaHighlighted
-                  example={example}
-                  hoveredLabels={hoveredLabels}
-                  onHoveredLabelsChange={onHoveredLabelsChange}
-                />
-              </button>
-              {showMetadataPopover && (
-                <StickyMetadataPopover
-                  anchorRect={metadataAnchorRect}
+                  {/* Behavior 1 — label-hover bus: FormulaHighlighted now also
+                      calls onHoveredLabelsChange when hovering letter tokens */}
+                  <FormulaHighlighted
+                    example={example}
+                    hoveredLabels={hoveredLabels}
+                    onHoveredLabelsChange={onHoveredLabelsChange}
+                  />
+                </button>
+                {showMetadataPopover && (
+                  <StickyMetadataPopover
+                    anchorRect={metadataAnchorRect}
+                    operands={metadataItems.operands}
+                    outputLabel={metadataItems.outputLabel}
+                  />
+                )}
+                <span aria-hidden="true" className="h-5 w-px shrink-0 bg-gray-200" />
+                <CompactSymmetrySummary
                   operands={metadataItems.operands}
-                  groupLabel={metadataItems.groupLabel}
+                  outputLabel={metadataItems.outputLabel}
                 />
-              )}
-            </div>
+              </div>
           )}
         </div>
       </div>
