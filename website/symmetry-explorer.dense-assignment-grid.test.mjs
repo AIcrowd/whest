@@ -93,20 +93,10 @@ test('DenseAssignmentGrid cells expose role="button", tabIndex, and aria-label',
   assert.match(src, /data-testid="dense-assignment-grid-cell"/);
 });
 
-test('App mounts DenseAssignmentGrid in §3 (Projection) before ComponentCostView', () => {
+test('App no longer mounts DenseAssignmentGrid in §3 Projection', () => {
   const src = readFileSync(APP_PATH, 'utf-8');
-  // Default import.
-  assert.match(src, /import DenseAssignmentGrid from '\.\/components\/DenseAssignmentGrid\.jsx';/);
-  // Mounted JSX (with the prop contract from the spec).
-  assert.match(src, /<DenseAssignmentGrid[\s\S]*?dimensionN=\{dimensionN\}[\s\S]*?\/>/);
-  assert.match(src, /<DenseAssignmentGrid[\s\S]*?allLabels=\{group\?\.allLabels \?\? \[\]\}[\s\S]*?\/>/);
-  // Mount order: DenseAssignmentGrid must appear BEFORE ComponentCostView so
-  // the dense view introduces the assignment space before orbits collapse it.
-  const dagIdx = src.indexOf('<DenseAssignmentGrid');
-  const ccvIdx = src.indexOf('<ComponentCostView');
-  assert.ok(dagIdx > 0, 'expected DenseAssignmentGrid to be mounted');
-  assert.ok(ccvIdx > 0, 'expected ComponentCostView to be mounted');
-  assert.ok(dagIdx < ccvIdx, 'DenseAssignmentGrid must mount before ComponentCostView in §3');
+  assert.doesNotMatch(src, /import DenseAssignmentGrid from '\.\/components\/DenseAssignmentGrid\.jsx';/);
+  assert.doesNotMatch(src, /<DenseAssignmentGrid\b/);
 });
 
 test('DenseAssignmentGrid stories file declares ≥3 stories', () => {

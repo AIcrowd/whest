@@ -25,7 +25,8 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(chooserSource, /text-\[10px\] font-semibold uppercase tracking-\[0\.2em\] text-gray-400/);
   assert.match(chooserSource, /glyph=\{summary\.glyph\}/);
   assert.match(chooserSource, /formula=\{summary\.formula\}/);
-  assert.match(chooserSource, /activePresetIdx === idx \? 'bg-coral-light\/50' : 'hover:bg-gray-50'/);
+  assert.match(chooserSource, /activePresetIdx === idx \|\| \(isPreparing && pendingPresetIdx === idx\)/);
+  assert.match(chooserSource, /aria-busy=\{isPreparing && pendingPresetIdx === idx \? 'true' : undefined\}/);
   // 10px is legitimate for design-system kickers (.w-kicker is 10/0.2em/
   // gray-400 in colors_and_type.css). The builder's 'VARIABLES' /
   // 'subscripts' / 'output' / 'operands' labels are kickers at spec size.

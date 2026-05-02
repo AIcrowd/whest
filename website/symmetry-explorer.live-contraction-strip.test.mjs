@@ -123,8 +123,8 @@ describe('C01 Live Contraction Strip behaviors', () => {
   // App-level wiring
   // ------------------------------------------------------------------
   test('T08: App wires all 4 new StickyBar props', () => {
-    // Dimension setter
-    assert.match(appSource, /onDimensionNChange=\{setDefaultSize\}/);
+    // Dimension setter routes through the pending-analysis flow.
+    assert.match(appSource, /onDimensionNChange=\{handleDimensionChange\}/);
     // Hover-labels setter
     assert.match(appSource, /onHoveredLabelsChange=\{setStripHoveredLabels\}/);
     // activeAlphaMethod state passed down

@@ -31,10 +31,16 @@ export default function BranchingDemo({
   const liveOrbitRows = costModel?.orbitRows ?? [];
   const reps = useMemo(() => derivePreReps(liveOrbitRows), [liveOrbitRows]);
   const cells = useMemo(() => deriveCells(liveOrbitRows, reps), [liveOrbitRows, reps]);
-  const liveAlpha = cells.reduce(
-    (acc, row) => acc + row.filter((c) => c !== null).length,
-    0,
+  const rowFillCounts = useMemo(
+    () => cells.map((row) => row.filter((c) => c !== null).length),
+    [cells],
   );
+  const prefixAlpha = useMemo(() => {
+    const prefix = [0];
+    for (const count of rowFillCounts) prefix.push(prefix[prefix.length - 1] + count);
+    return prefix;
+  }, [rowFillCounts]);
+  const liveAlpha = prefixAlpha[prefixAlpha.length - 1] ?? 0;
 
   // V3.1 §15 — α-counter overlay state.
   //   cumulativeMode=false (Total): always show M = total rows, α = total filled cells.
@@ -44,15 +50,13 @@ export default function BranchingDemo({
   const [cumulativeMode, setCumulativeMode] = useState(false);
   const hoveredRow = hover ? hover.row : -1;
   const rowFillCount = (rowIdx) =>
-    rowIdx >= 0 && rowIdx < cells.length
-      ? cells[rowIdx].filter((c) => c !== null).length
+    rowIdx >= 0 && rowIdx < rowFillCounts.length
+      ? rowFillCounts[rowIdx]
       : 0;
   // In cumulative mode the visible counters are the running prefix totals as the
   // user moves the cursor down the matrix; absent any hover, they read 0 / 0.
   const cumulativeRows = hoveredRow >= 0 ? hoveredRow + 1 : 0;
-  const cumulativeAlpha = cells
-    .slice(0, cumulativeRows)
-    .reduce((acc, row) => acc + row.filter((c) => c !== null).length, 0);
+  const cumulativeAlpha = prefixAlpha[cumulativeRows] ?? 0;
 
   const liveComponentInfo = useMemo(() => {
     const c = componentData?.components?.[0];
@@ -194,17 +198,19 @@ export default function BranchingDemo({
 
       {/* Hover-driven floating card. Auto-dismisses on mouse-leave-matrix
           (handled by OrbitRepMatrix calling onHoverChange(null)) or Esc. */}
-      <OrbitDetailCard
-        hover={hover}
-        orbitRows={liveOrbitRows}
-        reps={reps}
-        cells={cells}
-        expressionInfo={expressionInfo}
-        componentInfo={liveComponentInfo}
-        onDismiss={handleDismiss}
-        matrixRef={matrixRef}
-        mode="floating"
-      />
+      {!modalOpen && (
+        <OrbitDetailCard
+          hover={hover}
+          orbitRows={liveOrbitRows}
+          reps={reps}
+          cells={cells}
+          expressionInfo={expressionInfo}
+          componentInfo={liveComponentInfo}
+          onDismiss={handleDismiss}
+          matrixRef={matrixRef}
+          mode="floating"
+        />
+      )}
 
       <OrbitRepMatrixModal
         open={modalOpen}

@@ -45,6 +45,7 @@ const COLOR = {
 };
 
 const MAX_CANVAS_BITMAP_SIDE = 32767;
+const FULL_A11Y_TABLE_CELL_LIMIT = 2000;
 
 function canvasDprFor(width, height) {
   if (typeof window === 'undefined') return 1;
@@ -111,11 +112,14 @@ function OrbitRepMatrix({
    *  is hovered, the X-axis label ("rep Q") highlights similarly (columns are
    *  indexed by output representatives, which live in the Q space). */
   hoveredLabels = null,
+  /** Larger fixed canvas height for expanded modal inspection surfaces. */
+  canvasHeight = FIXED_CANVAS_HEIGHT,
 }) {
   const canvasRef = useRef(null);
-  const offscreenRef = useRef(null); // cached base layer (grid + filled cells)
+  const overlayCanvasRef = useRef(null);
   const containerRef = useRef(null);
   const rafRef = useRef(null);
+  const pendingPointerRef = useRef(null);
   // Hover lives in a ref, not React state. Mousemove updates the ref and
   // schedules a manual rAF paint that reads from the ref. No React re-render
   // per hover — that's what makes hover feel instant on big matrices.
@@ -135,17 +139,22 @@ function OrbitRepMatrix({
 
   const reps = useMemo(() => derivePreReps(orbitRows), [orbitRows]);
   const cells = useMemo(() => deriveCells(orbitRows, reps), [orbitRows, reps]);
+  const repColByKey = useMemo(() => {
+    const map = new Map();
+    reps.forEach((rep, index) => map.set(rep.k, index));
+    return map;
+  }, [reps]);
   const layout = useMemo(
     () => layoutFor({
       // Subtract the Y-axis chrome (20-px label + 28-px tick gutter = 48 px)
       // so the canvas + chrome fit in the wrapper on narrow viewports
       // instead of overflowing the right edge by the chrome width.
       canvasWidth: Math.max(0, containerWidth - 48),
-      canvasHeight: FIXED_CANVAS_HEIGHT,
+      canvasHeight,
       numRows: orbitRows.length,
       numCols: reps.length,
     }),
-    [containerWidth, orbitRows.length, reps.length],
+    [containerWidth, canvasHeight, orbitRows.length, reps.length],
   );
 
   // Synchronously sync containerWidth to the wrapper's actual width after the
@@ -184,66 +193,58 @@ function OrbitRepMatrix({
   // Drawing 18k+ cells on every mousemove is too expensive — the user feels it
   // as sluggishness. We split into three stages so per-hover cost is tiny:
   //
-  //   1. SIZING (deps: [layout])        — set canvas + offscreen dimensions, DPR.
-  //   2. BASE   (deps: [layout, cells]) — paint grid + all filled cells (uniform
-  //                                       COLOR.cellFilled) into an offscreen canvas.
-  //                                       hover is NOT a dep — BASE never re-runs
-  //                                       on cell changes.
-  //   3. PAINT  (imperative, rAF)       — drawImage(base) + focused-cell strong fill
-  //                                       + branching outlines + hover marker.
-  //                                       <1 ms even on 18k-cell matrices.
+  //   1. SIZING (deps: [layout])        — set base + overlay canvas dimensions, DPR.
+  //   2. BASE   (deps: [layout, cells]) — paint grid + all filled cells on the
+  //                                       base canvas. Hover is NOT a dep.
+  //   3. OVERLAY (imperative, rAF)      — clear only the overlay canvas, then draw
+  //                                       focused-cell fill + branch outlines.
   //
-  // Per mousemove only PAINT runs; BASE only re-runs on layout/data changes.
+  // Per mousemove only OVERLAY runs; BASE only re-runs on layout/data changes.
 
   // Stage 1: SIZING — runs only when layout changes.
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !layout.cellWidth || !layout.cellHeight) return;
+    const overlay = overlayCanvasRef.current;
+    if (!canvas || !overlay || !layout.cellWidth || !layout.cellHeight) return;
     const w = layout.contentWidth;
     const h = layout.contentHeight;
     const dpr = canvasDprFor(w, h);
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
-    const ctx = canvas.getContext('2d');
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr);
-
-    // Mirror the offscreen canvas's dimensions so drawImage maps 1:1.
-    if (!offscreenRef.current) {
-      offscreenRef.current = document.createElement('canvas');
+    const bitmapW = Math.floor(w * dpr);
+    const bitmapH = Math.floor(h * dpr);
+    for (const layer of [canvas, overlay]) {
+      layer.width = bitmapW;
+      layer.height = bitmapH;
+      layer.style.width = `${w}px`;
+      layer.style.height = `${h}px`;
+      const ctx = layer.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
-    const off = offscreenRef.current;
-    off.width = canvas.width;
-    off.height = canvas.height;
-    const offCtx = off.getContext('2d');
-    offCtx.setTransform(1, 0, 0, 1, 0, 0);
-    offCtx.scale(dpr, dpr);
   }, [layout]);
 
-  // Stage 2: BASE — paint grid + all filled cells into the offscreen canvas.
+  // Stage 2: BASE — paint grid + all filled cells into the base canvas.
   // Re-runs only when layout or data changes — NOT on hover changes.
   useEffect(() => {
-    const off = offscreenRef.current;
-    if (!off || !layout.cellWidth || !layout.cellHeight) return;
-    const ctx = off.getContext('2d');
+    const canvas = canvasRef.current;
+    if (!canvas || !layout.cellWidth || !layout.cellHeight) return;
+    const dpr = canvasDprFor(layout.contentWidth, layout.contentHeight);
+    const ctx = canvas.getContext('2d');
     const cw = layout.cellWidth;
     const ch = layout.cellHeight;
     const canvasColor = resolveOrbitCanvasColors(containerRef.current);
 
-    // Clear (logical coords; DPR scale already applied in stage 1).
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.fillStyle = canvasColor.bg;
     ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
-    // Filled cells with a 1px darker top edge — gives subtle depth without
-    // adding visual noise. Skip the depth lip when cells are too short
-    // (cellH ≤ 4 px) since the lip would dominate the cell.
+    // Iterate sparse row outputs instead of scanning the dense rows × columns
+    // matrix. Trilinear Trace at n=5 is 102k possible cells but only 2925 filled
+    // cells, so this is the difference between "paint the data" and "scan the
+    // whole incidence grid" on every data/layout paint.
     const showDepthLip = ch > 4;
     for (let r = 0; r < orbitRows.length; r += 1) {
-      for (let c = 0; c < reps.length; c += 1) {
-        const coeff = cells[r][c];
-        if (coeff === null) continue;
+      for (const out of orbitRows[r]?.outputs ?? []) {
+        const c = repColByKey.get(JSON.stringify(out.outTuple ?? {}));
+        if (c === undefined) continue;
         const x = c * cw;
         const y = r * ch;
         ctx.fillStyle = canvasColor.cellFilled;
@@ -274,15 +275,16 @@ function OrbitRepMatrix({
       }
       ctx.stroke();
     }
-  }, [layout, orbitRows, reps, cells]);
+    paintOverlay();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layout, orbitRows, reps, repColByKey]);
 
-  // Stage 3: PAINT — composite the cached base + dynamic overlays.
+  // Stage 3: OVERLAY — paint only dynamic hover/focus marks.
   // Imperative, called from event handlers via rAF. Reads hover from a ref
   // so React never re-renders for hover. <1 ms per call even on big matrices.
   function paintOverlay() {
-    const canvas = canvasRef.current;
-    const off = offscreenRef.current;
-    if (!canvas || !off || !layout.cellWidth || !layout.cellHeight) return;
+    const canvas = overlayCanvasRef.current;
+    if (!canvas || !layout.cellWidth || !layout.cellHeight) return;
     const ctx = canvas.getContext('2d');
     const cw = layout.cellWidth;
     const ch = layout.cellHeight;
@@ -290,9 +292,8 @@ function OrbitRepMatrix({
     const hoverCell = hoverRef.current;
     const canvasColor = resolveOrbitCanvasColors(containerRef.current);
 
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.drawImage(off, 0, 0);
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, layout.contentWidth, layout.contentHeight);
 
     const focus = hoverCell;
     if (focus && cw > 2 && ch > 2 && cells[focus.row]?.[focus.col] !== null) {
@@ -311,15 +312,14 @@ function OrbitRepMatrix({
         ctx.strokeRect(c * cw + 1.5, focus.row * ch + 1.5, cw - 3, ch - 3);
       }
     }
-
   }
 
-  // After layout/data/hover changes, repaint once so the static base + any
-  // existing hover overlay re-renders. (Hover refreshes happen via mousemove.)
+  // After layout/data changes, repaint once so any existing hover overlay
+  // re-renders. Hover itself is intentionally not a dependency.
   useEffect(() => {
     paintOverlay();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layout, orbitRows, reps, cells, hover]);
+  }, [layout, orbitRows, reps, cells]);
 
   // Pointer event helpers. The matrix uses a fixed-height canvas; large orbit
   // sets compress row height instead of moving through an internal scrollport.
@@ -345,12 +345,17 @@ function OrbitRepMatrix({
   }
   function handleMouseMove(e) {
     // Capture pointer immediately (SyntheticEvent gets reused).
-    const pt = pointerCoords(e);
-    const clientX = e.clientX;
-    const clientY = e.clientY;
-    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    pendingPointerRef.current = {
+      pt: pointerCoords(e),
+      clientX: e.clientX,
+      clientY: e.clientY,
+    };
+    if (rafRef.current !== null) return;
     rafRef.current = requestAnimationFrame(() => {
       rafRef.current = null;
+      const pending = pendingPointerRef.current;
+      if (!pending) return;
+      const { pt, clientX, clientY } = pending;
       const cell = pointToCell(pt);
       const prev = hoverRef.current;
       // Skip if cell hasn't changed.
@@ -374,6 +379,7 @@ function OrbitRepMatrix({
     });
   }
   function handleMouseLeave() {
+    pendingPointerRef.current = null;
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
@@ -409,6 +415,8 @@ function OrbitRepMatrix({
           const rect = canvas.getBoundingClientRect();
           const clickX = rect.left + (focusedCell.col + 0.5) * layout.cellWidth;
           const clickY = rect.top + (focusedCell.row + 0.5) * layout.cellHeight;
+          hoverRef.current = { row: focusedCell.row, col: focusedCell.col };
+          paintOverlay();
           onHoverChange({ row: focusedCell.row, col: focusedCell.col, clickX, clickY });
         }
         return;
@@ -452,7 +460,12 @@ function OrbitRepMatrix({
   const yAxisHighlighted = hasHoveredLabels && allLabels.some((l) => vLabelSet.has(l) && hoveredLabels.has(l));
   const xAxisHighlighted = hasHoveredLabels && allLabels.some((l) => wLabelSet.has(l) && hoveredLabels.has(l));
   const axisHighlightClass = 'underline decoration-2 underline-offset-2';
-  const axisHighlightStyle = { color: COLOR.cellPinned };
+  const matrixCellCount = orbitRows.length * reps.length;
+  const filledCellCount = cells.reduce(
+    (acc, row) => acc + row.filter((cell) => cell !== null).length,
+    0,
+  );
+  const renderFullA11yTable = matrixCellCount <= FULL_A11Y_TABLE_CELL_LIMIT;
 
   return (
     <div
@@ -489,6 +502,33 @@ function OrbitRepMatrix({
                   n = <strong className="text-gray-700 font-semibold">{dimensionN}</strong>
                   <span className="ml-1">{`· {0..${dimensionN - 1}}`}</span>
                 </span>
+              )}
+              {onExpand && (
+                <button
+                  type="button"
+                  data-action="open-modal"
+                  onClick={(e) => { e.stopPropagation(); onExpand(); }}
+                  className="ml-1 inline-flex h-6 w-6 items-center justify-center rounded-md border border-gray-200 bg-white text-gray-400 transition-colors duration-150 hover:border-gray-300 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                  style={{ cursor: 'pointer' }}
+                  aria-label="Expand matrix to full screen"
+                >
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points="9,2 13,2 13,6" />
+                    <polyline points="5,12 1,12 1,8" />
+                    <line x1="13" y1="2" x2="8" y2="7" />
+                    <line x1="1" y1="12" x2="6" y2="7" />
+                  </svg>
+                </button>
               )}
             </>
           );
@@ -613,34 +653,16 @@ function OrbitRepMatrix({
                 onMouseLeave={handleMouseLeave}
               >
                 <canvas ref={canvasRef} />
-                {onExpand && (
-                  <button
-                    type="button"
-                    data-action="open-modal"
-                    onClick={(e) => { e.stopPropagation(); onExpand(); }}
-                    className="absolute top-2 right-2 inline-flex h-7 w-7 items-center justify-center rounded-md bg-transparent opacity-50 transition-opacity duration-150 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
-                    style={{ color: '#9AA0A0', cursor: 'pointer' }}
-                    aria-label="Expand matrix to full screen"
-                  >
-                    {/* Corner-arrows-out: universal "expand to fullscreen" signifier. */}
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <polyline points="9,2 13,2 13,6" />
-                      <polyline points="5,12 1,12 1,8" />
-                      <line x1="13" y1="2" x2="8" y2="7" />
-                      <line x1="1" y1="12" x2="6" y2="7" />
-                    </svg>
-                  </button>
-                )}
+                <canvas
+                  ref={overlayCanvasRef}
+                  data-testid="orbit-rep-matrix-overlay-canvas"
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    pointerEvents: 'none',
+                  }}
+                />
                 {/* CSS overlay for the focused cell — eased opacity + position reveal.
                     The canvas's PAINT stage already draws the strong-coral FILL on the
                     focused cell (instant for clarity); this overlay layers a 2px coral
@@ -825,36 +847,49 @@ function OrbitRepMatrix({
         );
       })()}
 
-      {/* Off-screen mirror table for screen-reader / keyboard a11y. */}
-      <table className="sr-only" aria-label="The O → Q matrix">
-        <thead>
-          <tr>
-            <th scope="col">Orbit</th>
-            {reps.map((rep, c) => (
-              <th key={c} scope="col">{labelledTuple(rep.tuple)}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {orbitRows.map((row, r) => (
-            <tr key={r}>
-              <th scope="row">{labelledTuple(row.repTuple)}</th>
-              {reps.map((rep, c) => {
-                const coeff = cells[r][c];
-                const filled = coeff !== null;
-                return (
-                  <td
-                    key={c}
-                    aria-label={`${labelledTuple(row.repTuple)} ${filled ? 'reaches' : 'does not reach'} ${labelledTuple(rep.tuple)}${filled ? `, contributes ${coeff} update${coeff === 1 ? '' : 's'} to alpha` : ''}`}
-                  >
-                    {filled ? '●' : ''}
-                  </td>
-                );
-              })}
+      {/* Off-screen mirror table for screen-reader / keyboard a11y. Large
+          matrices use a summary instead of thousands of hidden DOM cells. */}
+      {renderFullA11yTable ? (
+        <table className="sr-only" aria-label="The O → Q matrix">
+          <thead>
+            <tr>
+              <th scope="col">Orbit</th>
+              {reps.map((rep, c) => (
+                <th key={c} scope="col">{labelledTuple(rep.tuple)}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orbitRows.map((row, r) => (
+              <tr key={r}>
+                <th scope="row">{labelledTuple(row.repTuple)}</th>
+                {reps.map((rep, c) => {
+                  const coeff = cells[r][c];
+                  const filled = coeff !== null;
+                  return (
+                    <td
+                      key={c}
+                      aria-label={`${labelledTuple(row.repTuple)} ${filled ? 'reaches' : 'does not reach'} ${labelledTuple(rep.tuple)}${filled ? `, contributes ${coeff} update${coeff === 1 ? '' : 's'} to alpha` : ''}`}
+                    >
+                      {filled ? '●' : ''}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div
+          className="sr-only"
+          data-testid="orbit-rep-matrix-a11y-summary"
+          aria-label="The O → Q matrix"
+        >
+          The O to Q matrix has {orbitRows.length} product-orbit rows, {reps.length} stored-output columns,
+          and {filledCellCount} filled cells out of {matrixCellCount}. Use the focusable matrix overlay to
+          move by row and column; the live status announces the currently focused cell.
+        </div>
+      )}
     </div>
   );
 }

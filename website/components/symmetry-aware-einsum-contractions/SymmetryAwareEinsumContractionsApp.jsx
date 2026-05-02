@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef, useSyncExternalStore, useTransition } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { EXAMPLES } from './data/examples.js';
 import { parseCycleNotation } from './engine/cycleParser.js';
@@ -27,9 +27,6 @@ import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import BranchingDemo from './components/BranchingDemo.jsx';
 import DecisionLadder from './components/DecisionLadder.jsx';
-import DenseAssignmentGrid from './components/DenseAssignmentGrid.jsx';
-import ProductOrbitLens from './components/ProductOrbitLens.jsx';
-import LoopMorphStepper from './components/LoopMorphStepper.jsx';
 import { LabelInteractionGraph } from './components/ComponentView.jsx';
 import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
 import TwoQuotientSchematic from './components/TwoQuotientSchematic.jsx';
@@ -70,6 +67,72 @@ const APPENDIX_MAP = [
   { letter: 'D', title: 'Completed-expression formal symmetry', hash: '#appendix-section-4' },
   { letter: 'E', title: 'Scope, assumptions, and exactness', hash: '#appendix-section-8' },
 ];
+const PROJECTION_ALPHA_FORMULA = String.raw`\alpha = \#\{(O,Q) \in X/G_{\mathrm{pt}} \times Y/H : ${notationLatex('projection_pi_v_free')} \cap Q \neq \varnothing\}`;
+const CROSS_S2_CONTRACTION_FORMULA = String.raw`R[i,k] = \sum_j A[i,j]B[k]`;
+const CROSS_S2_OPERANDS_FORMULA = String.raw`A = \begin{bmatrix}1 & 2 \\ 2 & 4\end{bmatrix},\qquad B = \begin{bmatrix}5 \\ 7\end{bmatrix}`;
+const CROSS_S2_ORBIT_FORMULA = String.raw`O = \{(0,1,0), (1,0,0)\}`;
+const CROSS_S2_PRODUCT_EQUALITY_FORMULA = String.raw`\begin{aligned}A[0,1]B[0] &= 2 \cdot 5 = 10\\ A[1,0]B[0] &= 2 \cdot 5 = 10\end{aligned}`;
+const CROSS_S2_PROJECTION_DESTINATIONS_FORMULA = String.raw`(0,1,0) \mapsto R[0,0],\qquad (1,0,0) \mapsto R[1,0]`;
+const PROJECTION_MATRIX_BRIDGE = 'The matrix below is just this incidence test drawn out: scan a product-orbit row, mark every stored-output column it reaches, and count the marks.';
+
+function ProjectionIntroProse({ paragraphs }) {
+  const leftParagraphs = paragraphs.slice(0, 2);
+  const rightParagraphs = paragraphs.slice(2);
+  const paragraphClassName = 'font-serif text-[17px] leading-[1.75] text-gray-700';
+  const formulaClassName = 'projection-example-math overflow-x-auto whitespace-nowrap text-[18px]';
+  const renderParagraph = (paragraph, index) => (
+    <p
+      key={index}
+      className={paragraphClassName}
+      style={{ textAlign: 'justify' }}
+    >
+      <InlineMathText>{paragraph}</InlineMathText>
+    </p>
+  );
+  const renderDisplayFormula = (math, className = formulaClassName) => (
+    <div className={className}>
+      <div className="min-w-max">
+        <Latex math={math} display />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="editorial-two-col-divider-md grid gap-x-8 gap-y-4 md:grid-cols-2">
+      <div className="space-y-4 md:px-4">
+        {leftParagraphs.map(renderParagraph)}
+        {renderDisplayFormula(PROJECTION_ALPHA_FORMULA, `mt-3 ${formulaClassName}`)}
+        <p className={paragraphClassName} style={{ textAlign: 'justify' }}>
+          <InlineMathText>{PROJECTION_MATRIX_BRIDGE}</InlineMathText>
+        </p>
+      </div>
+      <div className="space-y-3 md:px-4">
+        <p className="text-[15px] font-semibold leading-7 text-gray-900">
+          Worked example — <span className="font-semibold">Cross S2</span>
+        </p>
+        {renderParagraph(rightParagraphs[0], 0)}
+        {renderDisplayFormula(CROSS_S2_CONTRACTION_FORMULA)}
+        <p className={paragraphClassName} style={{ textAlign: 'justify' }}>
+          <InlineMathText>{'Let $A$ and $B$ be concrete operands:'}</InlineMathText>
+        </p>
+        {renderDisplayFormula(CROSS_S2_OPERANDS_FORMULA)}
+        <p className={paragraphClassName} style={{ textAlign: 'justify' }}>
+          <InlineMathText>{'Now look at the product orbit'}</InlineMathText>
+        </p>
+        {renderDisplayFormula(CROSS_S2_ORBIT_FORMULA)}
+        <p className={paragraphClassName} style={{ textAlign: 'justify' }}>
+          <InlineMathText>{'The two assignments give the same scalar product:'}</InlineMathText>
+        </p>
+        {renderDisplayFormula(CROSS_S2_PRODUCT_EQUALITY_FORMULA)}
+        <p className={paragraphClassName} style={{ textAlign: 'justify' }}>
+          <InlineMathText>{'So they can share one representative product. But projection keeps only $(i,k)$, so the same two assignments land in different output entries:'}</InlineMathText>
+        </p>
+        {renderDisplayFormula(CROSS_S2_PROJECTION_DESTINATIONS_FORMULA)}
+        {renderParagraph(rightParagraphs[1], 1)}
+      </div>
+    </div>
+  );
+}
 
 function isAppendixHash(hash = '') {
   return hash === APPENDIX_ROOT_HASH || hash.startsWith(APPENDIX_SECTION_HASH_PREFIX);
@@ -91,6 +154,55 @@ function presetDefaultSize(example) {
   );
   if (sizes.length === 0) return DEFAULT_DIMENSION_N;
   return Math.max(...sizes);
+}
+
+function buildAnalysisCacheKey(example, dimensionN, clusterSizes = {}) {
+  if (!example) return '';
+  const normalized = normalizeExample(example);
+  const mergedLabelSizes = { ...(normalized.labelSizes || {}), ...clusterSizes };
+  return JSON.stringify({
+    id: normalized.id ?? null,
+    subscripts: normalized.subscripts ?? normalized.expression?.subscripts ?? null,
+    output: normalized.output ?? normalized.expression?.output ?? null,
+    operandNames: normalized.operandNames ?? normalized.expression?.operandNames ?? null,
+    perOpSymmetry: normalized.perOpSymmetry ?? null,
+    variables: normalized.variables ?? null,
+    labelSizes: mergedLabelSizes,
+    dimensionN,
+  });
+}
+
+function computeAnalysis(example, dimensionN, clusterSizes = {}) {
+  const normalized = normalizeExample(example);
+  const examplePreset = normalized.labelSizes || {};
+  const mergedLabelSizes = { ...examplePreset, ...clusterSizes };
+  return analyzeExample({ ...normalized, labelSizes: mergedLabelSizes }, dimensionN);
+}
+
+function initialAnalysisState(example, dimensionN) {
+  try {
+    const cacheKey = buildAnalysisCacheKey(example, dimensionN, {});
+    return {
+      analysis: computeAnalysis(example, dimensionN, {}),
+      example,
+      dimensionN,
+      status: 'ready',
+      pendingSelection: null,
+      error: null,
+      cacheKey,
+    };
+  } catch (err) {
+    console.error('Pipeline error:', err);
+    return {
+      analysis: null,
+      example,
+      dimensionN,
+      status: 'error',
+      pendingSelection: null,
+      error: err,
+      cacheKey: '',
+    };
+  }
 }
 
 /**
@@ -132,15 +244,18 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [customExample, setCustomExample] = useState(null);
   const [previewExample, setPreviewExample] = useState(EXAMPLES[DEFAULT_EXAMPLE_IDX]);
   const [defaultSize, setDefaultSize] = useState(() => presetDefaultSize(EXAMPLES[DEFAULT_EXAMPLE_IDX]));
+  const [analysisState, setAnalysisState] = useState(() => (
+    initialAnalysisState(EXAMPLES[DEFAULT_EXAMPLE_IDX], presetDefaultSize(EXAMPLES[DEFAULT_EXAMPLE_IDX]))
+  ));
+  const [isCommitPending, startCommitTransition] = useTransition();
+  const analysisCacheRef = useRef(new Map());
+  const selectionTimerRef = useRef(null);
+  const analysisTimerRef = useRef(null);
+  const analysisRequestIdRef = useRef(0);
   const [clusterSizes, setClusterSizes] = useState({}); // { [clusterId]: size }
   // Back-compat alias — many child components still take a single `dimensionN` prop.
   const dimensionN = defaultSize;
   const [selectedOrbitIdx, setSelectedOrbitIdx] = useState(-1);
-  // V3.1 §8 — C08 Product-Orbit Lens: locked orbit-id for the side-card
-  // adjacent to DenseAssignmentGrid. Distinct from selectedOrbitIdx (the
-  // ComponentCostView orbit-row dropdown), since the dense grid lives in §3
-  // and operates over the FULL einsum's product orbit decomposition.
-  const [lockedProductOrbitId, setLockedProductOrbitId] = useState(null);
   const [selectedSigmaPairIndex, setSelectedSigmaPairIndex] = useState(null);
   const [activeActId, setActiveActId] = useState(EXPLORER_ACTS[0].id);
   const [isDirty, setIsDirty] = useState(false);
@@ -189,61 +304,204 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const isCustom = exampleIdx === CUSTOM_IDX;
   const example = isCustom ? customExample : EXAMPLES[exampleIdx];
   const selectedPresetIdx = getPresetControlSelection(exampleIdx, isDirty);
+  const pendingSelection = analysisState.pendingSelection;
+  const pendingPresetIdx = pendingSelection?.kind === 'preset' || pendingSelection?.kind === 'custom'
+    ? pendingSelection.idx
+    : null;
+  const analysisUpdating = analysisState.status === 'updating' || isCommitPending;
   const theme = useMemo(() => getExplorerThemePreset(explorerThemeId), [explorerThemeId]);
   const themeCssVars = useMemo(() => getExplorerThemeCssVariables(theme), [theme]);
 
   // Derive variable colors from the example's variables (works for both presets and custom)
   const variableColors = useMemo(() => {
-    if (example?.variables) return buildVariableColors(example.variables, theme.id);
+    const sourceExample = analysisState.example ?? example;
+    if (sourceExample?.variables) return buildVariableColors(sourceExample.variables, theme.id);
     return {};
-  }, [example, theme.id]);
+  }, [analysisState.example, example, theme.id]);
 
   // Normalize the example for algorithm consumption
   const normalizedExample = useMemo(() => example ? normalizeExample(example) : null, [example]);
+  const normalizedAnalysisExample = useMemo(
+    () => (analysisState.example ? normalizeExample(analysisState.example) : null),
+    [analysisState.example],
+  );
+
+  // Handle preset selection
+  const queuePresetCommit = useCallback((idx) => {
+    if (selectionTimerRef.current) clearTimeout(selectionTimerRef.current);
+    selectionTimerRef.current = setTimeout(() => {
+      selectionTimerRef.current = null;
+      const nextExample = EXAMPLES[idx];
+      startCommitTransition(() => {
+        setExampleIdx(idx);
+        if (nextExample) setDefaultSize(presetDefaultSize(nextExample));
+        setIsDirty(false);
+        setSelectedOrbitIdx(-1);
+        setSelectedSigmaPairIndex(null);
+        setClusterSizes({});
+      });
+    }, 0);
+  }, [startCommitTransition]);
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
-    setExampleIdx(idx);
-    setPreviewExample(EXAMPLES[idx] ?? null);
-    if (EXAMPLES[idx]) setDefaultSize(presetDefaultSize(EXAMPLES[idx]));
-    setIsDirty(false);
-    setSelectedOrbitIdx(-1);
-    setLockedProductOrbitId(null);
-    setSelectedSigmaPairIndex(null);
-    setClusterSizes({});
+    const nextExample = EXAMPLES[idx] ?? null;
+    if (!nextExample) return;
+    setPreviewExample(nextExample);
+    setAnalysisState((prev) => ({
+      ...prev,
+      status: 'updating',
+      pendingSelection: {
+        kind: 'preset',
+        idx,
+        name: nextExample.name ?? 'selected preset',
+      },
+      error: null,
+    }));
+    queuePresetCommit(idx);
+  }, [queuePresetCommit]);
+
+  const commitCustomExample = useCallback((ex) => {
+    if (selectionTimerRef.current) clearTimeout(selectionTimerRef.current);
+    selectionTimerRef.current = setTimeout(() => {
+      selectionTimerRef.current = null;
+      startCommitTransition(() => {
+        setCustomExample(ex);
+        setExampleIdx(CUSTOM_IDX);
+        setSelectedOrbitIdx(-1);
+        setSelectedSigmaPairIndex(null);
+        setClusterSizes({});
+      });
+    }, 0);
+  }, [startCommitTransition]);
+
+  const commitCustomMode = useCallback(() => {
+    if (selectionTimerRef.current) clearTimeout(selectionTimerRef.current);
+    selectionTimerRef.current = setTimeout(() => {
+      selectionTimerRef.current = null;
+      startCommitTransition(() => {
+        setExampleIdx(CUSTOM_IDX);
+        setSelectedOrbitIdx(-1);
+        setSelectedSigmaPairIndex(null);
+        setClusterSizes({});
+      });
+    }, 0);
+  }, [startCommitTransition]);
+
+  const handleDimensionChange = useCallback((nextSize) => {
+    setDefaultSize(nextSize);
+    setAnalysisState((prev) => ({
+      ...prev,
+      status: 'updating',
+      pendingSelection: {
+        kind: 'dimension',
+        name: `n = ${nextSize}`,
+      },
+      error: null,
+    }));
   }, []);
 
   // Handle custom example submission
   const handleCustomExample = useCallback((ex) => {
-    setCustomExample(ex);
     setPreviewExample(ex);
-    setExampleIdx(CUSTOM_IDX);
-    setSelectedOrbitIdx(-1);
-    setLockedProductOrbitId(null);
-    setSelectedSigmaPairIndex(null);
-    setClusterSizes({});
-  }, []);
+    setAnalysisState((prev) => ({
+      ...prev,
+      status: 'updating',
+      pendingSelection: {
+        kind: 'custom',
+        idx: CUSTOM_IDX,
+        name: ex?.name ?? 'Custom',
+      },
+      error: null,
+    }));
+    commitCustomExample(ex);
+  }, [commitCustomExample]);
 
   const handleCustomMode = useCallback(() => {
-    setExampleIdx(CUSTOM_IDX);
-    setSelectedOrbitIdx(-1);
-    setLockedProductOrbitId(null);
-    setSelectedSigmaPairIndex(null);
-    setClusterSizes({});
+    setAnalysisState((prev) => ({
+      ...prev,
+      status: 'updating',
+      pendingSelection: {
+        kind: 'custom',
+        idx: CUSTOM_IDX,
+        name: 'Custom',
+      },
+      error: null,
+    }));
+    commitCustomMode();
+  }, [commitCustomMode]);
+
+  const analysisInputKey = useMemo(
+    () => buildAnalysisCacheKey(example, defaultSize, clusterSizes),
+    [example, defaultSize, clusterSizes],
+  );
+
+  useEffect(() => {
+    if (!example) return undefined;
+    if (analysisState.cacheKey === analysisInputKey) return undefined;
+
+    if (analysisTimerRef.current) clearTimeout(analysisTimerRef.current);
+    const requestId = analysisRequestIdRef.current + 1;
+    analysisRequestIdRef.current = requestId;
+
+    setAnalysisState((prev) => ({
+      ...prev,
+      status: prev.analysis ? 'updating' : 'ready',
+      pendingSelection: prev.pendingSelection ?? {
+        kind: isCustom ? 'custom' : 'preset',
+        idx: isCustom ? CUSTOM_IDX : exampleIdx,
+        name: example.name ?? 'selected preset',
+      },
+      error: null,
+    }));
+
+    analysisTimerRef.current = setTimeout(() => {
+      try {
+        let nextAnalysis = analysisCacheRef.current.get(analysisInputKey);
+        if (!nextAnalysis) {
+          nextAnalysis = computeAnalysis(example, defaultSize, clusterSizes);
+          analysisCacheRef.current.set(analysisInputKey, nextAnalysis);
+        }
+        if (analysisRequestIdRef.current !== requestId) return;
+        startCommitTransition(() => {
+          setAnalysisState({
+            analysis: nextAnalysis,
+            example,
+            dimensionN: defaultSize,
+            status: 'ready',
+            pendingSelection: null,
+            error: null,
+            cacheKey: analysisInputKey,
+          });
+        });
+      } catch (err) {
+        if (analysisRequestIdRef.current !== requestId) return;
+        console.error('Pipeline error:', err);
+        setAnalysisState((prev) => ({
+          ...prev,
+          status: 'error',
+          pendingSelection: null,
+          error: err,
+        }));
+      }
+    }, 0);
+
+    return () => {
+      if (analysisTimerRef.current) {
+        clearTimeout(analysisTimerRef.current);
+        analysisTimerRef.current = null;
+      }
+    };
+  }, [analysisInputKey, analysisState.cacheKey, clusterSizes, defaultSize, example, exampleIdx, isCustom, startCommitTransition]);
+
+  useEffect(() => () => {
+    if (selectionTimerRef.current) clearTimeout(selectionTimerRef.current);
+    if (analysisTimerRef.current) clearTimeout(analysisTimerRef.current);
   }, []);
 
-  const analysis = useMemo(() => {
-    if (!example) return null;
-    try {
-      const normalized = normalizeExample(example);
-      const examplePreset = normalized.labelSizes || {};
-      const mergedLabelSizes = { ...examplePreset, ...clusterSizes };
-      return analyzeExample({ ...normalized, labelSizes: mergedLabelSizes }, defaultSize);
-    } catch (err) {
-      console.error('Pipeline error:', err);
-      return null;
-    }
-  }, [example, clusterSizes, defaultSize]);
+  const analysis = analysisState.analysis;
+  const analysisExample = analysisState.example;
+  const analysisDimensionN = analysisState.dimensionN ?? dimensionN;
 
   const {
     graph,
@@ -286,42 +544,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
     return pickDefaultOrbitRow(orbitRows);
   }, [cost, selectedOrbitIdx]);
 
-  // V3.1 §8 — C08 Product-Orbit Lens
-  //   Build a Map<assignment-tuple-key, orbitId> from the brute-force orbit
-  //   decomposition (cost.orbitRows). Each row's `orbitTuples` lists every
-  //   assignment in that orbit; we key each by the same tuple-string the
-  //   DenseAssignmentGrid produces (label values joined with commas, in the
-  //   order of `group.allLabels`). The orbit-id is just the row index — this
-  //   keeps the map cheap to recompute and stable for colour-cycling.
-  const orbitsByAssignment = useMemo(() => {
-    const orbitRows = cost?.orbitRows ?? [];
-    const labels = group?.allLabels ?? [];
-    if (!orbitRows.length || !labels.length) return null;
-    const map = new Map();
-    for (let orbitId = 0; orbitId < orbitRows.length; orbitId += 1) {
-      const tuples = orbitRows[orbitId]?.orbitTuples ?? [];
-      for (const tuple of tuples) {
-        const key = labels.map((l) => tuple[l]).join(',');
-        map.set(key, orbitId);
-      }
-    }
-    return map;
-  }, [cost, group]);
-
-  // The locked orbit row, derived from `lockedProductOrbitId` (set by
-  // DenseAssignmentGrid clicks). Falls back to `null` when nothing is locked.
-  const lockedProductOrbit = useMemo(() => {
-    if (lockedProductOrbitId == null) return null;
-    const orbitRows = cost?.orbitRows ?? [];
-    return orbitRows[lockedProductOrbitId] ?? null;
-  }, [lockedProductOrbitId, cost]);
-
-  const teachingProductOrbitId = resolvedSelectedOrbitIdx >= 0 ? resolvedSelectedOrbitIdx : null;
-  const teachingProductOrbit = useMemo(() => {
-    if (teachingProductOrbitId == null) return null;
-    return cost?.orbitRows?.[teachingProductOrbitId] ?? null;
-  }, [cost, teachingProductOrbitId]);
-
   const outputActionSize = useMemo(() => {
     const labels = group?.allLabels ?? [];
     const vLabels = group?.vLabels ?? [];
@@ -334,6 +556,29 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
     return restrictStabilizerToPositions(elements, visiblePositions).length;
   }, [group]);
+
+  const twoQuotientCurrent = useMemo(() => {
+    const orbitRows = cost?.orbitRows ?? [];
+    const outputKeys = new Set();
+    for (const row of orbitRows) {
+      for (const output of row?.outputs ?? []) {
+        outputKeys.add(output?.outKey ?? JSON.stringify(output?.outTuple ?? output));
+      }
+    }
+    const branchRows = orbitRows.filter((row) => (
+      (row?.outputCount ?? row?.outputs?.length ?? 0) > 1
+    )).length;
+    return {
+      presetName: analysisExample?.name ?? 'custom contraction',
+      orbitRows,
+      rowCount: cost?.orbitCount ?? orbitRows.length,
+      columnCount: outputKeys.size,
+      alpha: cost?.reductionCostExact,
+      branchRows,
+      hSize: outputActionSize,
+      dimensionN: analysisDimensionN,
+    };
+  }, [analysisDimensionN, analysisExample?.name, cost, outputActionSize]);
 
   const activeLeafIds = useMemo(() => {
     return (componentData?.components ?? [])
@@ -468,7 +713,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         activeActId={activeActId}
         hoveredLabels={hoveredLabelSet}
         dimensionN={dimensionN}
-        onDimensionNChange={setDefaultSize}
+        onDimensionNChange={handleDimensionChange}
         onHoveredLabelsChange={setStripHoveredLabels}
         activeAlphaMethod={activeAlphaMethodHover}
         onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
@@ -536,7 +781,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               style={{ textAlign: 'justify' }}
             >
               <InlineMathText>
-                {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus accumulation updates into stored output representatives. It is not whest's general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The output is assumed to be stored by the output symmetry inherited from the detected pointwise group, so one product-orbit representative may update several stored output representatives when projection branches.`}
+                {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus accumulation updates into stored output representatives. It is not flopscope's general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The output is assumed to be stored by the output symmetry inherited from the detected pointwise group, so one product-orbit representative may update several stored output representatives when projection branches.`}
               </InlineMathText>
             </p>
             <p className="mt-2 text-[12.5px] leading-6 text-stone-600">
@@ -557,11 +802,26 @@ export default function SymmetryAwareEinsumContractionsApp() {
             <PresetSidebar
               examples={EXAMPLES}
               selectedPresetIdx={selectedPresetIdx}
+              pendingPresetIdx={pendingPresetIdx}
+              isPreparing={analysisUpdating}
               onSelect={handleSelect}
               onCustom={handleCustomMode}
             />
             <main className="min-w-0 flex-1">
               <div className="flex flex-col">
+                {analysisUpdating && pendingSelection ? (
+                  <div
+                    role="status"
+                    aria-live="polite"
+                    className="mb-4 flex items-center justify-between gap-3 border border-coral/30 bg-coral-light/40 px-4 py-3 text-sm text-stone-800 shadow-sm"
+                    data-analysis-updating="true"
+                  >
+                    <span>
+                      Preparing <strong className="font-semibold">{pendingSelection.name}</strong>. Showing the previous analysis until the new one is ready.
+                    </span>
+                    <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-coral" aria-hidden="true" />
+                  </div>
+                ) : null}
 
             {/* §1 Einsum at a Glance — id: einsum-glance, backward alias: setup */}
             <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-sticky">
@@ -580,9 +840,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     examples={EXAMPLES}
                     onSelect={handleSelect}
                     selectedPresetIdx={selectedPresetIdx}
+                    pendingPresetIdx={pendingPresetIdx}
+                    isPreparing={analysisUpdating}
                     dimensionN={dimensionN}
                     explorerThemeId={explorerThemeId}
-                    onDimensionChange={setDefaultSize}
+                    onDimensionChange={handleDimensionChange}
                     onCustom={handleCustomMode}
                     onCustomExample={handleCustomExample}
                     onPreviewChange={setPreviewExample}
@@ -596,7 +858,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             </section>
 
             {/* Only render pipeline sections when we have results */}
-            {analysis && example && (
+            {analysis && analysisExample && (
               <>
                 {/* §2 Product Symmetry — id: product-symmetry, backward alias: structure */}
                 <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-sticky">
@@ -610,30 +872,18 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
 	                  >
 	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[1].introParagraphs} />
-	                    <div className="mt-6">
-	                      <ProductOrbitLens
-	                        orbit={teachingProductOrbit}
-	                        orbitId={teachingProductOrbitId}
-	                        labels={group?.allLabels ?? []}
-	                        subscripts={normalizedExample?.subscripts ?? []}
-	                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
-	                          .split(',')
-	                          .map((s) => s.trim())
-	                          .filter(Boolean)}
-	                      />
-	                    </div>
 	                    <div className="editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
 	                      <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
 	                        <ExplorerSubsectionHeader anchorId="bipartite-graph" labelText="Bipartite Graph">
                           Bipartite Graph
                         </ExplorerSubsectionHeader>
-                        <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
+                        <BipartiteGraph graph={graph} example={normalizedAnalysisExample} variableColors={variableColors} />
                       </div>
                       <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="incidence-matrix" labelText="Incidence Matrix">
                           Incidence Matrix M
                         </ExplorerSubsectionHeader>
-                        <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
+                        <MatrixView matrixData={matrixData} graph={graph} example={normalizedAnalysisExample} variableColors={variableColors} />
                       </div>
                     </div>
                     <div className="mt-4">
@@ -663,62 +913,20 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[2].introParagraphs} />
-                    {/* §3 V3.1 §6 — C06 DenseAssignmentGrid (NEW)
-                        First concrete object readers see, before product orbits
-                        appear. Renders the full assignment space (no symmetry
-                        collapse yet) for the active preset; capped at n ≤ 4. */}
-                    <div className="mt-6">
-                      <DenseAssignmentGrid
-                        dimensionN={dimensionN}
-                        allLabels={group?.allLabels ?? []}
-                        subscripts={normalizedExample?.subscripts ?? []}
-                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
-                          .split(',')
-                          .map((s) => s.trim())
-                          .filter(Boolean)}
-                        output={normalizedExample?.output ?? ''}
-                        orbitsByAssignment={orbitsByAssignment}
-                        onOrbitSelect={setLockedProductOrbitId}
-                      />
-                    </div>
-                    {/* §3 V3.1 §8 — C08 ProductOrbitLens (NEW)
-                        Side-card paired with the dense grid. Reveals the
-                        product-orbit fields (Representative / Members /
-                        Orbit size / Reason / Fixed-point label) for the
-                        orbit locked by clicking a cell above. */}
-	                    <div className="mt-4">
-	                      <ProductOrbitLens
-	                        orbit={lockedProductOrbit ?? teachingProductOrbit}
-	                        orbitId={lockedProductOrbitId ?? teachingProductOrbitId}
-	                        labels={group?.allLabels ?? []}
-	                        subscripts={normalizedExample?.subscripts ?? []}
-	                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
-                          .split(',')
-                          .map((s) => s.trim())
-                          .filter(Boolean)}
-                      />
-                    </div>
-                    {/* §3 V3.1 §7 — C07 LoopMorphStepper (NEW)
-                        The "what we'll do with it" companion to the dense grid:
-                        side-by-side dense vs representative pseudocode with a
-                        5-step stepper morphing between them. */}
-	                    <div className="mt-6">
-	                      <LoopMorphStepper />
-	                    </div>
+                    <ProjectionIntroProse paragraphs={EXPLORER_ACTS[2].introParagraphs} />
 	                    <div className="mt-6">
 	                      <BranchingDemo
 	                        componentData={componentData}
 	                        costModel={cost}
-	                        dimensionN={dimensionN}
+	                        dimensionN={analysisDimensionN}
 	                        selectedOrbitIdx={resolvedSelectedOrbitIdx}
 	                        onSelectOrbit={setSelectedOrbitIdx}
 	                        onHover={handleGraphHover}
 	                        hoveredLabels={hoveredLabelSet}
-	                        expressionInfo={normalizedExample ? {
-	                          subscripts: normalizedExample.subscripts ?? [],
-                          output: normalizedExample.output ?? '',
-                          operandNames: (normalizedExample.expression?.operandNames ?? '')
+	                        expressionInfo={normalizedAnalysisExample ? {
+	                          subscripts: normalizedAnalysisExample.subscripts ?? [],
+                          output: normalizedAnalysisExample.output ?? '',
+                          operandNames: (normalizedAnalysisExample.expression?.operandNames ?? '')
                             .split(',')
 	                            .map((s) => s.trim())
 	                            .filter(Boolean),
@@ -740,10 +948,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >
-                    <SectionIntroProse paragraphs={EXPLORER_ACTS[3].introParagraphs} />
+                    <SectionIntroProse
+                      blocks={EXPLORER_ACTS[3].introBlocks}
+                      className="mx-auto max-w-[1180px]"
+                    />
                     {/* §4 Two-quotient schematic — C16 */}
                     <div className="mt-6">
-                      <TwoQuotientSchematic />
+                      <TwoQuotientSchematic current={twoQuotientCurrent} />
                     </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
@@ -777,8 +988,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                      <ComponentCostView
 	                        componentData={componentData}
 	                        costModel={cost}
-	                        dimensionN={dimensionN}
-	                        numTerms={normalizedExample?.subscripts?.length ?? 1}
+	                        dimensionN={analysisDimensionN}
+	                        numTerms={normalizedAnalysisExample?.subscripts?.length ?? 1}
 	                        allLabels={group.allLabels}
 	                        vLabels={group.vLabels}
 	                        fullGenerators={group.fullGenerators}
@@ -787,10 +998,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                        onGraphHover={handleGraphHover}
 	                        spotlightLeafIds={spotlightLeafSet}
 	                        hoveredLabels={hoveredLabelSet}
-	                        expressionInfo={normalizedExample ? {
-	                          subscripts: normalizedExample.subscripts ?? [],
-	                          output: normalizedExample.output ?? '',
-	                          operandNames: (normalizedExample.expression?.operandNames ?? '')
+	                        expressionInfo={normalizedAnalysisExample ? {
+	                          subscripts: normalizedAnalysisExample.subscripts ?? [],
+	                          output: normalizedAnalysisExample.output ?? '',
+	                          operandNames: (normalizedAnalysisExample.expression?.operandNames ?? '')
 	                            .split(',')
 	                            .map((s) => s.trim())
 	                            .filter(Boolean),
@@ -800,7 +1011,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                        showDecisionLadder={false}
 	                        onActiveComponentHoverChange={setActiveComponentId}
 	                        onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
-	                        onDimensionNChange={setDefaultSize}
+	                        onDimensionNChange={handleDimensionChange}
 	                      />
 	                    </div>
 	                    <div className="mt-4">
@@ -829,7 +1040,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </ExplorerSubsectionHeader>
                       <WreathStructureView
                         analysis={analysis}
-                        example={normalizedExample}
+                        example={normalizedAnalysisExample}
                       />
                     </div>
                     {/* σ-Loop (enumerates the wreath) + Generator Construction (closes valid π's). */}
@@ -844,7 +1055,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           results={sigmaResults}
                           graph={graph}
                           matrixData={matrixData}
-                          example={normalizedExample}
+                          example={normalizedAnalysisExample}
                           variableColors={variableColors}
                           group={group}
                           onSelectedPairChange={setSelectedSigmaPairIndex}
@@ -930,7 +1141,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                    </div>
 	                    <div className="mt-6">
 	                      <NaiveAlphaCostMeter
-	                        dimensionN={dimensionN}
+	                        dimensionN={analysisDimensionN}
                         allLabels={group?.allLabels ?? []}
                         groupSize={group?.fullElements?.length ?? 1}
                         hSize={outputActionSize}
@@ -956,7 +1167,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[7].introParagraphs} />
                     <div className="mt-6">
                       <TuplePatternMeter
-                        dimensionN={dimensionN}
+                        dimensionN={analysisDimensionN}
                         allLabels={group?.allLabels ?? []}
                         groupSize={group?.fullElements?.length ?? 1}
                         componentData={componentData}
@@ -988,10 +1199,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                    <TotalCostView
 	                      componentCosts={componentCosts}
                       componentData={componentData}
-                      dimensionN={dimensionN}
-                      numTerms={normalizedExample?.subscripts?.length ?? 1}
+                      dimensionN={analysisDimensionN}
+                      numTerms={normalizedAnalysisExample?.subscripts?.length ?? 1}
                       explorerThemeId={explorerThemeId}
-                      presetName={example?.name ?? null}
+                      presetName={analysisExample?.name ?? null}
                     />
 
                     <button
@@ -1064,7 +1275,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         onClose={closeAppendix}
         analysis={analysis}
         group={group}
-        example={example}
+        example={analysisExample}
         onSelectPreset={handleSelect}
       />
     </div>

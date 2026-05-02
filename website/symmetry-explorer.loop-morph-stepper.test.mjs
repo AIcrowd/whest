@@ -134,23 +134,10 @@ test('LoopMorphStepper exposes hover tokens for RepSet, Outs(rep), and coeff', (
   assert.match(src, /onFocus=\{\(\) => onTokenHover\(p\.tokenId\)\}/);
 });
 
-test('App mounts LoopMorphStepper in §3 right after DenseAssignmentGrid', () => {
+test('App no longer mounts LoopMorphStepper in §3 Projection', () => {
   const src = readFileSync(APP_PATH, 'utf-8');
-  // Default import.
-  assert.match(src, /import LoopMorphStepper from '\.\/components\/LoopMorphStepper\.jsx';/);
-  // Mounted JSX.
-  assert.match(src, /<LoopMorphStepper \/>/);
-  // Mount order: LoopMorphStepper must appear AFTER DenseAssignmentGrid and
-  // BEFORE ComponentCostView so the morph sits between the dense visual and
-  // the per-orbit cost ledger.
-  const dagIdx = src.indexOf('<DenseAssignmentGrid');
-  const lmsIdx = src.indexOf('<LoopMorphStepper');
-  const ccvIdx = src.indexOf('<ComponentCostView');
-  assert.ok(dagIdx > 0, 'expected DenseAssignmentGrid to be mounted');
-  assert.ok(lmsIdx > 0, 'expected LoopMorphStepper to be mounted');
-  assert.ok(ccvIdx > 0, 'expected ComponentCostView to be mounted');
-  assert.ok(dagIdx < lmsIdx, 'LoopMorphStepper must mount AFTER DenseAssignmentGrid');
-  assert.ok(lmsIdx < ccvIdx, 'LoopMorphStepper must mount BEFORE ComponentCostView');
+  assert.doesNotMatch(src, /import LoopMorphStepper from '\.\/components\/LoopMorphStepper\.jsx';/);
+  assert.doesNotMatch(src, /<LoopMorphStepper\b/);
 });
 
 test('LoopMorphStepper stories file declares ≥3 stories', () => {

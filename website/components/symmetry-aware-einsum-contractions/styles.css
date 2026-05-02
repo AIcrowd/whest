@@ -38,6 +38,14 @@
   vertical-align: baseline;
 }
 
+.projection-example-math .katex-display {
+  margin: 0.28rem 0;
+}
+
+.projection-example-math .katex {
+  font-size: 1.12em;
+}
+
 /* ─── Orbit Inspector ─────────────────── */
 
 .orbit-inspector-kicker {

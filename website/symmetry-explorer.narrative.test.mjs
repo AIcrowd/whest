@@ -66,19 +66,30 @@ test('EXPLORER_ACTS no longer carries legacy paired-callout compatibility fields
 
 test('approved mathematically safer prose appears in the narrative data', () => {
   const section2 = [...EXPLORER_ACTS[1].introParagraphs, EXPLORER_ACTS[1].produces].join(' ');
+  const projection = [...EXPLORER_ACTS[2].introParagraphs, EXPLORER_ACTS[2].produces].join(' ');
   const section3 = EXPLORER_ACTS[5].introParagraphs.join(' '); // §6 Certification (was old §3)
   const section4 = EXPLORER_ACTS[3].introParagraphs.join(' '); // §4 Rows and Columns (was old §4)
+  const section4Blocks = EXPLORER_ACTS[3].introBlocks
+    .map((block) => block.text ?? block.math ?? '')
+    .join(' ');
 
   assert.match(section2, /product-side reuse/i);
   assert.match(section2, /one representative product/i);
   assert.match(section2, /Burnside/i);
-  assert.match(section2, /orbit lens/i);
   assert.match(section2, /bipartite graph/i);
   assert.match(section2, /incidence matrix/i);
   assert.match(section2, /structural audit trail/i);
   assert.match(section2, /Candidate row moves are not proof yet/i);
   assert.match(section2, /same-domain constraints/i);
   assert.doesNotMatch(section2, /purely combinatorial encoding/i);
+
+  assert.match(projection, /Products are rows/i);
+  assert.match(projection, /Updates are filled cells/i);
+  assert.match(projection, /one row of the \$O \\to Q\$ matrix/i);
+  assert.match(projection, /Projection answers that question/i);
+  assert.match(projection, /The accumulation count \$\\alpha\$ is the number of filled cells/i);
+  assert.match(projection, /For example, take the Cross S2 case/i);
+  assert.match(projection, /One representative product, but two stored-output updates/i);
 
   assert.match(section3, /wreath product/i);
   assert.match(section3, /G_\{\\mathrm\{wreath\}\}/);
@@ -93,13 +104,17 @@ test('approved mathematically safer prose appears in the narrative data', () => 
   assert.match(section3, /\\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}/);
   assert.doesNotMatch(section3, /derivePi/);
 
-  assert.match(section4, /full assignment grid/i);
-  assert.match(section4, /product orbit|representative products/i);
+  assert.match(section4, /two quotients/i);
+  assert.match(section4, /Start with full assignments/i);
+  assert.match(section4, /product-orbit rows/i);
   // Output-orbit refactor banned "output bin"; α is now defined as the count of
   // (O, Q) pairs in X/G × Y/H where the projection meets Q.
   assert.match(section4, /stored output representative/i);
-  assert.match(section4, /\\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}\(V\)/);
-  // ¶3 ("projection is not always a function") was relocated to BranchingDemo.INTRO_PARAGRAPHS[0]
+  assert.match(section4Blocks, /Rows: product orbits/);
+  assert.match(section4Blocks, /Columns: stored output representatives/);
+  assert.match(section4Blocks, /Projection: filled cells/);
+  assert.match(section4Blocks, /\\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}\(V\)/);
+  assert.match(section4Blocks, /\\alpha = \\#\\\{\(O,Q\) \\in X\/G_\{\\text\{pt\}\} \\times Y\/H/);
   assert.doesNotMatch(section4, /output bin/i);
 });
 

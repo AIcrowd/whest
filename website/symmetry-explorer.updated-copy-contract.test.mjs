@@ -17,8 +17,8 @@ test('main copy distinguishes M, μ, and α', () => {
   assert.match(preamble, /\\mu = \(k-1\)M/);
   // rowsCols (§4 Rows and Columns) uses the unified output-orbit formulation
   // α = #{(O,Q) ∈ X/G_pt × Y/H : π_V(O) ∩ Q ≠ ∅} with H = Stab_{G_pt}(V)|_V.
-  assert.match(rowsCols, /\\\\alpha = \\\\#\\\\\{\(O, Q\) \\\\in X\/G_\{\\\\text\{pt\}\}/);
-  assert.match(rowsCols, /\\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)/);
+  assert.match(rowsCols, /eq\('\\\\displaystyle \\\\alpha = \\\\#\\\\\{\(O,Q\) \\\\in X\/G_\{\\\\text\{pt\}\}/);
+  assert.match(rowsCols, /eq\('\\\\displaystyle H = \\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)\|_V,\\\\qquad Q \\\\in Y\/H', 2, false, 'Column quotient'\)/);
   assert.match(total, /For each independent component, \$M_a\$ counts representative products and \$\\alpha_a\$ counts filled local \$O \\to Q\$ cells/);
 });
 
@@ -35,7 +35,7 @@ test('main copy does not overclaim n^5 divided by group order', () => {
 test('scope copy names direct event model and unsupported features', () => {
   const app = read('components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
   assert.match(app, /direct indexed scalar-event count/);
-  assert.match(app, /not whest's general FMA FLOP convention/);
+  assert.match(app, /not flopscope's general FMA FLOP convention/);
   assert.match(app, /repeated operand names denote the same tensor object/);
   assert.match(app, /forbids[\s\S]*ellipsis, broadcasting, repeated labels within one input, and[\s\S]*duplicate output labels/);
 });

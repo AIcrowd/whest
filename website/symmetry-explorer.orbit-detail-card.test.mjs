@@ -28,9 +28,33 @@ test('OrbitDetailCard renders consolidated 4-zone layout (header, projection, eq
   assert.doesNotMatch(src, /data-testid="worked-example-row-preview"/);
   // Projection sketch survives.
   assert.match(src, /data-testid="worked-example-projection"/);
-  // Two ledgers consolidated — one block for "this Q", one summary for "other reached".
+  assert.match(src, /data-testid="orbit-detail-coefficient-note"/);
+  // Full-detail blocks stay in the component for modal inline mode.
   assert.match(src, /data-testid="orbit-detail-this-q-ledger"/);
   assert.match(src, /data-testid="orbit-detail-other-reached-summary"/);
+});
+
+test('OrbitDetailCard reserves equation and ledgers for expanded inline mode', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
+  assert.match(src, /const showFullDetail = mode === 'inline';/);
+  assert.match(src, /\{showFullDetail && expressionInfo && canonicalEquationLatex/);
+  assert.match(src, /\{showFullDetail && filled && expressionInfo && contributing\.length > 0/);
+  assert.match(src, /\{showFullDetail && otherReached\.length > 0/);
+});
+
+test('OrbitDetailCard keeps coefficient as a note, not a confusing toggle mode', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
+  assert.doesNotMatch(src, /data-testid="orbit-detail-coefficient-toggle"/);
+  assert.doesNotMatch(src, /data-coefficient-row="true"/);
+  assert.doesNotMatch(src, /coefficientView/);
+  assert.match(src, /Multiple members landing in the same/);
+  assert.match(src, /change the coefficient, not the number of update events/);
+});
+
+test('OrbitDetailCard has no close button in the hover card chrome', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
+  assert.doesNotMatch(src, /data-action="clear-pin"/);
+  assert.doesNotMatch(src, /× close/);
 });
 
 test('OrbitDetailCard supports two modes: floating (default) and inline (modal) — only floating uses position:fixed', () => {
@@ -61,6 +85,14 @@ test('OrbitDetailCard wrapper uses p-5 padding for breathing room', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
   // The card outer div uses p-5 (Tailwind: 1.25rem = 20px) instead of p-4.
   assert.match(src, /data-testid="orbit-detail-card"[\s\S]{0,200}className="p-5"/);
+});
+
+test('OrbitDetailCard constrains overflow in floating and inline layouts', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
+  assert.match(src, /maxWidth:\s*`calc\(100vw -/);
+  assert.match(src, /overflowX:\s*'hidden'/);
+  assert.match(src, /grid-cols-\[minmax\(0,1fr\)_auto_minmax\(0,1fr\)\]/);
+  assert.match(src, /break-words/);
 });
 
 test('OrbitDetailCard uses no raw hex outside design tokens', () => {

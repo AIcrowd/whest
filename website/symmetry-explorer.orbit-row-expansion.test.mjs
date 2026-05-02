@@ -57,45 +57,32 @@ test('OrbitDetailCard renders V3.1 non-branching caption (1 representative produ
 
 test('OrbitDetailCard renders "THIS Q" badge marker for the selected destination', () => {
   const src = read(CARD_PATH);
-  // The THIS Q marker is rendered as a coral pill badge with a stable testid
-  // so the matrix can mark the row whose destination matches the user-clicked
-  // cell's repTuple.
+  // The THIS Q marker is a quiet inline marker with a stable testid so the
+  // matrix can mark the destination matching the hovered cell's repTuple.
   assert.match(src, /data-testid="orbit-detail-this-q-badge"/);
-  // The visible label must be exactly "THIS Q" (V3.1 §13 wording).
-  assert.match(src, />\s*THIS Q\s*</);
+  assert.match(src, />\s*· this Q\s*</);
+  assert.doesNotMatch(src, /rounded-full px-1\.5 py-0\.5/);
   // The badge must be selectivity-driven: there is a per-row data-this-q
   // attribute so tests + screen readers can pick out the marked row.
   assert.match(src, /data-this-q=/);
 });
 
-test('OrbitDetailCard exposes a coefficient-view toggle button with aria-label', () => {
+test('OrbitDetailCard removes the coefficient-view toggle from the main projection sketch', () => {
   const src = read(CARD_PATH);
-  assert.match(src, /data-testid="orbit-detail-coefficient-toggle"/);
-  // The toggle must declare an aria-label so screen readers describe its purpose.
-  assert.match(src, /aria-label="Toggle coefficient view"/);
-  // It must be a real <button type="button"> for keyboard focus + correct semantics.
-  assert.match(src, /<button[\s\S]{0,200}data-testid="orbit-detail-coefficient-toggle"[\s\S]{0,400}type="button"|<button[\s\S]{0,200}type="button"[\s\S]{0,400}data-testid="orbit-detail-coefficient-toggle"/);
+  assert.doesNotMatch(src, /data-testid="orbit-detail-coefficient-toggle"/);
+  assert.doesNotMatch(src, /aria-label="Toggle coefficient view"/);
 });
 
-test('OrbitDetailCard coefficient-view toggle declares aria-expanded so its open/closed state is exposed to AT', () => {
+test('OrbitDetailCard does not expose coefficient view as a disclosure state', () => {
   const src = read(CARD_PATH);
-  // The toggle is a disclosure-style control: aria-expanded mirrors the
-  // coefficientView state. (We also add aria-pressed for toggle-button AT,
-  // but spec specifically wants aria-expanded.)
-  assert.match(src, /aria-expanded=\{coefficientView\}/);
+  assert.doesNotMatch(src, /aria-expanded=\{coefficientView\}/);
+  assert.doesNotMatch(src, /aria-pressed=\{coefficientView\}/);
 });
 
-test('OrbitDetailCard coefficient view rows are tagged with data-coefficient-row so the renderer flips presentation when toggle is on', () => {
+test('OrbitDetailCard keeps coefficient as an explanatory note, not a second visual mode', () => {
   const src = read(CARD_PATH);
-  // When the toggle is on, the rendered rows are (destination Q, coefficient)
-  // pairs. They are tagged with data-coefficient-row so the visual mode is
-  // distinguishable from the default per-member rows.
-  assert.match(src, /data-coefficient-row="true"/);
-  // The view also surfaces the literal "coefficient(O, Q)" label so the
-  // user knows what the right-hand value represents.
-  assert.match(src, /coefficient\(O, ?Q\)/);
-  // The toggle gates rendering — the source must branch on coefficientView
-  // (from useState) at the projection-sketch site.
-  assert.match(src, /useState/);
-  assert.match(src, /coefficientView\s*\?/);
+  assert.doesNotMatch(src, /data-coefficient-row="true"/);
+  assert.doesNotMatch(src, /coefficientView\s*\?/);
+  assert.match(src, /data-testid="orbit-detail-coefficient-note"/);
+  assert.match(src, /change the coefficient, not the number of update events/);
 });

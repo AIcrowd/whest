@@ -50,6 +50,13 @@ test('BranchingDemo wires hover-driven OrbitDetailCard', () => {
   assert.match(src, /hover=\{hover\}/);
 });
 
+test('BranchingDemo hides the floating detail card while the expanded matrix modal is open', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /\{!modalOpen && \(/);
+  assert.match(src, /\{!modalOpen && \([\s\S]*?<OrbitDetailCard\b[\s\S]*?mode="floating"/);
+  assert.match(src, /<OrbitRepMatrixModal[\s\S]*hover=\{hover\}[\s\S]*onHoverChange=\{handleHoverChange\}/);
+});
+
 test('BranchingDemo holds hover in React state (no click-pin)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
   assert.match(src, /\[hover[\s\S]{0,30}\]\s*=\s*useState/);

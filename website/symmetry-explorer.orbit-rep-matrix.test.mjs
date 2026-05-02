@@ -234,12 +234,14 @@ test('OrbitRepMatrix uses a faint cell-level hover marker (no row/col wash, no s
   assert.doesNotMatch(src, /orbit-rep-matrix-x-band/);
 });
 
-test('OrbitRepMatrix renders an sr-only mirror table for accessibility', () => {
+test('OrbitRepMatrix renders an sr-only mirror table for small matrices and summary for large matrices', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   assert.match(src, /<table[^>]*className="sr-only"/);
   assert.match(src, /aria-label="The O → Q matrix"/);
   // Each <td> has aria-label describing (O, Q) + filled/empty.
   assert.match(src, /aria-label=\{[^}]*labelledTuple/);
+  assert.match(src, /FULL_A11Y_TABLE_CELL_LIMIT/);
+  assert.match(src, /data-testid="orbit-rep-matrix-a11y-summary"/);
 });
 
 test('OrbitRepMatrix renders Y/X axis tick gutters with computeAxisTicks', () => {
@@ -265,8 +267,10 @@ test('OrbitRepMatrix caps tall-canvas DPR before sizing the backing bitmap', () 
   assert.match(src, /MAX_CANVAS_BITMAP_SIDE\s*=\s*32767/);
   assert.match(src, /function canvasDprFor\(width, height\)/);
   assert.match(src, /Math\.min\(rawDpr,\s*MAX_CANVAS_BITMAP_SIDE \/ maxSide\)/);
-  assert.match(src, /canvas\.width\s*=\s*Math\.floor\(w \* dpr\)/);
-  assert.match(src, /canvas\.height\s*=\s*Math\.floor\(h \* dpr\)/);
+  assert.match(src, /bitmapW\s*=\s*Math\.floor\(w \* dpr\)/);
+  assert.match(src, /bitmapH\s*=\s*Math\.floor\(h \* dpr\)/);
+  assert.match(src, /layer\.width\s*=\s*bitmapW/);
+  assert.match(src, /layer\.height\s*=\s*bitmapH/);
 });
 
 test('OrbitRepMatrix legend uses hairline-only inline label grouping (no chip borders)', () => {
@@ -290,10 +294,11 @@ test('OrbitRepMatrix expand affordance is a quiet gray glyph (no coral border, n
   // No more coral border, small caps, or "expand" text label.
   assert.doesNotMatch(src, /borderColor:\s*['"]rgba\(240,82,77,0\.45\)['"]/);
   assert.doesNotMatch(src, />\s*expand\s*<span/);
-  // Quiet glyph: SVG with stroke="currentColor", opacity transition.
+  // Quiet glyph: SVG with stroke="currentColor" in the legend row, not as a
+  // data-covering overlay inside the canvas frame.
   assert.match(src, /<svg[^>]*viewBox/);
-  assert.match(src, /opacity-50/);
-  assert.match(src, /hover:opacity-100/);
+  assert.match(src, /border border-gray-200 bg-white text-gray-400/);
+  assert.doesNotMatch(src, /absolute top-2 right-2/);
 });
 
 test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => {
@@ -306,6 +311,23 @@ test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => 
   assert.match(src, /import OrbitRepMatrix from/);
   assert.match(src, /import OrbitDetailCard from/);
   assert.match(src, /mode="inline"/);
+});
+
+test('OrbitRepMatrixModal uses a fixed inspection surface with a scrollable detail panel', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrixModal.jsx');
+  assert.match(src, /h-\[min\(820px,90vh\)\]/);
+  assert.match(src, /w-\[min\(1280px,94vw\)\]/);
+  assert.match(src, /overflow-hidden/);
+  assert.match(src, /lg:grid-cols-\[minmax\(0,1fr\)_360px\]/);
+  assert.match(src, /overflow-y-auto overflow-x-hidden/);
+  assert.match(src, /canvasHeight=\{620\}/);
+});
+
+test('OrbitRepMatrixModal empty detail panel explains how to inspect cells', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrixModal.jsx');
+  assert.match(src, /data-testid="orbit-rep-matrix-modal-empty-detail"/);
+  assert.match(src, /Inspect a cell/);
+  assert.match(src, /Hover over a filled or empty cell/);
 });
 
 test('OrbitRepMatrix axis ticks render hairline tick marks alongside labels', () => {

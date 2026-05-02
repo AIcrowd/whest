@@ -211,7 +211,7 @@ test('ComponentCostView — declares onDimensionNChange as an optional prop', ()
 // ─────────────────────────────────────────────────────────────────────────────
 // 9. App threads onDimensionNChange into ComponentCostView
 // ─────────────────────────────────────────────────────────────────────────────
-test('App — passes onDimensionNChange={setDefaultSize} to ComponentCostView', () => {
+test('App — passes pending-aware dimension changes to ComponentCostView', () => {
   const src = read(APP_PATH);
   // Locate the ComponentCostView mount inside §3 Projection.
   const start = src.indexOf('<ComponentCostView');
@@ -219,7 +219,7 @@ test('App — passes onDimensionNChange={setDefaultSize} to ComponentCostView', 
   const end = src.indexOf('/>', start);
   assert.ok(end > -1, 'self-closing /> not found after <ComponentCostView');
   const mountBlock = src.slice(start, end + 2);
-  assert.match(mountBlock, /onDimensionNChange=\{setDefaultSize\}/);
+  assert.match(mountBlock, /onDimensionNChange=\{handleDimensionChange\}/);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

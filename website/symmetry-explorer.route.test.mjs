@@ -16,6 +16,10 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
     new URL('./components/symmetry-aware-einsum-contractions/components/SectionIntroProse.jsx', import.meta.url),
     'utf8',
   );
+  const stylesSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/styles.css', import.meta.url),
+    'utf8',
+  );
   assert.match(appSource, /import SectionIntroProse from '\.\/components\/SectionIntroProse\.jsx';/);
   // V3.1 topology: 10 sections. Section 9 now folds its prose into
   // TotalCostView so the component recap can lead the section body.
@@ -26,6 +30,22 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   assert.match(introSource, /md:grid-cols-2/);
   assert.match(introSource, /balancedColumns/);
   assert.match(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[0\]\.introParagraphs\} balancedColumns \/>/);
+  assert.match(appSource, /function ProjectionIntroProse\(\{ paragraphs \}\)/);
+  assert.match(appSource, /const PROJECTION_ALPHA_FORMULA = String\.raw`\\alpha = \\#\\\{/);
+  assert.match(appSource, /<ProjectionIntroProse paragraphs=\{EXPLORER_ACTS\[2\]\.introParagraphs\} \/>/);
+  assert.match(appSource, /projection-example-math overflow-x-auto whitespace-nowrap text-\[18px\]/);
+  assert.match(appSource, /const PROJECTION_MATRIX_BRIDGE = 'The matrix below is just this incidence test drawn out/);
+  assert.match(stylesSource, /\.projection-example-math \.katex-display/);
+  assert.match(stylesSource, /margin: 0\.28rem 0/);
+  assert.match(stylesSource, /font-size: 1\.12em/);
+  assert.match(appSource, /Worked example — <span className="font-semibold">Cross S2<\/span>/);
+  assert.match(appSource, /CROSS_S2_CONTRACTION_FORMULA/);
+  assert.match(appSource, /CROSS_S2_OPERANDS_FORMULA/);
+  assert.match(appSource, /CROSS_S2_ORBIT_FORMULA/);
+  assert.match(appSource, /CROSS_S2_PRODUCT_EQUALITY_FORMULA/);
+  assert.match(appSource, /CROSS_S2_PROJECTION_DESTINATIONS_FORMULA/);
+  assert.match(appSource, /\\begin\{aligned\}A\[0,1\]B\[0\] &= 2 \\cdot 5 = 10\\\\ A\[1,0\]B\[0\] &= 2 \\cdot 5 = 10\\end\{aligned\}/);
+  assert.match(appSource, /\(0,1,0\) \\mapsto R\[0,0\]/);
   assert.match(introSource, /textAlign:\s*'justify'/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[8\]\.supportingSentence/);
   assert.doesNotMatch(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[8\]\.introParagraphs\} \/>/);
@@ -96,7 +116,7 @@ test('article route still wires the appendix modal while the main page stays app
   );
 
   assert.match(appSource, /<ExpressionLevelModal/);
-  assert.match(appSource, /<ExpressionLevelModal[\s\S]*example=\{example\}/);
+  assert.match(appSource, /<ExpressionLevelModal[\s\S]*example=\{analysisExample\}/);
   assert.match(appSource, /<ExpressionLevelModal[\s\S]*onSelectPreset=\{handleSelect\}/);
   assert.match(appSource, /const APPENDIX_ROOT_HASH = '#appendix';/);
   assert.match(appSource, /const APPENDIX_SECTION_HASH_PREFIX = '#appendix-section-';/);

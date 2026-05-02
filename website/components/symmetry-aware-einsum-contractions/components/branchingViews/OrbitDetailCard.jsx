@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef } from 'react';
 import Latex from '../Latex.jsx';
 import { labelledTuple, tupleKey } from './orbitRepMatrixLayout.js';
 import { flipPosition } from './floatingPosition.js';
@@ -62,15 +62,11 @@ function OrbitDetailCard({
   cells = [],
   expressionInfo = null,
   componentInfo = null,
-  onDismiss = () => {},      // called on Esc, scroll-out, or × close
+  onDismiss = () => {},      // called on Esc, scroll-out, or outside click
   matrixRef = null,          // ref to the matrix outer element — used by IntersectionObserver
   mode = 'floating',         // 'floating' | 'inline'
 }) {
   const cardRef = useRef(null);
-  // V3.1 §13: coefficient-view toggle — when on, the projection sketch
-  // re-groups by destination Q and renders (Q, coefficient) pairs instead
-  // of per-member rows. Default: off (members → destination view).
-  const [coefficientView, setCoefficientView] = useState(false);
   // Capture onDismiss in a ref so the three effects below don't re-run when
   // callers pass an unstable arrow. Effects call `onDismissRef.current()` instead.
   const onDismissRef = useRef(onDismiss);
@@ -187,6 +183,8 @@ function OrbitDetailCard({
       : membersProjectingTo(row, o.outTuple, componentInfo).length,
     isSelected: tupleKey(o.outTuple) === selectedRepKey,
   }));
+  const hasGroupedCoefficient = coefficientPairs.some((pair) => pair.coefficient > 1);
+  const showFullDetail = mode === 'inline';
 
   const wrapperStyle = mode === 'floating'
     ? {
@@ -194,8 +192,10 @@ function OrbitDetailCard({
         left: 0,                    // initial; useLayoutEffect overwrites synchronously
         top: 0,
         width: CARD_W,
+        maxWidth: `calc(100vw - ${2 * FLOAT_PADDING}px)`,
         maxHeight: `min(${CARD_H}px, calc(100vh - ${2 * FLOAT_PADDING}px))`,
         overflowY: 'auto',
+        overflowX: 'hidden',
         zIndex: 50,
         background: COLOR.bg,
         border: `1px solid ${COLOR.border}`,
@@ -204,6 +204,7 @@ function OrbitDetailCard({
       }
     : {
         background: COLOR.bg,
+        overflowX: 'hidden',
       };
 
   return (
@@ -214,24 +215,16 @@ function OrbitDetailCard({
       style={wrapperStyle}
       className="p-5"
     >
-      {/* Zone 1 — Header: eyebrow + close + tuples + branching caption */}
+      {/* Zone 1 — Header: eyebrow + tuples + branching caption */}
       <div className="flex items-baseline gap-3">
         <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-900">
           Worked example · O → Q
         </div>
-        <button
-          type="button"
-          data-action="clear-pin"
-          onClick={onDismiss}
-          className="ml-auto text-[10px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          × close
-        </button>
       </div>
 
       {/* Tuples header */}
       <div className="mt-2 font-mono text-[11px] text-gray-900 leading-7">
-        <div>
+        <div className="min-w-0 break-words">
           <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 mr-2 font-sans">orbit O</span>
           <strong>{labelledTuple(row.repTuple)}</strong>
           <span className="ml-2 text-gray-500 font-sans">
@@ -239,7 +232,7 @@ function OrbitDetailCard({
             {branchCount > 1 ? ` · branches to ${branchCount} reps` : ''}
           </span>
         </div>
-        <div>
+        <div className="min-w-0 break-words">
           <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 mr-2 font-sans">stored rep Q</span>
           <strong>{labelledTuple(rep.tuple)}</strong>
         </div>
@@ -266,108 +259,68 @@ function OrbitDetailCard({
         </div>
       </div>
 
-      {/* Zone 2 — Projection: π_V projection sketch.
-          V3.1 §13: a coefficient-view toggle re-groups the rows by destination
-          Q and renders (Q, coefficient) pairs instead of per-member lines. */}
+      {/* Zone 2 — Projection: π_V projection sketch. Coefficients are explained
+          below as a secondary note, not as a separate user-facing mode. */}
       {(row.orbitTuples?.length ?? 0) > 0 && (
         <div data-testid="worked-example-projection" className="mt-3 rounded p-2.5 font-mono text-[10.5px] leading-7" style={{ background: COLOR.empty }}>
-          <div className="grid grid-cols-[1fr_auto_1fr] gap-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 font-sans mb-1 items-center">
-            <span>{coefficientView ? 'destination Q' : 'members of O'}</span>
-            <span>{coefficientView ? '·' : (<>π<sub>V</sub></>)}</span>
-            <span className="flex items-center justify-between gap-2">
-              <span>{coefficientView ? 'coefficient(O, Q)' : 'destination'}</span>
-              <button
-                type="button"
-                data-testid="orbit-detail-coefficient-toggle"
-                aria-label="Toggle coefficient view"
-                aria-pressed={coefficientView}
-                aria-expanded={coefficientView}
-                onClick={() => setCoefficientView((v) => !v)}
-                className="ml-2 inline-flex items-center rounded border px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-[0.08em] font-sans transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
-                style={{
-                  borderColor: coefficientView ? COLOR.coral : COLOR.border,
-                  color: coefficientView ? COLOR.coral : COLOR.summed,
-                  background: coefficientView ? COLOR.coralLight : COLOR.bg,
-                }}
-              >
-                {coefficientView ? 'coeff view · on' : 'coeff view'}
-              </button>
-            </span>
+          <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 font-sans mb-1 items-center">
+            <span>members of O</span>
+            <span>π<sub>V</sub></span>
+            <span>destination</span>
           </div>
-          {coefficientView ? (
-            // V3.1 §13 coefficient view — one row per destination Q with the
-            // count of orbit members projecting there. THIS Q is badged on
-            // the destination matching the user-clicked cell.
-            coefficientPairs.map((pair, i) => (
+          {row.orbitTuples.map((m, i) => {
+            const memberV = {};
+            for (const l of vLabels) memberV[l] = m[l];
+            const matchesThis = vLabels.every((l) => m[l] === rep.tuple[l]);
+            return (
               <div
                 key={i}
-                data-coefficient-row="true"
-                data-this-q={pair.isSelected ? 'true' : 'false'}
-                className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center"
+                data-this-q={matchesThis ? 'true' : 'false'}
+                className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-2 items-center"
               >
-                <span style={{ color: pair.isSelected ? COLOR.coral : COLOR.coralMuted, fontWeight: pair.isSelected ? 600 : 500 }}>
-                  R[{vLabels.map((l) => pair.outTuple[l]).join(', ')}]
-                  {pair.isSelected && (
+                <span className="min-w-0 break-words">{labelledTuple(m)}</span>
+                <span className="text-gray-400 text-center">→</span>
+                <span className="min-w-0 break-words" style={{ color: matchesThis ? COLOR.coral : COLOR.coralMuted, fontWeight: matchesThis ? 600 : 500 }}>
+                  R[{vLabels.map((l) => memberV[l]).join(', ')}]
+                  {matchesThis ? (
                     <span
                       data-testid="orbit-detail-this-q-badge"
-                      className="ml-2 inline-flex items-center rounded-full px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-[0.1em] font-sans text-white"
-                      style={{ background: COLOR.coral }}
+                      className="ml-1 font-sans text-[8px] font-semibold uppercase tracking-[0.1em]"
+                      style={{ color: COLOR.coral }}
                     >
-                      THIS Q
+                      · this Q
                     </span>
+                  ) : (
+                    <span className="ml-1 font-sans text-[8px] font-semibold uppercase tracking-[0.1em]">· other Q</span>
                   )}
                 </span>
-                <span className="text-gray-400 text-center">·</span>
-                <span className="text-gray-900">
-                  coefficient(O, Q) = <strong className="font-semibold">{pair.coefficient}</strong>
-                </span>
               </div>
-            ))
-          ) : (
-            row.orbitTuples.map((m, i) => {
-              const memberV = {};
-              for (const l of vLabels) memberV[l] = m[l];
-              const matchesThis = vLabels.every((l) => m[l] === rep.tuple[l]);
-              return (
-                <div
-                  key={i}
-                  data-this-q={matchesThis ? 'true' : 'false'}
-                  className="grid grid-cols-[1fr_auto_1fr] gap-2 items-center"
-                >
-                  <span>{labelledTuple(m)}</span>
-                  <span className="text-gray-400 text-center">→</span>
-                  <span style={{ color: matchesThis ? COLOR.coral : COLOR.coralMuted, fontWeight: matchesThis ? 600 : 500 }}>
-                    R[{vLabels.map((l) => memberV[l]).join(', ')}]
-                    {matchesThis ? (
-                      <span
-                        data-testid="orbit-detail-this-q-badge"
-                        className="ml-2 inline-flex items-center rounded-full px-1.5 py-0.5 text-[8px] font-semibold uppercase tracking-[0.1em] font-sans text-white"
-                        style={{ background: COLOR.coral }}
-                      >
-                        THIS Q
-                      </span>
-                    ) : (
-                      <span className="ml-1">← OTHER Q ●</span>
-                    )}
-                  </span>
-                </div>
-              );
-            })
-          )}
+            );
+          })}
+          <div
+            data-testid="orbit-detail-coefficient-note"
+            className="mt-2 border-t pt-2 font-serif text-[11px] leading-snug text-gray-600"
+            style={{ borderColor: COLOR.divider }}
+          >
+            This row contributes one update for each distinct destination <Latex math="Q" inheritColor /> it reaches.
+            {hasGroupedCoefficient && (
+              <> Multiple members landing in the same <Latex math="Q" inheritColor /> change the coefficient, not the number of update events.</>
+            )}
+          </div>
         </div>
       )}
 
       {/* Zone 3 — Equation + this-Q ledger */}
-      {expressionInfo && canonicalEquationLatex(expressionInfo) && (
+      {showFullDetail && expressionInfo && canonicalEquationLatex(expressionInfo) && (
         <div className="mt-3 pt-2 border-t" style={{ borderColor: COLOR.divider }}>
           <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-1.5">einsum equation</div>
-          <div className="pl-2">
+          <div className="min-w-0 overflow-x-auto pl-2">
             <Latex math={canonicalEquationLatex(expressionInfo)} display />
           </div>
         </div>
       )}
 
-      {filled && expressionInfo && contributing.length > 0 && (
+      {showFullDetail && filled && expressionInfo && contributing.length > 0 && (
         <div
           data-testid="orbit-detail-this-q-ledger"
           className="mt-3 pt-2 border-t"
@@ -376,7 +329,7 @@ function OrbitDetailCard({
           <div className="text-[9px] font-semibold uppercase tracking-[0.16em] mb-1.5" style={{ color: COLOR.coral }}>
             contribution to R[{vLabels.map((l) => rep.tuple[l]).join(', ')}] · this Q
           </div>
-          <div className="pl-2 font-mono text-[11px] leading-7 text-gray-900">
+          <div className="min-w-0 overflow-x-auto pl-2 font-mono text-[11px] leading-7 text-gray-900">
             {contributing.map((m, i) => (
               <div key={i}>
                 If ({allLabels.join(', ')}) = ({allLabels.map((l) => m[l]).join(', ')}), then R[{vLabels.map((l) => m[l]).join(', ')}] += {operandName}[{allLabels.map((l) => m[l]).join(', ')}]
@@ -387,7 +340,7 @@ function OrbitDetailCard({
       )}
 
       {/* Zone 4 — Other-reached summary (1-line, first 3 destinations + N more) */}
-      {otherReached.length > 0 && (
+      {showFullDetail && otherReached.length > 0 && (
         <div
           data-testid="orbit-detail-other-reached-summary"
           className="mt-3 pt-2 border-t font-mono text-[11px] leading-snug text-gray-500"

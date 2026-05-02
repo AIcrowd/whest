@@ -2,9 +2,8 @@
 //
 // Source-grep coverage for V3.1 §8 — C08 Product-Orbit Lens.
 //
-// The Product-Orbit Lens augments the §3 DenseAssignmentGrid (C06) with
-// product-orbit overlays + a side-card that reveals the orbit's
-// Representative / Members / Size / Reason fields when a cell is clicked.
+// The Product-Orbit Lens is still covered as a standalone visual component,
+// but it is no longer mounted in §3 Projection.
 //
 // These tests pin the contract: prop shape, toggle, data-* attributes, and
 // App-level wiring. Behaviour itself is exercised by the storybook stories
@@ -85,54 +84,21 @@ test('ProductOrbitLens renders V3.1 §8 fields (Representative / Members / Orbit
   assert.match(src, /Product equality/);
 });
 
-test('App computes orbitsByAssignment from cost.orbitRows', () => {
+test('App no longer computes DenseAssignmentGrid orbit lookup state', () => {
   const src = readFileSync(APP_PATH, 'utf-8');
-  // Map is built keyed by the same tuple-string the grid produces (label-
-  // values joined by commas, in `group.allLabels` order).
-  assert.match(src, /const orbitsByAssignment = useMemo/);
-  // Build loops over orbitRows + their orbitTuples.
-  assert.match(src, /orbitRows\[orbitId\]\?\.orbitTuples/);
-  assert.match(src, /map\.set\(key, orbitId\)/);
-  // App wires the map + lock callback through the DenseAssignmentGrid props.
-  assert.match(src, /orbitsByAssignment=\{orbitsByAssignment\}/);
-  assert.match(src, /onOrbitSelect=\{setLockedProductOrbitId\}/);
+  assert.doesNotMatch(src, /const orbitsByAssignment = useMemo/);
+  assert.doesNotMatch(src, /orbitsByAssignment=\{orbitsByAssignment\}/);
+  assert.doesNotMatch(src, /onOrbitSelect=\{setLockedProductOrbitId\}/);
 });
 
-test('App teaches ProductOrbitLens in §2 and keeps a click-linked lens in §3', () => {
+test('App no longer mounts ProductOrbitLens in §3 Projection', () => {
   const src = readFileSync(APP_PATH, 'utf-8');
-  // Default import.
-  assert.match(src, /import ProductOrbitLens from '\.\/components\/ProductOrbitLens\.jsx';/);
-
-  const section2Idx = src.indexOf('§2 Product Symmetry');
-  const section3Idx = src.indexOf('§3 Projection');
-  const graphIdx = src.indexOf('<BipartiteGraph', section2Idx);
-  const teachingLensIdx = src.indexOf('<ProductOrbitLens', section2Idx);
-  assert.ok(section2Idx > -1, '§2 Product Symmetry comment not found');
-  assert.ok(section3Idx > section2Idx, '§3 Projection comment must follow §2');
-  assert.ok(teachingLensIdx > section2Idx && teachingLensIdx < graphIdx, '§2 lens must lead the structural graph views');
-  assert.match(src.slice(teachingLensIdx, graphIdx), /orbit=\{teachingProductOrbit\}/);
-  assert.match(src.slice(teachingLensIdx, graphIdx), /orbitId=\{teachingProductOrbitId\}/);
-
-  const dagIdx = src.indexOf('<DenseAssignmentGrid', section3Idx);
-  const projectionLensIdx = src.indexOf('<ProductOrbitLens', dagIdx);
-  const loopIdx = src.indexOf('<LoopMorphStepper', section3Idx);
-  assert.ok(dagIdx > section3Idx, 'expected DenseAssignmentGrid to be mounted in §3');
-  assert.ok(projectionLensIdx > dagIdx, '§3 ProductOrbitLens must appear after DenseAssignmentGrid');
-  assert.ok(projectionLensIdx < loopIdx, '§3 ProductOrbitLens must stay adjacent to the dense grid');
-  const projectionLensBlock = src.slice(projectionLensIdx, loopIdx);
-  assert.match(projectionLensBlock, /orbit=\{lockedProductOrbit \?\? teachingProductOrbit\}/);
-  assert.match(projectionLensBlock, /orbitId=\{lockedProductOrbitId \?\? teachingProductOrbitId\}/);
+  assert.doesNotMatch(src, /import ProductOrbitLens from '\.\/components\/ProductOrbitLens\.jsx';/);
+  assert.doesNotMatch(src, /<ProductOrbitLens\b/);
 });
 
-test('App resets lockedProductOrbitId on preset / custom-example switches', () => {
+test('App no longer carries ProductOrbitLens lock state', () => {
   const src = readFileSync(APP_PATH, 'utf-8');
-  // The lock state is declared.
-  assert.match(src, /const \[lockedProductOrbitId, setLockedProductOrbitId\] = useState\(null\);/);
-  // It is cleared by all three example-switch handlers, so a stale orbit-id
-  // can never out-live the cost.orbitRows it indexed into.
-  const occurrences = src.match(/setLockedProductOrbitId\(null\)/g) ?? [];
-  assert.ok(
-    occurrences.length >= 3,
-    `expected ≥3 lock-resets across handleSelect/handleCustomExample/handleCustomMode, got ${occurrences.length}`,
-  );
+  assert.doesNotMatch(src, /lockedProductOrbitId/);
+  assert.doesNotMatch(src, /setLockedProductOrbitId/);
 });

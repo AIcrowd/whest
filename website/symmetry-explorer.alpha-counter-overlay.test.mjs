@@ -68,9 +68,10 @@ test('BranchingDemo strip wires the cumulativeMode useState toggle', () => {
 
 test('BranchingDemo derives the running prefix totals from the hovered row', () => {
   const src = read(BRANCHING_DEMO_PATH);
-  // Cumulative counters slice cells up to hoveredRow + 1 — the user's
-  // top-to-bottom scan position.
-  assert.match(src, /cells\s*\.\s*slice\(0,\s*cumulativeRows\)/);
+  // Cumulative counters use prefix sums so dense matrices do not re-scan rows
+  // on every hover transition.
+  assert.match(src, /prefixAlpha/);
+  assert.match(src, /prefixAlpha\[cumulativeRows\]/);
   assert.match(src, /hoveredRow\s*>=\s*0\s*\?\s*hoveredRow\s*\+\s*1/);
 });
 

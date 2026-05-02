@@ -51,5 +51,5 @@ export default function Latex({
 
   return display
     ? <div style={wrapperStyle} dangerouslySetInnerHTML={{ __html: html }} />
-    : <span className="mx-[0.08em]" style={wrapperStyle} dangerouslySetInnerHTML={{ __html: html }} />;
+    : <span style={wrapperStyle} dangerouslySetInnerHTML={{ __html: html }} />;
 }

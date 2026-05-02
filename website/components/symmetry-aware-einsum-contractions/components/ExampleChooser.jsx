@@ -145,6 +145,8 @@ export default function ExampleChooser({
   examples,
   onSelect,
   selectedPresetIdx = 0,
+  pendingPresetIdx = null,
+  isPreparing = false,
   dimensionN,
   explorerThemeId,
   onDimensionChange,
@@ -657,13 +659,19 @@ export default function ExampleChooser({
                   'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-[var(--coral)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--coral-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--coral)]/20',
                   !validation.valid && 'opacity-60',
                   analyzeSuccess && 'bg-emerald-600 hover:bg-emerald-600',
+                  isPreparing && pendingPresetIdx === CUSTOM_IDX && 'cursor-wait opacity-80',
                 )}
                 onClick={handleAnalyze}
                 aria-label="Analyze custom einsum expression"
+                aria-busy={isPreparing && pendingPresetIdx === CUSTOM_IDX ? 'true' : undefined}
                 data-analyze-success={analyzeSuccess ? 'true' : 'false'}
                 title={validation.valid ? undefined : 'Click to see what needs fixing'}
               >
-                {analyzeSuccess ? (
+                {isPreparing && pendingPresetIdx === CUSTOM_IDX ? (
+                  <>
+                    <span aria-hidden className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" /> Analyzing
+                  </>
+                ) : analyzeSuccess ? (
                   <>
                     <span aria-hidden>&#x2713;</span> Analyzed
                   </>
@@ -739,6 +747,17 @@ export default function ExampleChooser({
             <span>Analysis complete — results updated below.</span>
           </div>
         )}
+        {isPreparing && pendingPresetIdx === CUSTOM_IDX && visibleErrors.length === 0 && (
+          <div
+            className="flex items-center gap-2 rounded-lg border border-coral/30 bg-coral-light/40 px-3 py-2 text-xs text-stone-700"
+            role="status"
+            aria-live="polite"
+            data-analyze-status="pending"
+          >
+            <span aria-hidden className="h-1.5 w-1.5 animate-pulse rounded-full bg-coral" />
+            <span>Analyzing custom contraction — previous results stay visible until this finishes.</span>
+          </div>
+        )}
       </div>
     </>
   );
@@ -759,20 +778,26 @@ export default function ExampleChooser({
           <div className="divide-y divide-gray-100">
             <ExplorerSidebarItem
               as="button"
-              active={activePresetIdx === CUSTOM_IDX}
+              active={activePresetIdx === CUSTOM_IDX || (isPreparing && pendingPresetIdx === CUSTOM_IDX)}
               title="Custom"
               glyph="⚙"
               description="Keep the current builder state and switch into custom mode."
               formula="— build below —"
-              className={activePresetIdx === CUSTOM_IDX ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
+              className={activePresetIdx === CUSTOM_IDX || (isPreparing && pendingPresetIdx === CUSTOM_IDX) ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
               onClick={() => {
                 setActivePresetIdx(CUSTOM_IDX);
                 onCustom?.();
               }}
             >
-              {activePresetIdx === CUSTOM_IDX && (
+              {(activePresetIdx === CUSTOM_IDX || (isPreparing && pendingPresetIdx === CUSTOM_IDX)) && (
                 <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
               )}
+              {isPreparing && pendingPresetIdx === CUSTOM_IDX ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-coral px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" aria-hidden="true" />
+                  Preparing
+                </span>
+              ) : null}
               <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gray-500">
                 Freeform
               </span>
@@ -782,17 +807,24 @@ export default function ExampleChooser({
               <ExplorerSidebarItem
                 key={summary.id}
                 as="button"
-                active={activePresetIdx === idx}
+                active={activePresetIdx === idx || (isPreparing && pendingPresetIdx === idx)}
                 title={summary.name}
                 glyph={summary.glyph}
                 description={summary.description}
                 formula={summary.formula}
-                className={activePresetIdx === idx ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
+                className={activePresetIdx === idx || (isPreparing && pendingPresetIdx === idx) ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
                 onClick={() => loadPreset(idx)}
+                aria-busy={isPreparing && pendingPresetIdx === idx ? 'true' : undefined}
               >
-                {activePresetIdx === idx && (
+                {(activePresetIdx === idx || (isPreparing && pendingPresetIdx === idx)) && (
                   <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
                 )}
+                {isPreparing && pendingPresetIdx === idx ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-coral px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" aria-hidden="true" />
+                    Preparing
+                  </span>
+                ) : null}
                 {summary.caseIds?.map((caseId) => (
                   <CaseBadge key={caseId} regimeId={caseId} size="xs" variant="pill" />
                 ))}

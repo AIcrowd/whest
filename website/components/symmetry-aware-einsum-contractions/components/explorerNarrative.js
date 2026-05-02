@@ -15,6 +15,7 @@ const getParagraphTexts = (blocks = []) => blocks
   .filter(({ kind }) => kind === 'paragraph')
   .map(({ text }) => text);
 const getFirstParagraphText = (blocks = []) => blocks.find(({ kind }) => kind === 'paragraph')?.text;
+const getIntroBlocks = (blocks = []) => blocks.map((block) => ({ ...block }));
 
 export const EXPLORER_ACTS = [
   {
@@ -22,6 +23,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Einsum at a Glance',
     heading: mainEinsumGlance.title,
     question: mainEinsumGlance.deck,
+    introBlocks: getIntroBlocks(mainEinsumGlance.slots.intro),
     introParagraphs: getParagraphTexts(mainEinsumGlance.slots.intro),
     produces: getFirstParagraphText(mainEinsumGlance.slots.produces),
   },
@@ -30,6 +32,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Product Symmetry',
     heading: mainProductSymmetry.title,
     question: mainProductSymmetry.deck,
+    introBlocks: getIntroBlocks(mainProductSymmetry.slots.intro),
     introParagraphs: getParagraphTexts(mainProductSymmetry.slots.intro),
     produces: getFirstParagraphText(mainProductSymmetry.slots.produces),
   },
@@ -38,6 +41,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Projection',
     heading: mainProjection.title,
     question: mainProjection.deck,
+    introBlocks: getIntroBlocks(mainProjection.slots.intro),
     introParagraphs: getParagraphTexts(mainProjection.slots.intro),
     produces: getFirstParagraphText(mainProjection.slots.produces),
   },
@@ -46,6 +50,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Rows and Columns',
     heading: mainRowsCols.title,
     question: mainRowsCols.deck,
+    introBlocks: getIntroBlocks(mainRowsCols.slots.intro),
     introParagraphs: getParagraphTexts(mainRowsCols.slots.intro),
     produces: getFirstParagraphText(mainRowsCols.slots.produces),
   },
@@ -54,6 +59,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Component Factorization',
     heading: mainComponentFactorization.title,
     question: mainComponentFactorization.deck,
+    introBlocks: getIntroBlocks(mainComponentFactorization.slots.intro),
     introParagraphs: getParagraphTexts(mainComponentFactorization.slots.intro),
     produces: getFirstParagraphText(mainComponentFactorization.slots.produces),
   },
@@ -62,6 +68,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Certification',
     heading: mainCertification.title,
     question: mainCertification.deck,
+    introBlocks: getIntroBlocks(mainCertification.slots.intro),
     introParagraphs: getParagraphTexts(mainCertification.slots.intro),
     produces: getFirstParagraphText(mainCertification.slots.produces),
   },
@@ -70,6 +77,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Counting Shortcuts',
     heading: mainCountingShortcuts.title,
     question: mainCountingShortcuts.deck,
+    introBlocks: getIntroBlocks(mainCountingShortcuts.slots.intro),
     introParagraphs: getParagraphTexts(mainCountingShortcuts.slots.intro),
     produces: getFirstParagraphText(mainCountingShortcuts.slots.produces),
   },
@@ -78,6 +86,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Partition Counting',
     heading: mainTypedPartition.title,
     question: mainTypedPartition.deck,
+    introBlocks: getIntroBlocks(mainTypedPartition.slots.intro),
     introParagraphs: getParagraphTexts(mainTypedPartition.slots.intro),
     produces: getFirstParagraphText(mainTypedPartition.slots.produces),
   },
@@ -86,6 +95,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Assemble the Cost',
     heading: mainAssembleCost.title,
     question: mainAssembleCost.deck,
+    introBlocks: getIntroBlocks(mainAssembleCost.slots.intro),
     introParagraphs: getParagraphTexts(mainAssembleCost.slots.intro),
     produces: getFirstParagraphText(mainAssembleCost.slots.produces),
   },
@@ -94,6 +104,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Appendix',
     heading: mainAppendixTransition.title,
     question: mainAppendixTransition.deck,
+    introBlocks: getIntroBlocks(mainAppendixTransition.slots.intro),
     introParagraphs: getParagraphTexts(mainAppendixTransition.slots.intro),
     produces: getFirstParagraphText(mainAppendixTransition.slots.produces),
   },

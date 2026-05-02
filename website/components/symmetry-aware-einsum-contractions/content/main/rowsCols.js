@@ -1,16 +1,34 @@
-const p = (text) => ({ kind: 'paragraph', text });
+const p = (text, column = null, options = {}) => ({ kind: 'paragraph', text, column, ...options });
+const h = (text, column = null) => ({ kind: 'heading', text, column });
+const eq = (math, column = null, compact = false, label = null) => ({
+  kind: 'equation',
+  math,
+  column,
+  compact,
+  label,
+});
 
 const rowsCols = {
   title: 'Rows and Columns',
   deck: 'How does $G_{\\text{pt}}$ become rows, and $H$ become columns?',
   slots: {
     intro: [
-      p('The detected pointwise group $G_{\\text{pt}}$ acts on the full assignment grid $X$, not only on output labels. The number of representative products is the orbit count $M = |X/G_{\\text{pt}}|$. In components this becomes $M = \\prod_a M_a$, with each $M_a$ computed by size-aware Burnside or exact orbit enumeration.'),
-      p('Accumulation is the part that is easy to over-compress. The output is stored by the output representative action $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ inherited from the detected pointwise group, so the direct update count is $\\alpha = \\#\\{(O, Q) \\in X/G_{\\text{pt}} \\times Y/H : \\pi_{V_{\\mathrm{free}}}(O) \\cap Q \\neq \\varnothing\\}$ — pairs of a product orbit and a stored output representative reached by projecting that orbit.'),
-      p('A product orbit can contain many full assignments. After projection, those assignments may reach one stored output representative or several, so $\\alpha$ counts one update per reached column, not one update per product row. Enumerating every concrete assignment is correct but wasteful; the remaining sections explain when this $O \\to Q$ reach relation factors, when it has shortcuts, and when typed partitions count it exactly.'),
+      p('The $O \\to Q$ matrix has two quotients: one quotient turns product assignments into rows, and the other turns output assignments into stored columns. The projection step only asks which row reaches which column.', 'full', { lead: true, align: 'left' }),
+      h('Rows: product orbits', 1),
+      p('Start with full assignments. The detected pointwise group $G_{\\text{pt}}$ relabels assignments that produce the same representative product, so one matrix row is one orbit $O$.', 1, { align: 'left' }),
+      eq('\\displaystyle O \\in X/G_{\\text{pt}}', 1, false, 'Row quotient'),
+      p('Counting rows gives $M$: the number of representative products the evaluator multiplies once.', 1, { align: 'left' }),
+      h('Columns: stored output representatives', 2),
+      p('The output side keeps only the visible labels. Not every product-side symmetry survives there: $H$ is the certified part of $G_{\\text{pt}}$ that preserves the visible set and restricts to those labels.', 2, { align: 'left' }),
+      eq('\\displaystyle H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V,\\qquad Q \\in Y/H', 2, false, 'Column quotient'),
+      p('A column is one stored representative $Q$. If $H$ is trivial, every output assignment is its own column; if $H$ is nontrivial, several assignments share one stored representative.', 2, { align: 'left' }),
+      h('Projection: filled cells', 'full'),
+      p('Projection connects the two quotients. A product orbit can reach one stored output representative, or several, after its members are projected to visible labels.', 'full', { align: 'left' }),
+      eq('\\displaystyle \\alpha = \\#\\{(O,Q) \\in X/G_{\\text{pt}} \\times Y/H : \\pi_V(O) \\cap Q \\neq \\varnothing\\}', 'full', true, 'Accumulation count'),
+      p('Thus $M$ counts product-orbit rows, while $\\alpha$ counts filled $O \\to Q$ cells. When every row reaches exactly one column, $\\alpha = M$; when projection branches, $\\alpha$ needs its own counting method.', 'full', { align: 'left' }),
     ],
     produces: [
-      p('The row quotient $X/G_{\\text{pt}}$, the column quotient $Y/H$, and the reason accumulation needs a reach relation between them. Section 5 shows when that relation factors into independent components.'),
+      p('Rows are product orbits $X/G_{\\text{pt}}$. Columns are stored output representatives $Y/H$. The accumulation count $\\alpha$ is the reach relation between them: one product row may fill one column or several. Section 5 shows when this relation factors into independent components.'),
     ],
   },
 };
