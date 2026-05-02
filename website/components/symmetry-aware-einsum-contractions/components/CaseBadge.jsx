@@ -9,8 +9,11 @@ import { cn } from '../lib/utils.js';
 
 const TOOLTIP_WIDTH = 460;
 const TOOLTIP_HEIGHT = 340;
+const TOOLTIP_MAX_HEIGHT = 560;
+const TOOLTIP_MIN_HEIGHT = 180;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
+const TOOLTIP_CLOSE_DELAY_MS = 160;
 
 /**
  * Module-level coordinator: at most one CaseBadge tooltip is visible at a time.
@@ -106,8 +109,14 @@ export default function CaseBadge({
   children = null,
 }) {
   const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
+  const [tooltipPos, setTooltipPos] = useState({
+    x: 0,
+    y: 0,
+    flipped: false,
+    maxHeight: TOOLTIP_HEIGHT,
+  });
   const ref = useRef(null);
+  const closeTimerRef = useRef(null);
   const ownerIdRef = useRef(null);
   if (ownerIdRef.current === null) ownerIdRef.current = Symbol('case-badge');
 
@@ -121,27 +130,73 @@ export default function CaseBadge({
     return () => { tooltipSubscribers.delete(notify); };
   }, []);
 
+  useEffect(() => () => {
+    if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
+  }, []);
+
   const outlinedPill = variant !== 'compact';
   const presentation = getRegimePresentation(regimeId, presentationThemeOverride);
   const colors = colorsFor(presentation.color ?? '#94A3B8', { outlined: outlinedPill });
   const tooltip = interactive ? presentation.tooltip : null;
 
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    clearCloseTimer();
+    closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = null;
+      setShowTooltip(false);
+    }, TOOLTIP_CLOSE_DELAY_MS);
+  };
+
   const handleEnter = () => {
     if (!tooltip || !ref.current) return;
+    clearCloseTimer();
 
     const rect = ref.current.getBoundingClientRect();
     const vw = document.documentElement.clientWidth;
+    const vh = document.documentElement.clientHeight;
+    const tooltipWidth = Math.min(TOOLTIP_WIDTH, vw - (VIEWPORT_PADDING * 2));
     let x = rect.left + rect.width / 2;
-    x = Math.max(TOOLTIP_WIDTH / 2 + TOOLTIP_OFFSET, Math.min(x, vw - TOOLTIP_WIDTH / 2 - VIEWPORT_PADDING));
+    x = Math.max(
+      tooltipWidth / 2 + VIEWPORT_PADDING,
+      Math.min(x, vw - tooltipWidth / 2 - VIEWPORT_PADDING),
+    );
 
-    let y = rect.top - TOOLTIP_OFFSET;
-    let flipped = false;
-    if (y - TOOLTIP_HEIGHT < TOOLTIP_OFFSET) {
-      y = rect.bottom + TOOLTIP_OFFSET;
+    const viewportMaxHeight = Math.max(
+      TOOLTIP_MIN_HEIGHT,
+      Math.min(TOOLTIP_MAX_HEIGHT, vh - (VIEWPORT_PADDING * 2)),
+    );
+    const preferredHeight = Math.min(TOOLTIP_HEIGHT, viewportMaxHeight);
+    const roomAbove = rect.top - VIEWPORT_PADDING - TOOLTIP_OFFSET;
+    const roomBelow = vh - rect.bottom - VIEWPORT_PADDING - TOOLTIP_OFFSET;
+    const placeBelow = roomBelow >= preferredHeight || (roomBelow >= roomAbove && roomAbove < preferredHeight);
+
+    let y;
+    let maxHeight;
+    let flipped;
+    if (placeBelow) {
+      y = Math.min(rect.bottom + TOOLTIP_OFFSET, vh - VIEWPORT_PADDING - TOOLTIP_MIN_HEIGHT);
+      maxHeight = Math.max(
+        TOOLTIP_MIN_HEIGHT,
+        Math.min(viewportMaxHeight, vh - y - VIEWPORT_PADDING),
+      );
       flipped = true;
+    } else {
+      maxHeight = Math.max(
+        TOOLTIP_MIN_HEIGHT,
+        Math.min(viewportMaxHeight, roomAbove),
+      );
+      y = Math.max(VIEWPORT_PADDING, rect.top - TOOLTIP_OFFSET - maxHeight);
+      flipped = false;
     }
 
-    setTooltipPos({ x, y, flipped });
+    setTooltipPos({ x, y, flipped, maxHeight });
     broadcastTooltipOpen(ownerIdRef.current);
     setShowTooltip(true);
   };
@@ -152,7 +207,10 @@ export default function CaseBadge({
   useEffect(() => {
     if (!showTooltip) return undefined;
 
-    const dismiss = () => setShowTooltip(false);
+    const dismiss = () => {
+      clearCloseTimer();
+      setShowTooltip(false);
+    };
     const dismissOnEscape = (event) => {
       if (event.key === 'Escape') setShowTooltip(false);
     };
@@ -182,7 +240,7 @@ export default function CaseBadge({
   const triggerProps = tooltip
     ? {
       onPointerEnter: handleEnter,
-      onPointerLeave: () => setShowTooltip(false),
+      onPointerLeave: scheduleClose,
     }
     : {};
 
@@ -231,11 +289,16 @@ export default function CaseBadge({
 
       {showTooltip && tooltip && typeof document !== 'undefined' && createPortal(
         <div
-          className="pointer-events-none fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
+          className="pointer-events-auto fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
+          role="tooltip"
+          onPointerEnter={clearCloseTimer}
+          onPointerLeave={scheduleClose}
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,
-            transform: tooltipPos.flipped ? 'translateX(-50%)' : 'translateX(-50%) translateY(-100%)',
+            maxHeight: tooltipPos.maxHeight,
+            overflowY: 'auto',
+            transform: 'translateX(-50%)',
           }}
         >
           <div className="mb-1 whitespace-normal break-words text-sm font-semibold leading-6">

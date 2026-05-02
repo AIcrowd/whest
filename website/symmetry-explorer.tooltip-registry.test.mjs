@@ -119,6 +119,19 @@ test('CaseBadge: tooltip contains "Counts: filled O → Q cells for this compone
   );
 });
 
+test('CaseBadge: long regime tooltips are capped and positioned without translateY clipping', () => {
+  const src = read(COMPONENTS, 'CaseBadge.jsx');
+  assert.match(src, /maxHeight:\s*tooltipPos\.maxHeight/);
+  assert.match(src, /overflowY:\s*'auto'/);
+  assert.match(src, /transform:\s*'translateX\(-50%\)'/);
+  assert.match(src, /const tooltipWidth = Math\.min\(\s*TOOLTIP_WIDTH,\s*vw - \(VIEWPORT_PADDING \* 2\)\s*\)/);
+  assert.match(src, /tooltipWidth \/ 2 \+ VIEWPORT_PADDING/);
+  assert.match(src, /className="pointer-events-auto fixed z-\[9999\]/);
+  assert.match(src, /role="tooltip"/);
+  assert.match(src, /onPointerLeave=\{scheduleClose\}/);
+  assert.doesNotMatch(src, /translateX\(-50%\) translateY\(-100%\)/);
+});
+
 // ── Part 6: Component summary title-attribute tooltips (ComponentCostView) ─
 
 test('ComponentCostView: Dense tuple title uses V3.1 "full assignment-space product of n_ell" (Part 6)', () => {
