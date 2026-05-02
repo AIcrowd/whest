@@ -15,7 +15,7 @@ test('EXPLORER_ACTS defines the ten narrative acts in the V3.1 story order', () 
   assert.deepEqual(
     EXPLORER_ACTS.map(({ id, navTitle, heading }) => ({ id, navTitle, heading })),
     [
-      { id: 'einsum-glance', navTitle: 'Einsum at a Glance', heading: 'Einsum at a Glance' },
+      { id: 'einsum-glance', navTitle: 'Einsum at a Glance', heading: 'Specify the Contraction' },
       { id: 'product-symmetry', navTitle: 'Product Symmetry', heading: 'Product Symmetry' },
       { id: 'projection', navTitle: 'Projection', heading: 'Projection' },
       { id: 'rows-cols', navTitle: 'Rows and Columns', heading: 'Rows and Columns' },

@@ -24,6 +24,8 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   assert.match(appSource, /title={EXPLORER_ACTS\[9\]\.heading}/);
   assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[9\]\.question}<\/InlineMathText>}/);
   assert.match(introSource, /md:grid-cols-2/);
+  assert.match(introSource, /balancedColumns/);
+  assert.match(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[0\]\.introParagraphs\} balancedColumns \/>/);
   assert.match(introSource, /textAlign:\s*'justify'/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[8\]\.supportingSentence/);
   assert.doesNotMatch(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[8\]\.introParagraphs\} \/>/);
@@ -48,7 +50,11 @@ test('masthead lands the result and appendix transition exposes an A-E map', () 
 
   assert.match(appSource, /An interactive paper/);
   assert.match(appSource, /Counting symmetry-aware einsums/);
-  assert.match(appSource, /Multiply once; accumulate wherever the orbit projects/);
+  assert.match(appSource, /Symmetry can turn many label assignments into one representative product/);
+  assert.match(appSource, /reuse is only half the cost/);
+  assert.match(appSource, /multiplication-chain work \$\\mu\$ and filled \$O \\to Q\$ updates \$\\alpha\$/);
+  assert.match(appSource, /so \$\\mathrm\{Total\}=\\mu\+\\alpha\$\.`\}<\/InlineMathText>/);
+  assert.doesNotMatch(appSource, /<Latex math=\{String\.raw`G_\{\\text\{pt\}\}`\} \/> product rows/);
   assert.match(appSource, /APPENDIX_MAP/);
   assert.match(appSource, /letter: 'A', title: 'Product-side certification', hash: '#appendix-section-1'/);
   assert.match(appSource, /letter: 'B', title: 'Classification-tree cases', hash: '#appendix-section-7'/);

@@ -429,7 +429,7 @@ export default function AlgorithmAtAGlance({
           </AnchorLink>
         }
         title={<span id="algorithm-at-a-glance-title">{mainPreamble.title}</span>}
-        description={mainPreamble.deck}
+        description={<InlineMathText>{mainPreamble.deck}</InlineMathText>}
         className="border-gray-200 bg-white"
         contentClassName="pt-6"
       >

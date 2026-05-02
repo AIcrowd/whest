@@ -119,16 +119,25 @@ test('CaseBadge: tooltip contains "Counts: filled O → Q cells for this compone
   );
 });
 
-test('CaseBadge: long regime tooltips are capped and positioned without translateY clipping', () => {
+test('CaseBadge: long regime tooltips show full content without internal scrolling', () => {
   const src = read(COMPONENTS, 'CaseBadge.jsx');
-  assert.match(src, /maxHeight:\s*tooltipPos\.maxHeight/);
-  assert.match(src, /overflowY:\s*'auto'/);
-  assert.match(src, /transform:\s*'translateX\(-50%\)'/);
+  assert.match(src, /useLayoutEffect/);
+  assert.match(src, /tooltipRef\.current\.offsetHeight/);
+  assert.match(src, /scale:\s*1/);
+  assert.match(src, /Math\.min\(1,\s*availableHeight \/ Math\.max\(naturalHeight, 1\)\)/);
+  assert.match(src, /transform:\s*`translateX\(-50%\) scale\(\$\{tooltipPos\.scale\}\)`/);
   assert.match(src, /const tooltipWidth = Math\.min\(\s*TOOLTIP_WIDTH,\s*vw - \(VIEWPORT_PADDING \* 2\)\s*\)/);
   assert.match(src, /tooltipWidth \/ 2 \+ VIEWPORT_PADDING/);
   assert.match(src, /className="pointer-events-auto fixed z-\[9999\]/);
+  assert.match(src, /text-base text-stone-900/);
+  assert.match(src, /text-lg font-semibold leading-7/);
+  assert.match(src, /text-base leading-7 text-stone-700/);
+  assert.match(src, /text-sm leading-6 text-stone-700/);
   assert.match(src, /role="tooltip"/);
   assert.match(src, /onPointerLeave=\{scheduleClose\}/);
+  assert.match(src, /const tooltipRef = useRef\(null\)/);
+  assert.doesNotMatch(src, /overflowY:\s*'auto'/);
+  assert.doesNotMatch(src, /maxHeight:\s*tooltipPos\.maxHeight/);
   assert.doesNotMatch(src, /translateX\(-50%\) translateY\(-100%\)/);
 });
 

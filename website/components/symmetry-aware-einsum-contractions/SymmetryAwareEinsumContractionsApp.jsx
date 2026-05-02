@@ -514,11 +514,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               lineHeight: 1.6,
             }}
           >
-	            Multiply once; accumulate wherever the orbit projects. The page builds
-	            <Latex math={String.raw`G_{\text{pt}}`} /> product rows <Latex math="O" />,
-	            <Latex math="H" /> stored-output columns <Latex math="Q" />, and the filled
-	            <Latex math={String.raw`O \to Q`} /> cells that make
-	            <Latex math={String.raw`\mathrm{Total}=\mu+\alpha`} /> an exact direct-event count.
+            <InlineMathText>{String.raw`Symmetry can turn many label assignments into one representative product, but reuse is only half the cost. The product still has to be accumulated wherever its orbit reaches. This article separates the two direct events: multiplication-chain work $\mu$ and filled $O \to Q$ updates $\alpha$, so $\mathrm{Total}=\mu+\alpha$.`}</InlineMathText>
           </p>
         </header>
 
@@ -578,7 +574,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 className="border-gray-200 bg-white"
                 contentClassName="pt-5"
               >
-                <SectionIntroProse paragraphs={EXPLORER_ACTS[0].introParagraphs} />
+                <SectionIntroProse paragraphs={EXPLORER_ACTS[0].introParagraphs} balancedColumns />
                 <div className="mt-6">
                   <ExampleChooser
                     examples={EXAMPLES}

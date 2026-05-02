@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Badge } from '@/components/ui/badge';
 import Latex from './Latex.jsx';
@@ -7,10 +7,8 @@ import GlossaryList from './GlossaryList.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import { cn } from '../lib/utils.js';
 
-const TOOLTIP_WIDTH = 460;
+const TOOLTIP_WIDTH = 520;
 const TOOLTIP_HEIGHT = 340;
-const TOOLTIP_MAX_HEIGHT = 560;
-const TOOLTIP_MIN_HEIGHT = 180;
 const VIEWPORT_PADDING = 16;
 const TOOLTIP_OFFSET = 8;
 const TOOLTIP_CLOSE_DELAY_MS = 160;
@@ -113,9 +111,10 @@ export default function CaseBadge({
     x: 0,
     y: 0,
     flipped: false,
-    maxHeight: TOOLTIP_HEIGHT,
+    scale: 1,
   });
   const ref = useRef(null);
+  const tooltipRef = useRef(null);
   const closeTimerRef = useRef(null);
   const ownerIdRef = useRef(null);
   if (ownerIdRef.current === null) ownerIdRef.current = Symbol('case-badge');
@@ -168,38 +167,64 @@ export default function CaseBadge({
       Math.min(x, vw - tooltipWidth / 2 - VIEWPORT_PADDING),
     );
 
-    const viewportMaxHeight = Math.max(
-      TOOLTIP_MIN_HEIGHT,
-      Math.min(TOOLTIP_MAX_HEIGHT, vh - (VIEWPORT_PADDING * 2)),
-    );
-    const preferredHeight = Math.min(TOOLTIP_HEIGHT, viewportMaxHeight);
     const roomAbove = rect.top - VIEWPORT_PADDING - TOOLTIP_OFFSET;
     const roomBelow = vh - rect.bottom - VIEWPORT_PADDING - TOOLTIP_OFFSET;
-    const placeBelow = roomBelow >= preferredHeight || (roomBelow >= roomAbove && roomAbove < preferredHeight);
+    const placeBelow = roomBelow >= TOOLTIP_HEIGHT || roomBelow >= roomAbove;
 
-    let y;
-    let maxHeight;
-    let flipped;
-    if (placeBelow) {
-      y = Math.min(rect.bottom + TOOLTIP_OFFSET, vh - VIEWPORT_PADDING - TOOLTIP_MIN_HEIGHT);
-      maxHeight = Math.max(
-        TOOLTIP_MIN_HEIGHT,
-        Math.min(viewportMaxHeight, vh - y - VIEWPORT_PADDING),
-      );
-      flipped = true;
-    } else {
-      maxHeight = Math.max(
-        TOOLTIP_MIN_HEIGHT,
-        Math.min(viewportMaxHeight, roomAbove),
-      );
-      y = Math.max(VIEWPORT_PADDING, rect.top - TOOLTIP_OFFSET - maxHeight);
-      flipped = false;
-    }
+    const y = placeBelow
+      ? rect.bottom + TOOLTIP_OFFSET
+      : Math.max(VIEWPORT_PADDING, rect.top - TOOLTIP_OFFSET - TOOLTIP_HEIGHT);
 
-    setTooltipPos({ x, y, flipped, maxHeight });
+    setTooltipPos({ x, y, flipped: placeBelow, scale: 1 });
     broadcastTooltipOpen(ownerIdRef.current);
     setShowTooltip(true);
   };
+
+  useLayoutEffect(() => {
+    if (!showTooltip || !tooltip || !ref.current || !tooltipRef.current) return;
+
+    const triggerRect = ref.current.getBoundingClientRect();
+    const vw = document.documentElement.clientWidth;
+    const vh = document.documentElement.clientHeight;
+    const naturalWidth = tooltipRef.current.offsetWidth;
+    const naturalHeight = tooltipRef.current.offsetHeight;
+    const availableWidth = vw - (VIEWPORT_PADDING * 2);
+    const availableHeight = vh - (VIEWPORT_PADDING * 2);
+    const heightScale = Math.min(1, availableHeight / Math.max(naturalHeight, 1));
+    const widthScale = Math.min(1, availableWidth / Math.max(naturalWidth, 1));
+    const scale = Math.min(heightScale, widthScale);
+    const renderedWidth = naturalWidth * scale;
+    const renderedHeight = naturalHeight * scale;
+
+    let x = triggerRect.left + triggerRect.width / 2;
+    x = Math.max(
+      renderedWidth / 2 + VIEWPORT_PADDING,
+      Math.min(x, vw - renderedWidth / 2 - VIEWPORT_PADDING),
+    );
+
+    const roomAbove = triggerRect.top - VIEWPORT_PADDING - TOOLTIP_OFFSET;
+    const roomBelow = vh - triggerRect.bottom - VIEWPORT_PADDING - TOOLTIP_OFFSET;
+    const placeBelow = roomBelow >= renderedHeight || roomBelow >= roomAbove;
+    const unclampedY = placeBelow
+      ? triggerRect.bottom + TOOLTIP_OFFSET
+      : triggerRect.top - TOOLTIP_OFFSET - renderedHeight;
+    const y = Math.max(
+      VIEWPORT_PADDING,
+      Math.min(unclampedY, vh - VIEWPORT_PADDING - renderedHeight),
+    );
+
+    setTooltipPos((prev) => {
+      if (
+        Math.abs(prev.x - x) < 0.5
+        && Math.abs(prev.y - y) < 0.5
+        && Math.abs(prev.scale - scale) < 0.01
+        && prev.flipped === placeBelow
+      ) {
+        return prev;
+      }
+      return { x, y, flipped: placeBelow, scale };
+    });
+  }, [showTooltip, tooltip]);
 
   // Defensive dismissal: pointerleave isn't always guaranteed to fire (scroll,
   // focus change, programmatic events, touch). Close the tooltip whenever the
@@ -219,15 +244,25 @@ export default function CaseBadge({
       if (event.target instanceof Node && ref.current.contains(event.target)) return;
       setShowTooltip(false);
     };
+    const dismissOnOutsideScroll = (event) => {
+      if (
+        tooltipRef.current
+        && event.target instanceof Node
+        && tooltipRef.current.contains(event.target)
+      ) {
+        return;
+      }
+      dismiss();
+    };
 
-    window.addEventListener('scroll', dismiss, true);
+    window.addEventListener('scroll', dismissOnOutsideScroll, true);
     window.addEventListener('resize', dismiss);
     window.addEventListener('keydown', dismissOnEscape);
     window.addEventListener('pointerdown', dismissIfOutside);
     window.addEventListener('blur', dismiss);
 
     return () => {
-      window.removeEventListener('scroll', dismiss, true);
+      window.removeEventListener('scroll', dismissOnOutsideScroll, true);
       window.removeEventListener('resize', dismiss);
       window.removeEventListener('keydown', dismissOnEscape);
       window.removeEventListener('pointerdown', dismissIfOutside);
@@ -289,42 +324,42 @@ export default function CaseBadge({
 
       {showTooltip && tooltip && typeof document !== 'undefined' && createPortal(
         <div
-          className="pointer-events-auto fixed z-[9999] w-[460px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-4 py-3.5 text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
+          ref={tooltipRef}
+          className="pointer-events-auto fixed z-[9999] w-[520px] max-w-[calc(100vw-2rem)] rounded-xl border border-stone-200 bg-white px-5 py-4 text-base text-stone-900 shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
           role="tooltip"
           onPointerEnter={clearCloseTimer}
           onPointerLeave={scheduleClose}
           style={{
             left: tooltipPos.x,
             top: tooltipPos.y,
-            maxHeight: tooltipPos.maxHeight,
-            overflowY: 'auto',
-            transform: 'translateX(-50%)',
+            transform: `translateX(-50%) scale(${tooltipPos.scale})`,
+            transformOrigin: 'top center',
           }}
         >
-          <div className="mb-1 whitespace-normal break-words text-sm font-semibold leading-6">
+          <div className="mb-1 whitespace-normal break-words text-lg font-semibold leading-7">
             <InlineMathText themeOverride={themeOverride}>{tooltip.title}</InlineMathText>
           </div>
           {tooltip.whenText && (
-            <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+            <div className="mb-2 text-xs uppercase tracking-wider text-stone-500">
               Applies when: <InlineMathText themeOverride={themeOverride}>{tooltip.whenText}</InlineMathText>
             </div>
           )}
-          <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+          <div className="mb-2 text-xs uppercase tracking-wider text-stone-500">
             Counts: filled O → Q cells for this component
           </div>
-          <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-stone-700">
+          <div className="max-w-full whitespace-normal break-words text-base leading-7 text-stone-700">
             <InlineMathText themeOverride={themeOverride}>{tooltip.body}</InlineMathText>
           </div>
           {tooltip.latex && (
-            <div className="mt-3 overflow-x-auto border-t border-stone-200 pt-3 text-sm text-stone-900">
+            <div className="mt-3 max-w-full border-t border-stone-200 pt-3 text-base text-stone-900">
               <div className="min-w-0">
                 <Latex math={tooltip.latex} display themeOverride={themeOverride} />
               </div>
             </div>
           )}
           {tooltip.glossary && (
-            <div className="mt-3 whitespace-normal break-words border-t border-stone-200 pt-3 text-xs leading-relaxed text-stone-700">
-              <div className="mb-1.5 text-[10px] uppercase tracking-wider text-stone-500">Where</div>
+            <div className="mt-3 whitespace-normal break-words border-t border-stone-200 pt-3 text-sm leading-6 text-stone-700">
+              <div className="mb-1.5 text-xs uppercase tracking-wider text-stone-500">Where</div>
               <GlossaryList entries={tooltip.glossary} themeOverride={themeOverride} />
             </div>
           )}

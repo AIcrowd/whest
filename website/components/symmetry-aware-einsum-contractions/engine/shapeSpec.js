@@ -40,7 +40,7 @@ export const SHAPE_SPEC = {
       { term: 'W = \\varnothing', definition: 'no summed labels in this component.' },
       { term: notationLatex('n_label'), definition: 'the size of label $\\ell$.' },
       {
-        term: `H = G|_${notationLatex('v_free')}`,
+        term: `H = G|_{${notationLatex('v_free')}}`,
         definition: 'with $V = L$ every $g \\in G$ trivially preserves $V$, so $H = G$ and product orbits and stored output representatives coincide. $\\alpha = M$.',
       },
     ],
@@ -68,14 +68,18 @@ export const SHAPE_SPEC = {
     label: 'Visible and summed labels both appear',
     shortLabel: 'V+W',
     description: `Both $${notationLatex('v_free')}$ and $${notationLatex('w_summed')}$ are present. Projection may have one destination per product orbit, or it may branch across stored output representatives — the regime ladder picks the cheapest exact counter.`,
-    latex: String.raw`\alpha = \#\{(${notationLatex('orbit_o')}, Q): ${notationLatex('orbit_o')} \in X/${notationLatex('g_detected')},\ Q \in Y/H,\ \pi_{${notationLatex('v_free')}}(${notationLatex('orbit_o')}) \cap Q \neq \varnothing\}`,
+    latex: String.raw`\begin{aligned}
+\alpha = \#\{(${notationLatex('orbit_o')}, Q):\;& ${notationLatex('orbit_o')} \in X/${notationLatex('g_detected')},\\
+& Q \in Y/H,\\
+& \pi_{${notationLatex('v_free')}}(${notationLatex('orbit_o')}) \cap Q \neq \varnothing\}
+\end{aligned}`,
     when: `$${notationLatex('v_free')}$, $${notationLatex('w_summed')}$ both nonempty.`,
     glossary: [
       { term: '\\alpha', definition: 'the accumulation count — pairs $(O, Q)$ where $O$ is a product orbit and $Q$ is a stored output representative reached by projecting $O$ to the visible labels.' },
       { term: notationLatex('v_free'), definition: 'the free (output) labels.' },
       { term: notationLatex('w_summed'), definition: 'the summed (contracted) labels.' },
       { term: notationLatex('g_detected'), definition: 'the detected symmetry group acting on $X$.' },
-      { term: `H = \\mathrm{Stab}_${notationLatex('g_detected')}(${notationLatex('v_free')})|_${notationLatex('v_free')}`, definition: 'the output representative action, induced by elements of $G$ that preserve $V$ as a set, restricted to $V$.' },
+      { term: `H = \\mathrm{Stab}_{${notationLatex('g_detected')}}(${notationLatex('v_free')})|_{${notationLatex('v_free')}}`, definition: 'the output representative action, induced by elements of $G$ that preserve $V$ as a set, restricted to $V$.' },
       { term: `Y = [n]^${notationLatex('v_free')}`, definition: 'the output assignment space.' },
       { term: 'Y/H', definition: 'the set of stored output representatives.' },
       { term: notationLatex('orbit_o'), definition: 'a $G$-orbit of full assignments.' },

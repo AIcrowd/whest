@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import katex from 'katex';
+import { colorizeNotationLatex } from './components/symmetry-aware-einsum-contractions/lib/notationSystem.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -26,6 +28,15 @@ test('GlossaryList uses Latex for term + GlossaryProse for definition', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/GlossaryList.jsx');
   assert.match(src, /<Latex math=\{term\}/);
   assert.match(src, /<GlossaryProse text=\{definition\}/);
+});
+
+test('GlossaryList keeps long math terms visible without internal term scrolling', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/GlossaryList.jsx');
+  assert.match(src, /<dt className="inline/);
+  assert.match(src, /<dd className="inline/);
+  assert.match(src, /min-w-0/);
+  assert.doesNotMatch(src, /overflow-x-auto/);
+  assert.doesNotMatch(src, /shrink-0 whitespace-nowrap/);
 });
 
 test('tooltip prose renderers style backticked example ids as quiet mono chips', () => {
@@ -59,6 +70,27 @@ test('REGIME_SPEC glossary entries are arrays of {term, definition}', async () =
     for (const entry of spec.glossary) {
       assert.equal(typeof entry.term, 'string', `${id}: term must be a string`);
       assert.equal(typeof entry.definition, 'string', `${id}: definition must be a string`);
+    }
+  }
+});
+
+test('shape and regime tooltip glossary terms render as valid KaTeX', async () => {
+  const [{ SHAPE_SPEC }, { REGIME_SPEC }] = await Promise.all([
+    import('./components/symmetry-aware-einsum-contractions/engine/shapeSpec.js'),
+    import('./components/symmetry-aware-einsum-contractions/engine/regimeSpec.js'),
+  ]);
+  const specs = [
+    ...Object.entries(SHAPE_SPEC).map(([id, spec]) => [`shape:${id}`, spec]),
+    ...Object.entries(REGIME_SPEC).map(([id, spec]) => [`regime:${id}`, spec]),
+  ];
+
+  for (const [id, spec] of specs) {
+    for (const entry of spec.glossary ?? []) {
+      const html = katex.renderToString(colorizeNotationLatex(entry.term), {
+        throwOnError: false,
+        trust: true,
+      });
+      assert.equal(html.includes('katex-error'), false, `${id} glossary term failed KaTeX: ${entry.term}`);
     }
   }
 });

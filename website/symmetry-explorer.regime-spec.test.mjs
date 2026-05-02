@@ -40,6 +40,11 @@ test('mixed shape spec uses notation-aware inline math in its prose fields', () 
   assert.ok(SHAPE_SPEC.mixed.when.includes(`$${notationLatex('w_summed')}$`));
 });
 
+test('mixed shape tooltip formula is line-broken for narrow panels', () => {
+  assert.match(SHAPE_SPEC.mixed.latex, /\\begin\{aligned\}/);
+  assert.match(SHAPE_SPEC.mixed.latex, /\\\\/);
+});
+
 test('functionalProjection covers the no-cross / setwise-V cases that used to fire directProduct', () => {
   assert.equal(REGIME_SPEC.functionalProjection.label, 'One destination per product orbit');
 });
