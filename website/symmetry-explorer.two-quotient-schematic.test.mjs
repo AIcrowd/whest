@@ -29,8 +29,10 @@ test('TwoQuotientSchematic — renders a DOM microscope plus formal quotient sum
   assert.match(src, /One row microscope/);
   assert.match(src, /One product row/);
   assert.match(src, /Each pill is one dense assignment/);
-  assert.match(src, /X → X\/G_pt/);
-  assert.match(src, /Y → Y\/H/);
+  // The Rows / Columns / Reach formulas now render through <Latex>;
+  // their JSX strings carry escaped backslashes for LaTeX commands.
+  assert.match(src, /X \\\\to X\/G_\{\\\\mathrm\{pt\}\}/);
+  assert.match(src, /Y \\\\to Y\/H/);
 });
 
 test('TwoQuotientSchematic — defaults to current selected preset plus non-duplicate references', () => {

@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import Latex from './Latex.jsx';
 
 const TOKEN = {
   coral: 'var(--coral)',
@@ -392,7 +393,11 @@ function FlowCell({ eyebrow, title, formula, children, className = '' }) {
     <div className={`min-w-0 bg-white py-4 md:py-5 ${className}`}>
       <Kicker>{eyebrow}</Kicker>
       <h4 className="mt-2 font-sans text-[15px] font-semibold leading-5 text-gray-900">{title}</h4>
-      {formula ? <div className="mt-2 font-mono text-[13px] font-semibold text-gray-800">{formula}</div> : null}
+      {formula ? (
+        <div className="mt-2 text-[13px] font-semibold text-gray-800">
+          <Latex math={formula} colorize={false} />
+        </div>
+      ) : null}
       <div className="mt-3">{children}</div>
     </div>
   );
@@ -478,7 +483,7 @@ function OneRowMicroscope({ view }) {
           <FlowCell
             eyebrow="1. Dense assignments"
             title="Two example tuples from X"
-            formula="x ∈ X"
+            formula="x \\in X"
             className="lg:pr-5"
           >
             <p className="font-serif text-[14px] leading-6 text-gray-700">
@@ -496,7 +501,7 @@ function OneRowMicroscope({ view }) {
           <FlowCell
             eyebrow="2. Product row"
             title="One row O"
-            formula="O ∈ X/G_pt"
+            formula="O \\in X/G_{\\mathrm{pt}}"
             className="border-t border-gray-200 lg:border-l lg:border-t-0 lg:px-5"
           >
             <p className="font-serif text-[14px] leading-6 text-gray-700">{productRowNote(view)}</p>
@@ -508,7 +513,7 @@ function OneRowMicroscope({ view }) {
           <FlowCell
             eyebrow="3. Filled output cells"
             title="Which output cells get filled?"
-            formula="π_V(O) meets Q"
+            formula="\\pi_V(O) \\text{ meets } Q"
             className="border-t border-gray-200 lg:border-l lg:border-t-0 lg:pl-5"
           >
             <p className="font-serif text-[14px] leading-6 text-gray-800">
@@ -527,16 +532,18 @@ function FormalQuotientSummary() {
   return (
     <section className="grid border-t border-gray-200 md:grid-cols-3 md:divide-x md:divide-gray-200">
       {[
-        ['Rows', 'X → X/G_pt', 'Group full assignments that produce the same pre-summation product.'],
-        ['Columns', 'Y → Y/H', 'Group visible output assignments that share stored output representatives.'],
-        ['Reach', 'X/G_pt ⇢ Y/H', 'Projection marks which row-column cells are filled; it may be a relation, not a function.'],
+        ['Rows', 'X \\to X/G_{\\mathrm{pt}}', 'Group full assignments that produce the same pre-summation product.'],
+        ['Columns', 'Y \\to Y/H', 'Group visible output assignments that share stored output representatives.'],
+        ['Reach', 'X/G_{\\mathrm{pt}} \\dashrightarrow Y/H', 'Projection marks which row-column cells are filled; it may be a relation, not a function.'],
       ].map(([eyebrow, formula, text], index) => (
         <div
           key={eyebrow}
           className={`border-t border-gray-100 py-4 first:border-t-0 md:border-t-0 ${index === 0 ? 'md:pr-4' : 'md:px-4'}`}
         >
           <Kicker>{eyebrow}</Kicker>
-          <div className="mt-2 font-mono text-[14px] font-semibold text-gray-900">{formula}</div>
+          <div className="mt-2 text-[14px] font-semibold text-gray-900">
+            <Latex math={formula} colorize={false} />
+          </div>
           <p className="mt-2 font-serif text-[14px] leading-6 text-gray-700">{text}</p>
         </div>
       ))}
