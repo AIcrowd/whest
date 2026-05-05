@@ -144,6 +144,360 @@ function classifyFailedCondition(trace) {
   return 'no-shortcut';
 }
 
+// ─── Direction 1 redesign — Component as paragraph ─────────────────────────
+// The earlier 7-column grid (labels | V_a/W_a | G_a | method | M_a | α_a |
+// savings) crammed long method prose and dense-baseline numbers into ~60-char
+// columns; on wide presets like Trilinear Trace each row was 13 lines tall
+// and read like a spreadsheet trying to be a story. The redesign replaces
+// each row with a self-contained ComponentCard:
+//
+//   ┌─ HEADER ──────────────────────────────────────────────────┐
+//   │  CASE n · {regime label}                  [CaseBadge sm]  │
+//   ├─ BODY (2-col on md+, stack on small) ────────────────────┤
+//   │  IDENTITY                  │  METHOD                      │
+//   │  Component  i j k l m n    │  Every detected symmetry…    │
+//   │  Free V_a   i j k          │                              │
+//   │  Sum  W_a   l m n          │       α_a = M_a = |X/G_a|    │
+//   │  Group G_a  PermGroup⟨⟩    │                              │
+//   │                            │  Enumerate orbits →          │
+//   ├─ METRICS TAPE ────────────────────────────────────────────┤
+//   │  M_a  2,925 / 15,625   α_a  2,925 / 15,625   ◖80% saved◗  │
+//   └───────────────────────────────────────────────────────────┘
+//
+// Hover-bus integration: the whole card is the activeComponentId target;
+// the method block inside is the activeAlphaMethod target. C39 + C29 buses
+// keep firing on the same prop callbacks as before.
+
+// Small kicker label used inside cards ("IDENTITY" / "METHOD" headings).
+function CardKicker({ children, className = '' }) {
+  return (
+    <div
+      className={`text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500 ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
+// One field row inside the Identity column: small left label + value.
+// Editorial register: kicker on left (~78px), value flows right.
+function IdentityField({ label, children }) {
+  return (
+    <div className="grid grid-cols-[78px_minmax(0,1fr)] items-baseline gap-x-3">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500">
+        {label}
+      </span>
+      <div className="min-w-0">{children}</div>
+    </div>
+  );
+}
+
+// One metric cell in the bottom tape: label kicker + primary value + dense
+// baseline reference. Designed to read top-to-bottom in a 3-column tape.
+// `valueTitle` and `denseTitle` carry the V3.1 Part-6 tooltip wording so
+// the explanatory copy survives the redesign — same titles the original
+// 7-column row carried, just on a different surface.
+function MetricCell({
+  label,
+  value,
+  dense,
+  valueTitle = null,
+  denseTitle = null,
+  unavailableTitle = null,
+}) {
+  return (
+    <div className="flex flex-col gap-1 items-start">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500">
+        {label}
+      </span>
+      {value !== null ? (
+        <div className="flex items-baseline gap-1.5">
+          <code
+            className="font-mono text-[15px] font-semibold text-foreground"
+            title={valueTitle ?? undefined}
+          >
+            {value.toLocaleString()}
+          </code>
+          {dense != null ? (
+            <span
+              className="font-mono text-[11px] text-muted-foreground/70"
+              title={denseTitle ?? undefined}
+            >
+              of {dense.toLocaleString()} dense
+            </span>
+          ) : null}
+        </div>
+      ) : (
+        <span
+          className="cursor-help rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800"
+          title={unavailableTitle ?? undefined}
+        >
+          Unavailable
+        </span>
+      )}
+    </div>
+  );
+}
+
+// One ComponentCard renders all the data the old 7-column row carried for a
+// single component, but laid out as identity ⟂ method with a metrics tape
+// underneath. Wider presets like Trilinear Trace get the room they need;
+// single-component presets read cleanly as a single card.
+//
+// Props:
+//   comp                          — the component data object
+//   index                         — 0-based card index (for the "Case n" header)
+//   dimensionN                    — current dimension n (for dense baseline)
+//   orbitRows                     — optional orbit list (for "Enumerate orbits")
+//   explorerThemeId               — active theme (for savings pill colors)
+//   onOpenOrbitModal              — callback when "Enumerate orbits" clicked
+//   onActiveComponentHoverChange  — C20 hover bus
+//   onActiveAlphaMethodHoverChange — C29 hover bus
+//   onDimensionNChange            — C49 "Try smaller n" CTA support
+function ComponentCard({
+  comp,
+  index,
+  dimensionN,
+  orbitRows,
+  explorerThemeId,
+  onOpenOrbitModal,
+  onActiveComponentHoverChange,
+  onActiveAlphaMethodHoverChange,
+  onDimensionNChange,
+}) {
+  const M_a = multiplicationCount(comp);
+  const canOpenOrbits = supportsOrbitEnumeration(comp) && (orbitRows?.length ?? 0) > 0;
+  const denseCell = denseTupleCount(comp, dimensionN);
+  const actualAcc = accumulationCount(comp);
+  const pct = (actual, dense) =>
+    dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
+  const multSavingsPct = M_a !== null ? pct(M_a, denseCell) : null;
+  const accSavingsPct = actualAcc !== null ? pct(actualAcc, denseCell) : null;
+  const totalSavingsPct = (M_a !== null && actualAcc !== null)
+    ? pct(M_a + actualAcc, 2 * denseCell)
+    : null;
+
+  const leafId = comp.accumulation?.regimeId ?? comp.shape;
+  const presentation = getRegimePresentation(leafId);
+  const methodDescription = presentation?.tooltip?.body;
+  const methodLatex = presentation?.tooltip?.latex;
+  const caseLabel = presentation?.label ?? leafId ?? `Case ${index + 1}`;
+
+  // The componentId is the comma-joined sorted label list, matching the
+  // format used by C20 LabelInteractionGraph.
+  const componentId = (comp.labels ?? []).join(',');
+
+  const va = comp.va ?? [];
+  const wa = comp.wa ?? [];
+
+  return (
+    <article
+      className="overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow focus-within:shadow-sm hover:shadow-sm"
+      tabIndex={0}
+      role="row"
+      aria-label={`Component ${componentId || index + 1}: ${caseLabel}`}
+      onMouseEnter={() => onActiveComponentHoverChange?.(componentId)}
+      onMouseLeave={() => onActiveComponentHoverChange?.(null)}
+      onFocus={() => onActiveComponentHoverChange?.(componentId)}
+      onBlur={() => onActiveComponentHoverChange?.(null)}
+    >
+      {/* ─── HEADER ─── */}
+      <header className="flex flex-wrap items-center gap-3 border-b border-gray-100 bg-gray-50/40 px-5 py-3">
+        {/* Tiny coloured dot anchored to the regime color — same hue the
+            DecisionLadder uses for this leaf, so cards and tree stay
+            visually linked without duplicating the badge label. */}
+        <span
+          aria-hidden="true"
+          className="inline-block size-2 shrink-0 rounded-full"
+          style={{ backgroundColor: presentation?.color ?? 'var(--gray-400)' }}
+        />
+        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
+          Case {index + 1}
+        </span>
+        <span aria-hidden="true" className="text-gray-300">·</span>
+        <span className="text-[14px] font-semibold leading-snug text-gray-900">
+          {caseLabel}
+        </span>
+      </header>
+
+      {/* ─── BODY: 2-column on md+, stacked on narrow ─── */}
+      <div className="grid grid-cols-1 gap-x-8 gap-y-5 px-5 py-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+        {/* IDENTITY column */}
+        <div className="space-y-3">
+          <CardKicker>Identity</CardKicker>
+          <div className="space-y-2.5">
+            <IdentityField label="Component">
+              <LabelsCell comp={comp} />
+            </IdentityField>
+            <IdentityField label={<>Free <span title="Free labels Vₐ">V<sub>a</sub></span></>}>
+              {va.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-1">
+                  {va.map((label) => (
+                    <RoleBadge key={`va-${label}`} role="v">{label}</RoleBadge>
+                  ))}
+                </div>
+              ) : (
+                <span className="text-[12px] text-muted-foreground">∅</span>
+              )}
+            </IdentityField>
+            <IdentityField label={<>Sum <span title="Summed labels Wₐ">W<sub>a</sub></span></>}>
+              {wa.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-1">
+                  {wa.map((label) => (
+                    <RoleBadge key={`wa-${label}`} role="w">{label}</RoleBadge>
+                  ))}
+                </div>
+              ) : (
+                <span className="text-[12px] text-muted-foreground">∅</span>
+              )}
+            </IdentityField>
+            <IdentityField label={<>Group <span title="Local symmetry group Gₐ">G<sub>a</sub></span></>}>
+              <SymmetryBadge value={comp.groupName || 'trivial'} />
+            </IdentityField>
+          </div>
+        </div>
+
+        {/* METHOD column — α-method hover-bus target */}
+        <div
+          className="space-y-3"
+          tabIndex={0}
+          role="button"
+          aria-label={`Alpha method: ${caseLabel}`}
+          onMouseEnter={() => onActiveAlphaMethodHoverChange?.(leafId)}
+          onMouseLeave={() => onActiveAlphaMethodHoverChange?.(null)}
+          onFocus={() => onActiveAlphaMethodHoverChange?.(leafId)}
+          onBlur={() => onActiveAlphaMethodHoverChange?.(null)}
+        >
+          <CardKicker>Method</CardKicker>
+          {methodDescription ? (
+            <p className="font-serif text-[14.5px] leading-[1.65] text-gray-800">
+              <InlineMathText>{methodDescription}</InlineMathText>
+            </p>
+          ) : null}
+          {methodLatex ? (
+            <div className="math-display-row mt-1 flex justify-center overflow-x-auto py-1 text-[14px] text-foreground">
+              <Latex math={methodLatex} display />
+            </div>
+          ) : null}
+          {canOpenOrbits ? (
+            <button
+              type="button"
+              className="inline-flex cursor-pointer items-center gap-1 text-[12px] font-medium text-primary underline decoration-primary/40 decoration-dotted underline-offset-[3px] transition-colors hover:decoration-primary"
+              onClick={() => onOpenOrbitModal?.(comp)}
+            >
+              Enumerate orbits →
+            </button>
+          ) : null}
+        </div>
+      </div>
+
+      {/* ─── METRICS TAPE ─── */}
+      <div className="grid grid-cols-1 gap-x-6 gap-y-4 border-t border-gray-100 bg-gray-50/40 px-5 py-3.5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)]">
+        <MetricCell
+          label={<>Product Orbits (<NotationSymbol id="m_component" mode="math" />)</>}
+          value={M_a}
+          dense={denseCell}
+          valueTitle={`Dense tuple count = ${denseCell.toLocaleString()}, the full assignment-space product of n_ell before any symmetry collapse.`}
+          denseTitle={`Dense tuple count = ${denseCell.toLocaleString()}, the full assignment-space product of n_ell before any symmetry collapse.`}
+        />
+        <MetricCell
+          label={<>Accumulation Updates (<NotationSymbol id="alpha_component" mode="math" />)</>}
+          value={actualAcc}
+          dense={denseCell}
+          denseTitle="Dense baseline: one update per full assignment before quotienting by the pointwise group."
+          unavailableTitle={(() => {
+            // Mirror the prior row-level α-unavailable tooltip: surface the
+            // most-specific refusal entry from the regime trace.
+            const trace = comp.accumulation?.trace ?? [];
+            const declined = [...trace]
+              .reverse()
+              .find((t) => t.decision === 'refused' && t.regimeId !== 'fallthrough');
+            const reason = declined?.reason ?? 'no regime fired';
+            return `αₐ withheld: ${reason}.`;
+          })()}
+        />
+        <div className="flex flex-col gap-1">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500">
+            Savings vs dense
+          </span>
+          {totalSavingsPct !== null ? (
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="rounded-full px-2 py-0.5 font-mono text-[12px] font-semibold"
+                  style={{
+                    background: totalSavingsPct > 0
+                      ? explorerThemeTint(explorerThemeId, 'quantity', 0.12)
+                      : explorerThemeTint(explorerThemeId, 'freeSide', 0.12),
+                    color: totalSavingsPct > 0
+                      ? explorerThemeColor(explorerThemeId, 'quantity')
+                      : explorerThemeColor(explorerThemeId, 'freeSide'),
+                  }}
+                  title={`Per-component direct savings: multiplication uses ${M_a?.toLocaleString?.() ?? '—'} product orbits and accumulation uses ${actualAcc?.toLocaleString?.() ?? '—'} stored-output-representative updates, compared with ${denseCell.toLocaleString()} dense assignments.`}
+                >
+                  {totalSavingsPct}% total
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-2 font-mono text-[11px] leading-tight">
+                {multSavingsPct !== null ? (
+                  <span
+                    className="font-semibold"
+                    style={{ color: notationColor('m_component') }}
+                    title={`Mult savings: dense M_a would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
+                  >
+                    Mult {multSavingsPct}%
+                  </span>
+                ) : null}
+                {multSavingsPct !== null && accSavingsPct !== null ? (
+                  <span className="text-stone-300" aria-hidden="true">·</span>
+                ) : null}
+                {accSavingsPct !== null ? (
+                  <span
+                    className="font-semibold"
+                    style={{ color: notationColor('alpha_component') }}
+                    title={`Acc savings: dense alpha_a would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
+                  >
+                    Acc {accSavingsPct}%
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          ) : (
+            <span className="text-[12px] text-muted-foreground">—</span>
+          )}
+        </div>
+      </div>
+
+      {/* V3.1 §49 — when α is unavailable, expose the verbose details panel
+          beneath the metrics tape. Wrapped in a <details>/<summary> for free
+          a11y; the panel itself carries the live numbers + CTAs. */}
+      {actualAcc === null ? (
+        <details className="group border-t border-gray-100 bg-amber-50/30 px-5 py-2.5">
+          <summary
+            className="cursor-pointer select-none text-[11px] font-medium text-muted-foreground hover:text-foreground"
+            aria-label={`Show unavailable count details for component ${componentId || index + 1}`}
+          >
+            <span className="mr-1 inline-block transition-transform group-open:rotate-90" aria-hidden="true">▸</span>
+            why is this unavailable?
+          </summary>
+          <div className="mt-2">
+            <UnavailableDetailsPanel
+              componentId={componentId}
+              sizes={Array.isArray(comp.sizes) && comp.sizes.length > 0
+                ? comp.sizes
+                : Array(comp.labels?.length ?? 0).fill(dimensionN)}
+              groupSize={comp.elements?.length ?? 1}
+              failedCondition={classifyFailedCondition(comp.accumulation?.trace)}
+              onLowerN={typeof onDimensionNChange === 'function' ? onDimensionNChange : null}
+              currentN={dimensionN}
+            />
+          </div>
+        </details>
+      ) : null}
+    </article>
+  );
+}
+
 function ComponentSummaryTable({
   components,
   dimensionN,
@@ -154,278 +508,27 @@ function ComponentSummaryTable({
   onDimensionNChange,
 }) {
   const explorerThemeId = getActiveExplorerThemeId();
-  // 7-column layout: labels | V_a/W_a | G_a | method | M_a | α_a | savings
-  const MIDDLE_COLS = 'grid-cols-[1fr_0.9fr_0.7fr_2fr_0.85fr_0.85fr_1.3fr]';
 
   return (
-    <div className="max-w-full overflow-x-auto bg-white">
-      <p className="px-5 py-3 text-[12px] leading-5 text-muted-foreground">
-        The dense baseline is the same direct-event convention without symmetry: one product chain and one output update for every full label assignment.
+    <div className="space-y-4 bg-white">
+      <p className="px-1 text-[12px] leading-5 text-muted-foreground">
+        The dense baseline is the same direct-event convention without symmetry: one product chain and one output update for every full label assignment. Each component below is one independent factor; multiply across them for the global counts.
       </p>
-      {/* Global column header — labels the 7 middle-row columns. */}
-      <div
-        className={`grid ${MIDDLE_COLS} items-center gap-x-3 bg-surface-raised px-5 py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-900`}
-        aria-label="Component accounting table header"
-      >
-        <span>Component</span>
-        <span>
-          <span title="Free labels V_a / Summed labels W_a">V<sub>a</sub> / W<sub>a</sub></span>
-        </span>
-        <span>
-          <span title="Local symmetry group G_a">G<sub>a</sub></span>
-        </span>
-        <span>Method</span>
-        <span>Product Orbits (<NotationSymbol id="m_component" mode="math" />)</span>
-        <span>Accumulation Updates (<NotationSymbol id="alpha_component" mode="math" />)</span>
-        <span>Savings vs dense</span>
-      </div>
 
-      {components.map((comp, idx) => {
-        const M_a = multiplicationCount(comp);
-        const canOpenOrbits = supportsOrbitEnumeration(comp) && (orbitRows?.length ?? 0) > 0;
-        // Per-component dense baseline = n^|L_a| (one tuple per cell, no
-        // (k-1) factor — that lives globally on ∏_a M_a, not per-component).
-        // Mul  savings = 1 - M_a   / n^|L_a|
-        // Acc  savings = 1 - α_a   / n^|L_a|
-        // Total savings = 1 - (M_a + α_a) / (2 · n^|L_a|)
-        //   This is the per-component combined reduction at unit (k=2) cost.
-        //   The honest global Total% lives in TotalCostView; this pill is a
-        //   quick "is this component pulling its weight?" indicator.
-        const denseCell = denseTupleCount(comp, dimensionN);
-        const actualAcc = accumulationCount(comp);
-        const pct = (actual, dense) =>
-          dense > 0 ? Math.max(0, Math.round((1 - actual / dense) * 100)) : null;
-        const multSavingsPct = M_a !== null ? pct(M_a, denseCell) : null;
-        const accSavingsPct = actualAcc !== null ? pct(actualAcc, denseCell) : null;
-        const totalSavingsPct = (M_a !== null && actualAcc !== null)
-          ? pct(M_a + actualAcc, 2 * denseCell)
-          : null;
-
-        const leafId = comp.accumulation?.regimeId ?? comp.shape;
-        const presentation = getRegimePresentation(leafId);
-        const methodDescription = presentation?.tooltip?.body;
-        const methodLatex = presentation?.tooltip?.latex;
-
-        // The componentId is the comma-joined sorted label list, matching the
-        // format used by C20 LabelInteractionGraph.
-        const componentId = (comp.labels ?? []).join(',');
-
-        return (
-          <div
-            key={`comp-${idx}`}
-            className="border-t-2 border-border/70 px-5 transition-colors hover:bg-surface-raised/40 focus-within:bg-surface-raised/40"
-            tabIndex={0}
-            role="row"
-            aria-label={`Component ${componentId || idx + 1}`}
-            onMouseEnter={() => onActiveComponentHoverChange?.(componentId)}
-            onMouseLeave={() => onActiveComponentHoverChange?.(null)}
-            onFocus={() => onActiveComponentHoverChange?.(componentId)}
-            onBlur={() => onActiveComponentHoverChange?.(null)}
-          >
-            {/* the 7-column row */}
-            <div className={`grid ${MIDDLE_COLS} items-start gap-x-3 py-3`}>
-              {/* Component labels */}
-              <div className="space-y-2.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Case
-                  </span>
-                  <CaseBadge regimeId={leafId} size="sm" />
-                </div>
-                <LabelsCell comp={comp} />
-              </div>
-
-              {/* V_a / W_a split */}
-              <div className="pt-0.5">
-                <VWSplitCell comp={comp} />
-              </div>
-
-              {/* G_a local group */}
-              <div className="pt-0.5 flex items-start">
-                <SymmetryBadge value={comp.groupName || 'trivial'} />
-              </div>
-
-              {/* Method: description + α formula, wrapped in a hover target
-                  that emits to the activeAlphaMethod bus on mouseenter/focus. */}
-              <div className="space-y-2">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`Alpha method: ${leafId ?? 'unknown'}. Hover for details.`}
-                  className="cursor-default"
-                  onMouseEnter={() => onActiveAlphaMethodHoverChange?.(leafId)}
-                  onMouseLeave={() => onActiveAlphaMethodHoverChange?.(null)}
-                  onFocus={() => onActiveAlphaMethodHoverChange?.(leafId)}
-                  onBlur={() => onActiveAlphaMethodHoverChange?.(null)}
-                >
-                  <CaseBadge regimeId={leafId}>
-                    <div className="space-y-2">
-                      {methodDescription ? (
-                        <MethodDescription text={methodDescription} />
-                      ) : null}
-                      {methodLatex ? (
-                        <div className="overflow-x-auto pl-2 text-[13px] text-foreground">
-                          <Latex math={methodLatex} />
-                        </div>
-                      ) : null}
-                    </div>
-                  </CaseBadge>
-                </div>
-                {canOpenOrbits ? (
-                  <button
-                    type="button"
-                    className="inline-flex cursor-pointer items-center gap-1 text-[11px] font-medium text-primary underline decoration-primary/40 decoration-dotted underline-offset-[3px] transition-colors hover:decoration-primary"
-                    onClick={() => onOpenOrbitModal?.(comp)}
-                  >
-                    Enumerate orbits →
-                  </button>
-                ) : null}
-              </div>
-
-              {/* Orbits Mₐ (with greyed-out dense reference) */}
-              <div className="flex justify-center">
-                {M_a !== null ? (
-                  <div className="flex items-baseline gap-1">
-                    <code className="font-mono text-sm font-semibold text-foreground">
-                      {M_a.toLocaleString()}
-                    </code>
-                    <span
-                      className="font-mono text-[11px] text-muted-foreground/60"
-                      title={`Dense tuple count = ${denseCell.toLocaleString()}, the full assignment-space product of n_ell before any symmetry collapse.`}
-                    >
-                      / {denseCell.toLocaleString()}
-                    </span>
-                  </div>
-                ) : (
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800">
-                    Unavailable
-                  </span>
-                )}
-              </div>
-
-              {/* Acc Cost (with greyed-out dense reference) */}
-              <div className="flex justify-center">
-                {actualAcc !== null ? (
-                  <div className="flex items-baseline gap-1">
-                    <code className="font-mono text-sm font-semibold text-foreground">
-                      {actualAcc.toLocaleString()}
-                    </code>
-                    <span
-                      className="font-mono text-[11px] text-muted-foreground/60"
-                      title="Dense baseline: one update per full assignment before quotienting by the pointwise group."
-                    >
-                      / {denseCell.toLocaleString()}
-                    </span>
-                  </div>
-                ) : (
-                  <span
-                    className="cursor-help rounded-full bg-amber-100 px-2 py-0.5 text-[11px] text-amber-800"
-                    title={(() => {
-                      // Prefer the most specific refusal — the brute-force
-                      // entry carries the actual `Π nₗ · |G|` estimate, which
-                      // is the actionable signal. The 'fallthrough' sentinel
-                      // is just the loop's exit marker; skip it.
-                      const trace = comp.accumulation?.trace ?? [];
-                      const declined = [...trace]
-                        .reverse()
-                        .find((t) => t.decision === 'refused' && t.regimeId !== 'fallthrough');
-                      const reason = declined?.reason ?? 'no regime fired';
-                      return `αₐ withheld: ${reason}.`;
-                    })()}
-                  >
-                    Unavailable
-                  </span>
-                )}
-              </div>
-
-              {/* Savings — three pills: Total (the headline), then Mult and
-                  Acc breakdowns. The honest global Total% lives in
-                  TotalCostView; the per-row Total here is a quick visual
-                  signal (green when this component saves anything, red when
-                  it doesn't pull any weight at all). */}
-              <div>
-                {totalSavingsPct !== null ? (
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                        Total
-                      </span>
-                      <span
-                        className="rounded-full px-2 py-0.5 font-mono text-xs font-semibold"
-                        style={{
-                          background: totalSavingsPct > 0
-                            ? explorerThemeTint(explorerThemeId, 'quantity', 0.12)
-                            : explorerThemeTint(explorerThemeId, 'freeSide', 0.12),
-                          color: totalSavingsPct > 0
-                            ? explorerThemeColor(explorerThemeId, 'quantity')
-                            : explorerThemeColor(explorerThemeId, 'freeSide'),
-                        }}
-                        title={`Per-component direct savings: multiplication uses ${M_a?.toLocaleString?.() ?? '—'} product orbits and accumulation uses ${actualAcc?.toLocaleString?.() ?? '—'} stored-output-representative updates, compared with ${denseCell.toLocaleString()} dense assignments.`}
-                      >
-                        {totalSavingsPct}%
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-x-1.5 font-mono text-[10px] leading-tight">
-                      {multSavingsPct !== null ? (
-                        <span
-                          className="font-semibold"
-                          style={{ color: notationColor('m_component') }}
-                          title={`Mult savings: dense M_a would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
-                        >
-                          Mult {multSavingsPct}%
-                        </span>
-                      ) : null}
-                      {multSavingsPct !== null && accSavingsPct !== null ? (
-                        <span className="text-stone-300" aria-hidden="true">·</span>
-                      ) : null}
-                      {accSavingsPct !== null ? (
-                        <span
-                          className="font-semibold"
-                          style={{ color: notationColor('alpha_component') }}
-                          title={`Acc savings: dense alpha_a would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
-                        >
-                          Acc {accSavingsPct}%
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
-                ) : (
-                  <span className="text-[11px] text-muted-foreground">—</span>
-                )}
-              </div>
-            </div>
-
-            {/* V3.1 §49 — when accumulation is unavailable, expose the verbose
-                Unavailable details panel beneath the row. Wrapped in a
-                <details>/<summary> for free a11y; keyboard users can toggle
-                with Enter/Space. The pill above remains the at-a-glance
-                signal; this panel provides the live numbers + CTAs. */}
-            {actualAcc === null ? (
-              <details className="mb-3 ml-1 mt-0.5 group">
-                <summary
-                  className="cursor-pointer select-none text-[11px] font-medium text-muted-foreground hover:text-foreground"
-                  aria-label={`Show unavailable count details for component ${componentId || idx + 1}`}
-                >
-                  <span className="mr-1 inline-block transition-transform group-open:rotate-90" aria-hidden="true">▸</span>
-                  why is this unavailable?
-                </summary>
-                <div className="mt-1.5">
-                  <UnavailableDetailsPanel
-                    componentId={componentId}
-                    sizes={Array.isArray(comp.sizes) && comp.sizes.length > 0
-                      ? comp.sizes
-                      : Array(comp.labels?.length ?? 0).fill(dimensionN)}
-                    groupSize={comp.elements?.length ?? 1}
-                    failedCondition={classifyFailedCondition(comp.accumulation?.trace)}
-                    onLowerN={typeof onDimensionNChange === 'function' ? onDimensionNChange : null}
-                    currentN={dimensionN}
-                  />
-                </div>
-              </details>
-            ) : null}
-          </div>
-        );
-      })}
+      {components.map((comp, idx) => (
+        <ComponentCard
+          key={`comp-${idx}`}
+          comp={comp}
+          index={idx}
+          dimensionN={dimensionN}
+          orbitRows={orbitRows}
+          explorerThemeId={explorerThemeId}
+          onOpenOrbitModal={onOpenOrbitModal}
+          onActiveComponentHoverChange={onActiveComponentHoverChange}
+          onActiveAlphaMethodHoverChange={onActiveAlphaMethodHoverChange}
+          onDimensionNChange={onDimensionNChange}
+        />
+      ))}
     </div>
   );
 }
