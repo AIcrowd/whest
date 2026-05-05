@@ -63,19 +63,6 @@ function TagPill({ tag }) {
   );
 }
 
-function MiniPreviewTooltip({ text, visible }) {
-  if (!visible) return null;
-  return (
-    <span
-      role="tooltip"
-      data-mini-preview="true"
-      className="pointer-events-none absolute left-1 right-1 top-[calc(100%-2px)] z-20 rounded-md border border-gray-200 bg-white px-2 py-1 text-[10px] leading-snug text-gray-700 shadow-md"
-    >
-      {text}
-    </span>
-  );
-}
-
 export default function PresetSidebar({
   examples,
   selectedPresetIdx,
@@ -88,8 +75,6 @@ export default function PresetSidebar({
 
   // V3.1 §2: search/filter input + state.
   const [filterQuery, setFilterQuery] = useState('');
-  // V3.1 §2: per-card hover state for mini-preview tooltip.
-  const [hoveredIdx, setHoveredIdx] = useState(null);
 
   // V3.1 §2: track previous preset id so a "← Return to {prevName}" pill can
   // appear when the active preset changes (e.g. via a §2 narrative spotlight
@@ -156,40 +141,25 @@ export default function PresetSidebar({
   function renderPresetItem({ summary, idx }) {
     const tags = tagsForPreset(summary);
     const previewText = miniPreviewFor(summary);
-    const hasPreview = Boolean(previewText);
-    const isHovered = hoveredIdx === idx;
-    const isPending = isPreparing && pendingPresetIdx === idx;
     const isActive = selectedPresetIdx === idx;
     return (
       <div key={summary.id} className="relative">
         <ExplorerSidebarItem
           as="button"
-          active={isActive || isPending}
+          active={isActive}
           title={summary.name}
           glyph={summary.glyph}
           description={summary.description}
           formula={summary.formula}
-          className={isActive || isPending ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
+          className={isActive ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
           onClick={() => onSelect(idx)}
-          onMouseEnter={hasPreview ? () => setHoveredIdx(idx) : undefined}
-          onMouseLeave={hasPreview ? () => setHoveredIdx((cur) => (cur === idx ? null : cur)) : undefined}
-          onFocus={hasPreview ? () => setHoveredIdx(idx) : undefined}
-          onBlur={hasPreview ? () => setHoveredIdx((cur) => (cur === idx ? null : cur)) : undefined}
           data-preset-id={summary.id}
-          data-preset-pending={isPending ? 'true' : undefined}
-          aria-busy={isPending ? 'true' : undefined}
+          aria-busy={isPreparing && pendingPresetIdx === idx ? 'true' : undefined}
           data-mini-preview-text={previewText ?? undefined}
-          aria-describedby={hasPreview && isHovered ? `preset-mini-preview-${summary.id}` : undefined}
         >
-          {(isActive || isPending) && (
+          {isActive && (
             <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
           )}
-          {isPending ? (
-            <span className="inline-flex items-center gap-1 rounded-full bg-coral px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" aria-hidden="true" />
-              Preparing
-            </span>
-          ) : null}
           {summary.caseIds?.map((caseId) => (
             <CaseBadge key={caseId} regimeId={caseId} size="xs" variant="pill" />
           ))}
@@ -201,7 +171,6 @@ export default function PresetSidebar({
             <TagPill key={tag} tag={tag} />
           ))}
         </ExplorerSidebarItem>
-        <MiniPreviewTooltip text={previewText} visible={hasPreview && isHovered} />
       </div>
     );
   }
@@ -249,24 +218,18 @@ export default function PresetSidebar({
         <div className="divide-y divide-gray-100">
           <ExplorerSidebarItem
             as="button"
-            active={selectedPresetIdx === CUSTOM_IDX || (isPreparing && pendingPresetIdx === CUSTOM_IDX)}
+            active={selectedPresetIdx === CUSTOM_IDX}
             title="Custom"
             glyph="⚙"
             description="Keep the current builder state and switch into custom mode."
             formula="— build below —"
-            className={selectedPresetIdx === CUSTOM_IDX || (isPreparing && pendingPresetIdx === CUSTOM_IDX) ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
+            className={selectedPresetIdx === CUSTOM_IDX ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
             onClick={onCustom}
             aria-busy={isPreparing && pendingPresetIdx === CUSTOM_IDX ? 'true' : undefined}
           >
-            {(selectedPresetIdx === CUSTOM_IDX || (isPreparing && pendingPresetIdx === CUSTOM_IDX)) && (
+            {selectedPresetIdx === CUSTOM_IDX && (
               <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
             )}
-            {isPreparing && pendingPresetIdx === CUSTOM_IDX ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-coral px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" aria-hidden="true" />
-                Preparing
-              </span>
-            ) : null}
             <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gray-500">
               Freeform
             </span>

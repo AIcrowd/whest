@@ -40,13 +40,10 @@ test('PresetSidebar renders tag pills with data-preset-tag attribute on each car
   assert.match(src, /'bilinear-trace':\s*\[[^\]]*'formal'[^\]]*\]/);
 });
 
-test('Each preset card wires a mini-preview hover handler with V3.1 signature text', () => {
+test('Preset cards keep mini-preview metadata without rendering hover tooltips', () => {
   const src = read(SIDEBAR);
-  // onMouseEnter / onFocus handlers must be attached, hovered state tracked,
-  // and the mini-preview signature lines defined per the V3.1 §2 spec.
-  assert.match(src, /const hasPreview = Boolean\(previewText\)/);
-  assert.match(src, /onMouseEnter=\{hasPreview \? \(\) => setHoveredIdx\(idx\) : undefined\}/);
-  assert.match(src, /onFocus=\{hasPreview \? \(\) => setHoveredIdx\(idx\) : undefined\}/);
+  // The signature text remains available as metadata, but the floating hover
+  // tooltip was removed because it interfered with neighboring preset rows.
   assert.match(src, /data-mini-preview-text=\{previewText \?\? undefined\}/);
   assert.match(src, /export const PRESET_MINI_PREVIEW/);
   assert.match(src, /'cross-s2':[^,}]*'mini O→Q row with two filled cells'/);
@@ -54,9 +51,8 @@ test('Each preset card wires a mini-preview hover handler with V3.1 signature te
   assert.match(src, /'triangle':[^,}]*'accepted\/rejected sigma badges'/);
   assert.match(src, /'cross-c3-partial':[^,}]*'equality-pattern chips'/);
   assert.match(src, /'bilinear-trace':[^,}]*'formal-symmetry mismatch'/);
-  // The tooltip itself is marked role="tooltip" and emits data-mini-preview.
-  assert.match(src, /role="tooltip"/);
-  assert.match(src, /data-mini-preview="true"/);
+  assert.doesNotMatch(src, /role="tooltip"/);
+  assert.doesNotMatch(src, /data-mini-preview="true"/);
 });
 
 test('PresetSidebar tracks the previous preset id with a ref + state', () => {
@@ -105,9 +101,9 @@ test('All five V3.1 lens presets receive at least one tag and a mini-preview sig
 test('Reference presets do not show generic TBD mini-preview copy', () => {
   const src = read(SIDEBAR);
   assert.match(src, /PRESET_MINI_PREVIEW\[summary\.id\] \?\? null/);
-  assert.match(src, /const hasPreview = Boolean\(previewText\)/);
-  assert.match(src, /onMouseEnter=\{hasPreview \? \(\) => setHoveredIdx\(idx\) : undefined\}/);
-  assert.match(src, /visible=\{hasPreview && isHovered\}/);
+  assert.match(src, /data-mini-preview-text=\{previewText \?\? undefined\}/);
+  assert.doesNotMatch(src, /setHoveredIdx/);
+  assert.doesNotMatch(src, /visible=\{hasPreview && isHovered\}/);
   assert.doesNotMatch(src, /pedagogical signature TBD/i);
   assert.doesNotMatch(src, /GENERIC_MINI_PREVIEW/);
 });

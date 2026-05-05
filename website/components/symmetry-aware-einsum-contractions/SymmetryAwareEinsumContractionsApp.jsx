@@ -19,6 +19,7 @@ import AlgorithmAtAGlance from './components/AlgorithmAtAGlance.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
 import ExplorerThemeDock from './components/ExplorerThemeDock.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
+import AnalysisLoadingBoundary from './components/AnalysisLoadingBoundary.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
 import SigmaLoop from './components/SigmaLoop.jsx';
@@ -309,6 +310,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     ? pendingSelection.idx
     : null;
   const analysisUpdating = analysisState.status === 'updating' || isCommitPending;
+  const localAnalysisLoading = analysisUpdating && Boolean(pendingSelection);
   const theme = useMemo(() => getExplorerThemePreset(explorerThemeId), [explorerThemeId]);
   const themeCssVars = useMemo(() => getExplorerThemeCssVariables(theme), [theme]);
 
@@ -447,11 +449,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
     setAnalysisState((prev) => ({
       ...prev,
       status: prev.analysis ? 'updating' : 'ready',
-      pendingSelection: prev.pendingSelection ?? {
-        kind: isCustom ? 'custom' : 'preset',
-        idx: isCustom ? CUSTOM_IDX : exampleIdx,
-        name: example.name ?? 'selected preset',
-      },
+      pendingSelection: prev.pendingSelection,
       error: null,
     }));
 
@@ -817,17 +815,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
             />
             <main className="min-w-0 flex-1">
               <div className="flex flex-col">
-                {analysisUpdating && pendingSelection ? (
+                {localAnalysisLoading ? (
                   <div
                     role="status"
                     aria-live="polite"
-                    className="mb-4 flex items-center justify-between gap-3 border border-coral/30 bg-coral-light/40 px-4 py-3 text-sm text-stone-800 shadow-sm"
+                    className="sr-only"
                     data-analysis-updating="true"
                   >
-                    <span>
-                      Preparing <strong className="font-semibold">{pendingSelection.name}</strong>. Showing the previous analysis until the new one is ready.
-                    </span>
-                    <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-coral" aria-hidden="true" />
+                    Preparing {pendingSelection.name}. Interactive components are loading.
                   </div>
                 ) : null}
 
@@ -885,13 +880,17 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                        <ExplorerSubsectionHeader anchorId="bipartite-graph" labelText="Bipartite Graph">
                           Bipartite Graph
                         </ExplorerSubsectionHeader>
-                        <BipartiteGraph graph={graph} example={normalizedAnalysisExample} variableColors={variableColors} />
+                        <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="bipartite graph" variant="graph" minHeight={320}>
+                          <BipartiteGraph graph={graph} example={normalizedAnalysisExample} variableColors={variableColors} />
+                        </AnalysisLoadingBoundary>
                       </div>
                       <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="incidence-matrix" labelText="Incidence Matrix">
                           Incidence Matrix M
                         </ExplorerSubsectionHeader>
-                        <MatrixView matrixData={matrixData} graph={graph} example={normalizedAnalysisExample} variableColors={variableColors} />
+                        <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="incidence matrix" variant="matrix" minHeight={320}>
+                          <MatrixView matrixData={matrixData} graph={graph} example={normalizedAnalysisExample} variableColors={variableColors} />
+                        </AnalysisLoadingBoundary>
                       </div>
                     </div>
                     <div className="mt-4">
@@ -923,7 +922,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <ProjectionIntroProse paragraphs={EXPLORER_ACTS[2].introParagraphs} />
 	                    <div className="mt-6">
-	                      <BranchingDemo
+	                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="O → Q matrix" variant="matrix" minHeight={520}>
+	                        <BranchingDemo
 	                        componentData={componentData}
 	                        costModel={cost}
 	                        dimensionN={analysisDimensionN}
@@ -934,12 +934,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                        expressionInfo={normalizedAnalysisExample ? {
 	                          subscripts: normalizedAnalysisExample.subscripts ?? [],
                           output: normalizedAnalysisExample.output ?? '',
-                          operandNames: (normalizedAnalysisExample.expression?.operandNames ?? '')
+	                          operandNames: (normalizedAnalysisExample.expression?.operandNames ?? '')
                             .split(',')
 	                            .map((s) => s.trim())
 	                            .filter(Boolean),
 	                        } : null}
-	                      />
+	                        />
+	                      </AnalysisLoadingBoundary>
 	                    </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
@@ -962,7 +963,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     />
                     {/* §4 Two-quotient schematic — C16 */}
                     <div className="mt-6">
-                      <TwoQuotientSchematic current={twoQuotientCurrent} />
+                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="rows and columns schematic" variant="cards" minHeight={360}>
+                        <TwoQuotientSchematic current={twoQuotientCurrent} />
+                      </AnalysisLoadingBoundary>
                     </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
@@ -981,7 +984,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                  >
 	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[4].introParagraphs} />
 	                    <div className="mt-6">
-	                      <LabelInteractionGraph
+	                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="label interaction graph" variant="graph" minHeight={420}>
+	                        <LabelInteractionGraph
 	                        allLabels={group?.allLabels ?? []}
 	                        vLabels={group?.vLabels ?? []}
 	                        interactionGraph={componentData?.interactionGraph}
@@ -990,10 +994,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                        onHover={handleGraphHover}
 	                        activeComponentId={activeComponentId}
 	                        onActiveComponentHoverChange={setActiveComponentId}
-	                      />
+	                        />
+	                      </AnalysisLoadingBoundary>
 	                    </div>
 	                    <div className="mt-6">
-	                      <ComponentCostView
+	                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="component accounting" variant="cards" minHeight={420}>
+	                        <ComponentCostView
 	                        componentData={componentData}
 	                        costModel={cost}
 	                        dimensionN={analysisDimensionN}
@@ -1020,7 +1026,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                        onActiveComponentHoverChange={setActiveComponentId}
 	                        onActiveAlphaMethodHoverChange={setActiveAlphaMethodHover}
 	                        onDimensionNChange={handleDimensionChange}
-	                      />
+	                        />
+	                      </AnalysisLoadingBoundary>
 	                    </div>
 	                    <div className="mt-4">
 	                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
@@ -1046,10 +1053,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       <ExplorerSubsectionHeader anchorId="wreath-structure" labelText="Wreath structure">
                         Wreath structure
                       </ExplorerSubsectionHeader>
-                      <WreathStructureView
-                        analysis={analysis}
-                        example={normalizedAnalysisExample}
-                      />
+                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="wreath structure" variant="cards" minHeight={300}>
+                        <WreathStructureView
+                          analysis={analysis}
+                          example={normalizedAnalysisExample}
+                        />
+                      </AnalysisLoadingBoundary>
                     </div>
                     {/* σ-Loop (enumerates the wreath) + Generator Construction (closes valid π's). */}
                     <div className="editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -1059,7 +1068,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
                             {`$${notationLatex('sigma_row_move')}$-Loop & $${notationLatex('pi_relabeling')}$ Detection`}
                           </InlineMathText>
                         </ExplorerSubsectionHeader>
-                        <SigmaLoop
+                        <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="sigma loop" variant="cards" minHeight={520}>
+                          <SigmaLoop
                           results={sigmaResults}
                           graph={graph}
                           matrixData={matrixData}
@@ -1075,17 +1085,20 @@ export default function SymmetryAwareEinsumContractionsApp() {
                             const idx = EXAMPLES.findIndex((ex) => ex.id === 'triangle');
                             if (idx >= 0) handleSelect(idx);
                           }}
-                        />
+                          />
+                        </AnalysisLoadingBoundary>
                       </div>
                       <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="generator-construction" labelText="Generator Construction">
                           Generator Construction
                         </ExplorerSubsectionHeader>
-                        <DiminoView
-                          group={group}
-                          sigmaResults={sigmaResults}
-                          selectedPairIndex={selectedSigmaPairIndex}
-                        />
+                        <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="generator construction" variant="cards" minHeight={520}>
+                          <DiminoView
+                            group={group}
+                            sigmaResults={sigmaResults}
+                            selectedPairIndex={selectedSigmaPairIndex}
+                          />
+                        </AnalysisLoadingBoundary>
                       </div>
                     </div>
 	                    {/* C27 — Certification Summary Strip: 7-metric bridge that
@@ -1096,16 +1109,18 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         targets (wreath / audit / generator-closure / column-action)
                         and the existing activeComponentId bus. */}
                     <div className="mt-6">
-                      <CertificationSummaryStrip
-                        candidateMoves={(sigmaResults ?? []).filter((r) => !r.skipped).length}
-                        accepted={(sigmaResults ?? []).filter((r) => !r.skipped && r.isValid).length}
-                        identityOnly={(sigmaResults ?? []).filter((r) => r.skipped).length}
-                        rejected={(sigmaResults ?? []).filter((r) => !r.skipped && !r.isValid).length}
-                        gPtSize={group?.fullElements?.length ?? 1}
-                        hSize={outputActionSize}
-                        componentsCount={(componentData?.components ?? []).length}
-                        setActiveComponentId={setActiveComponentId}
-                      />
+                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="certification summary" variant="compact" minHeight={170}>
+                        <CertificationSummaryStrip
+                          candidateMoves={(sigmaResults ?? []).filter((r) => !r.skipped).length}
+                          accepted={(sigmaResults ?? []).filter((r) => !r.skipped && r.isValid).length}
+                          identityOnly={(sigmaResults ?? []).filter((r) => r.skipped).length}
+                          rejected={(sigmaResults ?? []).filter((r) => !r.skipped && !r.isValid).length}
+                          gPtSize={group?.fullElements?.length ?? 1}
+                          hSize={outputActionSize}
+                          componentsCount={(componentData?.components ?? []).length}
+                          setActiveComponentId={setActiveComponentId}
+                        />
+                      </AnalysisLoadingBoundary>
                     </div>
                     <div className="mt-4">
                       <NarrativeCallout tone="preamble">
@@ -1140,20 +1155,24 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                        Each component follows this yes/no spine until the cheapest exact accumulation counter applies. The highlighted leaves show where the active example lands.
 	                      </p>
 	                      <div className="mt-4">
-	                        <DecisionLadder
+	                        <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="shortcut decision ladder" variant="cards" minHeight={360}>
+	                          <DecisionLadder
 	                          activeLeafIds={activeLeafIds}
 	                          spotlightLeafIds={spotlightLeafSet}
 	                          liveReasonsByLeaf={liveReasonsByLeaf}
-	                        />
+	                          />
+	                        </AnalysisLoadingBoundary>
 	                      </div>
 	                    </div>
 	                    <div className="mt-6">
-	                      <NaiveAlphaCostMeter
+	                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="naive alpha meter" variant="compact" minHeight={220}>
+	                        <NaiveAlphaCostMeter
 	                        dimensionN={analysisDimensionN}
                         allLabels={group?.allLabels ?? []}
                         groupSize={group?.fullElements?.length ?? 1}
                         hSize={outputActionSize}
-                      />
+	                        />
+	                      </AnalysisLoadingBoundary>
                     </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[6].produces}</NarrativeCallout>
@@ -1174,18 +1193,22 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[7].introParagraphs} />
                     <div className="mt-6">
-                      <TuplePatternMeter
-                        dimensionN={analysisDimensionN}
-                        allLabels={group?.allLabels ?? []}
-                        groupSize={group?.fullElements?.length ?? 1}
-                        componentData={componentData}
-                      />
+                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="tuple pattern meter" variant="compact" minHeight={220}>
+                        <TuplePatternMeter
+                          dimensionN={analysisDimensionN}
+                          allLabels={group?.allLabels ?? []}
+                          groupSize={group?.fullElements?.length ?? 1}
+                          componentData={componentData}
+                        />
+                      </AnalysisLoadingBoundary>
                     </div>
                     <div className="mt-6">
-                      <TypedPartitionDemo
-                        componentData={componentData}
-                        costModel={cost}
-                      />
+                      <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="typed partition counter" variant="cards" minHeight={420}>
+                        <TypedPartitionDemo
+                          componentData={componentData}
+                          costModel={cost}
+                        />
+                      </AnalysisLoadingBoundary>
                     </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[7].produces}</NarrativeCallout>
@@ -1204,14 +1227,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                    className="border-gray-200 bg-white"
 	                    contentClassName="pt-5"
 	                  >
-	                    <TotalCostView
+	                    <AnalysisLoadingBoundary isLoading={localAnalysisLoading} label="total cost view" variant="compact" minHeight={360}>
+	                      <TotalCostView
 	                      componentCosts={componentCosts}
                       componentData={componentData}
                       dimensionN={analysisDimensionN}
                       numTerms={normalizedAnalysisExample?.subscripts?.length ?? 1}
                       explorerThemeId={explorerThemeId}
                       presetName={analysisExample?.name ?? null}
-                    />
+	                      />
+	                    </AnalysisLoadingBoundary>
 
                     <button
                       type="button"
