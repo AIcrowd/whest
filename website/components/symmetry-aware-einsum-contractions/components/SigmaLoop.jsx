@@ -456,22 +456,6 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           fmtSigma={fmtSigma}
         />
       )}
-
-      {showMoreValid && (
-        <ValidPairsModal
-          pairs={remainingValidPairs}
-          allPairs={allPairs}
-          uLabels={uLabels}
-          onSelectPair={(origIdx) => {
-            handleSelectPair(origIdx);
-            setShowMoreValid(false);
-          }}
-          onClose={closeAllModals}
-          fmtSigma={fmtSigma}
-          fmtPi={fmtPi}
-          kindLabel={kindLabel}
-        />
-      )}
     </div>
   );
 }
@@ -558,47 +542,11 @@ function RejectedModal({
   );
 }
 
-function ValidPairsModal({
-  pairs,
-  allPairs,
-  uLabels,
-  onSelectPair,
-  onClose,
-  fmtSigma,
-  fmtPi,
-  kindLabel,
-}) {
-  return (
-    <div className="rejected-modal-overlay" onClick={onClose}>
-      <div className="rejected-modal" onClick={(event) => event.stopPropagation()}>
-        <div className="rejected-modal-header">
-          <h4>{pairs.length} additional valid <Latex math={String.raw`\sigma`} />{pairs.length === 1 ? '' : "'s"}</h4>
-          <button className="rejected-modal-close" onClick={onClose}>✕</button>
-        </div>
-
-        <div className="rejected-list">
-          {pairs.map((r) => {
-            const origIdx = allPairs.indexOf(r);
-            return (
-              <button key={origIdx} className="rejected-list-item" onClick={() => onSelectPair(origIdx)}>
-                <span className="rejected-list-sigma">
-                  <Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
-                </span>
-                <span className="pair-pi">
-                  <Latex math={String.raw`\pi`} inheritColor /> = {fmtPi(r.pi)}
-                </span>
-                <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
-                  {kindLabel(r.piKind)}
-                </span>
-                <span className="rejected-list-arrow">→</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
+/* The ValidPairsModal that backed the "▸ N more (σ, π) pairs" overflow
+   button was removed when all valid pairs became inline (see header
+   comment near top of file). The component definition is gone; if a
+   future iteration needs an "additional pairs" drawer, prefer reusing
+   the inline pair-chips-grid pattern over reintroducing a modal. */
 
 /* ── Rejected Detail — M → σ(M) with animation, no π step ── */
 
