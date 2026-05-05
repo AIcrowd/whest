@@ -273,7 +273,7 @@ function HeroFormulaBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
 
   return (
     <div className="space-y-7">
-      <div className="flex justify-center overflow-x-auto overflow-y-visible">
+      <div className="math-display-row flex justify-center overflow-x-auto overflow-y-visible">
         <div className="min-w-0 text-[17px] sm:text-[19px]">
           <span
             ref={formulaRef}
@@ -302,7 +302,7 @@ function HeroFormulaBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
           <InlineMathText themeOverride={themeOverride}>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
         </div>
       </div>
-      <div className="flex justify-center overflow-x-auto overflow-y-visible">
+      <div className="math-display-row flex justify-center overflow-x-auto overflow-y-visible">
         <div
           className="grid items-center gap-x-5 gap-y-2 text-[14px]"
           style={{ gridTemplateColumns: 'auto auto 1fr auto' }}
@@ -491,7 +491,7 @@ function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) 
 
       <div className="space-y-7">
         <div className="space-y-6">
-          <div className="flex justify-center overflow-x-auto overflow-y-visible">
+          <div className="math-display-row flex justify-center overflow-x-auto overflow-y-visible">
             <div className="min-w-0 text-[18px] sm:text-[20px]">
               <Latex display math={SECTION_FIVE_TOTAL_FORMULA} themeOverride={themeOverride} />
             </div>
@@ -502,12 +502,12 @@ function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) 
               aria-hidden="true"
               className="absolute bottom-[18%] left-1/2 top-[18%] hidden w-px -translate-x-1/2 bg-gray-100 sm:block"
             />
-            <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-end sm:pr-5">
+            <div className="math-display-row flex justify-center overflow-x-auto overflow-y-visible sm:justify-end sm:pr-5">
               <div className="min-w-0 text-[17px] sm:text-[19px]">
                 <Latex display math={SECTION_FIVE_MU_FORMULA} themeOverride={themeOverride} />
               </div>
             </div>
-            <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-start sm:pl-5">
+            <div className="math-display-row flex justify-center overflow-x-auto overflow-y-visible sm:justify-start sm:pl-5">
               <div className="min-w-0 text-[17px] sm:text-[19px]">
                 <Latex display math={SECTION_FIVE_ALPHA_FORMULA} themeOverride={themeOverride} />
               </div>
@@ -533,7 +533,7 @@ function MetricSupport({ formula, detail, themeOverride = SECTION_FIVE_THEME_OVE
     <div className="mt-2 space-y-1">
       {formula ? (
         <div className="flex justify-center text-[10.5px] leading-[1.35] text-gray-400">
-          <div className="max-w-[24rem] overflow-x-auto overflow-y-hidden">
+          <div className="math-display-row max-w-[24rem] overflow-x-auto overflow-y-hidden">
             <Latex math={formula} colorize={false} themeOverride={themeOverride} />
           </div>
         </div>

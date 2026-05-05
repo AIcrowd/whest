@@ -46,16 +46,25 @@
   font-size: 1.12em;
 }
 
-/* The wrapper carries `overflow-x-auto` so wide equations (or narrow
-   viewports) can still scroll horizontally. But KaTeX rounds to fractional
-   pixels, so even a perfectly-fitting equation can trigger a 1-px overflow
-   and surface a persistent scrollbar gutter. Hide the visual scrollbar
-   while preserving the scroll behaviour itself. */
-.projection-example-math {
+/* Wrappers around inline math/equation displays carry `overflow-x-auto`
+   so wide equations (or narrow viewports) can still scroll horizontally.
+   But KaTeX rounds equation widths to fractional pixels, so even a
+   perfectly-fitting equation can trigger a 1-px overflow and surface a
+   persistent scrollbar gutter underneath. Hide the visual scrollbar
+   while preserving the underlying scroll behaviour, so genuine
+   narrow-viewport overflow still scrolls via touch swipe / shift-wheel
+   / keyboard. Apply this class to any wrapper that renders a single
+   compact math display.
+
+   Sites: section 3 (.projection-example-math) and section 9 cost-savings
+   wrappers (.math-display-row in TotalCostView). */
+.projection-example-math,
+.math-display-row {
   scrollbar-width: none;          /* Firefox */
   -ms-overflow-style: none;       /* legacy Edge/IE */
 }
-.projection-example-math::-webkit-scrollbar {
+.projection-example-math::-webkit-scrollbar,
+.math-display-row::-webkit-scrollbar {
   display: none;                  /* Chrome / Safari */
 }
 
