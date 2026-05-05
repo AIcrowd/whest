@@ -141,23 +141,23 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   assert.match(source, /role="tooltip"/);
   assert.match(source, /createPortal\(/);
 
-  // The three hover targets — keep the kind strings stable; the tooltip
-  // content dispatch is keyed on them.
+  // The two visible hover targets — keep the kind strings stable; the
+  // tooltip content dispatch is keyed on them. The 'edge' kind is preserved
+  // in the tooltip switch (handlers at the kind === 'edge' branch) for the
+  // moment, but no edge geometry is rendered — the toggle that exposed
+  // edges was removed; only nodes and hulls remain visible. The edge
+  // dispatch path is dead-but-reserved for a future hover affordance.
   assert.match(source, /kind: 'node'/);
-  assert.match(source, /kind: 'edge'/);
   assert.match(source, /kind: 'hull'/);
+  assert.match(source, /kind === 'edge'/);
 
   // Defensive dismissal mirrors the DecisionLadder pattern.
   assert.match(source, /addEventListener\('scroll', dismiss, true\)/);
   assert.match(source, /addEventListener\('pointerdown', dismissIfOutside\)/);
   assert.match(source, /addEventListener\('keydown', dismissOnEscape\)/);
 
-  // Edge hit area must be widened — the visible line is 1 px which is
-  // effectively un-hoverable on its own.
-  assert.match(source, /stroke="transparent"/);
-  assert.match(source, /strokeWidth=\{10\}/);
-
-  // Edge tooltip attributes the edge to a specific generator.
+  // Edge tooltip attributes the edge to a specific generator (string lives
+  // in the dispatch handler that runs when an 'edge' kind tooltip fires).
   assert.match(source, /Generator σ\$\{genIdx \+ 1\}/);
   // Hull tooltip surfaces the regime/shape presentation body (the whole
   // point of unifying hull color with the ladder via getRegimePresentation).

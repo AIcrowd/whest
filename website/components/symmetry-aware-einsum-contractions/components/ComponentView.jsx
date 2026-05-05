@@ -127,10 +127,12 @@ export function LabelInteractionGraph({
   activeComponentId = null,
   onActiveComponentHoverChange = null,
 }) {
-  // View toggle (Gap 2 — V3.1 §C20)
-  // 'certified' = show certified independent factors (default, V3.1-preferred)
-  // 'generator' = show generator-support coupling (cycle-adjacency edges visible)
-  const [viewMode, setViewMode] = useState('certified');
+  // The earlier two-mode visual toggle was removed: most readers found the
+  // factor-vs-coupling distinction abstract, and on most presets the two
+  // views were visually identical. V3.1 §C20 audit gap 1 is still satisfied
+  // because the dashed-vs-solid hull-stroke distinction (multi-cycle-glued
+  // vs single-cycle adjacency) is rendered passively below — no UI
+  // surface required.
   const reducedMotion = usePrefersReducedMotion();
 
   const explorerThemeId = getActiveExplorerThemeId();
@@ -138,7 +140,6 @@ export function LabelInteractionGraph({
   const COLOR_W = explorerThemeColor(explorerThemeId, 'summedSide');
   const FREE_HULL_COLOR = explorerThemeColor(explorerThemeId, 'heroMuted');
   const SUMMED_HULL_COLOR = explorerThemeColor(explorerThemeId, 'summedSide');
-  const EDGE_COLOR = explorerThemeColor(explorerThemeId, 'muted');
   const NODE_BORDER_COLOR = explorerThemeColor(explorerThemeId, 'surface');
   const n = allLabels.length;
 
@@ -449,52 +450,16 @@ export function LabelInteractionGraph({
 
   return (
     <>
-      {/* ── Gap 2: Toggle button group (V3.1 §C20) ─────────────────────────── */}
-      <div
-        role="group"
-        aria-label="Label interaction graph view mode"
-        style={{
-          display: 'flex',
-          gap: '6px',
-          marginBottom: '10px',
-          flexWrap: 'wrap',
-        }}
-      >
-        {[
-          { id: 'certified', label: 'certified factors' },
-          { id: 'generator', label: 'generator supports' },
-        ].map(({ id, label }) => {
-          const active = viewMode === id;
-          return (
-            <button
-              key={id}
-              type="button"
-              aria-pressed={active}
-              onClick={() => setViewMode(id)}
-              style={{
-                padding: '3px 10px',
-                fontSize: '11px',
-                fontWeight: active ? 600 : 400,
-                fontFamily: "'Inter', sans-serif",
-                borderRadius: '5px',
-                border: `1.5px solid ${active ? TOKEN.coral : TOKEN.gray300}`,
-                background: active ? TOKEN.coralLight : TOKEN.white,
-                color: active ? TOKEN.coral : TOKEN.gray600,
-                cursor: 'pointer',
-                transition: reducedMotion
-                  ? 'none'
-                  : 'background 0.15s ease, color 0.15s ease, border-color 0.15s ease',
-              }}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
-
+      <figcaption className="mx-auto mb-4 max-w-2xl text-center font-serif text-[14px] leading-6 text-gray-600">
+        Each circle is a label. Hulls group labels that the certified group
+        action couples — these are the independent factors of {' '}
+        <span className="font-mono text-[13px] text-gray-700">G_pt</span>.
+        Lone circles are trivial one-label factors. Hover a hull to highlight
+        that factor in the table below.
+      </figcaption>
       <svg
         ref={wrapRef}
-        className="w-full max-w-[220px]"
+        className="mx-auto block w-full max-w-sm"
         viewBox={`0 0 ${GRAPH_SIZE} ${GRAPH_SIZE}`}
         aria-label="Label interaction graph"
       >
@@ -543,58 +508,6 @@ export function LabelInteractionGraph({
                   openTooltip({ kind: 'hull', idx: compIdx }, e.currentTarget.getBoundingClientRect())
                 }
                 onBlur={hideTooltip}
-              />
-              {/* Gap 1: extra dashed inner stroke visible in 'generator' mode
-                  to highlight multi-cycle-glued coupling explicitly. */}
-              {viewMode === 'generator' && isMultiGlued && (
-                <polygon
-                  points={points.map((point) => `${point.x},${point.y}`).join(' ')}
-                  fill="none"
-                  stroke={hull.color}
-                  strokeWidth={1.5}
-                  strokeDasharray="3 4"
-                  strokeOpacity={0.75}
-                  pointerEvents="none"
-                  aria-hidden="true"
-                />
-              )}
-            </g>
-          );
-        })}
-
-        {/* ── Edges — hidden in 'certified' mode, shown in 'generator' mode ── */}
-        {viewMode === 'generator' && uniqueEdges.map(([a, b], edgeIdx) => {
-          const pa = positions[a];
-          const pb = positions[b];
-          if (!pa || !pb) return null;
-          return (
-            <g key={`edge-${edgeIdx}`}>
-              {/* Transparent wide hit area — 1 px edges are un-hoverable. */}
-              <line
-                x1={pa.x}
-                y1={pa.y}
-                x2={pb.x}
-                y2={pb.y}
-                stroke="transparent"
-                strokeWidth={10}
-                style={{ cursor: 'help' }}
-                onMouseEnter={(e) =>
-                  openTooltip(
-                    { kind: 'edge', idx: edgeIdx },
-                    e.currentTarget.getBoundingClientRect(),
-                  )
-                }
-                onMouseLeave={hideTooltip}
-              />
-              <line
-                x1={pa.x}
-                y1={pa.y}
-                x2={pb.x}
-                y2={pb.y}
-                stroke={EDGE_COLOR}
-                strokeWidth={1}
-                strokeOpacity={0.45}
-                pointerEvents="none"
               />
             </g>
           );

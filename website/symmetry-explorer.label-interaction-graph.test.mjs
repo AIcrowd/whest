@@ -42,16 +42,29 @@ test('ComponentView.jsx exists and exports LabelInteractionGraph as a named expo
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// T2: Toggle button group — 2 buttons with "certified factors" + "generator supports"
+// T2: Toggle group is REMOVED — readers found "certified factors / generator
+// supports" abstract; on most presets the two views were visually identical.
+// V3.1 §C20 audit gap 1 (distinguishing generator-support hulls from cycle-
+// adjacency hulls) is still satisfied passively via the dashed-vs-solid hull
+// stroke applied to multi-cycle-glued factors. See Gap 1 test below.
 // ─────────────────────────────────────────────────────────────────────────────
-test('LabelInteractionGraph renders a 2-button toggle group (Gap 2)', () => {
-  assert.match(cv, /certified factors/,
-    'Toggle must include "certified factors" label');
-  assert.match(cv, /generator supports/,
-    'Toggle must include "generator supports" label');
-  // Both buttons must be in a role="group"
-  assert.match(cv, /role="group"/,
-    'Toggle group must have role="group"');
+test('LabelInteractionGraph no longer ships a viewMode toggle (simplification)', () => {
+  assert.doesNotMatch(cv, /certified factors/,
+    'Toggle text "certified factors" must be removed');
+  assert.doesNotMatch(cv, /generator supports/,
+    'Toggle text "generator supports" must be removed');
+  assert.doesNotMatch(cv, /\[viewMode, setViewMode\]/,
+    'viewMode useState must be removed');
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// T2b: Standalone caption explaining the visual (added after toggle removal)
+// ─────────────────────────────────────────────────────────────────────────────
+test('LabelInteractionGraph renders a figcaption explaining the visual', () => {
+  assert.match(cv, /<figcaption/,
+    'A figcaption must accompany the graph');
+  assert.match(cv, /independent factors/,
+    'The caption must explain that hulls represent independent factors');
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -74,12 +87,10 @@ test('LabelInteractionGraph applies dashed stroke to multi-cycle-glued hulls (Ga
   // Heuristic comment must be present to document the approach
   assert.match(cv, /isMultiCycleGlued|multi-cycle-glued/,
     'Source must contain "isMultiCycleGlued" or "multi-cycle-glued" heuristic');
-  // Dashed visual cue must be rendered
+  // Dashed visual cue must be rendered passively on the main hull stroke
+  // (no toggle — applied automatically when isMultiGlued is true).
   assert.match(cv, /strokeDasharray/,
     'Hull rendering must use strokeDasharray for dashed visual encoding');
-  // Separate inner dashed stroke for generator mode
-  assert.match(cv, /generator.*mode|viewMode.*generator/i,
-    'Generator mode must toggle visibility of dashed inner stroke');
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -119,9 +130,7 @@ test('ComponentView.jsx uses no raw hex colors outside the TOKEN map', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 // T7: Accessibility — toggle buttons have aria-pressed, hulls have role/tabIndex
 // ─────────────────────────────────────────────────────────────────────────────
-test('Toggle buttons have aria-pressed and hull polygons are keyboard-accessible (a11y)', () => {
-  assert.match(cv, /aria-pressed=\{active\}/,
-    'Toggle buttons must have aria-pressed={active}');
+test('Hull polygons are keyboard-accessible (a11y)', () => {
   // Hull polygons must be keyboard-reachable (tabIndex=0 or role)
   assert.match(cv, /tabIndex=\{0\}/,
     'Hull polygons must have tabIndex={0} for keyboard focus');
@@ -135,11 +144,14 @@ test('Toggle buttons have aria-pressed and hull polygons are keyboard-accessible
 // ─────────────────────────────────────────────────────────────────────────────
 // T8: Stories include new C20 stories for toggle and hover-bus
 // ─────────────────────────────────────────────────────────────────────────────
-test('BipartiteGraph.stories.jsx includes LIG stories for toggle and hover-bus', () => {
+test('BipartiteGraph.stories.jsx includes LIG stories for the unified graph + hover-bus', () => {
+  // The certified-factors story is now the canonical view (toggle removed).
   assert.match(stories, /LIGCertifiedFactors|LIG.*certified/i,
-    'Stories must have a certified-factors story');
+    'Stories must have a default LIG story');
   assert.match(stories, /LIGHoveredComponent|activeComponentId/,
     'Stories must exercise the hover-component bus');
-  assert.match(stories, /LIGGeneratorSupports|generator supports/i,
-    'Stories must have a generator-supports story');
+  // The multi-cycle-glued story exercises the dashed-stroke fallback that
+  // replaced the old toggle-driven generator-supports view.
+  assert.match(stories, /multi-cycle|LIGMultiCycle|LIGGeneratorSupports/i,
+    'Stories must include a multi-cycle-glued / generator-coupled example');
 });
