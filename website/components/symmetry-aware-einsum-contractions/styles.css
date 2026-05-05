@@ -1122,22 +1122,13 @@
   font-weight: 600 !important;
 }
 
-/* Recovery badge */
-.recovery-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--success);
-  background: color-mix(in oklab, var(--success) 8%, transparent);
-  padding: 4px 14px;
-  border-radius: 20px;
-  border: 1px solid color-mix(in oklab, var(--success) 25%, transparent);
-  animation: anim-fade-in 0.3s ease-out;
-}
-
+/* Recovery badge — rendered inline beneath the matrix on stage 2.
+   The previous absolute-positioned `.recovery-badge` floated at the
+   top-right of the matrix container and overlapped the COLUMNS legend
+   pill at narrow column widths. Both accepted ("= M ✓") and rejected
+   ("✗ π not found") verdicts now use the same below-the-matrix flow
+   via `.recovery-badge-below` plus a tone modifier (`.recovery-pass`
+   for green, `.recovery-fail` for coral). */
 .recovery-badge-below {
   text-align: center;
   font-family: var(--font-mono);
@@ -1147,6 +1138,12 @@
   border-radius: 8px;
   margin-top: 12px;
   animation: anim-fade-in 0.3s ease-out;
+}
+
+.recovery-pass {
+  color: var(--success);
+  background: color-mix(in oklab, var(--success) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--success) 25%, transparent);
 }
 
 .recovery-fail {

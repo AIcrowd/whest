@@ -357,7 +357,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 mismatchedLabels={stage >= 1 && !selected.isValid ? computeDomainMismatchedLabels(selected, originalMatrix, labels) : null}
               />
               {stage === 2 && selected.isValid && (
-                <div className="recovery-badge">= M ✓</div>
+                <div className="recovery-badge-below recovery-pass">= M ✓ — accepted</div>
               )}
               {stage === 2 && !selected.isValid && (
                 <div className="recovery-badge-below recovery-fail" data-rejected-verdict="true">
