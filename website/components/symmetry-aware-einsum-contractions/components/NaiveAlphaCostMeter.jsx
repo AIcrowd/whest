@@ -312,13 +312,14 @@ export default function NaiveAlphaCostMeter({
   }, []);
 
   const cost = computeNaiveCost({ dimensionN, allLabels, groupSize, hSize });
-  const tier = activeTier(cost.tupleGroupTouches);
-  const activeTierObj = TIERS.find((t) => t.id === tier);
   // Common max for bar log-scaling. The 1M interactive budget is NOT
   // included here — it would dominate the scale and compress every real
-  // cost into a tiny sliver. The gauge strip below already surfaces
-  // budget compliance via the small/feasible/expensive/unavailable tier
-  // pill, so the budget doesn't need its own bar to compete with costs.
+  // cost into a tiny sliver. The earlier tier-gauge strip beneath the
+  // bars (small / feasible / expensive / unavailable) was also removed,
+  // since neither it nor the budget bar was adding decision-relevant
+  // information past the live numeric value. The TIERS array is kept as
+  // exported data for any future surface that wants to re-derive a
+  // verdict from the same thresholds.
   const barMax = Math.max(
     cost.productOrbits ?? 0,
     cost.tupleGroupTouches ?? 0,
@@ -426,15 +427,14 @@ export default function NaiveAlphaCostMeter({
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
-        {/* The "interactive budget" bar (always 1M) was removed — it
-            saturated the bar scale, compressing all real cost bars into
-            slivers. Budget compliance is now surfaced solely through the
-            tier strip beneath (small / feasible / expensive / unavailable),
-            which is what V3.1 §C28 asks for anyway. */}
+        {/* The interactive-budget bar AND the small/feasible/expensive/
+            unavailable tier-gauge strip were both removed per user
+            feedback — neither was adding decision-relevant information
+            beyond the live numeric value plus the optional pseudocode
+            below. The TIERS data array is preserved (still exported via
+            this file's source) so future surfaces can rebuild a verdict
+            indicator off the same thresholds without re-deriving them. */}
       </div>
-
-      {/* Gauge bar */}
-      <GaugeBar active={tier} onHover={handleGaugeHover} />
 
       {/* Divider */}
       <div
