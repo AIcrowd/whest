@@ -451,11 +451,9 @@ export function LabelInteractionGraph({
   return (
     <>
       <figcaption className="mx-auto mb-4 max-w-2xl text-center font-serif text-[14px] leading-6 text-gray-600">
-        Each circle is a label. Hulls group labels that the certified group
-        action couples — these are the independent factors of {' '}
-        <span className="font-mono text-[13px] text-gray-700">G_pt</span>.
-        Lone circles are trivial one-label factors. Hover a hull to highlight
-        that factor in the table below.
+        <InlineMathText>
+          {'Each circle is a label. Hulls group labels that the certified group action couples — these are the independent factors of $G_{\\text{pt}}$. Lone circles are trivial one-label factors. Hover a hull to highlight that factor in the table below.'}
+        </InlineMathText>
       </figcaption>
       <svg
         ref={wrapRef}
