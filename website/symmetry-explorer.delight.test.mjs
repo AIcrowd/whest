@@ -120,7 +120,13 @@ test('Major two-column explorer layouts use the shared faint center divider trea
   const stylesSrc = read('components/symmetry-aware-einsum-contractions/styles.css');
   assert.match(proseSrc, /editorial-two-col-divider-md grid gap-x-8 gap-y-4 md:grid-cols-2/);
   assert.match(appSrc, /editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2/);
-  assert.match(appSrc, /editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2/);
+  // Note: the §6 σ-Loop / Generator-Construction surface previously used
+  // `editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2`,
+  // but the side-by-side at 389 px each squeezed the WitnessGallery (360 px),
+  // CertificationCard (320 px), and incidence-fingerprint matrices (360 px)
+  // into postage-stamp widths. Stacked vertically full-width now (App.jsx
+  // line ~1064) so each subsection has the full content column. Other lg
+  // dividers below still anchor the design-system contract.
   assert.match(atAGlanceSrc, /editorial-two-col-divider-lg grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-10/);
   assert.match(componentCostSrc, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid grid-cols-1 gap-6 lg:grid-cols-2/);
   assert.match(stylesSrc, /\.editorial-two-col-divider-md::before/);

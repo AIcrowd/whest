@@ -1060,8 +1060,17 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         />
                       </AnalysisLoadingBoundary>
                     </div>
-                    {/* σ-Loop (enumerates the wreath) + Generator Construction (closes valid π's). */}
-                    <div className="editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    {/* σ-Loop (enumerates the wreath) + Generator Construction
+                        (closes valid π's). Stacked vertically full-width: the
+                        side-by-side lg:grid-cols-2 squeezed both into 389 px
+                        columns, which forced WitnessGallery (360 px), the
+                        Incidence-fingerprint matrices (360 px), CertificationCard
+                        (320 px), and the Dimino chip flow into postage-stamp
+                        widths. V3.1 §6 lists σ-Loop and Generator Construction
+                        as two separate teaching artifacts and does not require
+                        them to be horizontal peers — each gets the full content
+                        column instead. */}
+                    <div className="mt-6 flex flex-col gap-6">
                       <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="sigma-loop" labelText="σ-Loop & π Detection">
                           <InlineMathText>
