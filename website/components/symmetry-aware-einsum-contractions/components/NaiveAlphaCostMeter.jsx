@@ -386,7 +386,13 @@ export default function NaiveAlphaCostMeter({
         aria-hidden="true"
       />
 
-      {/* Metrics — horizontal bars (matches TuplePatternMeter visual register) */}
+      {/* Metrics — horizontal bars matching TuplePatternMeter's visual
+          register. The earlier per-row varying accents (coral / blue /
+          gray / gray) made bars at similar widths look incomparable;
+          three baseline-cost rows now share gray-700 so width is the
+          only signal, and the active tuple/group-touches row picks up
+          the gauge tier color so the verdict reads consistently with
+          the tier strip below. */}
       <div role="list" aria-label="Naive enumeration cost metrics">
         <div role="listitem">
           <MetricRow
@@ -394,7 +400,7 @@ export default function NaiveAlphaCostMeter({
             value={fmt(cost.productOrbits)}
             rawValue={cost.productOrbits}
             maxValue={barMax}
-            accent={TOKEN.coral}
+            accent={TOKEN.gray700}
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
@@ -404,7 +410,7 @@ export default function NaiveAlphaCostMeter({
             value={fmt(cost.tupleGroupTouches)}
             rawValue={cost.tupleGroupTouches}
             maxValue={barMax}
-            accent={activeTierObj?.color || TOKEN.coral}
+            accent={activeTierObj?.color || TOKEN.gray700}
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
@@ -414,7 +420,7 @@ export default function NaiveAlphaCostMeter({
             value={fmt(cost.projectedOutputsCanonicalized)}
             rawValue={cost.projectedOutputsCanonicalized}
             maxValue={barMax}
-            accent={TOKEN.gray500}
+            accent={TOKEN.gray700}
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
