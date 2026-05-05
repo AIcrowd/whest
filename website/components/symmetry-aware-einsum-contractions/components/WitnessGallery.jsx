@@ -58,9 +58,12 @@ import { useMemo, useState } from 'react';
 const TOKEN = {
   coral:        'var(--coral)',
   coralBg:      'color-mix(in srgb, var(--coral) 8%, transparent)',
+  coralTint:    'color-mix(in srgb, var(--coral) 4%, transparent)',
   coralBorder:  'color-mix(in srgb, var(--coral) 32%, transparent)',
   success:      'var(--success)',
   successBg:    'color-mix(in srgb, var(--success) 12%, transparent)',
+  successTint:  'color-mix(in srgb, var(--success) 5%, transparent)',
+  successBorder:'color-mix(in srgb, var(--success) 38%, transparent)',
   warning:      'var(--warning)',
   warningBg:    'color-mix(in srgb, var(--warning) 12%, transparent)',
   warningBorder:'color-mix(in srgb, var(--warning) 32%, transparent)',
@@ -294,8 +297,13 @@ function AcceptedCard({ pair, uLabels, group, onHoverSigma, onHoverPi }) {
         // than the gallery column and the section card horizontally
         // overflows on mobile).
         minWidth: 0,
-        backgroundColor: TOKEN.white,
-        border: `1px solid ${TOKEN.coralBorder}`,
+        // Whole-card chrome is success-tinted so the accepted/rejected
+        // contrast reads at a glance — the previous coral outer border
+        // (with only a 3-px green left strip) made both cards look
+        // pink-ish until the eye landed on the dot. Now: green border +
+        // very subtle green wash for accepted; coral chrome for rejected.
+        backgroundColor: TOKEN.successTint,
+        border: `1px solid ${TOKEN.successBorder}`,
         borderLeft: `3px solid ${TOKEN.success}`,
         borderRadius: 8,
         padding: '12px 12px 10px',
@@ -326,7 +334,7 @@ function AcceptedCard({ pair, uLabels, group, onHoverSigma, onHoverPi }) {
             fontWeight: 700,
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            color: TOKEN.gray900,
+            color: TOKEN.success,
           }}
         >
           Accepted witness
@@ -407,9 +415,14 @@ function RejectedCard({ pair, uLabels, onHoverSigma }) {
         // See AcceptedCard above — same minWidth:0 fix so the rejected card
         // shrinks below 280 px on narrow viewports.
         minWidth: 0,
-        backgroundColor: TOKEN.white,
-        border: `1px solid ${TOKEN.warningBorder}`,
-        borderLeft: `3px solid ${TOKEN.warning}`,
+        // Whole-card chrome is coral-tinted so accepted (green) vs rejected
+        // (coral) reads at a glance. Coral is the page's "denied / not
+        // accepted" color in the design grammar; warning amber felt
+        // ambiguous next to the green accepted card and made both cards
+        // look similar.
+        backgroundColor: TOKEN.coralTint,
+        border: `1px solid ${TOKEN.coralBorder}`,
+        borderLeft: `3px solid ${TOKEN.coral}`,
         borderRadius: 8,
         padding: '12px 12px 10px',
         display: 'flex',
@@ -429,7 +442,7 @@ function RejectedCard({ pair, uLabels, onHoverSigma }) {
             width: 8,
             height: 8,
             borderRadius: 999,
-            backgroundColor: TOKEN.warning,
+            backgroundColor: TOKEN.coral,
           }}
         />
         <h5
@@ -439,7 +452,7 @@ function RejectedCard({ pair, uLabels, onHoverSigma }) {
             fontWeight: 700,
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            color: TOKEN.gray900,
+            color: TOKEN.coral,
           }}
         >
           Rejected witness
