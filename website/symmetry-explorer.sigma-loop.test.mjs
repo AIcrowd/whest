@@ -19,7 +19,11 @@ test('SigmaLoop renders its intro through the shared inline-math path so sigma a
   assert.match(SIGMA_LOOP_SRC, /InlineMathText/);
   assert.match(SIGMA_LOOP_SRC, /notationLatex\('sigma_row_move'\)/);
   assert.match(SIGMA_LOOP_SRC, /notationLatex\('pi_relabeling'\)/);
-  assert.match(SIGMA_LOOP_SRC, /className="explorer-support-prose mb-2"/);
+  // The intro paragraph also carries an `order-1` flexbox class so the
+  // sibling animation panel can be visually promoted to render directly
+  // beneath it (see SigmaLoop.jsx — the parent .sigma-loop is now a flex
+  // column to support that visual ordering).
+  assert.match(SIGMA_LOOP_SRC, /className="explorer-support-prose mb-2 order-1"/);
   assert.doesNotMatch(SIGMA_LOOP_SRC, /Each σ is a wreath element; each accepted pair shows a row move together with its matching relabeling π\./);
 });
 

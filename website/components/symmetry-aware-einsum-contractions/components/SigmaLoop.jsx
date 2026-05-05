@@ -162,8 +162,20 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   }
 
   return (
-    <div className="sigma-loop bg-white p-4">
-      <div className="explorer-support-prose mb-2">
+    // The flex column + per-child `order-…` utilities below visually promote
+    // the σ→σ(M)→π(σ(M)) animation panel to be the FIRST visual under the
+    // section header, ahead of the witness gallery / stats / pair-selector.
+    // V3.1 §6 lists the Incidence Fingerprint Visual as the second teaching
+    // artifact (right after the Certificate card), and its job is to be the
+    // visual hero of certification — but in the rendered DOM it sits ~815 px
+    // below the section header (after WitnessGallery + summary stats + pair
+    // chips). On the narrow side-by-side σ-Loop column this means the matrix
+    // is offscreen until the reader scrolls a long way, which makes it look
+    // like it disappeared. Reordering only the visual layout (DOM order is
+    // preserved for tests and accessibility) gives the matrix the prominence
+    // V3.1 wants without rewriting the JSX tree.
+    <div className="sigma-loop flex flex-col bg-white p-4">
+      <div className="explorer-support-prose mb-2 order-1">
         <InlineMathText>
           {`Each $${notationLatex('sigma_row_move')}$ is a wreath element; each accepted pair shows a row move together with its matching relabeling $${notationLatex('pi_relabeling')}$.`}
         </InlineMathText>
@@ -174,7 +186,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           refuses without having to click through individual pairs. Hover
           handlers feed the same matrix-highlight bus that CertificationCard
           uses (certHoverRows / certHoverLabels). */}
-      <div className="witness-gallery-mount mb-3">
+      <div className="witness-gallery-mount mb-3 order-3">
         <WitnessGallery
           pairs={allPairs}
           uLabels={uLabels}
@@ -186,7 +198,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
       </div>
 
       {/* Summary stats */}
-      <div className="sigma-summary">
+      <div className="sigma-summary order-4">
         <div className="sigma-stat">
           <span className="stat-num">{results.length}</span>
           <span className="stat-label">total <Latex math={String.raw`\sigma`} inheritColor />&apos;s</span>
@@ -207,7 +219,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
       {/* Valid pairs — shown inline in a 2-column grid */}
       {validPairs.length > 0 && (
-        <div className="pair-selector">
+        <div className="pair-selector order-5">
           <span className="pair-selector-label">Valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pairs:</span>
           <div className="pair-chips pair-chips-grid">
             {inlineValidPairs.map((r) => {
@@ -230,7 +242,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
       {/* Overflow + rejected toggles — share one row */}
       {(remainingValidPairs.length > 0 || rejectedPairs.length > 0) && (
-        <div className="sigma-toggles-row">
+        <div className="sigma-toggles-row order-6">
           {remainingValidPairs.length > 0 && (
             <button
               className="valid-toggle"
@@ -249,9 +261,13 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       )}
 
-      {/* Animation panel */}
+      {/* Animation panel — `order-2` flexbox-promotes it to render
+          directly below the prose intro (before the witness gallery /
+          stats / pair-selector) so the M → σ(M) → π(σ(M)) walk is the
+          visual hero V3.1 §6 calls for. DOM order is unchanged for
+          test/a11y stability; only the visual layout shifts. */}
       {selected && (
-        <div className="anim-panel" data-pair-status={selected.isValid ? 'accepted' : 'rejected'}>
+        <div className="anim-panel order-2" data-pair-status={selected.isValid ? 'accepted' : 'rejected'}>
           {/* Stage indicator */}
           <div className="stage-track">
             {STAGE_LABELS.map((label, i) => {
@@ -419,7 +435,8 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       )}
 
-      {/* Modal for rejected σ — list or detail view */}
+      {/* Modal for rejected σ — list or detail view. order-7 keeps it
+          last in the visual stack regardless of where it sits in JSX. */}
       {(showRejected || modalIdx !== null) && (
         <RejectedModal
           rejectedPairs={rejectedPairs}
