@@ -389,12 +389,12 @@ export default function NaiveAlphaCostMeter({
       />
 
       {/* Metrics — horizontal bars matching TuplePatternMeter's visual
-          register. The earlier per-row varying accents (coral / blue /
-          gray / gray) made bars at similar widths look incomparable;
-          three baseline-cost rows now share gray-700 so width is the
-          only signal, and the active tuple/group-touches row picks up
-          the gauge tier color so the verdict reads consistently with
-          the tier strip below. */}
+          register. Same color grammar as §8: coral for the
+          after-shortcuts count (product orbits — the savings story),
+          gray-400 for baseline naive-enumeration costs (tuple/group
+          touches, projected outputs canonicalized). gray-400 is the
+          token that actually resolves in the explorer theme — gray-700
+          rendered transparent. */}
       <div role="list" aria-label="Naive enumeration cost metrics">
         <div role="listitem">
           <MetricRow
@@ -402,7 +402,7 @@ export default function NaiveAlphaCostMeter({
             value={fmt(cost.productOrbits)}
             rawValue={cost.productOrbits}
             maxValue={barMax}
-            accent={TOKEN.gray700}
+            accent={TOKEN.coral}
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
@@ -412,7 +412,7 @@ export default function NaiveAlphaCostMeter({
             value={fmt(cost.tupleGroupTouches)}
             rawValue={cost.tupleGroupTouches}
             maxValue={barMax}
-            accent={activeTierObj?.color || TOKEN.gray700}
+            accent={TOKEN.gray400}
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
@@ -422,7 +422,7 @@ export default function NaiveAlphaCostMeter({
             value={fmt(cost.projectedOutputsCanonicalized)}
             rawValue={cost.projectedOutputsCanonicalized}
             maxValue={barMax}
-            accent={TOKEN.gray700}
+            accent={TOKEN.gray400}
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
