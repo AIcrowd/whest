@@ -314,14 +314,16 @@ export default function NaiveAlphaCostMeter({
   const cost = computeNaiveCost({ dimensionN, allLabels, groupSize, hSize });
   const tier = activeTier(cost.tupleGroupTouches);
   const activeTierObj = TIERS.find((t) => t.id === tier);
-  // Common max for bar log-scaling — each bar is sized against the largest
-  // value in the row plus the interactive budget, so an "over budget"
-  // bar still maxes at 100% rather than overflowing visually.
+  // Common max for bar log-scaling. The 1M interactive budget is NOT
+  // included here — it would dominate the scale and compress every real
+  // cost into a tiny sliver. The gauge strip below already surfaces
+  // budget compliance via the small/feasible/expensive/unavailable tier
+  // pill, so the budget doesn't need its own bar to compete with costs.
   const barMax = Math.max(
     cost.productOrbits ?? 0,
     cost.tupleGroupTouches ?? 0,
     cost.projectedOutputsCanonicalized ?? 0,
-    cost.interactiveBudget,
+    1,
   );
 
   const handleGaugeHover = useCallback((content, rect) => {
@@ -424,16 +426,11 @@ export default function NaiveAlphaCostMeter({
             prefersReducedMotion={prefersReducedMotion}
           />
         </div>
-        <div role="listitem">
-          <MetricRow
-            label="interactive budget"
-            value={fmt(cost.interactiveBudget)}
-            rawValue={cost.interactiveBudget}
-            maxValue={barMax}
-            accent={TOKEN.gray400}
-            prefersReducedMotion={prefersReducedMotion}
-          />
-        </div>
+        {/* The "interactive budget" bar (always 1M) was removed — it
+            saturated the bar scale, compressing all real cost bars into
+            slivers. Budget compliance is now surfaced solely through the
+            tier strip beneath (small / feasible / expensive / unavailable),
+            which is what V3.1 §C28 asks for anyway. */}
       </div>
 
       {/* Gauge bar */}
