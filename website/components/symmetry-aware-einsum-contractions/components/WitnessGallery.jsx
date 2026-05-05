@@ -30,16 +30,15 @@
  *     moved-label Set so the parent can highlight those columns.
  *   • Click "why rejected?" on the rejected card → expands the diagnostic
  *     detail inline (incidence fingerprint mismatch, mismatched columns).
- *   • If the current preset has neither an accepted nor a rejected pair
- *     (e.g. trivial group) → render a "Switch to Directed triangle" CTA that
- *     calls onSwitchToDirectedTriangle.
+ *   • The earlier "switch to a different preset" CTA was removed (readers
+ *     reported it as intrusive; the preset sidebar is the discoverable
+ *     way to change presets).
  *
  * Accessibility:
  *   • The gallery is a <section role="region" aria-label="Witness gallery">.
  *   • Each card is its own role="region" with an aria-label naming the verdict.
  *   • Every labeled field is keyboard-focusable (tabIndex=0).
  *   • The "why rejected?" button is a real <button> with aria-expanded.
- *   • The CTA is a real <button> labelled "Switch to Directed triangle".
  *
  * Token discipline:
  *   • All colours come from CSS design-system tokens (var(--coral),
@@ -200,7 +199,11 @@ function shortReason(rawReason) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   FieldRow — labelled value with optional hover/focus highlight handlers.
+   FieldRow — labelled value rendered as a vertical kicker→value pair.
+   Mirrors CertificationCard's FieldRow so the witness gallery and the cert
+   card read in the same visual register: small uppercase kicker label on
+   top, mono value below. Optional hover/focus highlight handlers fire the
+   matrix-bus callbacks on σ / π rows.
    ───────────────────────────────────────────────────────────────────────────── */
 function FieldRow({
   testId,
@@ -208,6 +211,7 @@ function FieldRow({
   fieldValue,
   ariaLabel,
   valueColor,
+  valueIcon = null,
   onMouseEnter,
   onMouseLeave,
   onFocus,
@@ -226,16 +230,10 @@ function FieldRow({
       onFocus={onFocus}
       onBlur={onBlur}
       style={{
-        display: 'grid',
-        // Cap label column at 160 px but let it shrink as low as 80 px so the
-        // row doesn't force its parent wider than the gallery card on narrow
-        // viewports. min-content on the value column is also 0 so a long
-        // mono value wraps via `word-break: break-word` instead of pushing
-        // the row's intrinsic min-width past the card.
-        gridTemplateColumns: 'minmax(80px, 160px) minmax(0, 1fr)',
-        columnGap: 10,
-        alignItems: 'baseline',
-        padding: '4px 6px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        padding: '5px 4px',
         borderRadius: 4,
         cursor: highlightOnHover ? 'pointer' : 'default',
         outline: 'none',
@@ -244,9 +242,9 @@ function FieldRow({
       <span
         className="witness-gallery-row-label"
         style={{
-          fontSize: 10.5,
+          fontSize: 10,
           fontWeight: 600,
-          letterSpacing: '0.08em',
+          letterSpacing: '0.1em',
           textTransform: 'uppercase',
           color: TOKEN.gray500,
         }}
@@ -256,15 +254,45 @@ function FieldRow({
       <span
         className="witness-gallery-row-value"
         style={{
+          display: 'inline-flex',
+          alignItems: 'baseline',
+          gap: 6,
           fontFamily: 'var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace)',
-          fontSize: 12.5,
+          fontSize: 13,
           fontWeight: 600,
           color: valueColor || TOKEN.gray900,
           wordBreak: 'break-word',
         }}
       >
-        {fieldValue}
+        {valueIcon ? (
+          <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 12 }}>{valueIcon}</span>
+        ) : null}
+        <span>{fieldValue}</span>
       </span>
+    </div>
+  );
+}
+
+/* Small section kicker that visually groups related field rows
+   ("witness inputs" vs. "result") within each gallery card.
+   Mirrors CertificationCard.CardSectionKicker for visual consistency. */
+function CardSectionKicker({ children }) {
+  return (
+    <div
+      className="witness-gallery-section-kicker"
+      style={{
+        marginTop: 8,
+        marginBottom: 2,
+        fontSize: 9.5,
+        fontWeight: 700,
+        letterSpacing: '0.16em',
+        textTransform: 'uppercase',
+        color: TOKEN.gray400,
+        borderTop: `1px dashed ${TOKEN.gray200}`,
+        paddingTop: 6,
+      }}
+    >
+      {children}
     </div>
   );
 }
@@ -341,6 +369,8 @@ function AcceptedCard({ pair, uLabels, group, onHoverSigma, onHoverPi }) {
         </h5>
       </header>
 
+      {/* WITNESS — the σ candidate and its matching π */}
+      <CardSectionKicker>Witness</CardSectionKicker>
       <FieldRow
         testId="witness-gallery-accepted-candidate"
         fieldLabel="candidate"
@@ -372,12 +402,16 @@ function AcceptedCard({ pair, uLabels, group, onHoverSigma, onHoverPi }) {
         onFocus={() => firePi(piLabelSet)}
         onBlur={() => firePi(null)}
       />
+
+      {/* RESULT — verdict + group contribution */}
+      <CardSectionKicker>Result</CardSectionKicker>
       <FieldRow
         testId="witness-gallery-accepted-result"
         fieldLabel="result"
         fieldValue="accepted"
         ariaLabel="Result: accepted"
         valueColor={TOKEN.success}
+        valueIcon="→"
       />
       <FieldRow
         testId="witness-gallery-accepted-contribution"
@@ -459,6 +493,8 @@ function RejectedCard({ pair, uLabels, onHoverSigma }) {
         </h5>
       </header>
 
+      {/* WITNESS — the σ candidate that the certifier examined */}
+      <CardSectionKicker>Witness</CardSectionKicker>
       <FieldRow
         testId="witness-gallery-rejected-candidate"
         fieldLabel="candidate"
@@ -471,13 +507,16 @@ function RejectedCard({ pair, uLabels, onHoverSigma }) {
         fieldLabel="sigma row move"
         fieldValue={sigmaCycles}
         ariaLabel={`Sigma row move: ${sigmaCycles}`}
-        valueColor={TOKEN.warning}
+        valueColor={TOKEN.coral}
         highlightOnHover={true}
         onMouseEnter={() => fireSigma(sigmaRowSet)}
         onMouseLeave={() => fireSigma(null)}
         onFocus={() => fireSigma(sigmaRowSet)}
         onBlur={() => fireSigma(null)}
       />
+
+      {/* WHY — what the certifier tried and why it failed */}
+      <CardSectionKicker>Why</CardSectionKicker>
       <FieldRow
         testId="witness-gallery-rejected-attempted-pi"
         fieldLabel="attempted pi"
@@ -490,14 +529,18 @@ function RejectedCard({ pair, uLabels, onHoverSigma }) {
         fieldLabel="reason"
         fieldValue={reasonShort}
         ariaLabel={`Reason: ${reasonShort}`}
-        valueColor={TOKEN.warning}
+        valueColor={TOKEN.coral}
       />
+
+      {/* RESULT — verdict */}
+      <CardSectionKicker>Result</CardSectionKicker>
       <FieldRow
         testId="witness-gallery-rejected-result"
         fieldLabel="result"
         fieldValue="rejected"
         ariaLabel="Result: rejected"
-        valueColor={TOKEN.warning}
+        valueColor={TOKEN.coral}
+        valueIcon="✗"
       />
 
       {/* "why rejected?" inline diagnostic ── */}
@@ -661,27 +704,6 @@ export default function WitnessGallery({
         <span>
           The current preset has no rejected or accepted (σ, π) pair to compare.
         </span>
-        <button
-          type="button"
-          onClick={() => {
-            if (typeof onSwitchToDirectedTriangle === 'function') onSwitchToDirectedTriangle();
-          }}
-          aria-label="Switch to the Directed triangle preset to see an accepted vs rejected witness comparison"
-          data-testid="witness-gallery-switch-preset-btn"
-          className="witness-gallery-switch-preset"
-          style={{
-            backgroundColor: TOKEN.white,
-            border: `1px solid ${TOKEN.gray400}`,
-            borderRadius: 6,
-            padding: '4px 10px',
-            fontSize: 11.5,
-            fontWeight: 600,
-            color: TOKEN.gray900,
-            cursor: 'pointer',
-          }}
-        >
-          Switch to Directed triangle
-        </button>
       </section>
     );
   }
@@ -717,41 +739,11 @@ export default function WitnessGallery({
         />
       )}
 
-      {/* When only one side is present, expose the CTA so the reader can
-          jump to a preset that has both. */}
-      {(!acceptedPair || !rejectedPair) && (
-        <div
-          className="witness-gallery-cta-strip"
-          style={{
-            flex: '0 0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            paddingLeft: 4,
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => {
-              if (typeof onSwitchToDirectedTriangle === 'function') onSwitchToDirectedTriangle();
-            }}
-            aria-label="Switch to the Directed triangle preset to see both an accepted and a rejected witness side-by-side"
-            data-testid="witness-gallery-switch-preset-btn"
-            className="witness-gallery-switch-preset"
-            style={{
-              backgroundColor: TOKEN.white,
-              border: `1px solid ${TOKEN.gray400}`,
-              borderRadius: 6,
-              padding: '4px 10px',
-              fontSize: 11.5,
-              fontWeight: 600,
-              color: TOKEN.gray900,
-              cursor: 'pointer',
-            }}
-          >
-            Switch to Directed triangle
-          </button>
-        </div>
-      )}
+      {/* When only one side is present we deliberately do not surface a
+          preset-switch CTA — readers found it intrusive and the preset
+          sidebar already lets them jump to any preset. The empty /
+          single-side state simply renders the available card (or the
+          no-pair message above) without forcing a navigation affordance. */}
     </section>
   );
 }

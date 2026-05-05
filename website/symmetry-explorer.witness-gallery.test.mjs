@@ -141,20 +141,26 @@ test('WitnessGallery — rejected card has 5 testid-tagged fields', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 5. "Switch to Directed triangle" CTA is rendered when applicable
+// 5. "Switch to Directed triangle" CTA — REMOVED (user feedback)
+// The CTA was originally meant to nudge readers towards the canonical
+// preset that has both accepted and rejected pairs, but was reported as
+// intrusive — the preset sidebar already lets the reader switch presets.
 // ─────────────────────────────────────────────────────────────────────────────
-test('WitnessGallery — renders "Switch to Directed triangle" CTA', () => {
+test('WitnessGallery — "Switch to Directed triangle" CTA is removed', () => {
   const src = read(GALLERY_PATH);
-  assert.match(src, /Switch to Directed triangle/);
-  // The CTA is a real <button> with a stable testid for the dual mount points
-  // (empty state and one-sided state).
-  assert.match(src, /data-testid="witness-gallery-switch-preset-btn"/);
+  assert.doesNotMatch(src, /Switch to Directed triangle/,
+    'The "Switch to Directed triangle" CTA was removed; readers use the preset sidebar to switch presets.');
+  assert.doesNotMatch(src, /data-testid="witness-gallery-switch-preset-btn"/,
+    'The CTA test-id should be removed along with the button.');
 });
 
-test('WitnessGallery — CTA invokes onSwitchToDirectedTriangle prop on click', () => {
+// The onSwitchToDirectedTriangle prop is still accepted by the component
+// signature so external callers (SigmaLoop, App) don't break — it is now
+// a no-op when passed; the prop pin in test 1 above continues to validate.
+test('WitnessGallery — onSwitchToDirectedTriangle prop is preserved on the signature', () => {
   const src = read(GALLERY_PATH);
-  // The onClick handler delegates to onSwitchToDirectedTriangle when provided.
-  assert.match(src, /onSwitchToDirectedTriangle\(\)/);
+  // The prop is still declared (even though no internal CTA invokes it).
+  assert.match(src, /onSwitchToDirectedTriangle/);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

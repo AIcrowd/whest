@@ -115,7 +115,7 @@ function MetricPill({
       onMouseLeave={fireOff}
       onFocus={fireOn}
       onBlur={fireOff}
-      className="flex flex-col items-start gap-0.5 rounded-md border px-2.5 py-1.5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+      className="flex h-full flex-col items-start justify-between gap-1 rounded-md border px-2.5 py-1.5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
       style={{
         borderColor: isHover ? accent || TOKEN.gray400 : TOKEN.gray200,
         backgroundColor: isHover ? TOKEN.gray50 : TOKEN.white,
