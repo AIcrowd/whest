@@ -223,31 +223,51 @@ function GaugeBar({ active, onHover }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Metric row
+   Metric row — horizontal log-scaled bar + numeric badge.
+   Visual register mirrors TuplePatternMeter.BarRow (label left, log-scaled
+   bar middle, mono value right) so the two §7 / §8 cost meters read in the
+   same idiom rather than two different "cost dashboards" side by side.
+   The earlier label+value-only MetricRow read more like a key/value table
+   than a comparable-magnitude visualization.
    ───────────────────────────────────────────────────────────────────────────── */
-function MetricRow({ label, value, isLive, accent }) {
+function MetricRow({ label, value, rawValue, maxValue, accent, prefersReducedMotion }) {
+  const numeric = typeof rawValue === 'number' ? rawValue : null;
+  const isUnavailable = numeric === null || Number.isNaN(numeric);
+  // log10(x + 1) keeps small values visible against a 1M budget.
+  const logMax = Math.log10(Math.max(2, (maxValue ?? 1) + 1));
+  const logVal = isUnavailable ? 0 : Math.log10(numeric + 1);
+  const widthPct = isUnavailable ? 0 : Math.max(2, (logVal / logMax) * 100);
+  const fill = accent || TOKEN.gray500;
+
   return (
-    <div className="flex items-baseline justify-between gap-2 py-1">
+    <div className="flex items-center gap-3 py-1.5">
       <span
-        className="text-[12px] leading-5"
-        style={{ color: TOKEN.gray600 }}
+        className="w-[180px] shrink-0 text-[11.5px] leading-5"
+        style={{ color: TOKEN.gray700 }}
       >
         {label}
       </span>
+      <div
+        className="relative h-5 flex-1 overflow-hidden rounded-sm"
+        style={{ backgroundColor: TOKEN.gray100 }}
+        aria-label={`${label}: ${value}`}
+      >
+        <div
+          style={{
+            width: `${widthPct}%`,
+            height: '100%',
+            backgroundColor: fill,
+            transition: prefersReducedMotion ? 'none' : 'width 0.35s ease-out',
+          }}
+          aria-hidden="true"
+        />
+      </div>
       <span
-        className="font-mono text-[12.5px] font-semibold tabular-nums"
-        style={{ color: accent || TOKEN.gray900 }}
+        className="w-[78px] shrink-0 text-right font-mono text-[11.5px] font-semibold tabular-nums"
+        style={{ color: isUnavailable ? TOKEN.gray400 : (accent || TOKEN.gray900) }}
         aria-live="polite"
         aria-atomic="true"
       >
-        {isLive && (
-          <span
-            className="mr-1 text-[9px] font-normal uppercase tracking-wider"
-            style={{ color: TOKEN.gray400 }}
-          >
-            live
-          </span>
-        )}
         {value}
       </span>
     </div>
@@ -276,12 +296,33 @@ export default function NaiveAlphaCostMeter({
   const [showCode, setShowCode] = useState(false);
   const [tooltipContent, setTooltipContent] = useState(null);
   const [tooltipAnchor, setTooltipAnchor] = useState(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const codeId = 'naive-alpha-pseudocode';
   const buttonRef = useRef(null);
+
+  // Honour prefers-reduced-motion for bar growth animations (mirrors
+  // TuplePatternMeter so the two §7 / §8 cost meters behave identically).
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener?.('change', handler);
+    return () => mq.removeEventListener?.('change', handler);
+  }, []);
 
   const cost = computeNaiveCost({ dimensionN, allLabels, groupSize, hSize });
   const tier = activeTier(cost.tupleGroupTouches);
   const activeTierObj = TIERS.find((t) => t.id === tier);
+  // Common max for bar log-scaling — each bar is sized against the largest
+  // value in the row plus the interactive budget, so an "over budget"
+  // bar still maxes at 100% rather than overflowing visually.
+  const barMax = Math.max(
+    cost.productOrbits ?? 0,
+    cost.tupleGroupTouches ?? 0,
+    cost.projectedOutputsCanonicalized ?? 0,
+    cost.interactiveBudget,
+  );
 
   const handleGaugeHover = useCallback((content, rect) => {
     setTooltipContent(content);
@@ -345,36 +386,46 @@ export default function NaiveAlphaCostMeter({
         aria-hidden="true"
       />
 
-      {/* Metrics */}
+      {/* Metrics — horizontal bars (matches TuplePatternMeter visual register) */}
       <div role="list" aria-label="Naive enumeration cost metrics">
         <div role="listitem">
           <MetricRow
             label="product orbits"
             value={fmt(cost.productOrbits)}
-            isLive
-            accent={TOKEN.einV}
+            rawValue={cost.productOrbits}
+            maxValue={barMax}
+            accent={TOKEN.coral}
+            prefersReducedMotion={prefersReducedMotion}
           />
         </div>
         <div role="listitem">
           <MetricRow
             label="tuple/group touches"
             value={fmt(cost.tupleGroupTouches)}
-            isLive
-            accent={activeTierObj?.color}
+            rawValue={cost.tupleGroupTouches}
+            maxValue={barMax}
+            accent={activeTierObj?.color || TOKEN.coral}
+            prefersReducedMotion={prefersReducedMotion}
           />
         </div>
         <div role="listitem">
           <MetricRow
             label="projected outputs canonicalized"
             value={fmt(cost.projectedOutputsCanonicalized)}
-            isLive
+            rawValue={cost.projectedOutputsCanonicalized}
+            maxValue={barMax}
+            accent={TOKEN.gray500}
+            prefersReducedMotion={prefersReducedMotion}
           />
         </div>
         <div role="listitem">
           <MetricRow
             label="interactive budget"
             value={fmt(cost.interactiveBudget)}
-            isLive={false}
+            rawValue={cost.interactiveBudget}
+            maxValue={barMax}
+            accent={TOKEN.gray400}
+            prefersReducedMotion={prefersReducedMotion}
           />
         </div>
       </div>
