@@ -138,7 +138,13 @@ function buildPiLabelSet(pi) {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Field row — labelled value with hover/focus handlers
+   Field row — labelled value with hover/focus handlers.
+
+   The simpler redesign (in response to user feedback "not sure how to read
+   the certification card") replaces the prior label-on-left/value-on-right
+   grid with a vertical pairing: small kicker label above, generous value
+   below. Within a card that's 320 px wide this reads as a stack of clearly
+   delimited proof-receipt items rather than a 5-row table.
    ───────────────────────────────────────────────────────────────────────────── */
 function FieldRow({
   testId,
@@ -150,6 +156,7 @@ function FieldRow({
   onFocus,
   onBlur,
   valueColor,
+  valueIcon = null,
   highlightOnHover = false,
 }) {
   return (
@@ -164,11 +171,10 @@ function FieldRow({
       onFocus={onFocus}
       onBlur={onBlur}
       style={{
-        display: 'grid',
-        gridTemplateColumns: '160px 1fr',
-        columnGap: 10,
-        alignItems: 'baseline',
-        padding: '4px 6px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        padding: '5px 4px',
         borderRadius: 4,
         cursor: highlightOnHover ? 'pointer' : 'default',
         outline: 'none',
@@ -177,9 +183,9 @@ function FieldRow({
       <span
         className="cert-card-label"
         style={{
-          fontSize: 10.5,
+          fontSize: 10,
           fontWeight: 600,
-          letterSpacing: '0.08em',
+          letterSpacing: '0.1em',
           textTransform: 'uppercase',
           color: TOKEN.gray500,
         }}
@@ -189,15 +195,44 @@ function FieldRow({
       <span
         className="cert-card-value"
         style={{
+          display: 'inline-flex',
+          alignItems: 'baseline',
+          gap: 6,
           fontFamily: 'var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace)',
-          fontSize: 12.5,
+          fontSize: 13,
           fontWeight: 600,
           color: valueColor || TOKEN.gray900,
           wordBreak: 'break-word',
         }}
       >
-        {fieldValue}
+        {valueIcon ? (
+          <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 12 }}>{valueIcon}</span>
+        ) : null}
+        <span>{fieldValue}</span>
       </span>
+    </div>
+  );
+}
+
+/* Small section kicker that visually groups related field rows
+   ("witness inputs" vs. "verification proof") within the card. */
+function CardSectionKicker({ children }) {
+  return (
+    <div
+      className="cert-card-section-kicker"
+      style={{
+        marginTop: 8,
+        marginBottom: 2,
+        fontSize: 9.5,
+        fontWeight: 700,
+        letterSpacing: '0.16em',
+        textTransform: 'uppercase',
+        color: TOKEN.gray400,
+        borderTop: `1px dashed ${TOKEN.gray200}`,
+        paddingTop: 6,
+      }}
+    >
+      {children}
     </div>
   );
 }
@@ -315,7 +350,9 @@ export default function CertificationCard({
         </h5>
       </header>
 
-      {/* Field 1 — candidate row move sigma */}
+      {/* WITNESS — the inputs to the certification test (σ, π).
+          Hover handlers here drive the matrix highlight bus. */}
+      <CardSectionKicker>Witness</CardSectionKicker>
       <FieldRow
         testId="cert-field-sigma"
         fieldLabel="candidate row move sigma"
@@ -328,8 +365,6 @@ export default function CertificationCard({
         onFocus={() => fireHoverSigma(sigmaRowSet)}
         onBlur={() => fireHoverSigma(null)}
       />
-
-      {/* Field 2 — matching label relabeling pi */}
       <FieldRow
         testId="cert-field-pi"
         fieldLabel="matching label relabeling pi"
@@ -343,31 +378,35 @@ export default function CertificationCard({
         onBlur={() => fireHoverPi(null)}
       />
 
-      {/* Field 3 — domain check */}
+      {/* PROOF — the two checks the certifier ran. Each carries a ✓ icon
+          so the verdict reads as a checklist instead of a data table. */}
+      <CardSectionKicker>Proof</CardSectionKicker>
       <FieldRow
         testId="cert-field-domain"
         fieldLabel="domain check"
         fieldValue="passed"
         ariaLabel="Domain check: passed"
         valueColor={TOKEN.success}
+        valueIcon="✓"
       />
-
-      {/* Field 4 — incidence recovery */}
       <FieldRow
         testId="cert-field-incidence"
         fieldLabel="incidence recovery"
         fieldValue="π(σ(M)) = M"
         ariaLabel="Incidence recovery: π(σ(M)) = M"
-        valueColor={TOKEN.gray900}
+        valueColor={TOKEN.success}
+        valueIcon="✓"
       />
 
-      {/* Field 5 — result */}
+      {/* RESULT — the outcome. `→` icon points at the conclusion. */}
+      <CardSectionKicker>Result</CardSectionKicker>
       <FieldRow
         testId="cert-field-result"
         fieldLabel="result"
         fieldValue="accepted into G_pt"
         ariaLabel="Result: accepted into G_pt"
         valueColor={TOKEN.success}
+        valueIcon="→"
       />
 
       {/* CTA row */}

@@ -69,32 +69,35 @@ test('C22 — SigmaLoop marks domain-mismatch labels with red border / × overla
   assert.match(styles, /\.inc-col-mismatch \{[^}]*var\(--coral\)/s);
 });
 
-// ─── Show fingerprints toggle (aria-label) ─────────────────────────────────
+// ─── Show fingerprints toggle — REMOVED (user feedback) ────────────────────
+//
+// V3.1 §C22 originally listed a "show fingerprints" toggle that hid the
+// matrix grid in favour of the per-column signature strip. In practice
+// the column-fingerprint strip already renders unconditionally beneath
+// the matrix (IncidenceMatrix.jsx ~line 211), so the toggle's only effect
+// was to hide the grid above. Multiple readers found the affordance
+// jargon-heavy and unclear ("what is a fingerprint? why would I hide the
+// matrix?"). The toggle has been removed; explicit doesNotMatch guards
+// keep it from regressing.
 
-test('C22 — SigmaLoop has a Show fingerprints toggle with aria-label', () => {
+test('C22 — Show fingerprints toggle is removed (clutter-reduction)', () => {
   const sigmaLoop = read(SIGMA_LOOP);
-  // Toggle button — text label + aria-label describing what it does.
-  assert.match(sigmaLoop, /Show fingerprints/);
-  assert.match(sigmaLoop, /aria-label="Show fingerprints[^"]*"/);
-  // The toggle is wired to a state hook (showFingerprintsOnly) so it survives
-  // re-renders and announces its expanded state.
-  assert.match(sigmaLoop, /showFingerprintsOnly/);
-  // Distinct className so styling and test selectors can find it.
-  assert.match(sigmaLoop, /ctrl-fingerprints-toggle/);
+  assert.doesNotMatch(sigmaLoop, /Show fingerprints/,
+    'The "Show fingerprints" toggle was removed; column fingerprints are always visible below the matrix.');
+  assert.doesNotMatch(sigmaLoop, /showFingerprintsOnly/,
+    'showFingerprintsOnly state should be removed along with the toggle.');
+  assert.doesNotMatch(sigmaLoop, /ctrl-fingerprints-toggle/,
+    'The toggle button class should be removed.');
 });
 
-// ─── Show fingerprints toggle (aria-expanded) ──────────────────────────────
-
-test('C22 — Show fingerprints toggle exposes aria-expanded for screen readers', () => {
-  const sigmaLoop = read(SIGMA_LOOP);
-  // aria-expanded must be wired to the toggle state, not a hard-coded value.
-  assert.match(sigmaLoop, /aria-expanded=\{showFingerprintsOnly\}/);
-  // The toggle drives IncidenceMatrix.compactMode, which gates the matrix
-  // grid behind a !compactMode check (so the matrix actually collapses).
-  assert.match(sigmaLoop, /compactMode=\{showFingerprintsOnly\}/);
+test('C22 — IncidenceMatrix still renders the column-fingerprint strip unconditionally', () => {
   const incidence = read(INCIDENCE_MATRIX);
-  assert.match(incidence, /compactMode/);
-  assert.match(incidence, /\{!compactMode && \(/);
+  // The strip lives below the matrix grid and is always rendered — that's
+  // why the toggle could be removed without losing teaching content.
+  assert.match(incidence, /Column Fingerprints/i,
+    'IncidenceMatrix must always render the column-fingerprint strip header.');
+  assert.match(incidence, /inc-fingerprints/,
+    'IncidenceMatrix must render the inc-fingerprints container unconditionally.');
 });
 
 // ─── Failed-path "no compatible π" indicator ───────────────────────────────

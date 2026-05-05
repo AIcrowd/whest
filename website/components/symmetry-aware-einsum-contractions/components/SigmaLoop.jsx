@@ -67,11 +67,6 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const [showRejected, setShowRejected] = useState(false);
   const [showMoreValid, setShowMoreValid] = useState(false);
   const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
-  // C22: "Show fingerprints" toggle — when on, the matrix grid collapses into
-  // its column-signature summary so the user can spot fingerprint
-  // equivalence/mismatch without scanning the full grid.
-  const [showFingerprintsOnly, setShowFingerprintsOnly] = useState(false);
-
   // C21: hover bus for the CertificationCard. When the user hovers a labeled
   // field on the witness card, we bridge the moved-row / moved-label sets
   // into IncidenceMatrix's existing movedRows / movedCols highlight props
@@ -291,7 +286,11 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
             })}
           </div>
 
-          {/* Playback controls + Show fingerprints toggle (C22) */}
+          {/* Playback controls. The earlier collapse-to-fingerprints toggle
+              (C22) was removed — the column-signature strip beneath the
+              matrix is rendered unconditionally in IncidenceMatrix, so the
+              toggle's only effect was to hide the grid above. Most readers
+              found that affordance jargon-heavy and unclear. */}
           <div className="stage-controls">
             <button className="ctrl-btn" onClick={reset} title="Reset">
               ↺ Reset
@@ -303,14 +302,6 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
             <button className="ctrl-btn" onClick={stepForward}
               disabled={stage >= maxStage}>
               Step →
-            </button>
-            <button
-              className={`ctrl-btn ctrl-fingerprints-toggle ${showFingerprintsOnly ? 'ctrl-btn-active' : ''}`}
-              onClick={() => setShowFingerprintsOnly((v) => !v)}
-              aria-label="Show fingerprints — collapse the matrix grid into its column-signature summary"
-              aria-expanded={showFingerprintsOnly}
-              title="Toggle a compact summary that hides the matrix and shows only the column fingerprints">
-              {showFingerprintsOnly ? '▾' : '▸'} Show fingerprints
             </button>
           </div>
 
@@ -341,7 +332,6 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 label={STAGE_LABELS[stage]}
                 rejected={stage === 2 && !selected.isValid}
                 mismatchedLabels={stage >= 1 && !selected.isValid ? computeDomainMismatchedLabels(selected, originalMatrix, labels) : null}
-                compactMode={showFingerprintsOnly}
               />
               {stage === 2 && selected.isValid && (
                 <div className="recovery-badge">= M ✓</div>
