@@ -34,19 +34,26 @@ test('sigma-loop panel title uses the shared inline-math path so sigma and pi co
   assert.doesNotMatch(APP_SRC, />\s*σ-Loop &amp; π Detection\s*</);
 });
 
-test('sigma-loop compact chips and toggles render latex in inherited control color', () => {
+test('sigma-loop compact chips render latex in inherited control color', () => {
   assert.match(SIGMA_LOOP_SRC, /<Latex math=\{String\.raw`\\sigma`\} inheritColor \/>/);
   assert.match(SIGMA_LOOP_SRC, /<Latex math=\{String\.raw`\\pi`\} inheritColor \/>/);
-  assert.match(SIGMA_LOOP_SRC, /valid-toggle/);
-  assert.match(SIGMA_LOOP_SRC, /rejected-toggle/);
   assert.match(SIGMA_LOOP_SRC, /pair-chip pair-valid/);
+  assert.match(SIGMA_LOOP_SRC, /pair-chip pair-invalid/);
 });
 
-test('valid sigma-pair cards and overflow toggle use the primary coral accent instead of the success lane', () => {
+// Per user feedback ("we do not show all the identified Sigmas") the σ list
+// is now fully inlined — both valid-pair and rejected-pair chips render in
+// `.pair-chips-grid` blocks. The earlier `.valid-toggle` and
+// `.rejected-toggle` overflow buttons (which gated extra valid pairs behind
+// "▸ N more" and rejected σ's behind a modal trigger) were removed.
+test('valid sigma-pair chips use the primary coral accent (overflow toggles removed)', () => {
   assert.match(SIGMA_LOOP_STYLES, /\.pair-chip\.pair-valid \{[^}]*var\(--coral\)/s);
   assert.match(SIGMA_LOOP_STYLES, /\.pair-pi \{[^}]*var\(--coral\)/s);
-  assert.match(SIGMA_LOOP_STYLES, /\.valid-toggle \{[^}]*var\(--coral\)/s);
   assert.doesNotMatch(SIGMA_LOOP_STYLES, /\.pair-chip\.pair-valid \{[^}]*var\(--success\)/s);
   assert.doesNotMatch(SIGMA_LOOP_STYLES, /\.pair-pi \{[^}]*var\(--success\)/s);
-  assert.doesNotMatch(SIGMA_LOOP_STYLES, /\.valid-toggle \{[^}]*var\(--success\)/s);
+  // The bulk-overflow toggle elements no longer ship in the JSX.
+  assert.doesNotMatch(SIGMA_LOOP_SRC, /valid-toggle/,
+    'The "▸ N more (σ, π) pairs" toggle was removed; all valid pairs render inline.');
+  assert.doesNotMatch(SIGMA_LOOP_SRC, /rejected-toggle/,
+    'The "▸ N rejected σ\'s" toggle was removed; all rejected σ\'s render inline.');
 });

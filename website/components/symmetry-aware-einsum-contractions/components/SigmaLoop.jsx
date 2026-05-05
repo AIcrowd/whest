@@ -8,7 +8,11 @@ import WitnessGallery from './WitnessGallery.jsx';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
-const VISIBLE_VALID_PAIR_LIMIT = 4;
+// All identified σ pairs (valid + rejected) are rendered inline. The earlier
+// VISIBLE_VALID_PAIR_LIMIT (= 4) hid extra valid pairs behind a "▸ N more"
+// toggle and rejected σ's behind a separate modal trigger; multiple readers
+// reported wanting the full list visible at a glance, since the σ list is
+// conceptually more important than the certification card detail beneath.
 
 export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange, onSwitchToDirectedTriangle }) {
   const allPairs = results.filter((result) => !result.skipped);
@@ -64,8 +68,9 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const [stage, setStage] = useState(0); // 0=M, 1=σ(M), 2=π(σ(M))
   const [playing, setPlaying] = useState(false);
   const playRef = useRef(false);
-  const [showRejected, setShowRejected] = useState(false);
-  const [showMoreValid, setShowMoreValid] = useState(false);
+  // `modalIdx` opens a per-σ "why rejected?" detail dialog. The earlier
+  // `showRejected` (open-the-bulk-list) and `showMoreValid` (expand the
+  // valid-pair overflow) state was removed when both lists were inlined.
   const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
   // C21: hover bus for the CertificationCard. When the user hovers a labeled
   // field on the witness card, we bridge the moved-row / moved-label sets
@@ -76,15 +81,11 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const matrixContainerRef = useRef(null);
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
-  const inlineValidPairs = validPairs.slice(0, VISIBLE_VALID_PAIR_LIMIT);
-  const remainingValidPairs = validPairs.slice(VISIBLE_VALID_PAIR_LIMIT);
   const provenance = group?.generatorSelection;
   const selectedPermutationKey = selected?.pi ? permutationKeyFromPi(selected.pi, group?.allLabels || labels) : null;
   const selectedCandidate = provenance?.candidatePermutations?.find((candidate) => candidate.permutationKey === selectedPermutationKey) ?? null;
 
   const closeAllModals = () => {
-    setShowRejected(false);
-    setShowMoreValid(false);
     setModalIdx(null);
   };
 
@@ -97,7 +98,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [showRejected, showMoreValid, modalIdx]);
+  }, [modalIdx]);
 
   // Compute the three matrix stages
   const stages = computeStages(selected, originalMatrix, labels, uVertices);
@@ -181,7 +182,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           refuses without having to click through individual pairs. Hover
           handlers feed the same matrix-highlight bus that CertificationCard
           uses (certHoverRows / certHoverLabels). */}
-      <div className="witness-gallery-mount mb-3 order-3">
+      <div className="witness-gallery-mount mb-3 order-4">
         <WitnessGallery
           pairs={allPairs}
           uLabels={uLabels}
@@ -193,7 +194,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
       </div>
 
       {/* Summary stats */}
-      <div className="sigma-summary order-4">
+      <div className="sigma-summary order-5">
         <div className="sigma-stat">
           <span className="stat-num">{results.length}</span>
           <span className="stat-label">total <Latex math={String.raw`\sigma`} inheritColor />&apos;s</span>
@@ -212,12 +213,20 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       </div>
 
-      {/* Valid pairs — shown inline in a 2-column grid */}
+      {/* All identified σ pairs — both valid (with their matching π) and
+          rejected — shown inline in a 2-column grid. Per user feedback,
+          the σ list is conceptually more important than the certification
+          card detail below; promoting it to `order-3` puts it directly
+          beneath the matrix animation, so a reader can scan everything
+          the σ-loop produced before drilling into the selected pair's
+          detail card. Clicking a valid chip selects it (driving the
+          matrix animation above + the cert card below). Clicking a
+          rejected chip opens the per-σ "why rejected?" detail modal. */}
       {validPairs.length > 0 && (
-        <div className="pair-selector order-5">
+        <div className="pair-selector order-3">
           <span className="pair-selector-label">Valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pairs:</span>
           <div className="pair-chips pair-chips-grid">
-            {inlineValidPairs.map((r) => {
+            {validPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
               return (
                 <button key={origIdx}
@@ -235,24 +244,23 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       )}
 
-      {/* Overflow + rejected toggles — share one row */}
-      {(remainingValidPairs.length > 0 || rejectedPairs.length > 0) && (
-        <div className="sigma-toggles-row order-6">
-          {remainingValidPairs.length > 0 && (
-            <button
-              className="valid-toggle"
-              onClick={() => setShowMoreValid(true)}
-            >
-              ▸ {remainingValidPairs.length} more (<Latex math={String.raw`\sigma`} inheritColor />, <Latex math={String.raw`\pi`} inheritColor />) pair{remainingValidPairs.length !== 1 ? 's' : ''}
-            </button>
-          )}
-          {rejectedPairs.length > 0 && (
-            <button
-              className="rejected-toggle"
-              onClick={() => setShowRejected(true)}>
-              ▸ {rejectedPairs.length} rejected <Latex math={String.raw`\sigma`} inheritColor />{rejectedPairs.length !== 1 ? "'s" : ''}
-            </button>
-          )}
+      {rejectedPairs.length > 0 && (
+        <div className="pair-selector order-3" style={{ marginTop: 8 }}>
+          <span className="pair-selector-label">Rejected <Latex math={String.raw`\sigma`} />&apos;s:</span>
+          <div className="pair-chips pair-chips-grid">
+            {rejectedPairs.map((r) => {
+              const origIdx = allPairs.indexOf(r);
+              return (
+                <button key={origIdx}
+                  className="pair-chip pair-invalid"
+                  onClick={() => setModalIdx(origIdx)}
+                  aria-label={`Rejected σ ${fmtSigma(r.sigmaRowPerm, uLabels)} — open detail`}>
+                  <span className="pair-sigma"><Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
+                  <span className="pair-rejected">{r.reason || 'rejected'}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -264,7 +272,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           and the card sits AFTER the anim-panel in source, so it renders
           right beneath the matrix as before. */}
       {selected && selected.isValid && selected.pi && (
-        <div className="cert-card-mount order-2" style={{ marginTop: 12 }}>
+        <div className="cert-card-mount order-6" style={{ marginTop: 12 }}>
           <CertificationCard
             pair={selected}
             uLabels={uLabels}
@@ -430,7 +438,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
       {/* Modal for rejected σ — list or detail view. order-7 keeps it
           last in the visual stack regardless of where it sits in JSX. */}
-      {(showRejected || modalIdx !== null) && (
+      {modalIdx !== null && (
         <RejectedModal
           rejectedPairs={rejectedPairs}
           allPairs={allPairs}
