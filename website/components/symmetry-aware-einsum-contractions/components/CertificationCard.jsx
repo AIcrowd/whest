@@ -303,8 +303,10 @@ export default function CertificationCard({
       data-pair-status="accepted"
       className="certification-card"
       style={{
-        width: 320,
-        maxWidth: '100%',
+        // Fill the parent column (was hard-coded 320 px which left dead
+        // space on either side of the card inside the σ-Loop column).
+        width: '100%',
+        boxSizing: 'border-box',
         backgroundColor: TOKEN.white,
         border: `1px solid ${TOKEN.coralBorder}`,
         borderLeft: `3px solid ${TOKEN.coral}`,

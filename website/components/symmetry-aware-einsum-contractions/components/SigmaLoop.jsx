@@ -256,6 +256,29 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       )}
 
+      {/* C21: Certification card — moved OUT of the .anim-panel block
+          (which carries 20 px of padding all around for the matrix-stage
+          chrome) so the card spans the full σ-Loop column rather than
+          being inset by the anim-panel padding. `order-2` puts it next to
+          the anim-panel in the visual stack; flexbox ties go to DOM order,
+          and the card sits AFTER the anim-panel in source, so it renders
+          right beneath the matrix as before. */}
+      {selected && selected.isValid && selected.pi && (
+        <div className="cert-card-mount order-2" style={{ marginTop: 12 }}>
+          <CertificationCard
+            pair={selected}
+            uLabels={uLabels}
+            onHoverSigma={setCertHoverRows}
+            onHoverPi={setCertHoverLabels}
+            onScrollToMatrix={() => {
+              if (matrixContainerRef.current && typeof matrixContainerRef.current.scrollIntoView === 'function') {
+                matrixContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }}
+          />
+        </div>
+      )}
+
       {/* Animation panel — `order-2` flexbox-promotes it to render
           directly below the prose intro (before the witness gallery /
           stats / pair-selector) so the M → σ(M) → π(σ(M)) walk is the
@@ -346,26 +369,6 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                   Step → to see why <Latex math={String.raw`\pi`} inheritColor /> cannot recover M ({selected.reason})
                 </div>
               )}
-            </div>
-          )}
-
-          {/* C21: Certification card — compact 5-field witness summary for
-              accepted pairs. Sits above the π mapping detail; hovering σ / π
-              fields highlights the corresponding rows / columns in the
-              IncidenceMatrix above via certHoverRows / certHoverLabels. */}
-          {selected.isValid && selected.pi && (
-            <div className="cert-card-mount" style={{ marginTop: 12 }}>
-              <CertificationCard
-                pair={selected}
-                uLabels={uLabels}
-                onHoverSigma={setCertHoverRows}
-                onHoverPi={setCertHoverLabels}
-                onScrollToMatrix={() => {
-                  if (matrixContainerRef.current && typeof matrixContainerRef.current.scrollIntoView === 'function') {
-                    matrixContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  }
-                }}
-              />
             </div>
           )}
 
