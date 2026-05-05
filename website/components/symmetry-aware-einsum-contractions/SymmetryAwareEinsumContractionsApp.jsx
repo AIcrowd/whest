@@ -1238,54 +1238,57 @@ export default function SymmetryAwareEinsumContractionsApp() {
 	                      />
 	                    </AnalysisLoadingBoundary>
 
-                    <button
-                      type="button"
-                      onClick={() => openAppendix()}
-                      className="-mx-4 -mb-4 mt-8 block w-auto cursor-pointer border-t border-stone-200/70 bg-gray-50 px-4 py-4 text-left transition-colors hover:bg-stone-100/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                    {/* Single appendix-note block. Per user feedback "we
+                        can just have a SINGLE appendix note block": the
+                        previous §9 button-styled note + separate §10
+                        Appendix-Transition section have been merged into
+                        one inline gray-50 strip that:
+                          (a) keeps the G_pt vs G_f question + prose,
+                          (b) adds the five A–E letter-cards as quick
+                              links to specific appendix sections,
+                          (c) carries the appendix-transition anchor id
+                              so existing #appendix-transition links
+                              continue to resolve.
+                        The "click to open the whole appendix" affordance
+                        is preserved via the question heading, which is
+                        still a button that opens the modal at the top. */}
+                    <div
+                      id={EXPLORER_ACTS[9].id}
+                      aria-label="Appendix transition"
+                      className="-mx-4 -mb-4 mt-8 border-t border-stone-200/70 bg-gray-50 px-4 py-4 scroll-mt-sticky"
                     >
                       <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
                         Appendix note
                       </span>
-                      <span className="mt-1.5 block font-serif text-[15px] leading-7 text-stone-900">
+                      <button
+                        type="button"
+                        onClick={() => openAppendix()}
+                        className="mt-1.5 block w-full cursor-pointer text-left font-serif text-[15px] leading-7 text-stone-900 transition-colors hover:text-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                      >
                         Is this the full symmetry of the final expression?
-                      </span>
-                      <span className="mt-1.5 block text-[12.5px] leading-6 text-stone-700">
+                      </button>
+                      <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
                         The cost above uses <Latex math={notationLatex('g_pointwise')} /> on product assignments and <Latex math={notationLatex('h_output')} /> on stored output representatives, where <Latex math={String.raw`H = \mathrm{Stab}_{G_{\text{pt}}}(V)|_V`} />. The completed expression can have a larger formal symmetry <Latex math={String.raw`G_{\text{f}} = H \times \prod_d S(W_d)`} />. Its dummy-label factor acts after summation and must not be used to remove pre-summation product or update events.
-                      </span>
-                    </button>
-                  </ExplorerSectionCard>
-                </section>
-
-                {/* §10 Appendix Transition — id: appendix-transition, no backward alias */}
-                <section id={EXPLORER_ACTS[9].id} className="mb-12 scroll-mt-sticky">
-                  <ExplorerSectionCard
-                    eyebrow={<SectionEyebrow n={10} anchorId={EXPLORER_ACTS[9].id} />}
-                    title={EXPLORER_ACTS[9].heading}
-                    description={<InlineMathText>{EXPLORER_ACTS[9].question}</InlineMathText>}
-                    className="border-gray-200 bg-white"
-                    contentClassName="pt-5"
-	                  >
-	                    <SectionIntroProse paragraphs={EXPLORER_ACTS[9].introParagraphs} />
-	                    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5" aria-label="Appendix A-E map">
-	                      {APPENDIX_MAP.map((item) => (
-	                        <button
-	                          key={item.letter}
-	                          type="button"
-	                          onClick={() => openAppendix(item.hash)}
-	                          className="min-h-[96px] cursor-pointer rounded-md border border-gray-200 bg-white p-4 text-left transition-colors hover:border-coral/50 hover:bg-coral-light/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
-	                        >
-	                          <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-coral">
-	                            Appendix {item.letter}
-	                          </span>
-	                          <span className="mt-2 block text-[13px] font-semibold leading-5 text-gray-900">
-	                            {item.title}
-	                          </span>
-	                        </button>
-	                      ))}
-	                    </div>
-	                    <div className="mt-4">
-	                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[9].produces}</NarrativeCallout>
-	                    </div>
+                      </p>
+                      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5" aria-label="Appendix A-E map">
+                        {APPENDIX_MAP.map((item) => (
+                          <button
+                            key={item.letter}
+                            type="button"
+                            onClick={() => openAppendix(item.hash)}
+                            className="min-h-[88px] cursor-pointer rounded-md border border-stone-200 bg-white p-3 text-left transition-colors hover:border-coral/50 hover:bg-coral-light/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                          >
+                            <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-coral">
+                              Appendix {item.letter}
+                            </span>
+                            <span className="mt-2 block text-[13px] font-semibold leading-5 text-gray-900">
+                              {item.title}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                      <span className="sr-only">{EXPLORER_ACTS[9].heading}</span>
+                    </div>
                   </ExplorerSectionCard>
                 </section>
               </>

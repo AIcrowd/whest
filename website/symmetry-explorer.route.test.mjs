@@ -24,9 +24,17 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   // V3.1 topology: 10 sections. Section 9 now folds its prose into
   // TotalCostView so the component recap can lead the section body.
   // The regex [0-9] covers all 10 acts (indices 0-9).
-  assert.ok(countMatches(appSource, /EXPLORER_ACTS\[[0-9]\]\.introParagraphs/g) >= 8);
-  assert.match(appSource, /title={EXPLORER_ACTS\[9\]\.heading}/);
-  assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[9\]\.question}<\/InlineMathText>}/);
+  // Section 9 (.introParagraphs) was already folded into TotalCostView; the
+  // post-§10 user feedback retired the heavyweight ExplorerSectionCard
+  // chrome for §10 too (Appendix Transition is now a lightweight gray-50
+  // strip that visually parallels the in-card "Appendix note" block at
+  // the end of §9). EXPLORER_ACTS[9].heading is still rendered (just no
+  // longer as a section-card title prop), and .introParagraphs are
+  // intentionally dropped from §10 since they duplicated the prose
+  // already in the §9 appendix-note button.
+  assert.ok(countMatches(appSource, /EXPLORER_ACTS\[[0-9]\]\.introParagraphs/g) >= 7);
+  assert.match(appSource, /EXPLORER_ACTS\[9\]\.heading/,
+    'EXPLORER_ACTS[9].heading must still be rendered somewhere in the §10 region');
   assert.match(introSource, /md:grid-cols-2/);
   assert.match(introSource, /balancedColumns/);
   assert.match(appSource, /<SectionIntroProse paragraphs=\{EXPLORER_ACTS\[0\]\.introParagraphs\} balancedColumns \/>/);
