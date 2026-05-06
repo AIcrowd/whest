@@ -76,7 +76,7 @@ test('masthead lands the result and appendix transition exposes an A-E map', () 
     'utf8',
   );
 
-  assert.match(appSource, /An interactive paper/);
+  assert.match(appSource, /An interactive walkthrough/);
   assert.match(appSource, /Counting symmetry-aware einsums/);
   assert.match(appSource, /Symmetry can turn many label assignments into one representative product/);
   assert.match(appSource, /reuse is only half the cost/);

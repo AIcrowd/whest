@@ -2,7 +2,7 @@ const p = (text) => ({ kind: 'paragraph', text });
 
 const preamble = {
   title: 'Counting symmetry-aware einsums',
-  deck: 'Multiply once; accumulate wherever the orbit projects. This interactive paper counts exact direct events as representative-product multiplication chains plus $O \\to Q$ accumulation updates.',
+  deck: 'Multiply once; accumulate wherever the orbit projects. This interactive walkthrough counts exact direct events as representative-product multiplication chains plus $O \\to Q$ accumulation updates.',
   slots: {
     einsumIntroBeforeSummed: [
       p('A direct einsum visits assignments of index labels. Labels that appear on inputs but not on the output are '),

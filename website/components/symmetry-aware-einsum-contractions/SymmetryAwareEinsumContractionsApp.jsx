@@ -741,7 +741,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             style={{ letterSpacing: '0.2em' }}
 	          >
 	            <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300" />
-	            An interactive paper
+	            An interactive walkthrough
           </div>
 
           <h1
