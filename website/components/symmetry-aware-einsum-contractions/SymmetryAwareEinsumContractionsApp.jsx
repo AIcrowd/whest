@@ -1256,24 +1256,36 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           (c) carries the appendix-transition anchor id
                               so existing #appendix-transition links
                               continue to resolve.
-                        The "click to open the whole appendix" affordance
-                        is preserved via the question heading, which is
-                        still a button that opens the modal at the top. */}
+                        The whole strip is now click-anywhere — clicking
+                        any non-letter-card region of the block opens the
+                        appendix at the top. The five letter-card buttons
+                        keep their own click targets (deep-link to specific
+                        sub-sections) by stopping click propagation. The
+                        outer wrapper uses role="button" + tabIndex + Enter/
+                        Space handler so keyboard users get the same
+                        single-action affordance. */}
                     <div
                       id={EXPLORER_ACTS[9].id}
-                      aria-label="Appendix transition"
-                      className="-mx-4 -mb-4 mt-8 border-t border-stone-200/70 bg-gray-50 px-4 py-4 scroll-mt-sticky"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Open the appendix"
+                      onClick={() => openAppendix()}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          openAppendix();
+                        }
+                      }}
+                      className="group -mx-4 -mb-4 mt-8 cursor-pointer border-t border-stone-200/70 bg-gray-50 px-4 py-4 transition-colors scroll-mt-sticky hover:bg-stone-100/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
                     >
                       <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
                         Appendix note
                       </span>
-                      <button
-                        type="button"
-                        onClick={() => openAppendix()}
-                        className="mt-1.5 block w-full cursor-pointer text-left font-serif text-[15px] leading-7 text-stone-900 transition-colors hover:text-coral focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                      <span
+                        className="mt-1.5 block font-serif text-[15px] leading-7 text-stone-900 transition-colors group-hover:text-coral"
                       >
                         Is this the full symmetry of the final expression?
-                      </button>
+                      </span>
                       <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
                         The cost above uses <Latex math={notationLatex('g_pointwise')} /> on product assignments and <Latex math={notationLatex('h_output')} /> on stored output representatives, where <Latex math={String.raw`H = \mathrm{Stab}_{G_{\text{pt}}}(V)|_V`} />. The completed expression can have a larger formal symmetry <Latex math={String.raw`G_{\text{f}} = H \times \prod_d S(W_d)`} />. Its dummy-label factor acts after summation and must not be used to remove pre-summation product or update events.
                       </p>
@@ -1282,7 +1294,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           <button
                             key={item.letter}
                             type="button"
-                            onClick={() => openAppendix(item.hash)}
+                            onClick={(e) => { e.stopPropagation(); openAppendix(item.hash); }}
                             className="min-h-[88px] cursor-pointer rounded-md border border-stone-200 bg-white p-3 text-left transition-colors hover:border-coral/50 hover:bg-coral-light/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
                           >
                             <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-coral">

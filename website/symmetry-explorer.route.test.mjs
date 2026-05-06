@@ -89,7 +89,11 @@ test('masthead lands the result and appendix transition exposes an A-E map', () 
   assert.match(appSource, /letter: 'C', title: 'Typed partition theorem', hash: '#appendix-section-6'/);
   assert.match(appSource, /letter: 'D', title: 'Completed-expression formal symmetry', hash: '#appendix-section-4'/);
   assert.match(appSource, /letter: 'E', title: 'Scope, assumptions, and exactness', hash: '#appendix-section-8'/);
-  assert.match(appSource, /onClick=\{\(\) => openAppendix\(item\.hash\)\}/);
+  // Letter cards stop click propagation so a click inside one of them only
+  // deep-links to its sub-section instead of also triggering the outer
+  // appendix-note click-anywhere handler (which opens the appendix at the
+  // top). Both code paths are atomically captured here.
+  assert.match(appSource, /onClick=\{\(e\) => \{ e\.stopPropagation\(\); openAppendix\(item\.hash\); \}\}/);
 });
 
 test('"What this produces" callout uses shared vertical centering on desktop', () => {
