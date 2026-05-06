@@ -93,9 +93,13 @@ function LabelRoleLegend({
         labels: declaredCount > 0
           ? view.declaredSymmetricLabels
           : [],
-        // Coral is the role accent for declared symmetric axes — the
-        // "where symmetry enters" callout already uses coral as its eyebrow,
-        // so the visual mapping is consistent (see dotStyle below).
+        // Distinct hue from visible (coral) and summed (slate). "Declared"
+        // is structural metadata on the operands — the author's editorial
+        // decoration on top of the runtime V/W roles — so we use the
+        // theme's editorialAccent (warm muted gray, exposed as CSS var
+        // `--editorial-accent`). Dot color used to be `var(--coral)`,
+        // which collided with the "visible" role's hero-coral and made
+        // the two indistinguishable in the legend (see dotStyle below).
         label: 'declared',
         suffix: ' symmetric axes',
         tooltip: TOOLTIP_DECLARED_SYMMETRY,
@@ -149,13 +153,17 @@ function LabelRoleLegend({
         const isLocked = lockedRole === item.id;
         const isInteractive = Boolean(onHoveredLabelsChange) && item.labels.length > 0;
         // Theme-bound dot color: visible→freeLabelColor, summed→summedLabelColor,
-        // declared→coral. The first two literal references make the
-        // theme-role contract grep-visible (preamble.test.mjs).
+        // declared→editorial-accent. The first two literal references make
+        // the theme-role contract grep-visible (preamble.test.mjs); the
+        // third points at the theme's editorialAccent CSS var (warm muted
+        // gray) so "declared" no longer reads as the same role as "visible"
+        // — both used to render coral and were indistinguishable in the
+        // legend.
         const dotStyle = item.id === 'visible'
           ? { backgroundColor: freeLabelColor }
           : item.id === 'summed'
             ? { backgroundColor: summedLabelColor }
-            : { backgroundColor: 'var(--coral)' };
+            : { backgroundColor: 'var(--editorial-accent)' };
         return (
           <button
             key={item.id}
