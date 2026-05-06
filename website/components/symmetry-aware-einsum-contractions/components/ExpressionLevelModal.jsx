@@ -964,7 +964,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
             subEyebrow
             anchorId="appendix-section-3"
             title={appendixSection3.title}
-            deck={appendixSection3.deck}
+            deck={
+              <InlineMathText>
+                {normalizeAppendixDisplayText(appendixSection3.deck)}
+              </InlineMathText>
+            }
           >
             {/* Source-contract marker: H = Stab_{G_pt}(V)|_V is the restriction of G_pt to V-preserving elements. */}
             <AppendixSupportSplit

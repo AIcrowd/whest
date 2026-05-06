@@ -210,7 +210,12 @@ test('sections 2 through 4 introduce same-domain dummy renaming, then G_out, the
   assert.doesNotMatch(source, /anchorId="appendix-section-2"[\s\S]*rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm/);
   assert.doesNotMatch(source, /anchorId="appendix-section-2"[\s\S]*4 \\neq 6/);
   assert.match(source, /anchorId="appendix-section-3"[\s\S]*title=\{appendixSection3\.title\}/);
-  assert.match(source, /anchorId="appendix-section-3"[\s\S]*deck=\{appendixSection3\.deck\}/);
+  // Section 3's deck contains LaTeX (`$H = \mathrm{Stab}_{G_{\text{pt}}}(V)|_V$`)
+  // so the modal wraps it in <InlineMathText> + normalizeAppendixDisplayText
+  // — same pattern sections 2 / 5 / 6 use for their LaTeX-bearing decks.
+  // Without this wrap, the dollar-delimited math renders as raw `$...$`
+  // text in the deck under the A.2 sub-section heading.
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection3\.deck\)\}\s*<\/InlineMathText>\s*\}/);
   assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.definitionLead/);
   assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.takeaway/);
   assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.workedExampleLead/);
