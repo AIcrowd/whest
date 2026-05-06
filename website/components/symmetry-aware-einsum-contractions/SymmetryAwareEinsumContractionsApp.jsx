@@ -777,28 +777,35 @@ export default function SymmetryAwareEinsumContractionsApp() {
           />
         </div>
 
+        {/* Passing-disclaimer style for the "scope of the calculation"
+            note: softer single bottom border, no top border, gray run-in
+            label inline with the prose, and the assumptions list flowing
+            as a final sentence. Mirrors the Appendix E "passing
+            disclaimer" treatment so reviewers see one consistent tone for
+            scope notes across both the main page and the modal. */}
         <div className="mx-auto mb-8 mt-[-0.25rem] w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
-          <div className="border-y border-stone-200 bg-white px-5 py-4">
-            <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-coral">
-              Scope of the calculation
-            </div>
+          <div className="border-b border-stone-200 bg-white py-3">
             <p
-              className="mt-2 font-serif text-[15px] leading-7 text-stone-700"
+              className="font-serif text-[14px] leading-[1.7] text-stone-700"
               style={{ textAlign: 'justify' }}
             >
+              <span className="font-semibold text-stone-900">
+                Scope of the calculation.
+              </span>{' '}
               <InlineMathText>
                 {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus accumulation updates into stored output representatives. It is not flopscope's general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The output is assumed to be stored by the output symmetry inherited from the detected pointwise group, so one product-orbit representative may update several stored output representatives when projection branches.`}
               </InlineMathText>
-            </p>
-            <p className="mt-2 text-[12.5px] leading-6 text-stone-600">
-              Assumptions: exact commutative scalar arithmetic; declared equality
-              symmetries only; repeated operand names denote the same tensor object;
-              the accepted explicit-index einsum language uses lowercase
-              single-character labels with explicit outputs and forbids
-              ellipsis, broadcasting, repeated labels within one input, and
-              duplicate output labels; label permutations preserve label
-              domains/sizes; no antisymmetry/signs, conjugation, sparsity,
-              approximate numerical symmetry, or contraction-path optimization.
+              {' '}
+              <span className="text-stone-600">
+                Assumptions: exact commutative scalar arithmetic; declared equality
+                symmetries only; repeated operand names denote the same tensor object;
+                the accepted explicit-index einsum language uses lowercase
+                single-character labels with explicit outputs and forbids
+                ellipsis, broadcasting, repeated labels within one input, and
+                duplicate output labels; label permutations preserve label
+                domains/sizes; no antisymmetry/signs, conjugation, sparsity,
+                approximate numerical symmetry, or contraction-path optimization.
+              </span>
             </p>
           </div>
         </div>
