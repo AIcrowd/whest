@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/negative/",
+  "detail_href": "/docs/api/numpy/negative/",
   "detail_json_href": "/api-data/ops/negative.json",
   "docs": {
     "sections": [
@@ -284,12 +284,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.negative([1.,-1.])"
+                "text": "flops.negative([1.,-1.])"
               },
               {
                 "kind": "output",
@@ -314,10 +314,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/negative",
+                "href": "/docs/api/numpy/negative/",
                 "kind": "link",
                 "target": "negative",
-                "text": "we.negative"
+                "text": "flops.negative"
               },
               {
                 "kind": "text",
@@ -331,7 +331,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.array(([1., -1.]))"
+                "text": "x1 = flops.array(([1., -1.]))"
               },
               {
                 "kind": "input",
@@ -354,20 +354,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.negative",
     "module": "numpy",
     "name": "negative",
     "notes": "Element-wise negation.",
     "numpy_ref": "np.negative",
-    "signature": "we.negative(*args, **kwargs)",
+    "signature": "fnp.negative(*args, **kwargs)",
     "status": "supported",
     "summary": "Numerical negative, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.negative"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "negative",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

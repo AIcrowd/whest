@@ -1,0 +1,144 @@
+{
+  "aliases": [
+    "flops.roots_cost",
+    "flops.accounting.roots_cost",
+    "flopscope.accounting.roots_cost",
+    "roots_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Cost for roots: $n^3$ FLOPs (companion matrix eigendecomposition, simplified)."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns in the input matrix."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns in the input matrix."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.roots_cost",
+  "canonical_path": "flops/roots-cost",
+  "display_name": "flops.flops.roots_cost",
+  "href": "/docs/api/flops/roots-cost/",
+  "import_path": "flops.flops.roots_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "flopscope._polynomial",
+  "name": "flops.roots_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "flops.flops.roots_cost(n: 'int') -> 'int'",
+  "slug": "flops-roots-cost",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L65",
+  "status_note": "",
+  "summary": "Cost for roots: $n^3$ FLOPs (companion matrix eigendecomposition, simplified).",
+  "upstream_source_url": ""
+}

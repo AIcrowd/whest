@@ -209,7 +209,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/prod",
+                      "href": "/docs/api/numpy/prod/",
                       "kind": "link",
                       "target": "prod",
                       "text": "prod"
@@ -461,12 +461,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([536870910, 536870910, 536870910, 536870910])"
+              "text": "x = flops.array([536870910, 536870910, 536870910, 536870910])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(x)"
+              "text": "flops.prod(x)"
             },
             {
               "kind": "output",
@@ -489,7 +489,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([])"
+              "text": "flops.prod([])"
             },
             {
               "kind": "output",
@@ -517,12 +517,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([1.,2.])"
+              "text": "flops.prod([1.,2.])"
             },
             {
               "kind": "output",
@@ -545,12 +545,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1., 2.], [3., 4.]])"
+              "text": "a = flops.array([[1., 2.], [3., 4.]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(a)"
+              "text": "flops.prod(a)"
             },
             {
               "kind": "output",
@@ -573,7 +573,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(a, axis=1)"
+              "text": "flops.prod(a, axis=1)"
             },
             {
               "kind": "output",
@@ -582,7 +582,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(a, axis=0)"
+              "text": "flops.prod(a, axis=0)"
             },
             {
               "kind": "output",
@@ -605,7 +605,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([1., we.nan, 3.], where=[True, False, True])"
+              "text": "flops.prod([1., flops.nan, 3.], where=[True, False, True])"
             },
             {
               "kind": "output",
@@ -636,12 +636,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 2, 3], dtype=we.uint8)"
+              "text": "x = flops.array([1, 2, 3], dtype=flops.uint8)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(x).dtype == we.uint"
+              "text": "flops.prod(x).dtype == flops.uint"
             },
             {
               "kind": "output",
@@ -672,12 +672,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 2, 3], dtype=we.int8)"
+              "text": "x = flops.array([1, 2, 3], dtype=flops.int8)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(x).dtype == int"
+              "text": "flops.prod(x).dtype == int"
             },
             {
               "kind": "output",
@@ -700,7 +700,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([1, 2], initial=5)"
+              "text": "flops.prod([1, 2], initial=5)"
             },
             {
               "kind": "output",
@@ -714,6 +714,7 @@
     }
   ],
   "canonical_name": "prod",
+  "canonical_path": "numpy/prod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -731,23 +732,27 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.prod([1.,2.])\n\na = we.array([[1., 2.], [3., 4.]])\n\nwe.prod(a)\n\nwe.prod(a, axis=1)\n\nwe.prod(a, axis=0)\n\nwe.prod([1., we.nan, 3.], where=[True, False, True])\n\nx = we.array([1, 2, 3], dtype=we.uint8)\n\nwe.prod(x).dtype == we.uint\n\nx = we.array([1, 2, 3], dtype=we.int8)\n\nwe.prod(x).dtype == int\n\nwe.prod([1, 2], initial=5)",
+    "code": "import flopscope.numpy as fnp\n\nflops.prod([1.,2.])\n\na = flops.array([[1., 2.], [3., 4.]])\n\nflops.prod(a)\n\nflops.prod(a, axis=1)\n\nflops.prod(a, axis=0)\n\nflops.prod([1., flops.nan, 3.], where=[True, False, True])\n\nx = flops.array([1, 2, 3], dtype=flops.uint8)\n\nflops.prod(x).dtype == flops.uint\n\nx = flops.array([1, 2, 3], dtype=flops.int8)\n\nflops.prod(x).dtype == int\n\nflops.prod([1, 2], initial=5)",
     "output": "2.0\n\n24.0\n\narray([  2.,  12.])\n\narray([3., 8.])\n\n3.0\n\nTrue\n\nTrue\n\n10",
     "source": "derived"
   },
-  "href": "/docs/api/ops/prod/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.prod",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L832",
+  "href": "/docs/api/numpy/prod/",
+  "legacy_href": "/docs/api/ops/prod/",
   "module": "numpy",
   "name": "prod",
   "next": {
-    "href": "/docs/api/ops/promote_types/",
-    "label": "we.promote_types"
+    "href": "/docs/api/numpy/promote-types/",
+    "label": "fnp.promote_types"
   },
   "notes": "Product of array elements.",
   "notes_sections": [
     "Arithmetic is modular when using integer types, and no error is raised on overflow.  That means that, on a 32-bit platform:",
-    ">>> x = we.array([536870910, 536870910, 536870910, 536870910]) >>> we.prod(x) 16 # may vary",
+    ">>> x = flops.array([536870910, 536870910, 536870910, 536870910]) >>> flops.prod(x) 16 # may vary",
     "The product of an empty array is the neutral element 1:",
-    ">>> we.prod([]) 1.0"
+    ">>> flops.prod([]) 1.0"
   ],
   "numpy_ref": "np.prod",
   "parameters": [
@@ -810,7 +815,7 @@
     },
     {
       "body": [
-        "The starting value for this product. See `~we.ufunc.reduce`",
+        "The starting value for this product. See `~flops.ufunc.reduce`",
         "for details."
       ],
       "name": "initial",
@@ -818,7 +823,7 @@
     },
     {
       "body": [
-        "Elements to include in the product. See `~we.ufunc.reduce`",
+        "Elements to include in the product. See `~flops.ufunc.reduce`",
         "for details."
       ],
       "name": "where",
@@ -826,10 +831,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/power/",
-    "label": "we.power"
+    "href": "/docs/api/numpy/power/",
+    "label": "fnp.power"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.prod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.prod.html",
   "returns": [
     {
@@ -870,12 +876,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.prod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.prod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "prod",
   "summary": "Return the product of array elements over a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3328",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.prod",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
+  "weight": 1.0
 }

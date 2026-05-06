@@ -121,8 +121,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bartlett",
-              "label": "we.bartlett",
+              "href": "/docs/api/numpy/bartlett/",
+              "label": "flops.bartlett",
               "original_target": "bartlett",
               "role": "",
               "target": "bartlett",
@@ -132,8 +132,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/blackman",
-              "label": "we.blackman",
+              "href": "/docs/api/numpy/blackman/",
+              "label": "flops.blackman",
               "original_target": "blackman",
               "role": "",
               "target": "blackman",
@@ -143,8 +143,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hamming",
-              "label": "we.hamming",
+              "href": "/docs/api/numpy/hamming/",
+              "label": "flops.hamming",
               "original_target": "hamming",
               "role": "",
               "target": "hamming",
@@ -154,8 +154,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/kaiser",
-              "label": "we.kaiser",
+              "href": "/docs/api/numpy/kaiser/",
+              "label": "flops.kaiser",
               "original_target": "kaiser",
               "role": "",
               "target": "kaiser",
@@ -237,12 +237,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hanning(12)"
+              "text": "flops.hanning(12)"
             },
             {
               "kind": "output",
@@ -273,7 +273,7 @@
           "content_blocks": [
             {
               "language": "python",
-              "text": "import matplotlib.pyplot as plt\nfrom we.fft import fft, fftshift\nwindow = we.hanning(51)\nplt.plot(window)\nplt.title(\"Hann window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = we.abs(fftshift(A))\nfreq = we.linspace(-0.5, 0.5, len(A))\nwith we.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * we.log10(mag)\nresponse = we.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of the Hann window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+              "text": "import matplotlib.pyplot as plt\nfrom flops.fft import fft, fftshift\nwindow = flops.hanning(51)\nplt.plot(window)\nplt.title(\"Hann window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = flops.abs(fftshift(A))\nfreq = flops.linspace(-0.5, 0.5, len(A))\nwith flops.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * flops.log10(mag)\nresponse = flops.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of the Hann window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
               "type": "literal_block"
             }
           ],
@@ -293,6 +293,7 @@
     }
   ],
   "canonical_name": "hanning",
+  "canonical_path": "numpy/hanning",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -320,16 +321,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.hanning(12)",
+    "code": "import flopscope.numpy as fnp\n\nflops.hanning(12)",
     "output": "array([0.        , 0.07937323, 0.29229249, 0.57115742, 0.82743037,\n       0.97974649, 0.97974649, 0.82743037, 0.57115742, 0.29229249,\n       0.07937323, 0.        ])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/hanning/",
-  "module": "whest._window",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.hanning",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L127",
+  "href": "/docs/api/numpy/hanning/",
+  "legacy_href": "/docs/api/ops/hanning/",
+  "module": "flopscope._window",
   "name": "hanning",
   "next": {
-    "href": "/docs/api/ops/heaviside/",
-    "label": "we.heaviside"
+    "href": "/docs/api/numpy/heaviside/",
+    "label": "fnp.heaviside"
   },
   "notes": "Hanning window. Cost: n (one cosine per sample).",
   "notes_sections": [
@@ -350,10 +355,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/hamming/",
-    "label": "we.hamming"
+    "href": "/docs/api/numpy/hamming/",
+    "label": "fnp.hamming"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.hanning",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.hanning.html",
   "returns": [
     {
@@ -370,8 +376,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bartlett",
-      "label": "we.bartlett",
+      "href": "/docs/api/numpy/bartlett/",
+      "label": "flops.bartlett",
       "original_target": "bartlett",
       "role": "",
       "target": "bartlett",
@@ -381,8 +387,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/blackman",
-      "label": "we.blackman",
+      "href": "/docs/api/numpy/blackman/",
+      "label": "flops.blackman",
       "original_target": "blackman",
       "role": "",
       "target": "blackman",
@@ -392,8 +398,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hamming",
-      "label": "we.hamming",
+      "href": "/docs/api/numpy/hamming/",
+      "label": "flops.hamming",
       "original_target": "hamming",
       "role": "",
       "target": "hamming",
@@ -403,20 +409,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/kaiser",
-      "label": "we.kaiser",
+      "href": "/docs/api/numpy/kaiser/",
+      "label": "flops.kaiser",
       "original_target": "kaiser",
       "role": "",
       "target": "kaiser",
       "unresolved": false
     }
   ],
-  "signature": "we.hanning(M)",
+  "signature": "fnp.hanning(M: 'int') -> 'FlopscopeArray'",
   "slug": "hanning",
   "summary": "Return the Hanning window.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3265",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.hanning",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L126"
+  "weight": 16.0
 }

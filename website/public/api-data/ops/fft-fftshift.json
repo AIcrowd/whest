@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-fftshift/",
+  "detail_href": "/docs/api/numpy/fft/fftshift/",
   "detail_json_href": "/api-data/ops/fft-fftshift.json",
   "docs": {
     "sections": [
@@ -176,12 +176,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freqs = we.fft.fftfreq(10, 0.1)"
+                "text": "freqs = flops.fft.fftfreq(10, 0.1)"
               },
               {
                 "kind": "input",
@@ -195,7 +195,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.fftshift(freqs)"
+                "text": "flops.fft.fftshift(freqs)"
               },
               {
                 "kind": "output",
@@ -218,7 +218,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freqs = we.fft.fftfreq(9, d=1./9).reshape(3, 3)"
+                "text": "freqs = flops.fft.fftfreq(9, d=1./9).reshape(3, 3)"
               },
               {
                 "kind": "input",
@@ -240,7 +240,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.fftshift(freqs, axes=(1,))"
+                "text": "flops.fft.fftshift(freqs, axes=(1,))"
               },
               {
                 "kind": "output",
@@ -266,20 +266,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.fft.fftshift",
     "module": "numpy.fft",
     "name": "fft.fftshift",
     "notes": "Shift zero-frequency component to center. No arithmetic; index reordering only.",
     "numpy_ref": "np.fft.fftshift",
-    "signature": "we.fft.fftshift(x, axes=None)",
+    "signature": "fnp.fft.fftshift(x: 'ArrayLike', axes: 'int | Sequence[int] | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Shift the zero-frequency component to the center of the spectrum.",
-    "weight": 0.0,
-    "whest_ref": "we.fft.fftshift"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "fft-fftshift",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L19",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L33"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L19"
   }
 }

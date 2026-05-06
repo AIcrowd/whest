@@ -1,6 +1,7 @@
-"""Tests for the whest numpy function registry."""
+"""Tests for the flopscope numpy function registry."""
 
-from whest._registry import REGISTRY, REGISTRY_META
+# pyright: reportMissingImports=false
+from flopscope._registry import REGISTRY, REGISTRY_META
 
 
 def test_registry_meta_has_numpy_version():
@@ -23,7 +24,9 @@ def test_all_entries_have_required_fields():
             "counted_binary",
             "counted_reduction",
             "counted_custom",
+            "counted_random_method",
             "free",
+            "free_random_method",
             "blacklisted",
             "unclassified",
         ), f"{name} has invalid category: {entry['category']}"

@@ -1,0 +1,621 @@
+"""Symmetry groups for exact tensor symmetry representation.
+
+Provides the public ``SymmetryGroup`` API plus private permutation helper
+objects used internally for exact finite-group algorithms.
+
+Core algorithms:
+- Dimino's algorithm for group enumeration from generators
+  (Butler & McKay, Comm. in Algebra, 1983)
+- Burnside's lemma for orbit counting (Burnside, 1897)
+"""
+
+from __future__ import annotations
+
+import math
+from functools import reduce
+from typing import Any
+
+__all__ = ["SymmetryGroup"]
+
+
+class _Cycle:
+    """Composable private cycle builder."""
+
+    __slots__ = ("_mapping",)
+
+    def __init__(self, *cycle: int) -> None:
+        self._mapping: dict[int, int] = {}
+        if cycle:
+            for i in range(len(cycle)):
+                self._mapping[cycle[i]] = cycle[(i + 1) % len(cycle)]
+
+    def __call__(self, *cycle: int) -> _Cycle:
+        new = _Cycle()
+        new._mapping = dict(self._mapping)
+        if cycle:
+            new_cycle_map: dict[int, int] = {}
+            for i in range(len(cycle)):
+                new_cycle_map[cycle[i]] = cycle[(i + 1) % len(cycle)]
+            combined: dict[int, int] = {}
+            all_points = set(new._mapping) | set(new_cycle_map)
+            for x in all_points:
+                y = new._mapping.get(x, x)
+                z = new_cycle_map.get(y, y)
+                if z != x:
+                    combined[x] = z
+            new._mapping = combined
+        return new
+
+    def list(self, size: int | None = None) -> list[int]:
+        if size is None:
+            size = max(self._mapping.keys(), default=-1) + 1
+            size = max(size, max(self._mapping.values(), default=-1) + 1)
+        arr = list(range(size))
+        for k, v in self._mapping.items():
+            if k < size:
+                arr[k] = v
+        return arr
+
+
+class _Permutation:
+    """A private permutation on {0, 1, ..., n-1} in array form."""
+
+    __slots__ = ("_array_form",)
+
+    def __init__(
+        self,
+        array_form: list[int] | tuple[int, ...] | _Cycle,
+        size: int | None = None,
+    ) -> None:
+        if isinstance(array_form, _Cycle):
+            self._array_form = tuple(array_form.list(size))
+        elif array_form and isinstance(array_form[0], (list, tuple)):
+            c = _Cycle()
+            for cycle in array_form:
+                c = c(*cycle)  # type: ignore[call-arg]
+            self._array_form = tuple(c.list(size))
+        else:
+            arr = list(array_form)
+            if size is not None and size > len(arr):
+                arr.extend(range(len(arr), size))
+            self._array_form = tuple(arr)
+
+    @property
+    def size(self) -> int:
+        return len(self._array_form)
+
+    @property
+    def array_form(self) -> list[int]:
+        return list(self._array_form)
+
+    @property
+    def is_identity(self) -> bool:
+        return all(self._array_form[i] == i for i in range(len(self._array_form)))
+
+    @classmethod
+    def identity(cls, size: int) -> _Permutation:
+        return cls(list(range(size)))
+
+    @classmethod
+    def from_cycle(cls, size: int, cycle: list[int]) -> _Permutation:
+        arr = list(range(size))
+        for i in range(len(cycle)):
+            arr[cycle[i]] = cycle[(i + 1) % len(cycle)]
+        return cls(arr)
+
+    def __mul__(self, other: _Permutation) -> _Permutation:
+        return _Permutation(
+            tuple(self._array_form[other._array_form[i]] for i in range(self.size))
+        )
+
+    def __invert__(self) -> _Permutation:
+        inv = [0] * self.size
+        for i, j in enumerate(self._array_form):
+            inv[j] = i
+        return _Permutation(inv)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, _Permutation):
+            return NotImplemented
+        return self._array_form == other._array_form
+
+    def __hash__(self) -> int:
+        return hash(self._array_form)
+
+    def __repr__(self) -> str:
+        return f"_Permutation({list(self._array_form)})"
+
+    @property
+    def cyclic_form(self) -> list[tuple[int, ...]]:
+        visited: set[int] = set()
+        cycles: list[tuple[int, ...]] = []
+        for i in range(self.size):
+            if i in visited or self._array_form[i] == i:
+                visited.add(i)
+                continue
+            cycle: list[int] = []
+            j = i
+            while j not in visited:
+                cycle.append(j)
+                visited.add(j)
+                j = self._array_form[j]
+            cycles.append(tuple(cycle))
+        return cycles
+
+    @property
+    def full_cyclic_form(self) -> list[tuple[int, ...]]:
+        visited: set[int] = set()
+        cycles: list[tuple[int, ...]] = []
+        for i in range(self.size):
+            if i in visited:
+                continue
+            cycle: list[int] = []
+            j = i
+            while j not in visited:
+                cycle.append(j)
+                visited.add(j)
+                j = self._array_form[j]
+            cycles.append(tuple(cycle))
+        return cycles
+
+    @property
+    def cycle_structure(self) -> dict[int, int]:
+        result: dict[int, int] = {}
+        for cycle in self.cyclic_form:
+            length = len(cycle)
+            result[length] = result.get(length, 0) + 1
+        return result
+
+    @property
+    def order(self) -> int:
+        lengths = [len(c) for c in self.full_cyclic_form]
+        if not lengths:
+            return 1
+        return reduce(lambda a, b: a * b // math.gcd(a, b), lengths)
+
+    def __call__(self, i: int) -> int:
+        return self._array_form[i]
+
+    def support(self) -> set[int]:
+        return {i for i in range(self.size) if self._array_form[i] != i}
+
+    def parity(self) -> int:
+        return sum(len(c) - 1 for c in self.cyclic_form) % 2
+
+    def signature(self) -> int:
+        return 1 if self.parity() == 0 else -1
+
+    def transpositions(self) -> list[tuple[int, int]]:
+        result: list[tuple[int, int]] = []
+        for cycle in self.cyclic_form:
+            for i in range(1, len(cycle)):
+                result.append((cycle[0], cycle[i]))
+        return result
+
+    def as_sympy(self):
+        try:
+            from sympy.combinatorics import Permutation as SPermutation
+        except ImportError:
+            raise ImportError(
+                "sympy is required for as_sympy(). Install with: pip install sympy"
+            ) from None
+        return SPermutation(self.array_form)
+
+    @classmethod
+    def from_sympy(cls, sp) -> _Permutation:
+        return cls(sp.array_form)
+
+
+def _normalize_axes(axes: tuple[Any, ...] | list[Any]) -> tuple[Any, ...]:
+    norm_axes = tuple(axes)
+    if not norm_axes:
+        raise ValueError("axes must be non-empty")
+    if len(set(norm_axes)) != len(norm_axes):
+        raise ValueError("axes must be unique")
+    return norm_axes
+
+
+def _normalize_generator_literal(
+    generator: list[int] | tuple[int, ...], *, degree: int
+) -> _Permutation:
+    arr = list(generator)
+    if len(arr) != degree:
+        raise ValueError(
+            f"Generator literal has degree {len(arr)}, expected degree {degree}"
+        )
+    if sorted(arr) != list(range(degree)):
+        raise ValueError(
+            f"Generator literal {arr} is not a bijection on range({degree})"
+        )
+    return _Permutation(arr)
+
+
+class SymmetryGroup:
+    """A finite symmetry group defined by explicit generators."""
+
+    __slots__ = (
+        "_generators",
+        "_degree",
+        "_axes",
+        "_elements",
+        "_order",
+        "_labels",
+        "_canonical_action_cache",
+    )
+
+    def __init__(
+        self,
+        *generators: _Permutation,
+        axes: tuple[Any, ...] | None = None,
+    ) -> None:
+        if not generators:
+            raise ValueError(
+                "At least one generator required (use _Permutation.identity(n) for the trivial group)"
+            )
+        degrees = {g.size for g in generators}
+        if len(degrees) != 1:
+            raise ValueError(f"All generators must have the same size, got {degrees}")
+        self._generators = generators
+        self._degree = generators[0].size
+        if axes is not None:
+            axes = _normalize_axes(axes)
+            if len(axes) != self._degree:
+                raise ValueError(
+                    f"axes has length {len(axes)}, expected {self._degree}"
+                )
+        self._axes = axes
+        self._elements: list[_Permutation] | None = None
+        self._order: int | None = None
+        self._labels: tuple[str, ...] | None = None
+        self._canonical_action_cache: (
+            tuple[
+                tuple[str, ...] | None,
+                tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]],
+            ]
+            | None
+        ) = None
+
+    @classmethod
+    def from_generators(
+        cls,
+        generators: list[list[int] | tuple[int, ...]]
+        | tuple[list[int] | tuple[int, ...], ...],
+        *,
+        axes: tuple[Any, ...] | list[Any],
+    ) -> SymmetryGroup:
+        norm_axes = _normalize_axes(axes)
+        if not generators:
+            raise ValueError("At least one generator literal is required")
+        norm_generators = tuple(
+            _normalize_generator_literal(generator, degree=len(norm_axes))
+            for generator in generators
+        )
+        return cls(*norm_generators, axes=norm_axes)
+
+    @property
+    def degree(self) -> int:
+        return self._degree
+
+    @property
+    def generators(self) -> list[_Permutation]:
+        return list(self._generators)
+
+    @property
+    def generator_literals(self) -> list[list[int]]:
+        return [generator.array_form for generator in self._generators]
+
+    @property
+    def axes(self) -> tuple[Any, ...] | None:
+        return self._axes
+
+    def to_payload(self) -> dict[str, list[Any] | list[list[int]]]:
+        if self._axes is None:
+            raise ValueError("Cannot serialize a SymmetryGroup without axes")
+        return {"axes": list(self._axes), "generators": self.generator_literals}
+
+    @classmethod
+    def from_payload(cls, payload: dict[str, Any]) -> SymmetryGroup:
+        return cls.from_generators(payload["generators"], axes=tuple(payload["axes"]))
+
+    def elements(self) -> list[_Permutation]:
+        if self._elements is not None:
+            return self._elements
+        self._elements = _dimino(self._generators)
+        self._order = len(self._elements)
+        return self._elements
+
+    def order(self) -> int:
+        if self._order is not None:
+            return self._order
+        self._order = len(self.elements())
+        return self._order
+
+    def is_symmetric(self) -> bool:
+        return self.order() == math.factorial(self._degree)
+
+    def orbits(self) -> list[frozenset[int]]:
+        parent = list(range(self._degree))
+
+        def find(x: int) -> int:
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a: int, b: int) -> None:
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[ra] = rb
+
+        for g in self._generators:
+            for i in range(self._degree):
+                if g(i) != i:
+                    union(i, g(i))
+
+        groups: dict[int, set[int]] = {}
+        for i in range(self._degree):
+            groups.setdefault(find(i), set()).add(i)
+        return [frozenset(s) for s in groups.values()]
+
+    def contains(self, perm: _Permutation) -> bool:
+        return perm in set(self.elements())
+
+    @property
+    def is_transitive(self) -> bool:
+        return len(self.orbits()) == 1
+
+    @property
+    def is_abelian(self) -> bool:
+        gens = self._generators
+        for i in range(len(gens)):
+            for j in range(i + 1, len(gens)):
+                if gens[i] * gens[j] != gens[j] * gens[i]:
+                    return False
+        return True
+
+    @property
+    def identity(self) -> _Permutation:
+        return _Permutation.identity(self._degree)
+
+    def _semantic_domain(self) -> tuple[Any, ...]:
+        if self._labels is not None:
+            return tuple(self._labels)
+        if self._axes is not None:
+            return self._axes
+        return tuple(range(self._degree))
+
+    def _canonical_axis_action(
+        self,
+    ) -> tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]]:
+        cached = self._canonical_action_cache
+        if cached is not None and cached[0] is self._labels:
+            return cached[1]
+        domain = self._semantic_domain()
+        labelled_axes = tuple(sorted(domain, key=repr))
+        actions = []
+        for elem in self.elements():
+            mapping = {domain[i]: domain[j] for i, j in enumerate(elem.array_form)}
+            actions.append(tuple(mapping[axis] for axis in labelled_axes))
+        result = (labelled_axes, tuple(sorted(actions)))
+        self._canonical_action_cache = (self._labels, result)
+        return result
+
+    def __eq__(self, other: object) -> bool:
+        if self is other:
+            return True
+        if not isinstance(other, SymmetryGroup):
+            return NotImplemented
+        return self._canonical_axis_action() == other._canonical_axis_action()
+
+    def __hash__(self) -> int:
+        return hash(self._canonical_axis_action())
+
+    def equals(self, other: SymmetryGroup) -> bool:
+        return self == other
+
+    def orbit(self, alpha: int) -> frozenset[int]:
+        visited: set[int] = {alpha}
+        queue: list[int] = [alpha]
+        while queue:
+            point = queue.pop()
+            for g in self._generators:
+                image = g(point)
+                if image not in visited:
+                    visited.add(image)
+                    queue.append(image)
+        return frozenset(visited)
+
+    def pointwise_stabilizer(self, fixed: set[int]) -> SymmetryGroup:
+        if not fixed:
+            return SymmetryGroup(*self._generators, axes=self._axes)
+        surviving = [g for g in self.elements() if all(g(p) == p for p in fixed)]
+        if not surviving:
+            surviving = [_Permutation.identity(self._degree)]
+        return SymmetryGroup(*surviving, axes=self._axes)
+
+    def setwise_stabilizer(self, subset: set[int]) -> SymmetryGroup:
+        if not subset or subset == set(range(self._degree)):
+            return SymmetryGroup(*self._generators, axes=self._axes)
+        frozen = frozenset(subset)
+        surviving = [
+            g for g in self.elements() if frozenset(g(x) for x in frozen) == frozen
+        ]
+        if not surviving:
+            surviving = [_Permutation.identity(self._degree)]
+        return SymmetryGroup(*surviving, axes=self._axes)
+
+    def restrict(self, kept: tuple[int, ...]) -> SymmetryGroup:
+        new_degree = len(kept)
+        if new_degree == 0:
+            raise ValueError("kept must be non-empty")
+
+        old_to_new = {old: new for new, old in enumerate(kept)}
+        projected: set[_Permutation] = set()
+        for g in self.elements():
+            new_arr = [old_to_new[g(k)] for k in kept]
+            projected.add(_Permutation(new_arr))
+
+        new_axes: tuple[Any, ...] | None = None
+        if self._axes is not None:
+            new_axes = tuple(self._axes[k] for k in kept)
+
+        gens = list(projected) if projected else [_Permutation.identity(new_degree)]
+        return SymmetryGroup(*gens, axes=new_axes)
+
+    def burnside_unique_count(self, size_dict: dict[int, int]) -> int:
+        for orbit in self.orbits():
+            sizes = {size_dict[i] for i in orbit}
+            if len(sizes) != 1:
+                raise ValueError(
+                    f"Positions {orbit} are in the same orbit but have different "
+                    f"dimension sizes {sizes}; all must have the same dimension size"
+                )
+
+        total_fixed = 0
+        for g in self.elements():
+            fixed = 1
+            for cycle in g.full_cyclic_form:
+                fixed *= size_dict[cycle[0]]
+            total_fixed += fixed
+
+        count, remainder = divmod(total_fixed, self.order())
+        assert remainder == 0, (
+            f"Burnside sum {total_fixed} not divisible by |G|={self.order()}"
+        )
+        return count
+
+    @classmethod
+    def symmetric(cls, *, axes: tuple[Any, ...] | list[Any]) -> SymmetryGroup:
+        norm_axes = _normalize_axes(axes)
+        k = len(norm_axes)
+        if k == 1:
+            return cls(_Permutation.identity(1), axes=norm_axes)
+        gens = []
+        for i in range(k - 1):
+            arr = list(range(k))
+            arr[i], arr[i + 1] = arr[i + 1], arr[i]
+            gens.append(_Permutation(arr))
+        return cls(*gens, axes=norm_axes)
+
+    @classmethod
+    def cyclic(cls, *, axes: tuple[Any, ...] | list[Any]) -> SymmetryGroup:
+        norm_axes = _normalize_axes(axes)
+        k = len(norm_axes)
+        if k == 1:
+            return cls(_Permutation.identity(1), axes=norm_axes)
+        gen = _Permutation(list(range(1, k)) + [0])
+        return cls(gen, axes=norm_axes)
+
+    @classmethod
+    def dihedral(cls, *, axes: tuple[Any, ...] | list[Any]) -> SymmetryGroup:
+        norm_axes = _normalize_axes(axes)
+        k = len(norm_axes)
+        if k <= 2:
+            return cls.symmetric(axes=norm_axes)
+        rotation = _Permutation(list(range(1, k)) + [0])
+        reflection = _Permutation([0] + list(range(k - 1, 0, -1)))
+        return cls(rotation, reflection, axes=norm_axes)
+
+    @classmethod
+    def young(
+        cls,
+        blocks: list[tuple[Any, ...] | list[Any]]
+        | tuple[tuple[Any, ...] | list[Any], ...],
+    ) -> SymmetryGroup:
+        factors = [cls.symmetric(axes=tuple(block)) for block in blocks]
+        if not factors:
+            raise ValueError("young() requires at least one block")
+        return cls.direct_product(*factors)
+
+    @classmethod
+    def direct_product(cls, *groups: SymmetryGroup) -> SymmetryGroup:
+        if not groups:
+            raise ValueError("direct_product() requires at least one group")
+        supports = []
+        for group in groups:
+            if group.axes is None:
+                raise ValueError(
+                    "SymmetryGroup.direct_product() requires axes on every factor"
+                )
+            supports.append(set(group.axes))
+        for i, support in enumerate(supports):
+            for other in supports[i + 1 :]:
+                if support & other:
+                    raise ValueError(
+                        "SymmetryGroup.direct_product() requires disjoint supports"
+                    )
+
+        merged_axes: list[Any] = []
+        total_degree = sum(group.degree for group in groups)
+        generators: list[_Permutation] = []
+        offset = 0
+        for group in groups:
+            assert group.axes is not None
+            merged_axes.extend(group.axes)
+            for gen in group.generators:
+                arr = list(range(total_degree))
+                for i, j in enumerate(gen.array_form):
+                    arr[offset + i] = offset + j
+                generators.append(_Permutation(arr))
+            offset += group.degree
+
+        if not generators:
+            generators.append(_Permutation.identity(total_degree))
+        return cls(*generators, axes=tuple(merged_axes))
+
+    def as_sympy(self):
+        try:
+            from sympy import combinatorics as _sympy_combinatorics
+        except ImportError:
+            raise ImportError(
+                "sympy is required for as_sympy(). Install with: pip install sympy"
+            ) from None
+        sympy_group_cls = _sympy_combinatorics.PermutationGroup
+        return sympy_group_cls(*[g.as_sympy() for g in self._generators])
+
+    @classmethod
+    def from_sympy(cls, spg, *, axes: tuple[Any, ...] | None = None) -> SymmetryGroup:
+        gens = [_Permutation.from_sympy(g) for g in spg.generators]
+        return cls(*gens, axes=axes)
+
+    def __repr__(self) -> str:
+        axes_str = f", axes={self._axes}" if self._axes is not None else ""
+        literals = ", ".join(repr(g.array_form) for g in self._generators)
+        return f"SymmetryGroup({literals}{axes_str})"
+
+
+_CycleCompat = _Cycle
+_PermutationCompat = _Permutation
+_SymmetryGroupCompat = SymmetryGroup
+
+
+def _dimino(generators: tuple[_Permutation, ...]) -> list[_Permutation]:
+    """Enumerate all group elements via Dimino's algorithm."""
+    n = generators[0].size
+    identity = _Permutation.identity(n)
+    elements = [identity]
+    seen: set[_Permutation] = {identity}
+
+    for gen in generators:
+        if gen in seen:
+            continue
+        coset = [gen]
+        seen.add(gen)
+        new_elements = [gen]
+        while new_elements:
+            next_new: list[_Permutation] = []
+            for elem in new_elements:
+                for g in generators:
+                    product = elem * g
+                    if product not in seen:
+                        seen.add(product)
+                        next_new.append(product)
+                    product_r = g * elem
+                    if product_r not in seen:
+                        seen.add(product_r)
+                        next_new.append(product_r)
+            new_elements = next_new
+            coset.extend(next_new)
+        elements.extend(coset)
+
+    return elements

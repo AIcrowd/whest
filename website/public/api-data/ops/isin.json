@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isin/",
+  "detail_href": "/docs/api/numpy/isin/",
   "detail_json_href": "/api-data/ops/isin.json",
   "docs": {
     "sections": [
@@ -164,7 +164,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "isin(a, b, invert=True)",
-                        "text": "we.isin(a, b, invert=True)"
+                        "text": "flops.isin(a, b, invert=True)"
                       },
                       {
                         "kind": "text",
@@ -172,7 +172,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.invert(we.isin(a, b))"
+                        "text": "flops.invert(flops.isin(a, b))"
                       },
                       {
                         "kind": "text",
@@ -201,7 +201,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "isin(a, b, invert=True)",
-                    "text": "we.isin(a, b, invert=True)"
+                    "text": "flops.isin(a, b, invert=True)"
                   },
                   {
                     "kind": "text",
@@ -209,7 +209,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.invert(we.isin(a, b))"
+                    "text": "flops.invert(flops.isin(a, b))"
                   },
                   {
                     "kind": "text",
@@ -444,7 +444,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/isin",
+                "href": "/docs/api/numpy/isin/",
                 "kind": "link",
                 "target": "isin",
                 "text": "isin"
@@ -474,7 +474,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "array([item in b for item in a])",
-                "text": "we.array([item in b for item in a])"
+                "text": "flops.array([item in b for item in a])"
               },
               {
                 "kind": "text",
@@ -535,7 +535,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/array",
+                "href": "/docs/api/numpy/array/",
                 "kind": "link",
                 "target": "array",
                 "text": "array"
@@ -606,12 +606,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "element = 2*we.arange(4).reshape((2, 2))"
+                "text": "element = 2*flops.arange(4).reshape((2, 2))"
               },
               {
                 "kind": "input",
@@ -634,7 +634,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mask = we.isin(element, test_elements)"
+                "text": "mask = flops.isin(element, test_elements)"
               },
               {
                 "kind": "input",
@@ -669,7 +669,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "kind": "link",
                 "target": "nonzero",
                 "text": "nonzero"
@@ -686,7 +686,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nonzero(mask)"
+                "text": "flops.nonzero(mask)"
               },
               {
                 "kind": "output",
@@ -709,7 +709,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mask = we.isin(element, test_elements, invert=True)"
+                "text": "mask = flops.isin(element, test_elements, invert=True)"
               },
               {
                 "kind": "input",
@@ -744,7 +744,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/array",
+                "href": "/docs/api/numpy/array/",
                 "kind": "link",
                 "target": "array",
                 "text": "array"
@@ -766,7 +766,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isin(element, test_set)"
+                "text": "flops.isin(element, test_set)"
               },
               {
                 "kind": "output",
@@ -793,7 +793,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isin(element, list(test_set))"
+                "text": "flops.isin(element, list(test_set))"
               },
               {
                 "kind": "output",
@@ -815,20 +815,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.isin",
     "module": "numpy",
     "name": "isin",
     "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
     "numpy_ref": "np.isin",
-    "signature": "we.isin(element, test_elements, assume_unique=False, invert=False, *, kind=None)",
+    "signature": "fnp.isin(element, test_elements, assume_unique=False, invert=False, *, kind=None)",
     "status": "supported",
     "summary": "Calculates ``element in test_elements``, broadcasting over `element` only. Returns a boolean array of the same shape as `element` that is True where an element of `element` is in `test_elements` and False otherwise.",
-    "weight": 1.0,
-    "whest_ref": "we.isin"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "isin",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1015",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L390"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L422",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1015"
   }
 }

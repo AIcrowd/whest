@@ -1,10 +1,9 @@
 import {ServerCodeBlock} from 'fumadocs-ui/components/codeblock.rsc';
-import {Fragment, type ReactNode} from 'react';
+import {type ReactNode} from 'react';
 import Latex from '../shared/Latex';
 import OperationDocFieldList from './OperationDocFieldList';
 import OperationDocLink from './OperationDocLink';
 import OperationDocSectionHeading from './OperationDocSectionHeading';
-import OperationDocSignature from './OperationDocSignature';
 import {apiCodeThemes} from './runtime-shiki-themes';
 import styles from './styles.module.css';
 import type {
@@ -324,15 +323,9 @@ function normalizeText(value: string) {
 export default async function OperationDocBody({
   sections,
   headerSummary,
-  signature,
-  whestSourceUrl,
-  upstreamSourceUrl,
 }: {
   sections: DocSection[];
   headerSummary?: string;
-  signature?: string;
-  whestSourceUrl?: string;
-  upstreamSourceUrl?: string;
 }): Promise<ReactNode> {
   const visibleSections = sections.filter((section) => {
     if (section.title !== 'Summary') {
@@ -365,16 +358,13 @@ export default async function OperationDocBody({
     return normalizeText(summaryText) !== normalizeText(headerSummary);
   });
 
-  const signatureInsertIndex =
-    signature && visibleSections.length > 0
-      ? Math.max(
-          0,
-          visibleSections.findIndex((section) => section.title === 'Parameters'),
-        )
-      : -1;
+  // Section titles that the upstream numpydoc parser emits but numpy.org's
+  // own reference render does NOT show as headings. The blocks render as
+  // unannotated prose flowing under the brief summary.
+  const HEADLESS_SECTION_TITLES = new Set(['Extended Summary', 'Summary']);
 
   const renderedSections = await Promise.all(
-    visibleSections.map(async (section, sectionIndex) => {
+    visibleSections.map(async (section) => {
       const renderedBlocks = await Promise.all(
         section.blocks.map(async (block, blockIndex) => {
           const key = `${section.title}-${blockIndex}`;
@@ -388,33 +378,18 @@ export default async function OperationDocBody({
         }),
       );
 
+      const omitHeading = HEADLESS_SECTION_TITLES.has(section.title);
+
       return (
-        <Fragment key={section.title}>
-          {sectionIndex === signatureInsertIndex ? (
-            <OperationDocSignature
-              signature={signature}
-              whestSourceUrl={whestSourceUrl}
-              upstreamSourceUrl={upstreamSourceUrl}
-            />
-          ) : null}
-          <section className={styles.docSection}>
+        <section key={section.title} className={styles.docSection}>
+          {!omitHeading ? (
             <OperationDocSectionHeading title={section.title} />
-            {renderedBlocks}
-          </section>
-        </Fragment>
+          ) : null}
+          {renderedBlocks}
+        </section>
       );
     }),
   );
-
-  if (renderedSections.length === 0 && signature) {
-    return (
-      <OperationDocSignature
-        signature={signature}
-        whestSourceUrl={whestSourceUrl}
-        upstreamSourceUrl={upstreamSourceUrl}
-      />
-    );
-  }
 
   return <>{renderedSections}</>;
 }

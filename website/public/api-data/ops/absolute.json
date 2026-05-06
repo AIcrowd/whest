@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/absolute/",
+  "detail_href": "/docs/api/numpy/absolute/",
   "detail_json_href": "/api-data/ops/absolute.json",
   "docs": {
     "sections": [
@@ -23,10 +23,10 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
-                "text": "we.abs"
+                "text": "flops.abs"
               },
               {
                 "kind": "text",
@@ -337,17 +337,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([-1.2, 1.2])"
+                "text": "x = flops.array([-1.2, 1.2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.absolute(x)"
+                "text": "flops.absolute(x)"
               },
               {
                 "kind": "output",
@@ -356,7 +356,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.absolute(1.2 + 1j)"
+                "text": "flops.absolute(1.2 + 1j)"
               },
               {
                 "kind": "output",
@@ -397,12 +397,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(start=-10, stop=10, num=101)"
+                "text": "x = flops.linspace(start=-10, stop=10, num=101)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, we.absolute(x))"
+                "text": "plt.plot(x, flops.absolute(x))"
               },
               {
                 "kind": "input",
@@ -426,12 +426,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xx = x + 1j * x[:, we.newaxis]"
+                "text": "xx = x + 1j * x[:, flops.newaxis]"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.imshow(we.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')"
+                "text": "plt.imshow(flops.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')"
               },
               {
                 "kind": "input",
@@ -449,7 +449,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
                 "text": "abs"
@@ -460,10 +460,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
-                "text": "we.absolute"
+                "text": "flops.absolute"
               },
               {
                 "kind": "text",
@@ -477,7 +477,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([-1.2, 1.2])"
+                "text": "x = flops.array([-1.2, 1.2])"
               },
               {
                 "kind": "input",
@@ -500,20 +500,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.absolute",
     "module": "numpy",
     "name": "absolute",
     "notes": "Element-wise absolute value.",
     "numpy_ref": "np.absolute",
-    "signature": "we.absolute(*args, **kwargs)",
+    "signature": "fnp.absolute(*args, **kwargs)",
     "status": "supported",
     "summary": "Calculate the absolute value element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.absolute"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "absolute",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

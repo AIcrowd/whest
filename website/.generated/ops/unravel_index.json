@@ -31,7 +31,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/shape",
+                      "href": "/docs/api/numpy/shape/",
                       "kind": "link",
                       "target": "shape",
                       "text": "shape"
@@ -52,7 +52,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/shape",
+                  "href": "/docs/api/numpy/shape/",
                   "kind": "link",
                   "target": "shape",
                   "text": "shape"
@@ -75,7 +75,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/indices",
+                      "href": "/docs/api/numpy/indices/",
                       "kind": "link",
                       "target": "indices",
                       "text": "indices"
@@ -96,7 +96,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/indices",
+                  "href": "/docs/api/numpy/indices/",
                   "kind": "link",
                   "target": "indices",
                   "text": "indices"
@@ -152,7 +152,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/indices",
+                      "href": "/docs/api/numpy/indices/",
                       "kind": "link",
                       "target": "indices",
                       "text": "indices"
@@ -173,7 +173,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/indices",
+                  "href": "/docs/api/numpy/indices/",
                   "kind": "link",
                   "target": "indices",
                   "text": "indices"
@@ -201,8 +201,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/ravel_multi_index",
-              "label": "we.ravel_multi_index",
+              "href": "/docs/api/numpy/ravel-multi-index/",
+              "label": "flops.ravel_multi_index",
               "original_target": "ravel_multi_index",
               "role": "",
               "target": "ravel_multi_index",
@@ -221,12 +221,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.unravel_index([22, 41, 37], (7,6))"
+              "text": "flops.unravel_index([22, 41, 37], (7,6))"
             },
             {
               "kind": "output",
@@ -235,7 +235,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.unravel_index([31, 41, 13], (7,6), order='F')"
+              "text": "flops.unravel_index([31, 41, 13], (7,6), order='F')"
             },
             {
               "kind": "output",
@@ -249,7 +249,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.unravel_index(1621, (6,7,8,9))"
+              "text": "flops.unravel_index(1621, (6,7,8,9))"
             },
             {
               "kind": "output",
@@ -263,6 +263,7 @@
     }
   ],
   "canonical_name": "unravel_index",
+  "canonical_path": "numpy/unravel-index",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -273,16 +274,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.unravel_index([22, 41, 37], (7,6))\n\nwe.unravel_index([31, 41, 13], (7,6), order='F')\n\nwe.unravel_index(1621, (6,7,8,9))",
+    "code": "import flopscope.numpy as fnp\n\nflops.unravel_index([22, 41, 37], (7,6))\n\nflops.unravel_index([31, 41, 13], (7,6), order='F')\n\nflops.unravel_index(1621, (6,7,8,9))",
     "output": "(array([3, 6, 6]), array([4, 5, 1]))\n\n(array([3, 6, 6]), array([4, 5, 1]))\n\n(3, 1, 4, 1)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/unravel_index/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.unravel_index",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1987",
+  "href": "/docs/api/numpy/unravel-index/",
+  "legacy_href": "/docs/api/ops/unravel_index/",
   "module": "numpy",
   "name": "unravel_index",
   "next": {
-    "href": "/docs/api/ops/unstack/",
-    "label": "we.unstack"
+    "href": "/docs/api/numpy/unstack/",
+    "label": "fnp.unstack"
   },
   "notes": "Convert flat index to multi-dimensional index.",
   "notes_sections": [],
@@ -314,10 +319,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unpackbits/",
-    "label": "we.unpackbits"
+    "href": "/docs/api/numpy/unpackbits/",
+    "label": "fnp.unpackbits"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.unravel_index",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unravel_index.html",
   "returns": [
     {
@@ -334,20 +340,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/ravel_multi_index",
-      "label": "we.ravel_multi_index",
+      "href": "/docs/api/numpy/ravel-multi-index/",
+      "label": "flops.ravel_multi_index",
       "original_target": "ravel_multi_index",
       "role": "",
       "target": "ravel_multi_index",
       "unresolved": false
     }
   ],
-  "signature": "we.unravel_index(*args, **kwargs)",
+  "signature": "fnp.unravel_index(*args, **kwargs)",
   "slug": "unravel_index",
   "summary": "Converts a flat index or array of flat indices into a tuple of coordinate arrays.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.unravel_index",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1604"
+  "weight": 0.0
 }

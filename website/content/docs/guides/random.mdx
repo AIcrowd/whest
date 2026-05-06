@@ -1,0 +1,210 @@
+---
+title: "Random Number Generation"
+---
+
+*Counted RNGs for reproducible, FLOP-tracked sampling.*
+
+**You will learn:**
+
+- The three ways to draw random samples in flopscope and when to use each
+- How `default_rng()` is the canonical, recommended pattern
+- How counted RNGs behave under pickle/copy/spawn
+- How they integrate with downstream APIs (e.g. future `flopscope.stats.rvs()`)
+- The one foot-gun left over from numpy's legacy API
+
+## TL;DR
+
+```python
+import flopscope.numpy as fnp
+from flopscope import BudgetContext
+
+with BudgetContext(flop_budget=1_000_000):
+    rng = fnp.random.default_rng(42)
+    x = rng.standard_normal((100,))   # FLOPs deducted, FlopscopeArray returned
+```
+
+This is the **canonical pattern**: per-call seed, per-instance state, fully isolated, FLOP-counted.
+
+## Three ways to sample
+
+| API | Status | Per-instance state? | Use when |
+|---|---|---|---|
+| `fnp.random.default_rng(seed)` | **canonical** ✅ | yes | always (modern code) |
+| `fnp.random.RandomState(seed)` | first-class | yes | porting code from numpy's legacy API |
+| `fnp.random.randn(...)`, `normal(...)`, etc. | first-class | shares numpy's global RNG | short scripts, REPL exploration |
+
+All three charge FLOPs to the active `BudgetContext`. The difference is *where the random state lives*.
+
+### `default_rng()` — canonical pattern
+
+```python
+import flopscope.numpy as fnp
+from flopscope import BudgetContext
+
+with BudgetContext(flop_budget=10_000_000):
+    rng = fnp.random.default_rng(seed=42)
+
+    samples = rng.standard_normal(size=(1000,))   # 1000 FLOPs × empirical weight
+    integers = rng.integers(low=0, high=100, size=50)
+    chosen = rng.choice(100, size=20, replace=False)
+```
+
+The returned object is a `numpy.random.Generator` subclass — `isinstance(rng, np.random.Generator)` holds, so it works anywhere a numpy `Generator` is expected.
+
+### `RandomState()` — legacy compat
+
+The legacy `numpy.random.RandomState` API is still supported with full FLOP counting:
+
+```python
+with BudgetContext(flop_budget=10_000_000):
+    rs = fnp.random.RandomState(42)
+    z = rs.randn(10)               # → FlopscopeArray, counted
+    a = rs.choice(100, size=20)    # → FlopscopeArray, counted
+```
+
+Use this only when you're porting code that already uses `RandomState`. New code should prefer `default_rng()`.
+
+### Module-level samplers
+
+`fnp.random.randn`, `normal`, `uniform`, `choice`, `shuffle`, etc. are kept first-class for short scripts and REPL use:
+
+```python
+fnp.random.seed(42)
+with BudgetContext(flop_budget=10_000):
+    x = fnp.random.randn(100)
+```
+
+These match `numpy.random` semantics exactly, plus FLOP accounting. **They share numpy's global RNG state**, which is fine for one-shot scripts but creates a foot-gun in longer-running programs — see [Pitfall: global state](#pitfall-global-state) below.
+
+## Cross-API parity
+
+Same physical operation charges identical FLOPs regardless of which API you used:
+
+```python
+from flopscope._weights import load_weights
+load_weights()
+
+with BudgetContext() as b1: fnp.random.randn(100)                            # 1600 FLOPs
+with BudgetContext() as b2: fnp.random.default_rng(0).standard_normal(100)   # 1600 FLOPs
+with BudgetContext() as b3: fnp.random.RandomState(0).randn(100)             # 1600 FLOPs
+
+assert b1.flops_used == b2.flops_used == b3.flops_used
+```
+
+`default_rng().normal(...)` inherits the calibrated weight of the module-level `random.normal` it shadows. No per-method calibration is needed for new method-level entries — runtime aliasing handles it.
+
+## State management
+
+### Pickle and copy
+
+Counted RNGs round-trip cleanly through `pickle` and `copy`:
+
+```python
+import pickle, copy
+
+rng = fnp.random.default_rng(42)
+revived = pickle.loads(pickle.dumps(rng))     # same type, same state
+clone = copy.deepcopy(rng)                    # also same type, same state
+
+# Box-Muller cache fidelity (RandomState uses it for randn):
+rs = fnp.random.RandomState(42)
+rs.randn(5)                                   # populate cache
+rs2 = pickle.loads(pickle.dumps(rs))
+assert (rs.randn(7) == rs2.randn(7)).all()    # bit-identical streams
+```
+
+### `spawn()` for parallel work
+
+`Generator.spawn(n)` returns `n` independent counted children that share no state with the parent:
+
+```python
+rng = fnp.random.default_rng(42)
+children = rng.spawn(8)                       # 8 independent counted Generators
+
+for child in children:
+    with BudgetContext(flop_budget=10**6):
+        # Each child draws independent samples; charges its own context.
+        samples = child.standard_normal((1000,))
+```
+
+Each child has its own `bit_generator`, so children running in parallel produce independent streams — no contention, no shared state.
+
+### Constructing from a specific BitGenerator
+
+The `Generator(BitGenerator(seed))` idiom from numpy works identically:
+
+```python
+with BudgetContext(flop_budget=10_000):
+    rng = fnp.random.Generator(fnp.random.PCG64(42))
+    samples = rng.normal(0, 1, size=10)        # counted
+```
+
+The bit-generator classes (`BitGenerator`, `MT19937`, `PCG64`, `PCG64DXSM`, `Philox`, `SFC64`) pass through to numpy unchanged — they don't do math, so there's nothing to count at the bit-generator level. FLOPs are charged at the sampler-method level on the resulting `Generator`.
+
+## Pitfall: global state
+
+The one path that *doesn't* give per-instance isolation is the module-level samplers, because they share numpy's global RNG. Across two sequential `BudgetContext`s:
+
+```python
+fnp.random.seed(42)
+
+with BudgetContext():
+    a = fnp.random.randn(3)   # uses global state, position 0
+
+with BudgetContext():
+    b = fnp.random.randn(3)   # global state continued, position 3
+                              # NOT a fresh seed-42 sequence!
+```
+
+If you need each context to be independently reproducible, either re-seed at the top of each context, or use `default_rng()`:
+
+```python
+# Option 1 — re-seed (works, but easy to forget):
+with BudgetContext():
+    fnp.random.seed(42)
+    a = fnp.random.randn(3)
+with BudgetContext():
+    fnp.random.seed(42)
+    b = fnp.random.randn(3)
+assert (a == b).all()
+
+# Option 2 — default_rng() (cleaner, recommended):
+with BudgetContext():
+    rng = fnp.random.default_rng(42)
+    a = rng.standard_normal(3)
+with BudgetContext():
+    rng = fnp.random.default_rng(42)
+    b = rng.standard_normal(3)
+assert (a == b).all()
+```
+
+Note that **`BudgetContext`s cannot be nested** at all (the runtime raises `RuntimeError("Cannot nest BudgetContexts")`), so the global-state issue only affects *sequential* contexts, never overlapping ones.
+
+## Forward compatibility: integration with other APIs
+
+Anything that accepts a numpy `Generator` accepts a counted `Generator`. For example, when `flopscope.stats` grows an `rvs()` method (random variate sampling), it will accept a counted RNG and inherit FLOP counting for free:
+
+```python
+# Future flopscope.stats API (not yet implemented):
+rng = fnp.random.default_rng(42)
+samples = fnp.stats.norm.rvs(size=100, random_state=rng)   # counted via rng
+```
+
+The pattern works because `rng.uniform(...)` and `fnp.stats.norm.ppf(...)` are both already FLOP-counted. Inverse-CDF sampling threads naturally through the existing wrappers.
+
+## What's deliberately not supported
+
+| Pattern | Status | Why |
+|---|---|---|
+| Nested `BudgetContext`s | runtime error | Out of scope; flopscope models a single budget per program region. |
+| Methods not in the registry | `UnsupportedFunctionError` | Closes the silent-bypass hole from issue #18. New numpy methods are added to the registry on each version bump (CI: `scripts/numpy_audit.py --ci`). |
+| `numpy.random.<X>` directly | not counted | Use `fnp.random.<X>` for counting. `numpy.random.X` continues to work but bypasses flopscope. |
+
+## Related
+
+- [`fnp.random.default_rng`](/docs/api/numpy/random/default-rng/) — canonical entry point (op page)
+- [Migrate from NumPy](/docs/guides/migrate-from-numpy/) — broader migration guide
+- [Issue #18](https://github.com/AIcrowd/flopscope/issues/18) — design rationale and history
+
+(`fnp.random.RandomState` is a class constructor, not a registered op — its
+sampler methods have individual op pages under `/docs/api/numpy/random/`.)

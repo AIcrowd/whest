@@ -3,7 +3,7 @@ Tests the accuracy of the opt_einsum paths in addition to unit tests for
 the various path helper functions.
 
 Vendored from opt_einsum/tests/test_paths.py with import changes:
-  - opt_einsum -> whest._opt_einsum
+  - opt_einsum -> flopscope._opt_einsum
   - oe.helpers.X -> oe._helpers.X
   - oe.paths.X -> oe._paths.X
   - oe.path_random.X -> oe._path_random.X
@@ -16,10 +16,10 @@ from typing import Any
 
 import pytest
 
-from whest import _opt_einsum as oe
-from whest._opt_einsum._parser import get_symbol
-from whest._opt_einsum._testing import build_shapes, rand_equation
-from whest._opt_einsum._typing import (
+from flopscope import _opt_einsum as oe
+from flopscope._opt_einsum._parser import get_symbol
+from flopscope._opt_einsum._testing import build_shapes, rand_equation
+from flopscope._opt_einsum._typing import (
     ArrayIndexType,
     OptimizeKind,
     PathType,
@@ -105,7 +105,7 @@ def test_size_by_dict() -> None:
     for ind, val in zip("abcdez", [2, 5, 9, 11, 13, 0], strict=False):
         sizes_dict[ind] = val
 
-    path_func = oe._helpers.compute_size_by_dict
+    path_func = oe._helpers.compute_size_by_dict  # pyright: ignore[reportAttributeAccessIssue]
 
     assert 1 == path_func("", sizes_dict)
     assert 2 == path_func("a", sizes_dict)
@@ -123,21 +123,21 @@ def test_flop_cost() -> None:
     size_dict = dict.fromkeys("abcdef", 10)
 
     # Loop over an array
-    assert 10 == oe._helpers.flop_count("a", False, 1, size_dict)
+    assert 10 == oe._helpers.flop_count("a", False, 1, size_dict)  # pyright: ignore[reportAttributeAccessIssue]
 
     # Hadamard product (*)
-    assert 10 == oe._helpers.flop_count("a", False, 2, size_dict)
-    assert 100 == oe._helpers.flop_count("ab", False, 2, size_dict)
+    assert 10 == oe._helpers.flop_count("a", False, 2, size_dict)  # pyright: ignore[reportAttributeAccessIssue]
+    assert 100 == oe._helpers.flop_count("ab", False, 2, size_dict)  # pyright: ignore[reportAttributeAccessIssue]
 
     # Inner product (FMA=1, no +1 for inner)
-    assert 10 == oe._helpers.flop_count("a", True, 2, size_dict)
-    assert 100 == oe._helpers.flop_count("ab", True, 2, size_dict)
+    assert 10 == oe._helpers.flop_count("a", True, 2, size_dict)  # pyright: ignore[reportAttributeAccessIssue]
+    assert 100 == oe._helpers.flop_count("ab", True, 2, size_dict)  # pyright: ignore[reportAttributeAccessIssue]
 
     # Inner product x3 (FMA=1, op_factor = max(1, 3-1) = 2)
-    assert 20 == oe._helpers.flop_count("a", True, 3, size_dict)
+    assert 20 == oe._helpers.flop_count("a", True, 3, size_dict)  # pyright: ignore[reportAttributeAccessIssue]
 
     # GEMM (FMA=1)
-    assert 1000 == oe._helpers.flop_count("abc", True, 2, size_dict)
+    assert 1000 == oe._helpers.flop_count("abc", True, 2, size_dict)  # pyright: ignore[reportAttributeAccessIssue]
 
 
 @pytest.mark.skip(reason="oe.contract not vendored")
@@ -149,7 +149,7 @@ def test_bad_path_option() -> None:
 @pytest.mark.skip(reason="oe.contract not vendored")
 def test_explicit_path() -> None:
     pytest.importorskip("numpy")
-    x = oe.contract("a,b,c", [1], [2], [3], optimize=[(1, 2), (0, 1)])
+    x = oe.contract("a,b,c", [1], [2], [3], optimize=[(1, 2), (0, 1)])  # pyright: ignore[reportAttributeAccessIssue]
     assert x.item() == 6
 
 
@@ -535,8 +535,8 @@ def test_parallel_random_greedy() -> None:
 def test_custom_path_optimizer() -> None:
     np = pytest.importorskip("numpy")
 
-    class NaiveOptimizer(oe._paths.PathOptimizer):
-        def __call__(
+    class NaiveOptimizer(oe._paths.PathOptimizer):  # pyright: ignore[reportAttributeAccessIssue]
+        def __call__(  # pyright: ignore[reportIncompatibleMethodOverride]
             self,
             inputs: list[ArrayIndexType],
             output: ArrayIndexType,

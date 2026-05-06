@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/floor/",
+  "detail_href": "/docs/api/numpy/floor/",
   "detail_json_href": "/api-data/ops/floor.json",
   "docs": {
     "sections": [
@@ -331,8 +331,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/ceil",
-                "label": "we.ceil",
+                "href": "/docs/api/numpy/ceil/",
+                "label": "flops.ceil",
                 "original_target": "ceil",
                 "role": "",
                 "target": "ceil",
@@ -342,8 +342,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/trunc",
-                "label": "we.trunc",
+                "href": "/docs/api/numpy/trunc/",
+                "label": "flops.trunc",
                 "original_target": "trunc",
                 "role": "",
                 "target": "trunc",
@@ -353,8 +353,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/rint",
-                "label": "we.rint",
+                "href": "/docs/api/numpy/rint/",
+                "label": "flops.rint",
                 "original_target": "rint",
                 "role": "",
                 "target": "rint",
@@ -364,8 +364,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/trunc",
-                "label": "we.trunc",
+                "href": "/docs/api/numpy/trunc/",
+                "label": "flops.trunc",
                 "original_target": "fix",
                 "role": "",
                 "target": "trunc",
@@ -395,7 +395,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/floor",
+                "href": "/docs/api/numpy/floor/",
                 "kind": "link",
                 "target": "floor",
                 "text": "floor"
@@ -414,7 +414,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/trunc",
+                "href": "/docs/api/numpy/trunc/",
                 "kind": "link",
                 "target": "trunc",
                 "text": "fix"
@@ -436,17 +436,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
+                "text": "a = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.floor(a)"
+                "text": "flops.floor(a)"
               },
               {
                 "kind": "output",
@@ -464,20 +464,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.floor",
     "module": "numpy",
     "name": "floor",
     "notes": "Element-wise floor.",
     "numpy_ref": "np.floor",
-    "signature": "we.floor(*args, **kwargs)",
+    "signature": "fnp.floor(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the floor of the input, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.floor"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "floor",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

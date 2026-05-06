@@ -262,12 +262,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.identity(3)"
+              "text": "flops.identity(3)"
             },
             {
               "kind": "output",
@@ -289,6 +289,7 @@
     }
   ],
   "canonical_name": "identity",
+  "canonical_path": "numpy/identity",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -299,16 +300,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.identity(3)",
+    "code": "import flopscope.numpy as fnp\n\nflops.identity(3)",
     "output": "array([[1.,  0.,  0.],\n       [0.,  1.,  0.],\n       [0.,  0.,  1.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/identity/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.identity",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L329",
+  "href": "/docs/api/numpy/identity/",
+  "legacy_href": "/docs/api/ops/identity/",
   "module": "numpy",
   "name": "identity",
   "next": {
-    "href": "/docs/api/ops/imag/",
-    "label": "we.imag"
+    "href": "/docs/api/numpy/imag/",
+    "label": "fnp.imag"
   },
   "notes": "Create square identity matrix.",
   "notes_sections": [],
@@ -330,11 +335,11 @@
     },
     {
       "body": [
-        "Reference object to allow the creation of arrays which are not",
-        "NumPy arrays. If an array-like passed in as ``like`` supports",
-        "the ``__array_function__`` protocol, the result will be defined",
-        "by it. In this case, it ensures the creation of an array object",
-        "compatible with that passed in via this argument.",
+        "    Reference object to allow the creation of arrays which are not",
+        "    NumPy arrays. If an array-like passed in as ``like`` supports",
+        "    the ``__array_function__`` protocol, the result will be defined",
+        "    by it. In this case, it ensures the creation of an array object",
+        "    compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -343,10 +348,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/i0/",
-    "label": "we.i0"
+    "href": "/docs/api/numpy/i0/",
+    "label": "fnp.i0"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.identity",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.identity.html",
   "returns": [
     {
@@ -359,12 +365,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.identity(n, dtype=None, *, like=None)",
+  "signature": "fnp.identity(n, dtype=None, *, like=None)",
   "slug": "identity",
   "summary": "Return the identity array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2195",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.identity",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L224"
+  "weight": 0.0
 }

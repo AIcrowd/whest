@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cross/",
+  "detail_href": "/docs/api/numpy/cross/",
   "detail_json_href": "/api-data/ops/cross.json",
   "docs": {
     "sections": [
@@ -517,8 +517,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/inner",
-                "label": "we.inner",
+                "href": "/docs/api/numpy/inner/",
+                "label": "flops.inner",
                 "original_target": "inner",
                 "role": "",
                 "target": "inner",
@@ -533,15 +533,15 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
-                "label": "we.outer",
+                "href": "/docs/api/numpy/outer/",
+                "label": "flops.outer",
                 "original_target": "outer",
                 "role": "",
                 "target": "outer",
                 "unresolved": false
               },
               {
-                "description": "An Array API compatible variation of ``we.cross``, which accepts (arrays of) 3-element vectors only.",
+                "description": "An Array API compatible variation of ``flops.cross``, which accepts (arrays of) 3-element vectors only.",
                 "description_inline": [
                   {
                     "kind": "text",
@@ -549,10 +549,10 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/cross",
+                    "href": "/docs/api/numpy/cross/",
                     "kind": "link",
                     "target": "cross",
-                    "text": "we.cross"
+                    "text": "flops.cross"
                   },
                   {
                     "kind": "text",
@@ -560,8 +560,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-cross",
-                "label": "we.linalg.cross",
+                "href": "/docs/api/numpy/linalg/cross/",
+                "label": "flops.linalg.cross",
                 "original_target": "linalg.cross",
                 "role": "",
                 "target": "linalg.cross",
@@ -576,8 +576,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ix_",
-                "label": "we.ix_",
+                "href": "/docs/api/numpy/ix-/",
+                "label": "flops.ix_",
                 "original_target": "ix_",
                 "role": "",
                 "target": "ix_",
@@ -633,7 +633,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -648,7 +648,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y)"
+                "text": "flops.cross(x, y)"
               },
               {
                 "kind": "output",
@@ -681,7 +681,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y)"
+                "text": "flops.cross(x, y)"
               },
               {
                 "kind": "output",
@@ -714,7 +714,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y)"
+                "text": "flops.cross(x, y)"
               },
               {
                 "kind": "output",
@@ -747,7 +747,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y)"
+                "text": "flops.cross(x, y)"
               },
               {
                 "kind": "output",
@@ -778,17 +778,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[1,2,3], [4,5,6]])"
+                "text": "x = flops.array([[1,2,3], [4,5,6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.array([[4,5,6], [1,2,3]])"
+                "text": "y = flops.array([[4,5,6], [1,2,3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y)"
+                "text": "flops.cross(x, y)"
               },
               {
                 "kind": "output",
@@ -831,7 +831,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y, axisc=0)"
+                "text": "flops.cross(x, y, axisc=0)"
               },
               {
                 "kind": "output",
@@ -894,17 +894,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[1,2,3], [4,5,6], [7, 8, 9]])"
+                "text": "x = flops.array([[1,2,3], [4,5,6], [7, 8, 9]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.array([[7, 8, 9], [4,5,6], [1,2,3]])"
+                "text": "y = flops.array([[7, 8, 9], [4,5,6], [1,2,3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y)"
+                "text": "flops.cross(x, y)"
               },
               {
                 "kind": "output",
@@ -921,7 +921,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cross(x, y, axisa=0, axisb=0)"
+                "text": "flops.cross(x, y, axisa=0, axisb=0)"
               },
               {
                 "kind": "output",
@@ -947,20 +947,20 @@
     "category": "counted_custom",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.cross",
     "module": "numpy",
     "name": "cross",
     "notes": "Cross product of two 3-D vectors.",
     "numpy_ref": "np.cross",
-    "signature": "we.cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None)",
+    "signature": "fnp.cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None)",
     "status": "supported",
     "summary": "Return the cross product of two (arrays of) vectors.",
-    "weight": 1.0,
-    "whest_ref": "we.cross"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "cross",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1522",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1096"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1805",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1522"
   }
 }

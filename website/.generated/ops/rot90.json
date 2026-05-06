@@ -186,8 +186,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/flip",
-              "label": "we.flip",
+              "href": "/docs/api/numpy/flip/",
+              "label": "flops.flip",
               "original_target": "flip",
               "role": "",
               "target": "flip",
@@ -202,8 +202,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fliplr",
-              "label": "we.fliplr",
+              "href": "/docs/api/numpy/fliplr/",
+              "label": "flops.fliplr",
               "original_target": "fliplr",
               "role": "",
               "target": "fliplr",
@@ -218,8 +218,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/flipud",
-              "label": "we.flipud",
+              "href": "/docs/api/numpy/flipud/",
+              "label": "flops.flipud",
               "original_target": "flipud",
               "role": "",
               "target": "flipud",
@@ -277,12 +277,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m = we.array([[1,2],[3,4]], int)"
+              "text": "m = flops.array([[1,2],[3,4]], int)"
             },
             {
               "kind": "input",
@@ -300,7 +300,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.rot90(m)"
+              "text": "flops.rot90(m)"
             },
             {
               "kind": "output",
@@ -313,7 +313,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.rot90(m, 2)"
+              "text": "flops.rot90(m, 2)"
             },
             {
               "kind": "output",
@@ -326,12 +326,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m = we.arange(8).reshape((2,2,2))"
+              "text": "m = flops.arange(8).reshape((2,2,2))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.rot90(m, 1, (1,2))"
+              "text": "flops.rot90(m, 1, (1,2))"
             },
             {
               "kind": "output",
@@ -357,6 +357,7 @@
     }
   ],
   "canonical_name": "rot90",
+  "canonical_path": "numpy/rot90",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -367,16 +368,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nm = we.array([[1,2],[3,4]], int)\n\nm\n\nwe.rot90(m)\n\nwe.rot90(m, 2)\n\nm = we.arange(8).reshape((2,2,2))\n\nwe.rot90(m, 1, (1,2))",
+    "code": "import flopscope.numpy as fnp\n\nm = flops.array([[1,2],[3,4]], int)\n\nm\n\nflops.rot90(m)\n\nflops.rot90(m, 2)\n\nm = flops.arange(8).reshape((2,2,2))\n\nflops.rot90(m, 1, (1,2))",
     "output": "array([[1, 2],\n       [3, 4]])\n\narray([[2, 4],\n       [1, 3]])\n\narray([[4, 3],\n       [2, 1]])\n\narray([[[1, 3],\n        [0, 2]],\n       [[5, 7],\n        [4, 6]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/rot90/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.rot90",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1794",
+  "href": "/docs/api/numpy/rot90/",
+  "legacy_href": "/docs/api/ops/rot90/",
   "module": "numpy",
   "name": "rot90",
   "next": {
-    "href": "/docs/api/ops/row_stack/",
-    "label": "we.row_stack"
+    "href": "/docs/api/numpy/row-stack/",
+    "label": "fnp.row_stack"
   },
   "notes": "Rotate array 90 degrees.",
   "notes_sections": [
@@ -409,10 +414,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/roots/",
-    "label": "we.roots"
+    "href": "/docs/api/numpy/roots/",
+    "label": "fnp.roots"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.rot90",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.rot90.html",
   "returns": [
     {
@@ -433,8 +439,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/flip",
-      "label": "we.flip",
+      "href": "/docs/api/numpy/flip/",
+      "label": "flops.flip",
       "original_target": "flip",
       "role": "",
       "target": "flip",
@@ -449,8 +455,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fliplr",
-      "label": "we.fliplr",
+      "href": "/docs/api/numpy/fliplr/",
+      "label": "flops.fliplr",
       "original_target": "fliplr",
       "role": "",
       "target": "fliplr",
@@ -465,20 +471,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/flipud",
-      "label": "we.flipud",
+      "href": "/docs/api/numpy/flipud/",
+      "label": "flops.flipud",
       "original_target": "flipud",
       "role": "",
       "target": "flipud",
       "unresolved": false
     }
   ],
-  "signature": "we.rot90(m, k=1, axes=(0, 1))",
+  "signature": "fnp.rot90(m, k=1, axes=(0, 1))",
   "slug": "rot90",
   "summary": "Rotate an array by 90 degrees in the plane specified by axes.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L153",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.rot90",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1441"
+  "weight": 0.0
 }

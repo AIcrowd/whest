@@ -20,10 +20,10 @@ from pathlib import Path
 
 import pytest
 
-from whest._registry import REGISTRY
+from flopscope._registry import REGISTRY
 
 ROOT = Path(__file__).resolve().parent.parent
-WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
+WEIGHTS_PATH = ROOT / "src" / "flopscope" / "data" / "weights.json"
 DOCS_PATH = ROOT / "website" / "content" / "docs" / "development" / "calibration.mdx"
 OPS_INDEX_PATH = ROOT / "website" / "public" / "ops.json"
 
@@ -158,11 +158,22 @@ def api_operations() -> dict[str, dict]:
 
 @pytest.fixture(scope="module")
 def counted_ops() -> set[str]:
-    """All non-free, non-blacklisted operations in the registry."""
+    """Module-level counted operations that need direct weight entries.
+
+    Excludes method-level entries on Generator/RandomState — those inherit
+    cost from their cost_formula at dispatch time and don't need their own
+    rows in weights.json.
+    """
     return {
         name
         for name, entry in REGISTRY.items()
-        if entry["category"] not in ("free", "blacklisted")
+        if entry["category"]
+        not in (
+            "free",
+            "blacklisted",
+            "free_random_method",
+            "counted_random_method",
+        )
     }
 
 

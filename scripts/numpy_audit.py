@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""numpy_audit.py — Introspect NumPy and compare against the whest registry.
+"""numpy_audit.py — Introspect NumPy and compare against the flopscope registry.
 
 Usage
 -----
@@ -23,13 +23,13 @@ import numpy as np
 
 # ---------------------------------------------------------------------------
 # Names that are intentionally excluded from the audit.
-# These are either manually handled in whest, are low-level C types,
+# These are either manually handled in flopscope, are low-level C types,
 # deprecated helpers, or class constructors that don't represent mathematical
 # operations we need to FLOP-count.
 # ---------------------------------------------------------------------------
 SKIP_NAMES: frozenset[str] = frozenset(
     [
-        # --- array construction (manually handled in whest) ---
+        # --- array construction (manually handled in flopscope) ---
         "array",
         "asarray",
         "asanyarray",
@@ -331,7 +331,7 @@ def introspect_numpy() -> dict[str, dict]:
 
 
 def load_registry() -> tuple[dict, dict]:
-    """Load the whest registry.
+    """Load the flopscope registry.
 
     Returns
     -------
@@ -340,7 +340,7 @@ def load_registry() -> tuple[dict, dict]:
         Returns ``({}, {})`` if the registry does not exist yet.
     """
     try:
-        from whest._registry import REGISTRY, REGISTRY_META
+        from flopscope._registry import REGISTRY, REGISTRY_META
 
         return REGISTRY_META, REGISTRY
     except ImportError:
@@ -351,7 +351,7 @@ def compare(
     discovered: dict[str, dict],
     registry: dict,
 ) -> dict[str, list]:
-    """Compare discovered numpy callables against the whest registry.
+    """Compare discovered numpy callables against the flopscope registry.
 
     Parameters
     ----------
@@ -363,14 +363,14 @@ def compare(
     Returns
     -------
     dict with keys:
-        - ``covered`` — in registry and importable from whest
+        - ``covered`` — in registry and importable from flopscope
         - ``registered_not_implemented`` — in registry but not importable
         - ``unclassified`` — discovered but not in registry at all
         - ``blacklisted`` — in registry with category 'blacklisted'
         - ``stale`` — in registry but not discoverable in numpy
     """
     # Determine which registered functions are actually importable
-    import whest as we
+    import flopscope as we
 
     implemented_names = set()
     for name in registry:
@@ -409,6 +409,30 @@ def compare(
             result["stale"].append(name)
 
     return result
+
+
+def audit_random_class(cls_name: str, cls: type, op_prefix: str) -> list[str]:
+    """Diff numpy class method set against the registry slice for that class.
+
+    Returns an empty list when the registry is in sync with numpy. Otherwise
+    returns lines of the form ``+ Generator.foo`` (numpy added a method)
+    or ``- Generator.bar`` (registry has an entry numpy no longer exposes).
+    """
+    from flopscope._registry import REGISTRY
+
+    registry_methods = {
+        n[len(op_prefix) :]
+        for n, e in REGISTRY.items()
+        if n.startswith(op_prefix)
+        and e.get("category") in {"counted_random_method", "free_random_method"}
+    }
+    numpy_methods = {n for n in dir(cls) if not n.startswith("_")}
+
+    added = numpy_methods - registry_methods
+    removed = registry_methods - numpy_methods
+    return [f"+ {cls_name}.{m}" for m in sorted(added)] + [
+        f"- {cls_name}.{m}" for m in sorted(removed)
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -466,7 +490,7 @@ def print_rich_report(
         ]
 
     table = Table(
-        title="whest / NumPy coverage audit",
+        title="flopscope / NumPy coverage audit",
         box=box.SIMPLE_HEAVY,
         show_lines=False,
         expand=True,
@@ -512,7 +536,7 @@ def print_plain_report(
 ) -> None:
     """Print a plain-text report suitable for CI logs."""
     print("=" * 60)
-    print("whest / NumPy coverage audit")
+    print("flopscope / NumPy coverage audit")
     print("=" * 60)
 
     for cat, names in comparison.items():
@@ -552,7 +576,7 @@ def print_plain_report(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Audit NumPy callables against the whest registry."
+        description="Audit NumPy callables against the flopscope registry."
     )
     parser.add_argument(
         "--json",
@@ -589,6 +613,17 @@ def main() -> None:
         }
         print(json.dumps(output, indent=2))
         return
+
+    # Issue #18: ensure Generator / RandomState method coverage stays in sync.
+    random_diffs = audit_random_class(
+        "Generator", np.random.Generator, "random.Generator."
+    ) + audit_random_class("RandomState", np.random.RandomState, "random.RandomState.")
+    if random_diffs:
+        print("\n=== random class method drift ===", file=sys.stderr)
+        for line in random_diffs:
+            print(line, file=sys.stderr)
+        if args.ci:
+            sys.exit(1)
 
     if args.ci:
         print_plain_report(

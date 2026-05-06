@@ -29,7 +29,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/cos",
+              "href": "/docs/api/numpy/cos/",
               "kind": "link",
               "target": "cos",
               "text": "cos"
@@ -336,8 +336,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/cos",
-              "label": "we.cos",
+              "href": "/docs/api/numpy/cos/",
+              "label": "flops.cos",
               "original_target": "cos",
               "role": "",
               "target": "cos",
@@ -347,8 +347,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/arctan",
-              "label": "we.arctan",
+              "href": "/docs/api/numpy/arctan/",
+              "label": "flops.arctan",
               "original_target": "arctan",
               "role": "",
               "target": "arctan",
@@ -358,8 +358,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/arcsin",
-              "label": "we.arcsin",
+              "href": "/docs/api/numpy/arcsin/",
+              "label": "flops.arcsin",
               "original_target": "arcsin",
               "role": "",
               "target": "arcsin",
@@ -388,7 +388,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/arccos",
+              "href": "/docs/api/numpy/arccos/",
               "kind": "link",
               "target": "arccos",
               "text": "arccos"
@@ -448,7 +448,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arccos",
+              "href": "/docs/api/numpy/arccos/",
               "kind": "link",
               "target": "arccos",
               "text": "arccos"
@@ -484,7 +484,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arccos",
+              "href": "/docs/api/numpy/arccos/",
               "kind": "link",
               "target": "arccos",
               "text": "arccos"
@@ -520,7 +520,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/cos",
+              "href": "/docs/api/numpy/cos/",
               "kind": "link",
               "target": "cos",
               "text": "cos"
@@ -531,7 +531,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arccos",
+              "href": "/docs/api/numpy/arccos/",
               "kind": "link",
               "target": "arccos",
               "text": "acos"
@@ -573,7 +573,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -592,7 +592,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arccos([1, -1])"
+              "text": "flops.arccos([1, -1])"
             },
             {
               "kind": "output",
@@ -620,12 +620,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(-1, 1, num=100)"
+              "text": "x = flops.linspace(-1, 1, num=100)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.plot(x, we.arccos(x))"
+              "text": "plt.plot(x, flops.arccos(x))"
             },
             {
               "kind": "input",
@@ -645,6 +645,7 @@
     }
   ],
   "canonical_name": "arccos",
+  "canonical_path": "numpy/arccos",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -668,16 +669,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.arccos([1, -1])\n\nimport matplotlib.pyplot as plt\n\nx = we.linspace(-1, 1, num=100)\n\nplt.plot(x, we.arccos(x))\n\nplt.axis('tight')\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nflops.arccos([1, -1])\n\nimport matplotlib.pyplot as plt\n\nx = flops.linspace(-1, 1, num=100)\n\nplt.plot(x, flops.arccos(x))\n\nplt.axis('tight')\n\nplt.show()",
     "output": "array([ 0.        ,  3.14159265])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arccos/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arccos",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/arccos/",
+  "legacy_href": "/docs/api/ops/arccos/",
   "module": "numpy",
   "name": "arccos",
   "next": {
-    "href": "/docs/api/ops/arccosh/",
-    "label": "we.arccosh"
+    "href": "/docs/api/numpy/arccosh/",
+    "label": "fnp.arccosh"
   },
   "notes": "Element-wise inverse cosine.",
   "notes_sections": [
@@ -728,10 +733,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arange/",
-    "label": "we.arange"
+    "href": "/docs/api/numpy/arange/",
+    "label": "fnp.arange"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.arccos",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arccos.html",
   "returns": [
     {
@@ -749,8 +755,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/cos",
-      "label": "we.cos",
+      "href": "/docs/api/numpy/cos/",
+      "label": "flops.cos",
       "original_target": "cos",
       "role": "",
       "target": "cos",
@@ -760,8 +766,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/arctan",
-      "label": "we.arctan",
+      "href": "/docs/api/numpy/arctan/",
+      "label": "flops.arctan",
       "original_target": "arctan",
       "role": "",
       "target": "arctan",
@@ -771,8 +777,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/arcsin",
-      "label": "we.arcsin",
+      "href": "/docs/api/numpy/arcsin/",
+      "label": "flops.arcsin",
       "original_target": "arcsin",
       "role": "",
       "target": "arcsin",
@@ -790,12 +796,11 @@
       "unresolved": true
     }
   ],
-  "signature": "we.arccos(*args, **kwargs)",
+  "signature": "fnp.arccos(*args, **kwargs)",
   "slug": "arccos",
   "summary": "Trigonometric inverse cosine, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arccos",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 16.0
 }

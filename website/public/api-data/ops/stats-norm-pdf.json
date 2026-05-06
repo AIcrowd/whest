@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-norm-pdf/",
+  "detail_href": "/docs/api/stats/norm/pdf/",
   "detail_json_href": "/api-data/ops/stats-norm-pdf.json",
   "docs": {
     "sections": [
@@ -9,46 +9,13 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Probability density function at "
-              },
-              {
-                "kind": "emphasis",
-                "text": "x"
-              },
-              {
-                "kind": "text",
-                "text": "."
+                "text": "Evaluate the probability density function."
               }
             ],
             "type": "paragraph"
           }
         ],
         "title": "Summary"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "Equivalent to "
-              },
-              {
-                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.pdf(x, loc, scale).html",
-                "href": "",
-                "kind": "link",
-                "target": "stats.norm.pdf(x, loc, scale)",
-                "text": "scipy.stats.norm.pdf(x, loc, scale)"
-              },
-              {
-                "kind": "text",
-                "text": "."
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "title": "Extended Summary"
       },
       {
         "blocks": [
@@ -60,7 +27,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Quantiles."
+                        "text": "Points at which to evaluate the density."
                       }
                     ],
                     "type": "paragraph"
@@ -70,7 +37,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Quantiles."
+                    "text": "Points at which to evaluate the density."
                   }
                 ],
                 "name": "x",
@@ -82,7 +49,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Mean of the distribution (default 0)."
+                        "text": "Mean of the distribution. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "0"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -92,7 +67,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Mean of the distribution (default 0)."
+                    "text": "Mean of the distribution. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "0"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "loc",
@@ -104,7 +87,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Standard deviation (default 1)."
+                        "text": "Standard deviation of the distribution. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -114,7 +105,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Standard deviation (default 1)."
+                    "text": "Standard deviation of the distribution. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "scale",
@@ -137,10 +136,10 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "PDF evaluated at "
+                        "text": "Probability density evaluated elementwise at "
                       },
                       {
-                        "kind": "emphasis",
+                        "kind": "code",
                         "text": "x"
                       },
                       {
@@ -151,14 +150,14 @@
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "WhestArray",
+                "data_type": "FlopscopeArray",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "PDF evaluated at "
+                    "text": "Probability density evaluated elementwise at "
                   },
                   {
-                    "kind": "emphasis",
+                    "kind": "code",
                     "text": "x"
                   },
                   {
@@ -175,6 +174,73 @@
           }
         ],
         "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Equivalent to "
+              },
+              {
+                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.pdf(x, loc, scale).html",
+                "href": "",
+                "kind": "link",
+                "target": "stats.norm.pdf(x, loc, scale)",
+                "text": "scipy.stats.norm.pdf(x, loc, scale)"
+              },
+              {
+                "kind": "text",
+                "text": ".\nFLOP cost: "
+              },
+              {
+                "kind": "code",
+                "text": "1 * numel(x)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope.numpy as fnp"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope as flops"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = flops.array([-1.0, 0.0, 1.0])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "flops.round(flops.stats.norm.pdf(x), 3)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0.242, 0.399, 0.242])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
   },
@@ -182,20 +248,20 @@
     "category": "counted_custom",
     "cost_formula": "10n",
     "cost_formula_latex": "$10n$",
-    "module": "whest.stats",
+    "flopscope_ref": "flops.stats.norm.pdf",
+    "module": "flopscope.stats",
     "name": "stats.norm.pdf",
     "notes": "Normal PDF; cost = numel(input).",
-    "numpy_ref": "np.stats.norm.pdf",
-    "signature": "we.stats.norm.pdf(x, loc=0, scale=1)",
+    "numpy_ref": "scipy.stats.norm.pdf",
+    "signature": "flops.stats.norm.pdf(x, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Probability density function at *x*.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.norm.pdf"
+    "summary": "Evaluate the probability density function.",
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-norm-pdf",
   "source": {
-    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_norm.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L39",
+    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html"
   }
 }

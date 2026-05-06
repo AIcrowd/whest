@@ -148,7 +148,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -179,7 +179,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -446,17 +446,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "spectrum = we.array([ 15, -4, 0, -1, 0, -4])"
+              "text": "spectrum = flops.array([ 15, -4, 0, -1, 0, -4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.ifft(spectrum)"
+              "text": "flops.fft.ifft(spectrum)"
             },
             {
               "kind": "output",
@@ -465,7 +465,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.ihfft(spectrum)"
+              "text": "flops.fft.ihfft(spectrum)"
             },
             {
               "kind": "output",
@@ -479,6 +479,7 @@
     }
   ],
   "canonical_name": "fft.ihfft",
+  "canonical_path": "numpy/fft/ihfft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -489,16 +490,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nspectrum = we.array([ 15, -4, 0, -1, 0, -4])\n\nwe.fft.ifft(spectrum)\n\nwe.fft.ihfft(spectrum)",
+    "code": "import flopscope.numpy as fnp\n\nspectrum = flops.array([ 15, -4, 0, -1, 0, -4])\n\nflops.fft.ifft(spectrum)\n\nflops.fft.ihfft(spectrum)",
     "output": "array([1.+0.j,  2.+0.j,  3.+0.j,  4.+0.j,  3.+0.j,  2.+0.j]) # may vary\n\narray([ 1.-0.j,  2.-0.j,  3.-0.j,  4.-0.j]) # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-ihfft/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.ihfft",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L631",
+  "href": "/docs/api/numpy/fft/ihfft/",
+  "legacy_href": "/docs/api/ops/fft-ihfft/",
   "module": "numpy.fft",
   "name": "fft.ihfft",
   "next": {
-    "href": "/docs/api/ops/fft-irfft/",
-    "label": "we.fft.irfft"
+    "href": "/docs/api/numpy/fft/irfft/",
+    "label": "fnp.fft.irfft"
   },
   "notes": "Inverse FFT of Hermitian signal. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -535,7 +540,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -558,10 +563,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-ifftshift/",
-    "label": "we.fft.ifftshift"
+    "href": "/docs/api/numpy/fft/ifftshift/",
+    "label": "fnp.fft.ifftshift"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.ihfft",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ihfft.html",
   "returns": [
     {
@@ -598,12 +604,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.ihfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.ihfft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-ihfft",
   "summary": "Compute the inverse FFT of a signal that has Hermitian symmetry.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L626",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.ihfft",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L472"
+  "weight": 1.0
 }

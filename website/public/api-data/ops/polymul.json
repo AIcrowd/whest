@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/polymul/",
+  "detail_href": "/docs/api/numpy/polymul/",
   "detail_json_href": "/api-data/ops/polymul.json",
   "docs": {
     "sections": [
@@ -33,7 +33,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "polynomial",
-                    "text": "we.polynomial"
+                    "text": "flops.polynomial"
                   },
                   {
                     "kind": "text",
@@ -61,7 +61,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `we.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `flops.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -167,8 +167,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/poly",
-                "label": "we.poly",
+                "href": "/docs/api/numpy/poly/",
+                "label": "flops.poly",
                 "original_target": "poly",
                 "role": "",
                 "target": "poly",
@@ -178,8 +178,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyadd",
-                "label": "we.polyadd",
+                "href": "/docs/api/numpy/polyadd/",
+                "label": "flops.polyadd",
                 "original_target": "polyadd",
                 "role": "",
                 "target": "polyadd",
@@ -189,8 +189,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyder",
-                "label": "we.polyder",
+                "href": "/docs/api/numpy/polyder/",
+                "label": "flops.polyder",
                 "original_target": "polyder",
                 "role": "",
                 "target": "polyder",
@@ -200,8 +200,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polydiv",
-                "label": "we.polydiv",
+                "href": "/docs/api/numpy/polydiv/",
+                "label": "flops.polydiv",
                 "original_target": "polydiv",
                 "role": "",
                 "target": "polydiv",
@@ -211,8 +211,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyfit",
-                "label": "we.polyfit",
+                "href": "/docs/api/numpy/polyfit/",
+                "label": "flops.polyfit",
                 "original_target": "polyfit",
                 "role": "",
                 "target": "polyfit",
@@ -222,8 +222,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyint",
-                "label": "we.polyint",
+                "href": "/docs/api/numpy/polyint/",
+                "label": "flops.polyint",
                 "original_target": "polyint",
                 "role": "",
                 "target": "polyint",
@@ -233,8 +233,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polysub",
-                "label": "we.polysub",
+                "href": "/docs/api/numpy/polysub/",
+                "label": "flops.polysub",
                 "original_target": "polysub",
                 "role": "",
                 "target": "polysub",
@@ -244,8 +244,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyval",
-                "label": "we.polyval",
+                "href": "/docs/api/numpy/polyval/",
+                "label": "flops.polyval",
                 "original_target": "polyval",
                 "role": "",
                 "target": "polyval",
@@ -260,8 +260,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/convolve",
-                "label": "we.convolve",
+                "href": "/docs/api/numpy/convolve/",
+                "label": "flops.convolve",
                 "original_target": "convolve",
                 "role": "",
                 "target": "convolve",
@@ -280,12 +280,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.polymul([1, 2, 3], [9, 5, 1])"
+                "text": "flops.polymul([1, 2, 3], [9, 5, 1])"
               },
               {
                 "kind": "output",
@@ -308,12 +308,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p1 = we.poly1d([1, 2, 3])"
+                "text": "p1 = flops.poly1d([1, 2, 3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p2 = we.poly1d([9, 5, 1])"
+                "text": "p2 = flops.poly1d([9, 5, 1])"
               },
               {
                 "kind": "input",
@@ -344,7 +344,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "print(we.polymul(p1, p2))"
+                "text": "print(flops.polymul(p1, p2))"
               },
               {
                 "kind": "output",
@@ -366,20 +366,20 @@
     "category": "counted_custom",
     "cost_formula": "n1 * n2",
     "cost_formula_latex": "$n_1 \\cdot n_2$",
-    "module": "whest._polynomial",
+    "flopscope_ref": "fnp.polymul",
+    "module": "flopscope._polynomial",
     "name": "polymul",
     "notes": "Multiply polynomials. Cost: n1 * n2 FLOPs.",
     "numpy_ref": "np.polymul",
-    "signature": "we.polymul(a1, a2)",
+    "signature": "fnp.polymul(a1: 'ArrayLike', a2: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Find the product of two polynomials.",
-    "weight": 1.0,
-    "whest_ref": "we.polymul"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "polymul",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L911",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L164"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L167",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L911"
   }
 }

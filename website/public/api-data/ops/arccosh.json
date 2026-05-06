@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arccosh/",
+  "detail_href": "/docs/api/numpy/arccosh/",
   "detail_json_href": "/api-data/ops/arccosh.json",
   "docs": {
     "sections": [
@@ -285,8 +285,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cosh",
-                "label": "we.cosh",
+                "href": "/docs/api/numpy/cosh/",
+                "label": "flops.cosh",
                 "original_target": "cosh",
                 "role": "",
                 "target": "cosh",
@@ -296,8 +296,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/arcsinh",
-                "label": "we.arcsinh",
+                "href": "/docs/api/numpy/arcsinh/",
+                "label": "flops.arcsinh",
                 "original_target": "arcsinh",
                 "role": "",
                 "target": "arcsinh",
@@ -307,8 +307,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/sinh",
-                "label": "we.sinh",
+                "href": "/docs/api/numpy/sinh/",
+                "label": "flops.sinh",
                 "original_target": "sinh",
                 "role": "",
                 "target": "sinh",
@@ -318,8 +318,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/arctanh",
-                "label": "we.arctanh",
+                "href": "/docs/api/numpy/arctanh/",
+                "label": "flops.arctanh",
                 "original_target": "arctanh",
                 "role": "",
                 "target": "arctanh",
@@ -329,8 +329,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/tanh",
-                "label": "we.tanh",
+                "href": "/docs/api/numpy/tanh/",
+                "label": "flops.tanh",
                 "original_target": "tanh",
                 "role": "",
                 "target": "tanh",
@@ -348,7 +348,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arccosh",
+                "href": "/docs/api/numpy/arccosh/",
                 "kind": "link",
                 "target": "arccosh",
                 "text": "arccosh"
@@ -416,7 +416,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arccosh",
+                "href": "/docs/api/numpy/arccosh/",
                 "kind": "link",
                 "target": "arccosh",
                 "text": "arccosh"
@@ -452,7 +452,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arccosh",
+                "href": "/docs/api/numpy/arccosh/",
                 "kind": "link",
                 "target": "arccosh",
                 "text": "arccosh"
@@ -497,12 +497,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arccosh([we.e, 10.0])"
+                "text": "flops.arccosh([flops.e, 10.0])"
               },
               {
                 "kind": "output",
@@ -511,7 +511,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arccosh(1)"
+                "text": "flops.arccosh(1)"
               },
               {
                 "kind": "output",
@@ -529,20 +529,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.arccosh",
     "module": "numpy",
     "name": "arccosh",
     "notes": "Element-wise inverse hyperbolic cosine.",
     "numpy_ref": "np.arccosh",
-    "signature": "we.arccosh(*args, **kwargs)",
+    "signature": "fnp.arccosh(*args, **kwargs)",
     "status": "supported",
     "summary": "Inverse hyperbolic cosine, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.arccosh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "arccosh",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

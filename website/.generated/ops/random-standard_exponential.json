@@ -42,8 +42,8 @@
                   "text": "New code should use the\n"
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_exponential.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/standard-exponential/",
                   "kind": "link",
                   "target": "random.Generator.standard_exponential",
                   "text": "standard_exponential"
@@ -85,7 +85,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_exponential`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.standard_exponential`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -202,9 +202,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_exponential.html",
-              "href": "",
-              "label": "random.Generator.standard_exponential",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/standard-exponential/",
+              "label": "flops.random.Generator.standard_exponential",
               "original_target": "random.Generator.standard_exponential",
               "role": "",
               "target": "random.Generator.standard_exponential",
@@ -232,7 +232,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "n = we.random.standard_exponential((3, 8000))"
+              "text": "n = flops.random.standard_exponential((3, 8000))"
             }
           ],
           "type": "doctest_block"
@@ -242,6 +242,7 @@
     }
   ],
   "canonical_name": "random.standard_exponential",
+  "canonical_path": "numpy/random/standard-exponential",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -252,16 +253,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "n = we.random.standard_exponential((3, 8000))",
+    "code": "n = flops.random.standard_exponential((3, 8000))",
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-standard_exponential/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.standard_exponential",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
+  "href": "/docs/api/numpy/random/standard-exponential/",
+  "legacy_href": "/docs/api/ops/random-standard_exponential/",
   "module": "numpy.random",
   "name": "random.standard_exponential",
   "next": {
-    "href": "/docs/api/ops/random-standard_gamma/",
-    "label": "we.random.standard_gamma"
+    "href": "/docs/api/numpy/random/standard-gamma/",
+    "label": "fnp.random.standard_gamma"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -278,10 +283,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_cauchy/",
-    "label": "we.random.standard_cauchy"
+    "href": "/docs/api/numpy/random/standard-cauchy/",
+    "label": "fnp.random.standard_cauchy"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.standard_exponential",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_exponential.html",
   "returns": [
     {
@@ -301,21 +307,20 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_exponential.html",
-      "href": "",
-      "label": "random.Generator.standard_exponential",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/standard-exponential/",
+      "label": "flops.random.Generator.standard_exponential",
       "original_target": "random.Generator.standard_exponential",
       "role": "",
       "target": "random.Generator.standard_exponential",
       "unresolved": false
     }
   ],
-  "signature": "we.random.standard_exponential(size=None)",
+  "signature": "fnp.random.standard_exponential(size=None)",
   "slug": "random-standard_exponential",
   "summary": "Draw samples from the standard exponential distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.standard_exponential",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

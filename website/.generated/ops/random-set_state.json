@@ -317,6 +317,7 @@
     }
   ],
   "canonical_name": "random.set_state",
+  "canonical_path": "numpy/random/set-state",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -337,12 +338,16 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/random-set_state/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.set_state",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L167",
+  "href": "/docs/api/numpy/random/set-state/",
+  "legacy_href": "/docs/api/ops/random-set_state/",
   "module": "numpy.random",
   "name": "random.set_state",
   "next": {
-    "href": "/docs/api/ops/random-shuffle/",
-    "label": "we.random.shuffle"
+    "href": "/docs/api/numpy/random/shuffle/",
+    "label": "fnp.random.shuffle"
   },
   "notes": "Set internal state of generator.",
   "notes_sections": [
@@ -369,10 +374,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-seed/",
-    "label": "we.random.seed"
+    "href": "/docs/api/numpy/random/seed/",
+    "label": "fnp.random.seed"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.set_state",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.set_state.html",
   "returns": [
     {
@@ -396,12 +402,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.set_state(state)",
+  "signature": "fnp.random.set_state(state: 'dict[str, Any] | tuple[Any, ...]') -> 'None'",
   "slug": "random-set_state",
   "summary": "Set the internal state of the generator from a tuple.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.set_state",
-  "whest_source_url": ""
+  "weight": 0.0
 }

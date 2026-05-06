@@ -54,7 +54,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "we.fft"
+              "text": "flops.fft"
             },
             {
               "kind": "text",
@@ -156,7 +156,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "we.fft"
+              "text": "flops.fft"
             },
             {
               "kind": "text",
@@ -299,7 +299,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -330,7 +330,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -523,7 +523,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "we.fft",
+              "label": "flops.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -628,12 +628,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.ifft([0, 4, 0, 0])"
+              "text": "flops.fft.ifft([0, 4, 0, 0])"
             },
             {
               "kind": "output",
@@ -661,22 +661,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t = we.arange(400)"
+              "text": "t = flops.arange(400)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "n = we.zeros((400,), dtype=complex)"
+              "text": "n = flops.zeros((400,), dtype=complex)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "n[40:60] = we.exp(1j*we.random.uniform(0, 2*we.pi, (20,)))"
+              "text": "n[40:60] = flops.exp(1j*flops.random.uniform(0, 2*flops.pi, (20,)))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.fft.ifft(n)"
+              "text": "s = flops.fft.ifft(n)"
             },
             {
               "kind": "input",
@@ -718,6 +718,7 @@
     }
   ],
   "canonical_name": "fft.ifft",
+  "canonical_path": "numpy/fft/ifft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -728,16 +729,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.fft.ifft([0, 4, 0, 0])\n\nimport matplotlib.pyplot as plt\n\nt = we.arange(400)\n\nn = we.zeros((400,), dtype=complex)\n\nn[40:60] = we.exp(1j*we.random.uniform(0, 2*we.pi, (20,)))\n\ns = we.fft.ifft(n)\n\nplt.plot(t, s.real, label='real')\n\nplt.plot(t, s.imag, '--', label='imaginary')\n\nplt.legend()\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nflops.fft.ifft([0, 4, 0, 0])\n\nimport matplotlib.pyplot as plt\n\nt = flops.arange(400)\n\nn = flops.zeros((400,), dtype=complex)\n\nn[40:60] = flops.exp(1j*flops.random.uniform(0, 2*flops.pi, (20,)))\n\ns = flops.fft.ifft(n)\n\nplt.plot(t, s.real, label='real')\n\nplt.plot(t, s.imag, '--', label='imaginary')\n\nplt.legend()\n\nplt.show()",
     "output": "array([ 1.+0.j,  0.+1.j, -1.+0.j,  0.-1.j]) # may vary\n\n[<matplotlib.lines.Line2D object at ...>]\n\n[<matplotlib.lines.Line2D object at ...>]\n\n<matplotlib.legend.Legend object at ...>",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-ifft/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.ifft",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L198",
+  "href": "/docs/api/numpy/fft/ifft/",
+  "legacy_href": "/docs/api/ops/fft-ifft/",
   "module": "numpy.fft",
   "name": "fft.ifft",
   "next": {
-    "href": "/docs/api/ops/fft-ifft2/",
-    "label": "we.fft.ifft2"
+    "href": "/docs/api/numpy/fft/ifft2/",
+    "label": "fnp.fft.ifft2"
   },
   "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -773,7 +778,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -796,10 +801,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-hfft/",
-    "label": "we.fft.hfft"
+    "href": "/docs/api/numpy/fft/hfft/",
+    "label": "fnp.fft.hfft"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.ifft",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifft.html",
   "returns": [
     {
@@ -822,7 +828,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "we.fft",
+      "label": "flops.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -885,12 +891,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.ifft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-ifft",
   "summary": "Compute the one-dimensional inverse discrete Fourier Transform.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L213",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.ifft",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L183"
+  "weight": 1.0
 }

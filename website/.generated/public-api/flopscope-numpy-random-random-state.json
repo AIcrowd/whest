@@ -1,0 +1,58 @@
+{
+  "aliases": [
+    "fnp.random.RandomState"
+  ],
+  "area": "numpy",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "numpy RandomState subclass with FLOP-counted sampler methods."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "flopscope.numpy.random.RandomState",
+  "canonical_path": "/docs/api/numpy/random/random-state/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.numpy.random.RandomState",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.numpy.random.RandomState",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/_counted_classes.py#L138",
+  "href": "/docs/api/numpy/random/random-state/",
+  "import_path": "flopscope.numpy.random.RandomState",
+  "is_operation_cost_leaf": false,
+  "kind": "class",
+  "legacy_href": "/docs/api/numpy/random/random-state/",
+  "module": "flopscope.numpy.random._counted_classes",
+  "name": "RandomState",
+  "next": null,
+  "notes": "",
+  "notes_sections": [],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.numpy.random.RandomState",
+  "slug": "flopscope-numpy-random-random-state",
+  "summary": "numpy RandomState subclass with FLOP-counted sampler methods.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

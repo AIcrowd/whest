@@ -2,7 +2,7 @@
 
 import numpy
 
-from whest._budget import BudgetContext
+from flopscope._budget import BudgetContext
 
 
 class TestMultiDot:
@@ -11,7 +11,7 @@ class TestMultiDot:
         B = numpy.random.randn(5, 8)
         C = numpy.random.randn(8, 3)
         with BudgetContext(flop_budget=10**8):
-            from whest.linalg import multi_dot
+            from flopscope.numpy.linalg import multi_dot
 
             result = multi_dot([A, B, C])
             expected = numpy.linalg.multi_dot([A, B, C])
@@ -22,7 +22,7 @@ class TestMultiDot:
         B = numpy.random.randn(5, 8)
         C = numpy.random.randn(8, 3)
         with BudgetContext(flop_budget=10**8) as budget:
-            from whest.linalg import multi_dot
+            from flopscope.numpy.linalg import multi_dot
 
             multi_dot([A, B, C])
             assert budget.flops_used > 0
@@ -31,7 +31,7 @@ class TestMultiDot:
         A = numpy.random.randn(4, 3)
         B = numpy.random.randn(3, 5)
         with BudgetContext(flop_budget=10**8) as budget:
-            from whest.linalg import multi_dot
+            from flopscope.numpy.linalg import multi_dot
 
             multi_dot([A, B])
             assert budget.op_log[-1].op_name == "linalg.multi_dot"
@@ -41,7 +41,7 @@ class TestMatrixPower:
     def test_result_matches_numpy(self):
         A = numpy.array([[1.0, 2.0], [3.0, 4.0]])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import matrix_power
+            from flopscope.numpy.linalg import matrix_power
 
             result = matrix_power(A, 3)
             expected = numpy.linalg.matrix_power(A, 3)
@@ -51,7 +51,7 @@ class TestMatrixPower:
         n = 4
         A = numpy.random.randn(n, n)
         with BudgetContext(flop_budget=10**8) as budget:
-            from whest.linalg import matrix_power
+            from flopscope.numpy.linalg import matrix_power
 
             matrix_power(A, 3)
             # k=3: floor(log2(3))=1, popcount(3)=2, cost = (1+2-1)*n^3 = 2*n^3
@@ -61,7 +61,7 @@ class TestMatrixPower:
         n = 4
         A = numpy.random.randn(n, n)
         with BudgetContext(flop_budget=10**8) as budget:
-            from whest.linalg import matrix_power
+            from flopscope.numpy.linalg import matrix_power
 
             matrix_power(A, 0)
             assert budget.flops_used == 0
@@ -70,7 +70,7 @@ class TestMatrixPower:
         n = 4
         A = numpy.random.randn(n, n)
         with BudgetContext(flop_budget=10**8) as budget:
-            from whest.linalg import matrix_power
+            from flopscope.numpy.linalg import matrix_power
 
             matrix_power(A, 1)
             assert budget.flops_used == 0
@@ -79,14 +79,14 @@ class TestMatrixPower:
         n = 3
         A = numpy.random.randn(n, n) + numpy.eye(n) * 5
         with BudgetContext(flop_budget=10**8) as budget:
-            from whest.linalg import matrix_power
+            from flopscope.numpy.linalg import matrix_power
 
             matrix_power(A, -2)
             # inv: n^3 + power k=2: (1+1-1)*n^3 = n^3, total = 2*n^3
             assert budget.flops_used == 2 * n**3
 
     def test_outside_context_uses_global_default(self):
-        from whest.linalg import matrix_power
+        from flopscope.numpy.linalg import matrix_power
 
         # Operations now auto-activate the global default budget instead of raising
         result = matrix_power(numpy.eye(3), 2)

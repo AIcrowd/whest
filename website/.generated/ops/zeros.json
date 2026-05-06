@@ -88,7 +88,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "int8",
-                      "text": "we.int8"
+                      "text": "flops.int8"
                     },
                     {
                       "kind": "text",
@@ -99,7 +99,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "float64",
-                      "text": "we.float64"
+                      "text": "flops.float64"
                     },
                     {
                       "kind": "text",
@@ -120,7 +120,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "int8",
-                  "text": "we.int8"
+                  "text": "flops.int8"
                 },
                 {
                   "kind": "text",
@@ -131,7 +131,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "float64",
-                  "text": "we.float64"
+                  "text": "flops.float64"
                 },
                 {
                   "kind": "text",
@@ -280,8 +280,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros_like",
-              "label": "we.zeros_like",
+              "href": "/docs/api/numpy/zeros-like/",
+              "label": "flops.zeros_like",
               "original_target": "zeros_like",
               "role": "",
               "target": "zeros_like",
@@ -296,8 +296,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty",
-              "label": "we.empty",
+              "href": "/docs/api/numpy/empty/",
+              "label": "flops.empty",
               "original_target": "empty",
               "role": "",
               "target": "empty",
@@ -312,8 +312,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones",
-              "label": "we.ones",
+              "href": "/docs/api/numpy/ones/",
+              "label": "flops.ones",
               "original_target": "ones",
               "role": "",
               "target": "ones",
@@ -328,8 +328,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full",
-              "label": "we.full",
+              "href": "/docs/api/numpy/full/",
+              "label": "flops.full",
               "original_target": "full",
               "role": "",
               "target": "full",
@@ -348,12 +348,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros(5)"
+              "text": "flops.zeros(5)"
             },
             {
               "kind": "output",
@@ -367,7 +367,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros((5,), dtype=int)"
+              "text": "flops.zeros((5,), dtype=int)"
             },
             {
               "kind": "output",
@@ -381,7 +381,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros((2, 1))"
+              "text": "flops.zeros((2, 1))"
             },
             {
               "kind": "output",
@@ -404,7 +404,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros(s)"
+              "text": "flops.zeros(s)"
             },
             {
               "kind": "output",
@@ -422,7 +422,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype"
+              "text": "flops.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype"
             },
             {
               "kind": "output",
@@ -440,6 +440,7 @@
     }
   ],
   "canonical_name": "zeros",
+  "canonical_path": "numpy/zeros",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -450,16 +451,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.zeros(5)\n\nwe.zeros((5,), dtype=int)\n\nwe.zeros((2, 1))\n\ns = (2,2)\n\nwe.zeros(s)\n\nwe.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype",
+    "code": "import flopscope.numpy as fnp\n\nflops.zeros(5)\n\nflops.zeros((5,), dtype=int)\n\nflops.zeros((2, 1))\n\ns = (2,2)\n\nflops.zeros(s)\n\nflops.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype",
     "output": "array([ 0.,  0.,  0.,  0.,  0.])\n\narray([0, 0, 0, 0, 0])\n\narray([[ 0.],\n       [ 0.]])\n\narray([[ 0.,  0.],\n       [ 0.,  0.]])\n\narray([(0, 0), (0, 0)],\n      dtype=[('x', '<i4'), ('y', '<i4')])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/zeros/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.zeros",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L116",
+  "href": "/docs/api/numpy/zeros/",
+  "legacy_href": "/docs/api/ops/zeros/",
   "module": "numpy",
   "name": "zeros",
   "next": {
-    "href": "/docs/api/ops/zeros_like/",
-    "label": "we.zeros_like"
+    "href": "/docs/api/numpy/zeros-like/",
+    "label": "fnp.zeros_like"
   },
   "notes": "Create zero-filled array.",
   "notes_sections": [],
@@ -474,8 +479,8 @@
     },
     {
       "body": [
-        "The desired data-type for the array, e.g., `we.int8`.  Default is",
-        "`we.float64`."
+        "The desired data-type for the array, e.g., `flops.int8`.  Default is",
+        "`flops.float64`."
       ],
       "name": "dtype",
       "type": "data-type, optional"
@@ -504,10 +509,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/where/",
-    "label": "we.where"
+    "href": "/docs/api/numpy/where/",
+    "label": "fnp.where"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.zeros",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.zeros.html",
   "returns": [
     {
@@ -528,8 +534,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros_like",
-      "label": "we.zeros_like",
+      "href": "/docs/api/numpy/zeros-like/",
+      "label": "flops.zeros_like",
       "original_target": "zeros_like",
       "role": "",
       "target": "zeros_like",
@@ -544,8 +550,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty",
-      "label": "we.empty",
+      "href": "/docs/api/numpy/empty/",
+      "label": "flops.empty",
       "original_target": "empty",
       "role": "",
       "target": "empty",
@@ -560,8 +566,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones",
-      "label": "we.ones",
+      "href": "/docs/api/numpy/ones/",
+      "label": "flops.ones",
       "original_target": "ones",
       "role": "",
       "target": "ones",
@@ -576,20 +582,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full",
-      "label": "we.full",
+      "href": "/docs/api/numpy/full/",
+      "label": "flops.full",
       "original_target": "full",
       "role": "",
       "target": "full",
       "unresolved": false
     }
   ],
-  "signature": "we.zeros(shape, dtype=<class 'float'>, **kwargs)",
+  "signature": "fnp.zeros(shape: 'int | Sequence[int]', dtype: 'DTypeLike' = <class 'float'>, **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "zeros",
   "summary": "Return a new array of given shape and type, filled with zeros.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.zeros",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L70"
+  "weight": 0.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fmod/",
+  "detail_href": "/docs/api/numpy/fmod/",
   "detail_json_href": "/api-data/ops/fmod.json",
   "docs": {
     "sections": [
@@ -406,8 +406,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/remainder",
-                "label": "we.remainder",
+                "href": "/docs/api/numpy/remainder/",
+                "label": "flops.remainder",
                 "original_target": "remainder",
                 "role": "",
                 "target": "remainder",
@@ -417,8 +417,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/divide",
-                "label": "we.divide",
+                "href": "/docs/api/numpy/divide/",
+                "label": "flops.divide",
                 "original_target": "divide",
                 "role": "",
                 "target": "divide",
@@ -440,7 +440,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/fmod",
+                "href": "/docs/api/numpy/fmod/",
                 "kind": "link",
                 "target": "fmod",
                 "text": "fmod"
@@ -451,7 +451,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/remainder",
+                "href": "/docs/api/numpy/remainder/",
                 "kind": "link",
                 "target": "remainder",
                 "text": "remainder"
@@ -462,7 +462,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/fmod",
+                "href": "/docs/api/numpy/fmod/",
                 "kind": "link",
                 "target": "fmod",
                 "text": "fmod"
@@ -492,12 +492,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fmod([-3, -2, -1, 1, 2, 3], 2)"
+                "text": "flops.fmod([-3, -2, -1, 1, 2, 3], 2)"
               },
               {
                 "kind": "output",
@@ -506,7 +506,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.remainder([-3, -2, -1, 1, 2, 3], 2)"
+                "text": "flops.remainder([-3, -2, -1, 1, 2, 3], 2)"
               },
               {
                 "kind": "output",
@@ -520,7 +520,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fmod([5, 3], [2, 2.])"
+                "text": "flops.fmod([5, 3], [2, 2.])"
               },
               {
                 "kind": "output",
@@ -529,7 +529,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(-3, 3).reshape(3, 2)"
+                "text": "a = flops.arange(-3, 3).reshape(3, 2)"
               },
               {
                 "kind": "input",
@@ -551,7 +551,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fmod(a, [2,2])"
+                "text": "flops.fmod(a, [2,2])"
               },
               {
                 "kind": "output",
@@ -577,20 +577,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.fmod",
     "module": "numpy",
     "name": "fmod",
     "notes": "Element-wise C-style fmod (remainder toward zero).",
     "numpy_ref": "np.fmod",
-    "signature": "we.fmod(*args, **kwargs)",
+    "signature": "fnp.fmod(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the element-wise remainder of division.",
-    "weight": 16.0,
-    "whest_ref": "we.fmod"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "fmod",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L414",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

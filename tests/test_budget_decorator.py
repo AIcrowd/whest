@@ -2,7 +2,7 @@
 
 import pytest
 
-from whest._budget import BudgetContext, budget, get_active_budget
+from flopscope._budget import BudgetContext, budget, get_active_budget
 
 
 def test_budget_context_as_decorator():
@@ -64,6 +64,7 @@ def test_budget_function_as_decorator():
     @budget(flop_budget=5000, namespace="dec")
     def compute():
         b = get_active_budget()
+        assert b is not None
         assert b.namespace == "dec"
         return 99
 

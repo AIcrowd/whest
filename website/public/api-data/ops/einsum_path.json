@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/einsum_path/",
+  "detail_href": "/docs/api/numpy/einsum-path/",
   "detail_json_href": "/api-data/ops/einsum_path.json",
   "docs": {
     "sections": [
@@ -88,7 +88,7 @@
                               },
                               {
                                 "external_url": "",
-                                "href": "/docs/api/ops/einsum_path",
+                                "href": "/docs/api/numpy/einsum-path/",
                                 "kind": "link",
                                 "target": "einsum_path",
                                 "text": "einsum_path"
@@ -248,8 +248,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "href": "/docs/api/numpy/einsum/",
+                "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -259,8 +259,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-multi_dot",
-                "label": "we.linalg.multi_dot",
+                "href": "/docs/api/numpy/linalg/multi-dot/",
+                "label": "flops.linalg.multi_dot",
                 "original_target": "linalg.multi_dot",
                 "role": "",
                 "target": "linalg.multi_dot",
@@ -334,27 +334,27 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.seed(123)"
+                "text": "flops.random.seed(123)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.random.rand(2, 2)"
+                "text": "a = flops.random.rand(2, 2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.random.rand(2, 5)"
+                "text": "b = flops.random.rand(2, 5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.random.rand(5, 2)"
+                "text": "c = flops.random.rand(5, 2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "path_info = we.einsum_path('ij,jk,kl->il', a, b, c, optimize='greedy')"
+                "text": "path_info = flops.einsum_path('ij,jk,kl->il', a, b, c, optimize='greedy')"
               },
               {
                 "kind": "input",
@@ -435,17 +435,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "I = we.random.rand(10, 10, 10, 10)"
+                "text": "I = flops.random.rand(10, 10, 10, 10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "C = we.random.rand(10, 10)"
+                "text": "C = flops.random.rand(10, 10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "path_info = we.einsum_path('ea,fb,abcd,gc,hd->efgh', C, C, I, C, C,"
+                "text": "path_info = flops.einsum_path('ea,fb,abcd,gc,hd->efgh', C, C, I, C, C,"
               },
               {
                 "kind": "input",
@@ -539,20 +539,20 @@
     "category": "counted_custom",
     "cost_formula": "0 (planning only)",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.einsum_path",
     "module": "numpy",
     "name": "einsum_path",
     "notes": "Optimize einsum contraction path (no numeric output).",
     "numpy_ref": "np.einsum_path",
-    "signature": "we.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
+    "signature": "fnp.einsum_path(subscripts: 'str', *operands: '_np.ndarray', optimize: 'str | bool | list[Any]' = 'auto') -> 'tuple[list[Any], Any]'",
     "status": "supported",
     "summary": "Evaluates the lowest cost contraction order for an einsum expression by considering the creation of intermediate arrays.",
-    "weight": 1.0,
-    "whest_ref": "we.einsum_path"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "einsum_path",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L742",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L374"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L412",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L742"
   }
 }

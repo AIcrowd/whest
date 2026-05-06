@@ -2,7 +2,7 @@
 
 import numpy
 
-from whest._budget import BudgetContext
+from flopscope._budget import BudgetContext
 
 
 class TestSolve:
@@ -10,7 +10,7 @@ class TestSolve:
         A = numpy.array([[3.0, 1.0], [1.0, 2.0]])
         b = numpy.array([9.0, 8.0])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import solve
+            from flopscope.numpy.linalg import solve
 
             result = solve(A, b)
             assert numpy.allclose(result, numpy.linalg.solve(A, b))
@@ -20,7 +20,7 @@ class TestSolve:
         A = numpy.random.randn(n, n) + numpy.eye(n) * 10
         b = numpy.random.randn(n)
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import solve
+            from flopscope.numpy.linalg import solve
 
             solve(A, b)
             assert budget.flops_used == n**3
@@ -29,13 +29,13 @@ class TestSolve:
         A = numpy.eye(3)
         b = numpy.ones(3)
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import solve
+            from flopscope.numpy.linalg import solve
 
             solve(A, b)
             assert budget.op_log[-1].op_name == "linalg.solve"
 
     def test_outside_context_uses_global_default(self):
-        from whest.linalg import solve
+        from flopscope.numpy.linalg import solve
 
         # Operations now auto-activate the global default budget instead of raising
         result = solve(numpy.eye(3), numpy.ones(3))
@@ -46,7 +46,7 @@ class TestInv:
     def test_result_matches_numpy(self):
         A = numpy.array([[1.0, 2.0], [3.0, 4.0]])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import inv
+            from flopscope.numpy.linalg import inv
 
             result = inv(A)
             assert numpy.allclose(result, numpy.linalg.inv(A))
@@ -55,7 +55,7 @@ class TestInv:
         n = 5
         A = numpy.random.randn(n, n) + numpy.eye(n) * 10
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import inv
+            from flopscope.numpy.linalg import inv
 
             inv(A)
             assert budget.flops_used == n**3
@@ -66,7 +66,7 @@ class TestLstsq:
         A = numpy.random.randn(6, 4)
         b = numpy.random.randn(6)
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import lstsq
+            from flopscope.numpy.linalg import lstsq
 
             x, residuals, rank, sv = lstsq(A, b, rcond=None)
             x_np, _, _, _ = numpy.linalg.lstsq(A, b, rcond=None)
@@ -77,7 +77,7 @@ class TestLstsq:
         A = numpy.random.randn(m, n)
         b = numpy.random.randn(m)
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import lstsq
+            from flopscope.numpy.linalg import lstsq
 
             lstsq(A, b, rcond=None)
             assert budget.flops_used == m * n * min(m, n)
@@ -87,7 +87,7 @@ class TestPinv:
     def test_result_matches_numpy(self):
         A = numpy.random.randn(4, 3)
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import pinv
+            from flopscope.numpy.linalg import pinv
 
             result = pinv(A)
             assert numpy.allclose(result, numpy.linalg.pinv(A))
@@ -96,7 +96,7 @@ class TestPinv:
         m, n = 4, 3
         A = numpy.random.randn(m, n)
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import pinv
+            from flopscope.numpy.linalg import pinv
 
             pinv(A)
             assert budget.flops_used == m * n * min(m, n)
@@ -108,7 +108,7 @@ class TestTensorsolve:
         a = numpy.eye(6).reshape(2, 3, 2, 3)
         b = numpy.ones((2, 3))
         with BudgetContext(flop_budget=10**9):
-            from whest.linalg import tensorsolve
+            from flopscope.numpy.linalg import tensorsolve
 
             tensorsolve(a, b)
 
@@ -117,6 +117,6 @@ class TestTensorinv:
     def test_runs_without_error(self):
         a = numpy.eye(24).reshape(6, 4, 2, 3, 4)
         with BudgetContext(flop_budget=10**9):
-            from whest.linalg import tensorinv
+            from flopscope.numpy.linalg import tensorinv
 
             tensorinv(a, ind=2)

@@ -1,13 +1,13 @@
 """Linear algebra and FFT cost tracking.
 
-whest tracks FLOPs for linalg decompositions, solvers, and FFT
+flopscope tracks FLOPs for linalg decompositions, solvers, and FFT
 operations — not just einsum.  Each function also has a ``_cost``
 companion for pre-flight estimation.
 
 Run: uv run python examples/09_linalg_and_fft.py
 """
 
-import whest as we
+import flopscope as we
 
 # ---------------------------------------------------------------------------
 # 1. Decomposition cost comparison

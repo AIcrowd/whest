@@ -34,12 +34,12 @@
               "text": "This function is Array API compatible, contrary to\n"
             },
             {
-              "display_text": "we.trace",
+              "display_text": "flops.trace",
               "explicit_title": false,
               "external_url": "",
-              "href": "/docs/api/ops/trace",
+              "href": "/docs/api/numpy/trace/",
               "kind": "role_reference",
-              "original_target": "we.trace",
+              "original_target": "flops.trace",
               "role": "py:func",
               "suppress_link": false,
               "target": "trace",
@@ -192,8 +192,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/trace",
-              "label": "we.trace",
+              "href": "/docs/api/numpy/trace/",
+              "label": "flops.trace",
               "original_target": "numpy.trace",
               "role": "",
               "target": "trace",
@@ -212,7 +212,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.trace(we.eye(3))"
+              "text": "flops.linalg.trace(flops.eye(3))"
             },
             {
               "kind": "output",
@@ -221,12 +221,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(8).reshape((2, 2, 2))"
+              "text": "a = flops.arange(8).reshape((2, 2, 2))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.trace(a)"
+              "text": "flops.linalg.trace(a)"
             },
             {
               "kind": "output",
@@ -242,12 +242,12 @@
               "text": "Trace is computed with the last two axes as the 2-d sub-arrays.\nThis behavior differs from "
             },
             {
-              "display_text": "we.trace",
+              "display_text": "flops.trace",
               "explicit_title": false,
               "external_url": "",
-              "href": "/docs/api/ops/trace",
+              "href": "/docs/api/numpy/trace/",
               "kind": "role_reference",
-              "original_target": "we.trace",
+              "original_target": "flops.trace",
               "role": "py:func",
               "suppress_link": false,
               "target": "trace",
@@ -265,12 +265,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(24).reshape((3, 2, 2, 2))"
+              "text": "a = flops.arange(24).reshape((3, 2, 2, 2))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.trace(a).shape"
+              "text": "flops.linalg.trace(a).shape"
             },
             {
               "kind": "output",
@@ -301,7 +301,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(9).reshape((3, 3)); a"
+              "text": "a = flops.arange(9).reshape((3, 3)); a"
             },
             {
               "kind": "output",
@@ -318,7 +318,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.trace(a, offset=1)  # First superdiagonal"
+              "text": "flops.linalg.trace(a, offset=1)  # First superdiagonal"
             },
             {
               "kind": "output",
@@ -327,7 +327,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.trace(a, offset=2)  # Second superdiagonal"
+              "text": "flops.linalg.trace(a, offset=2)  # Second superdiagonal"
             },
             {
               "kind": "output",
@@ -336,7 +336,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.trace(a, offset=-1)  # First subdiagonal"
+              "text": "flops.linalg.trace(a, offset=-1)  # First subdiagonal"
             },
             {
               "kind": "output",
@@ -345,7 +345,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.trace(a, offset=-2)  # Second subdiagonal"
+              "text": "flops.linalg.trace(a, offset=-2)  # Second subdiagonal"
             },
             {
               "kind": "output",
@@ -359,6 +359,7 @@
     }
   ],
   "canonical_name": "linalg.trace",
+  "canonical_path": "numpy/linalg/trace",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -369,16 +370,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.linalg.trace(we.eye(3))\n\na = we.arange(8).reshape((2, 2, 2))\n\nwe.linalg.trace(a)\n\na = we.arange(24).reshape((3, 2, 2, 2))\n\nwe.linalg.trace(a).shape\n\na = we.arange(9).reshape((3, 3)); a\n\nwe.linalg.trace(a, offset=1)  # First superdiagonal\n\nwe.linalg.trace(a, offset=2)  # Second superdiagonal\n\nwe.linalg.trace(a, offset=-1)  # First subdiagonal\n\nwe.linalg.trace(a, offset=-2)  # Second subdiagonal",
+    "code": "flops.linalg.trace(flops.eye(3))\n\na = flops.arange(8).reshape((2, 2, 2))\n\nflops.linalg.trace(a)\n\na = flops.arange(24).reshape((3, 2, 2, 2))\n\nflops.linalg.trace(a).shape\n\na = flops.arange(9).reshape((3, 3)); a\n\nflops.linalg.trace(a, offset=1)  # First superdiagonal\n\nflops.linalg.trace(a, offset=2)  # Second superdiagonal\n\nflops.linalg.trace(a, offset=-1)  # First subdiagonal\n\nflops.linalg.trace(a, offset=-2)  # Second subdiagonal",
     "output": "3.0\n\narray([3, 11])\n\n(3, 2)\n\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\n6\n\n2\n\n10\n\n6",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-trace/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.trace",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L39",
+  "href": "/docs/api/numpy/linalg/trace/",
+  "legacy_href": "/docs/api/ops/linalg-trace/",
   "module": "numpy.linalg",
   "name": "linalg.trace",
   "next": {
-    "href": "/docs/api/ops/linalg-vecdot/",
-    "label": "we.linalg.vecdot"
+    "href": "/docs/api/numpy/linalg/vecdot/",
+    "label": "fnp.linalg.vecdot"
   },
   "notes": "Matrix trace. Cost: n (sum of diagonal elements).",
   "notes_sections": [],
@@ -413,10 +418,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-tensorsolve/",
-    "label": "we.linalg.tensorsolve"
+    "href": "/docs/api/numpy/linalg/tensorsolve/",
+    "label": "fnp.linalg.tensorsolve"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.trace",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.trace.html",
   "returns": [
     {
@@ -441,20 +447,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/trace",
-      "label": "we.trace",
+      "href": "/docs/api/numpy/trace/",
+      "label": "flops.trace",
       "original_target": "numpy.trace",
       "role": "",
       "target": "trace",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.trace(x, /, *, offset=0, dtype=None)",
+  "signature": "fnp.linalg.trace(x: 'ArrayLike', /, *, offset: 'int' = 0, dtype: 'Any' = None) -> 'FlopscopeArray'",
   "slug": "linalg-trace",
   "summary": "Returns the sum along the specified diagonals of a matrix (or a stack of matrices) ``x``.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3138",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.trace",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L35"
+  "weight": 1.0
 }

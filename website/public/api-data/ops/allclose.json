@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/allclose/",
+  "detail_href": "/docs/api/numpy/allclose/",
   "detail_json_href": "/api-data/ops/allclose.json",
   "docs": {
     "sections": [
@@ -292,8 +292,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isclose",
-                "label": "we.isclose",
+                "href": "/docs/api/numpy/isclose/",
+                "label": "flops.isclose",
                 "original_target": "isclose",
                 "role": "",
                 "target": "isclose",
@@ -303,8 +303,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/all",
-                "label": "we.all",
+                "href": "/docs/api/numpy/all/",
+                "label": "flops.all",
                 "original_target": "all",
                 "role": "",
                 "target": "all",
@@ -314,8 +314,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/any",
-                "label": "we.any",
+                "href": "/docs/api/numpy/any/",
+                "label": "flops.any",
                 "original_target": "any",
                 "role": "",
                 "target": "any",
@@ -325,8 +325,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/equal",
-                "label": "we.equal",
+                "href": "/docs/api/numpy/equal/",
+                "label": "flops.equal",
                 "original_target": "equal",
                 "role": "",
                 "target": "equal",
@@ -524,7 +524,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/equal",
+                "href": "/docs/api/numpy/equal/",
                 "kind": "link",
                 "target": "equal",
                 "text": "equal"
@@ -535,7 +535,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/array_equal",
+                "href": "/docs/api/numpy/array-equal/",
                 "kind": "link",
                 "target": "array_equal",
                 "text": "array_equal"
@@ -551,7 +551,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/allclose",
+                "href": "/docs/api/numpy/allclose/",
                 "kind": "link",
                 "target": "allclose",
                 "text": "allclose"
@@ -581,12 +581,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose([1e10,1e-7], [1.00001e10,1e-8])"
+                "text": "flops.allclose([1e10,1e-7], [1.00001e10,1e-8])"
               },
               {
                 "kind": "output",
@@ -600,7 +600,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose([1e10,1e-8], [1.00001e10,1e-9])"
+                "text": "flops.allclose([1e10,1e-8], [1.00001e10,1e-9])"
               },
               {
                 "kind": "output",
@@ -614,7 +614,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose([1e10,1e-8], [1.0001e10,1e-9])"
+                "text": "flops.allclose([1e10,1e-8], [1.0001e10,1e-9])"
               },
               {
                 "kind": "output",
@@ -628,7 +628,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose([1.0, we.nan], [1.0, we.nan])"
+                "text": "flops.allclose([1.0, flops.nan], [1.0, flops.nan])"
               },
               {
                 "kind": "output",
@@ -642,7 +642,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose([1.0, we.nan], [1.0, we.nan], equal_nan=True)"
+                "text": "flops.allclose([1.0, flops.nan], [1.0, flops.nan], equal_nan=True)"
               },
               {
                 "kind": "output",
@@ -660,20 +660,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.allclose",
     "module": "numpy",
     "name": "allclose",
     "notes": "Element-wise tolerance check; cost = numel(a).",
     "numpy_ref": "np.allclose",
-    "signature": "we.allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
+    "signature": "fnp.allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
     "status": "supported",
     "summary": "Returns True if two arrays are element-wise equal within a tolerance.",
-    "weight": 1.0,
-    "whest_ref": "we.allclose"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "allclose",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2243",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L39"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L56",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2243"
   }
 }

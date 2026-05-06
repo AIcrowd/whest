@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import inspect
 
-from whest._opt_einsum._paths import _PATH_OPTIONS
+from flopscope._opt_einsum._paths import _PATH_OPTIONS
 
 
 def test_every_path_option_accepts_symmetry_oracle():

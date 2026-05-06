@@ -110,7 +110,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/angle",
+              "href": "/docs/api/numpy/angle/",
               "kind": "link",
               "target": "angle",
               "text": "angle"
@@ -463,8 +463,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/arctan",
-              "label": "we.arctan",
+              "href": "/docs/api/numpy/arctan/",
+              "label": "flops.arctan",
               "original_target": "arctan",
               "role": "",
               "target": "arctan",
@@ -474,8 +474,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/tan",
-              "label": "we.tan",
+              "href": "/docs/api/numpy/tan/",
+              "label": "flops.tan",
               "original_target": "tan",
               "role": "",
               "target": "tan",
@@ -485,8 +485,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/angle",
-              "label": "we.angle",
+              "href": "/docs/api/numpy/angle/",
+              "label": "flops.angle",
               "original_target": "angle",
               "role": "",
               "target": "angle",
@@ -512,7 +512,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctan2",
+              "href": "/docs/api/numpy/arctan2/",
               "kind": "link",
               "target": "arctan2",
               "text": "atan2"
@@ -571,7 +571,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -581,17 +581,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([-1, +1, +1, -1])"
+              "text": "x = flops.array([-1, +1, +1, -1])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([-1, -1, +1, +1])"
+              "text": "y = flops.array([-1, -1, +1, +1])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arctan2(y, x) * 180 / we.pi"
+              "text": "flops.arctan2(y, x) * 180 / flops.pi"
             },
             {
               "kind": "output",
@@ -608,7 +608,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctan2",
+              "href": "/docs/api/numpy/arctan2/",
               "kind": "link",
               "target": "arctan2",
               "text": "arctan2"
@@ -641,7 +641,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arctan2([1., -1.], [0., 0.])"
+              "text": "flops.arctan2([1., -1.], [0., 0.])"
             },
             {
               "kind": "output",
@@ -650,7 +650,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arctan2([0., 0., we.inf], [+0., -0., we.inf])"
+              "text": "flops.arctan2([0., 0., flops.inf], [+0., -0., flops.inf])"
             },
             {
               "kind": "output",
@@ -664,6 +664,7 @@
     }
   ],
   "canonical_name": "arctan2",
+  "canonical_path": "numpy/arctan2",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -695,16 +696,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([-1, +1, +1, -1])\n\ny = we.array([-1, -1, +1, +1])\n\nwe.arctan2(y, x) * 180 / we.pi\n\nwe.arctan2([1., -1.], [0., 0.])\n\nwe.arctan2([0., 0., we.inf], [+0., -0., we.inf])",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([-1, +1, +1, -1])\n\ny = flops.array([-1, -1, +1, +1])\n\nflops.arctan2(y, x) * 180 / flops.pi\n\nflops.arctan2([1., -1.], [0., 0.])\n\nflops.arctan2([0., 0., flops.inf], [+0., -0., flops.inf])",
     "output": "array([-135.,  -45.,   45.,  135.])\n\narray([ 1.57079633, -1.57079633])\n\narray([0.        , 3.14159265, 0.78539816])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arctan2/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arctan2",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L414",
+  "href": "/docs/api/numpy/arctan2/",
+  "legacy_href": "/docs/api/ops/arctan2/",
   "module": "numpy",
   "name": "arctan2",
   "next": {
-    "href": "/docs/api/ops/arctanh/",
-    "label": "we.arctanh"
+    "href": "/docs/api/numpy/arctanh/",
+    "label": "fnp.arctanh"
   },
   "notes": "Element-wise arctan(y/x) considering quadrant.",
   "notes_sections": [
@@ -762,10 +767,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arctan/",
-    "label": "we.arctan"
+    "href": "/docs/api/numpy/arctan/",
+    "label": "fnp.arctan"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.arctan2",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arctan2.html",
   "returns": [
     {
@@ -782,8 +788,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/arctan",
-      "label": "we.arctan",
+      "href": "/docs/api/numpy/arctan/",
+      "label": "flops.arctan",
       "original_target": "arctan",
       "role": "",
       "target": "arctan",
@@ -793,8 +799,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/tan",
-      "label": "we.tan",
+      "href": "/docs/api/numpy/tan/",
+      "label": "flops.tan",
       "original_target": "tan",
       "role": "",
       "target": "tan",
@@ -804,20 +810,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/angle",
-      "label": "we.angle",
+      "href": "/docs/api/numpy/angle/",
+      "label": "flops.angle",
       "original_target": "angle",
       "role": "",
       "target": "angle",
       "unresolved": false
     }
   ],
-  "signature": "we.arctan2(*args, **kwargs)",
+  "signature": "fnp.arctan2(*args, **kwargs)",
   "slug": "arctan2",
   "summary": "Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arctan2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 16.0
 }

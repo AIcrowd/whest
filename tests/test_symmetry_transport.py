@@ -10,14 +10,18 @@ import numpy as np
 import pytest
 
 _ROOT = Path(__file__).parent.parent
-_SERVER_SRC = str(_ROOT / "whest-server" / "src")
-_CLIENT_SRC = str(_ROOT / "whest-client" / "src")
+_SERVER_SRC = str(_ROOT / "flopscope-server" / "src")
+_CLIENT_SRC = str(_ROOT / "flopscope-client" / "src")
 
 if _SERVER_SRC not in sys.path:
     sys.path.insert(0, _SERVER_SRC)
 
-from whest_server._request_handler import RequestHandler  # noqa: E402
-from whest_server._session import Session  # noqa: E402
+from flopscope_server._request_handler import (  # pyright: ignore[reportMissingImports]
+    RequestHandler,  # noqa: E402
+)
+from flopscope_server._session import (  # pyright: ignore[reportMissingImports]
+    Session,  # noqa: E402
+)
 
 
 def _load_client_module(rel_path: str, module_name: str):
@@ -26,24 +30,26 @@ def _load_client_module(rel_path: str, module_name: str):
 
     module_file = Path(_CLIENT_SRC) / rel_path
     spec = importlib.util.spec_from_file_location(module_name, module_file)
-    module = importlib.util.module_from_spec(spec)
+    module = importlib.util.module_from_spec(spec)  # pyright: ignore[reportArgumentType]
     sys.modules[module_name] = module
-    spec.loader.exec_module(module)
+    spec.loader.exec_module(module)  # pyright: ignore[reportOptionalMemberAccess]
     return module
 
 
-_load_client_module("whest/_constants.py", "whest._constants")
-_load_client_module("whest/_math_compat.py", "whest._math_compat")
-_client_perm_group = _load_client_module("whest/_perm_group.py", "whest._perm_group")
+_load_client_module("flopscope/_constants.py", "flopscope._constants")
+_load_client_module("flopscope/_math_compat.py", "flopscope._math_compat")
+_client_perm_group = _load_client_module(
+    "flopscope/_perm_group.py", "flopscope._perm_group"
+)
 _client_remote_array = _load_client_module(
-    "whest/_remote_array.py", "whest._remote_array"
+    "flopscope/_remote_array.py", "flopscope._remote_array"
 )
 
 RemoteArray = _client_remote_array.RemoteArray
 _result_from_response = _client_remote_array._result_from_response
 ClientSymmetryGroup = _client_perm_group.SymmetryGroup
 
-import whest as we  # noqa: E402
+import flopscope as flops
 
 
 @pytest.fixture()
@@ -57,7 +63,7 @@ def handler_session():
 
 def _make_symmetric_tensor():
     data = np.array([[1.0, 2.0], [2.0, 3.0]])
-    return we.as_symmetric(data, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
+    return flops.as_symmetric(data, symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1)))
 
 
 def test_pack_result_emits_symmetry(handler_session):

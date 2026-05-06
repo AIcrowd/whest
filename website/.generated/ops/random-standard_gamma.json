@@ -38,8 +38,8 @@
                   "text": "New code should use the\n"
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_gamma.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/standard-gamma/",
                   "kind": "link",
                   "target": "random.Generator.standard_gamma",
                   "text": "standard_gamma"
@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_gamma`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.standard_gamma`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -148,7 +148,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/shape",
+                      "href": "/docs/api/numpy/shape/",
                       "kind": "link",
                       "target": "shape",
                       "text": "shape"
@@ -159,7 +159,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(shape).size"
+                      "text": "flops.array(shape).size"
                     },
                     {
                       "kind": "text",
@@ -201,7 +201,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/shape",
+                  "href": "/docs/api/numpy/shape/",
                   "kind": "link",
                   "target": "shape",
                   "text": "shape"
@@ -212,7 +212,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(shape).size"
+                  "text": "flops.array(shape).size"
                 },
                 {
                   "kind": "text",
@@ -290,9 +290,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_gamma.html",
-              "href": "",
-              "label": "random.Generator.standard_gamma",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/standard-gamma/",
+              "label": "flops.random.Generator.standard_gamma",
               "original_target": "random.Generator.standard_gamma",
               "role": "",
               "target": "random.Generator.standard_gamma",
@@ -402,7 +402,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.standard_gamma(shape, 1000000)"
+              "text": "s = flops.random.standard_gamma(shape, 1000000)"
             }
           ],
           "type": "doctest_block"
@@ -436,7 +436,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = bins**(shape-1) * ((we.exp(-bins/scale))/  # doctest: +SKIP"
+              "text": "y = bins**(shape-1) * ((flops.exp(-bins/scale))/  # doctest: +SKIP"
             },
             {
               "kind": "input",
@@ -461,6 +461,7 @@
     }
   ],
   "canonical_name": "random.standard_gamma",
+  "canonical_path": "numpy/random/standard-gamma",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -480,16 +481,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "shape, scale = 2., 1. # mean and width\n\ns = we.random.standard_gamma(shape, 1000000)\n\nimport matplotlib.pyplot as plt\n\nimport scipy.special as sps  # doctest: +SKIP\n\ncount, bins, ignored = plt.hist(s, 50, density=True)\n\ny = bins**(shape-1) * ((we.exp(-bins/scale))/  # doctest: +SKIP\n                      (sps.gamma(shape) * scale**shape))\n\nplt.plot(bins, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
+    "code": "shape, scale = 2., 1. # mean and width\n\ns = flops.random.standard_gamma(shape, 1000000)\n\nimport matplotlib.pyplot as plt\n\nimport scipy.special as sps  # doctest: +SKIP\n\ncount, bins, ignored = plt.hist(s, 50, density=True)\n\ny = bins**(shape-1) * ((flops.exp(-bins/scale))/  # doctest: +SKIP\n                      (sps.gamma(shape) * scale**shape))\n\nplt.plot(bins, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-standard_gamma/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.standard_gamma",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
+  "href": "/docs/api/numpy/random/standard-gamma/",
+  "legacy_href": "/docs/api/ops/random-standard_gamma/",
   "module": "numpy.random",
   "name": "random.standard_gamma",
   "next": {
-    "href": "/docs/api/ops/random-standard_normal/",
-    "label": "we.random.standard_normal"
+    "href": "/docs/api/numpy/random/standard-normal/",
+    "label": "fnp.random.standard_normal"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -512,17 +517,18 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``shape`` is a scalar.  Otherwise,",
-        "``we.array(shape).size`` samples are drawn."
+        "``flops.array(shape).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_exponential/",
-    "label": "we.random.standard_exponential"
+    "href": "/docs/api/numpy/random/standard-exponential/",
+    "label": "fnp.random.standard_exponential"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.standard_gamma",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_gamma.html",
   "returns": [
     {
@@ -558,21 +564,20 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.standard_gamma.html",
-      "href": "",
-      "label": "random.Generator.standard_gamma",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/standard-gamma/",
+      "label": "flops.random.Generator.standard_gamma",
       "original_target": "random.Generator.standard_gamma",
       "role": "",
       "target": "random.Generator.standard_gamma",
       "unresolved": false
     }
   ],
-  "signature": "we.random.standard_gamma(shape, size=None)",
+  "signature": "fnp.random.standard_gamma(shape, size=None)",
   "slug": "random-standard_gamma",
   "summary": "Draw samples from a standard Gamma distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.standard_gamma",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

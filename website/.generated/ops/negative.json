@@ -284,12 +284,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.negative([1.,-1.])"
+              "text": "flops.negative([1.,-1.])"
             },
             {
               "kind": "output",
@@ -314,10 +314,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/negative",
+              "href": "/docs/api/numpy/negative/",
               "kind": "link",
               "target": "negative",
-              "text": "we.negative"
+              "text": "flops.negative"
             },
             {
               "kind": "text",
@@ -331,7 +331,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array(([1., -1.]))"
+              "text": "x1 = flops.array(([1., -1.]))"
             },
             {
               "kind": "input",
@@ -350,6 +350,7 @@
     }
   ],
   "canonical_name": "negative",
+  "canonical_path": "numpy/negative",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -367,16 +368,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.negative([1.,-1.])\n\nx1 = we.array(([1., -1.]))\n\n-x1",
+    "code": "import flopscope.numpy as fnp\n\nflops.negative([1.,-1.])\n\nx1 = flops.array(([1., -1.]))\n\n-x1",
     "output": "array([-1.,  1.])\n\narray([-1.,  1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/negative/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.negative",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/negative/",
+  "legacy_href": "/docs/api/ops/negative/",
   "module": "numpy",
   "name": "negative",
   "next": {
-    "href": "/docs/api/ops/nextafter/",
-    "label": "we.nextafter"
+    "href": "/docs/api/numpy/nextafter/",
+    "label": "fnp.nextafter"
   },
   "notes": "Element-wise negation.",
   "notes_sections": [],
@@ -421,10 +426,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ndim/",
-    "label": "we.ndim"
+    "href": "/docs/api/numpy/ndim/",
+    "label": "fnp.ndim"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.negative",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.negative.html",
   "returns": [
     {
@@ -437,12 +443,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.negative(*args, **kwargs)",
+  "signature": "fnp.negative(*args, **kwargs)",
   "slug": "negative",
   "summary": "Numerical negative, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.negative",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

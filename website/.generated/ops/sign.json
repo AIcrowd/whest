@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sign",
+              "href": "/docs/api/numpy/sign/",
               "kind": "link",
               "target": "sign",
               "text": "sign"
@@ -55,7 +55,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sign",
+              "href": "/docs/api/numpy/sign/",
               "kind": "link",
               "target": "sign",
               "text": "sign"
@@ -401,12 +401,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sign([-5., 4.5])"
+              "text": "flops.sign([-5., 4.5])"
             },
             {
               "kind": "output",
@@ -415,7 +415,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sign(0)"
+              "text": "flops.sign(0)"
             },
             {
               "kind": "output",
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sign([3-4j, 8j])"
+              "text": "flops.sign([3-4j, 8j])"
             },
             {
               "kind": "output",
@@ -438,6 +438,7 @@
     }
   ],
   "canonical_name": "sign",
+  "canonical_path": "numpy/sign",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -455,16 +456,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.sign([-5., 4.5])\n\nwe.sign(0)\n\nwe.sign([3-4j, 8j])",
+    "code": "import flopscope.numpy as fnp\n\nflops.sign([-5., 4.5])\n\nflops.sign(0)\n\nflops.sign([3-4j, 8j])",
     "output": "array([-1.,  1.])\n\n0\n\narray([0.6-0.8j, 0. +1.j ])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/sign/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.sign",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/sign/",
+  "legacy_href": "/docs/api/ops/sign/",
   "module": "numpy",
   "name": "sign",
   "next": {
-    "href": "/docs/api/ops/signbit/",
-    "label": "we.signbit"
+    "href": "/docs/api/numpy/signbit/",
+    "label": "fnp.signbit"
   },
   "notes": "Element-wise sign function.",
   "notes_sections": [
@@ -511,10 +516,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/shares_memory/",
-    "label": "we.shares_memory"
+    "href": "/docs/api/numpy/shares-memory/",
+    "label": "fnp.shares_memory"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.sign",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sign.html",
   "returns": [
     {
@@ -527,12 +533,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.sign(*args, **kwargs)",
+  "signature": "fnp.sign(*args, **kwargs)",
   "slug": "sign",
   "summary": "Returns an element-wise indication of the sign of a number.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.sign",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

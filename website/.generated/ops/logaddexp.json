@@ -344,8 +344,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/logaddexp2",
-              "label": "we.logaddexp2",
+              "href": "/docs/api/numpy/logaddexp2/",
+              "label": "flops.logaddexp2",
               "original_target": "logaddexp2",
               "role": "",
               "target": "logaddexp2",
@@ -364,22 +364,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "prob1 = we.log(1e-50)"
+              "text": "prob1 = flops.log(1e-50)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "prob2 = we.log(2.5e-50)"
+              "text": "prob2 = flops.log(2.5e-50)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "prob12 = we.logaddexp(prob1, prob2)"
+              "text": "prob12 = flops.logaddexp(prob1, prob2)"
             },
             {
               "kind": "input",
@@ -393,7 +393,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.exp(prob12)"
+              "text": "flops.exp(prob12)"
             },
             {
               "kind": "output",
@@ -407,6 +407,7 @@
     }
   ],
   "canonical_name": "logaddexp",
+  "canonical_path": "numpy/logaddexp",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -424,16 +425,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nprob1 = we.log(1e-50)\n\nprob2 = we.log(2.5e-50)\n\nprob12 = we.logaddexp(prob1, prob2)\n\nprob12\n\nwe.exp(prob12)",
+    "code": "import flopscope.numpy as fnp\n\nprob1 = flops.log(1e-50)\n\nprob2 = flops.log(2.5e-50)\n\nprob12 = flops.logaddexp(prob1, prob2)\n\nprob12\n\nflops.exp(prob12)",
     "output": "-113.87649168120691\n\n3.5000000000000057e-50",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logaddexp/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.logaddexp",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L414",
+  "href": "/docs/api/numpy/logaddexp/",
+  "legacy_href": "/docs/api/ops/logaddexp/",
   "module": "numpy",
   "name": "logaddexp",
   "next": {
-    "href": "/docs/api/ops/logaddexp2/",
-    "label": "we.logaddexp2"
+    "href": "/docs/api/numpy/logaddexp2/",
+    "label": "fnp.logaddexp2"
   },
   "notes": "log(exp(x1) + exp(x2)) element-wise.",
   "notes_sections": [],
@@ -480,10 +485,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/log2/",
-    "label": "we.log2"
+    "href": "/docs/api/numpy/log2/",
+    "label": "fnp.log2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.logaddexp",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.logaddexp.html",
   "returns": [
     {
@@ -505,20 +511,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/logaddexp2",
-      "label": "we.logaddexp2",
+      "href": "/docs/api/numpy/logaddexp2/",
+      "label": "flops.logaddexp2",
       "original_target": "logaddexp2",
       "role": "",
       "target": "logaddexp2",
       "unresolved": false
     }
   ],
-  "signature": "we.logaddexp(*args, **kwargs)",
+  "signature": "fnp.logaddexp(*args, **kwargs)",
   "slug": "logaddexp",
   "summary": "Logarithm of the sum of exponentiations of the inputs.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.logaddexp",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 16.0
 }

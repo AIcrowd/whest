@@ -2,10 +2,10 @@
 title: "FLOP Counting Model"
 ---
 
-*Use this page to understand how whest counts FLOPs and why it uses analytical counting instead of runtime measurement.*
+*Use this page to understand how Flopscope counts FLOPs and why it uses analytical counting instead of runtime measurement.*
 
 **You will learn:**
-- How whest computes FLOP costs analytically from tensor shapes
+- How Flopscope computes FLOP costs analytically from tensor shapes
 - How cost formulas work for each operation category (einsum, linalg, FFT, etc.)
 - How symmetry savings and per-operation weights modify costs
 - How the FLOP multiplier and namespaces interact with the cost model
@@ -27,10 +27,10 @@ All cost formulae reflect this: a matrix multiply of dimensions
 
 ## How costs are computed
 
-whest computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
+flopscope computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
-1. You call a counted operation (e.g., `we.einsum('ij,j->i', W, x)`)
-2. whest computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
+1. You call a counted operation (e.g., `fnp.einsum('ij,j->i', W, x)`)
+2. flopscope computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
 5. If over budget: `BudgetExhaustedError` is raised, the operation does **not** execute
@@ -38,10 +38,10 @@ whest computes FLOP costs **analytically from tensor shapes**, not by measuring 
 ## Cost formulas by category
 
 Each formula below gives the **analytical base cost**. In normal use,
-whest loads the packaged official per-operation
+flopscope loads the packaged official per-operation
 [weights](#per-operation-weights) automatically at import time, so the base
 cost is multiplied by the operation's weight to give the final deducted
-cost. Set `WHEST_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost
+cost. Set `FLOPSCOPE_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost
 model instead.
 
 | Category | Formula | Example |
@@ -101,7 +101,7 @@ Symmetry that reduces einsum costs comes from two complementary sources,
 both unified under the **subgraph symmetry detection** algorithm:
 
 1. **Declared per-operand symmetry.** When an operand is wrapped with
-   `we.as_symmetric()`, its symmetry groups are embedded in the bipartite
+   `flops.as_symmetric()`, its symmetry groups are embedded in the bipartite
    graph as U-vertex equivalence classes. These propagate into intermediate
    tensors automatically.
 
@@ -125,7 +125,7 @@ for the algorithm walkthrough.
 ## Einsum cost model
 
 Every einsum — regardless of the number of operands — is decomposed into
-pairwise contraction steps along an optimal path (found via whest's
+pairwise contraction steps along an optimal path (found via flopscope's
 [opt_einsum fork](/docs/api/)).
 The total cost is the sum of per-step costs:
 
@@ -146,7 +146,7 @@ Each fused multiply-add (FMA) counts as 1 operation (see
 contraction step is simply the product of all index dimensions — there is
 no factor-of-2 distinction between inner products and outer products.
 
-When symmetry is present, whest reduces each step's cost based on
+When symmetry is present, flopscope reduces each step's cost based on
 the structure of the contraction.
 
 ### Symmetric contraction cost
@@ -180,7 +180,7 @@ earlier step and no longer appear in the current step, the inner
 reduction is skipped (the per-step table shows this as `[W: ...]` when
 detected-but-not-applied versus `[W✓: ...]` when applied). Inner
 symmetry can be toggled globally with
-`we.configure(use_inner_symmetry=False)`.
+`flops.configure(use_inner_symmetry=False)`.
 
 The two factors are independent; outer-product contractions (no summed
 indices) and non-uniform index dimensions are handled by the same
@@ -201,7 +201,7 @@ through intermediates — if an early contraction produces a symmetric
 intermediate, subsequent steps benefit from the reduced element count, and
 the optimizer factors this into its ordering decisions.
 
-Use `we.einsum_path()` to inspect the per-step breakdown. See
+Use `fnp.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](/docs/guides/einsum/) for examples.
 
 ## Per-operation weights
@@ -253,9 +253,9 @@ Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use the
 do not retire `fp_arith_inst_retired` events. Their weights are derived from
 instruction counts normalized the same way as FP operations.
 
-Official weights are packaged with whest and enabled by default on import.
-Use `WHEST_WEIGHTS_FILE` to override them with a custom JSON file, or set
-`WHEST_DISABLE_WEIGHTS=1` to disable weighting entirely and fall back to
+Official weights are packaged with flopscope and enabled by default on import.
+Use `FLOPSCOPE_WEIGHTS_FILE` to override them with a custom JSON file, or set
+`FLOPSCOPE_DISABLE_WEIGHTS=1` to disable weighting entirely and fall back to
 unit weights (1.0 for all operations).
 
 ### How weights are applied
@@ -275,16 +275,16 @@ per-element cost, and both apply independently.
 ### Overriding or disabling packaged weights
 
 Normal imports load the packaged official weights automatically. To override
-them at import time, set `WHEST_WEIGHTS_FILE`:
+them at import time, set `FLOPSCOPE_WEIGHTS_FILE`:
 
 ```bash
-export WHEST_WEIGHTS_FILE=/path/to/weights.json
+export FLOPSCOPE_WEIGHTS_FILE=/path/to/weights.json
 ```
 
 To disable weighting entirely and use unit weights instead:
 
 ```bash
-export WHEST_DISABLE_WEIGHTS=1
+export FLOPSCOPE_DISABLE_WEIGHTS=1
 ```
 
 The JSON file must have a `"weights"` key mapping operation names to floats:
@@ -325,7 +325,9 @@ The `benchmarks/` package in this repository automates both methods. See
 The `flop_multiplier` parameter in `BudgetContext` scales all costs:
 
 ```python
-with we.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
+import flopscope as flops
+
+with flops.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
     # Every operation costs 2× its normal FLOP count
     ...
 ```
@@ -337,23 +339,26 @@ weights scale each operation individually.
 
 ## Namespaces
 
-Use `we.namespace(...)` to create nested namespace scopes inside an active `BudgetContext`. The `namespace` parameter on `BudgetContext` sets the root namespace prefix for operations in that context:
+Use `flops.namespace(...)` to create nested namespace scopes inside an active `BudgetContext`. The `namespace` parameter on `BudgetContext` sets the root namespace prefix for operations in that context:
 
 ```python
-with we.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
-    with we.namespace("precompute"):
-        stats = we.mean(x)
+import flopscope as flops
+import flopscope.numpy as fnp
 
-    with we.namespace("fallback"):
-        with we.namespace("sampling"):
-            sample = we.add(stats, 1)
+with flops.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
+    with flops.namespace("precompute"):
+        stats = fnp.mean(x)
+
+    with flops.namespace("fallback"):
+        with flops.namespace("sampling"):
+            sample = fnp.add(stats, 1)
 
     print(budget.summary(by_namespace=True))
 ```
 
-Namespaces are hierarchical and exact per operation. `we.namespace("precompute")` inside `namespace="predict"` records operations as `predict.precompute`, and nested scopes append dotted segments such as `predict.fallback.sampling`.
+Namespaces are hierarchical and exact per operation. `flops.namespace("precompute")` inside `namespace="predict"` records operations as `predict.precompute`, and nested scopes append dotted segments such as `predict.fallback.sampling`.
 
-Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `we.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `we.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `we.budget_summary_dict(by_namespace=True)`, return the same exact buckets keyed by the full namespace path or `None` for unlabeled operations.
+Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `flops.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `flops.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `flops.budget_summary_dict(by_namespace=True)`, return namespace buckets keyed by the full namespace path or `None` for unlabeled operations. Namespace buckets include namespace-attributable FLOPs, calls, operations, `flopscope_backend_time_s`, and `flopscope_overhead_time_s`; context-level wall and residual wall time stay on the top-level summary.
 
 ```python
 data = budget.summary_dict(by_namespace=True)

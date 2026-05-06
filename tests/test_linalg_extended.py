@@ -3,9 +3,9 @@
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._symmetric import as_symmetric
-from whest.linalg._decompositions import (
+from flopscope._budget import BudgetContext
+from flopscope._symmetric import as_symmetric
+from flopscope.numpy.linalg._decompositions import (
     cholesky,
     cholesky_cost,
     eig,
@@ -21,7 +21,7 @@ from whest.linalg._decompositions import (
     svdvals,
     svdvals_cost,
 )
-from whest.linalg._properties import (
+from flopscope.numpy.linalg._properties import (
     cond,
     det,
     det_cost,
@@ -417,4 +417,4 @@ def test_matrix_rank_batched():
     """Batched matrix_rank works (ndim > 2 is supported)."""
     with BudgetContext(flop_budget=10**9):
         r = matrix_rank(numpy.ones((2, 3, 4)))
-    assert r.shape == (2,)  # batch dim preserved
+    assert r.shape == (2,)  # pyright: ignore[reportAttributeAccessIssue] # batch dim preserved

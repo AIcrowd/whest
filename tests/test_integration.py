@@ -3,7 +3,8 @@
 import numpy
 import pytest
 
-import whest as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
 
 def test_simple_mlp_forward_pass():
@@ -12,16 +13,16 @@ def test_simple_mlp_forward_pass():
     width = 16
     depth = 4
     weights = [
-        we.array(numpy.random.randn(width, width) * numpy.sqrt(2.0 / width))
+        fnp.array(numpy.random.randn(width, width) * numpy.sqrt(2.0 / width))
         for _ in range(depth)
     ]
 
-    with we.BudgetContext(flop_budget=10**8) as budget:
-        x = we.array(numpy.random.randn(100, width))
+    with flops.BudgetContext(flop_budget=10**8) as budget:
+        x = fnp.array(numpy.random.randn(100, width))
         for W in weights:
-            x = we.einsum("bi,ji->bj", x, W)
-            x = we.maximum(x, we.zeros_like(x))
-        estimate = we.mean(x, axis=0)
+            x = fnp.einsum("bi,ji->bj", x, W)
+            x = fnp.maximum(x, fnp.zeros_like(x))
+        estimate = fnp.mean(x, axis=0)
 
         assert estimate.shape == (width,)
         assert budget.flops_used > 0
@@ -35,46 +36,46 @@ def test_simple_mlp_forward_pass():
 
 def test_budget_tracking_accuracy():
     numpy.random.seed(42)
-    A = we.array(numpy.random.randn(10, 20))
-    B = we.array(numpy.random.randn(20, 30))
+    A = fnp.array(numpy.random.randn(10, 20))
+    B = fnp.array(numpy.random.randn(20, 30))
 
-    with we.BudgetContext(flop_budget=10**8) as budget:
-        we.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 = 6000 (FMA=1)
-        we.exp(we.ones((100,)))  # 100
-        we.sum(we.ones((50,)))  # 50
+    with flops.BudgetContext(flop_budget=10**8) as budget:
+        fnp.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 = 6000 (FMA=1)
+        fnp.exp(fnp.ones((100,)))  # 100
+        fnp.sum(fnp.ones((50,)))  # 50
         assert budget.flops_used == 6000 + 100 + 50
         assert budget.flops_remaining == 10**8 - 6150
 
 
 def test_flop_query_matches_execution():
-    query_cost = we.flops.einsum_cost("ij,jk->ik", shapes=[(10, 20), (20, 30)])
+    query_cost = flops.accounting.einsum_cost("ij,jk->ik", shapes=[(10, 20), (20, 30)])
 
-    with we.BudgetContext(flop_budget=10**8) as budget:
-        A = we.array(numpy.random.randn(10, 20))  # 200 (array creation)
-        B = we.array(numpy.random.randn(20, 30))  # 600 (array creation)
-        we.einsum("ij,jk->ik", A, B)
+    with flops.BudgetContext(flop_budget=10**8) as budget:
+        A = fnp.array(numpy.random.randn(10, 20))  # 200 (array creation)
+        B = fnp.array(numpy.random.randn(20, 30))  # 600 (array creation)
+        fnp.einsum("ij,jk->ik", A, B)
 
     assert budget.flops_used == query_cost + 200 + 600
 
 
 def test_mixed_free_and_counted():
-    with we.BudgetContext(flop_budget=1000) as budget:
-        x = we.zeros((10, 10))
-        x = we.reshape(x, (100,))
-        x = we.ones((5, 5))
-        x = we.transpose(x)
+    with flops.BudgetContext(flop_budget=1000) as budget:
+        x = fnp.zeros((10, 10))
+        x = fnp.reshape(x, (100,))
+        x = fnp.ones((5, 5))
+        x = fnp.transpose(x)
         assert budget.flops_used == 0
-        we.exp(we.ones((10,)))
+        fnp.exp(fnp.ones((10,)))
         assert budget.flops_used == 10
 
 
 def test_budget_exhaustion_mid_computation():
-    with pytest.raises(we.BudgetExhaustedError) as exc_info:
-        with we.BudgetContext(flop_budget=500) as budget:
-            we.exp(we.ones((100,)))  # 100
-            we.exp(we.ones((100,)))  # 200
-            we.exp(we.ones((100,)))  # 300
-            we.exp(we.ones((100,)))  # 400
-            we.exp(we.ones((100,)))  # 500
-            we.exp(we.ones((100,)))  # would be 600 — exceeds!
+    with pytest.raises(flops.BudgetExhaustedError) as exc_info:
+        with flops.BudgetContext(flop_budget=500) as budget:
+            fnp.exp(fnp.ones((100,)))  # 100
+            fnp.exp(fnp.ones((100,)))  # 200
+            fnp.exp(fnp.ones((100,)))  # 300
+            fnp.exp(fnp.ones((100,)))  # 400
+            fnp.exp(fnp.ones((100,)))  # 500
+            fnp.exp(fnp.ones((100,)))  # would be 600 — exceeds!
     assert exc_info.value.flops_remaining == 0

@@ -317,8 +317,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_and",
-              "label": "we.logical_and",
+              "href": "/docs/api/numpy/logical-and/",
+              "label": "flops.logical_and",
               "original_target": "logical_and",
               "role": "",
               "target": "logical_and",
@@ -328,8 +328,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_or",
-              "label": "we.logical_or",
+              "href": "/docs/api/numpy/logical-or/",
+              "label": "flops.logical_or",
               "original_target": "logical_or",
               "role": "",
               "target": "logical_or",
@@ -339,8 +339,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_xor",
-              "label": "we.logical_xor",
+              "href": "/docs/api/numpy/logical-xor/",
+              "label": "flops.logical_xor",
               "original_target": "logical_xor",
               "role": "",
               "target": "logical_xor",
@@ -359,12 +359,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.logical_not(3)"
+              "text": "flops.logical_not(3)"
             },
             {
               "kind": "output",
@@ -373,7 +373,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.logical_not([True, False, 0, 1])"
+              "text": "flops.logical_not([True, False, 0, 1])"
             },
             {
               "kind": "output",
@@ -387,12 +387,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(5)"
+              "text": "x = flops.arange(5)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.logical_not(x<3)"
+              "text": "flops.logical_not(x<3)"
             },
             {
               "kind": "output",
@@ -406,6 +406,7 @@
     }
   ],
   "canonical_name": "logical_not",
+  "canonical_path": "numpy/logical-not",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -423,16 +424,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.logical_not(3)\n\nwe.logical_not([True, False, 0, 1])\n\nx = we.arange(5)\n\nwe.logical_not(x<3)",
+    "code": "import flopscope.numpy as fnp\n\nflops.logical_not(3)\n\nflops.logical_not([True, False, 0, 1])\n\nx = flops.arange(5)\n\nflops.logical_not(x<3)",
     "output": "False\n\narray([False,  True,  True, False])\n\narray([False, False, False,  True,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logical_not/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.logical_not",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/logical-not/",
+  "legacy_href": "/docs/api/ops/logical_not/",
   "module": "numpy",
   "name": "logical_not",
   "next": {
-    "href": "/docs/api/ops/logical_or/",
-    "label": "we.logical_or"
+    "href": "/docs/api/numpy/logical-or/",
+    "label": "fnp.logical_or"
   },
   "notes": "Element-wise logical NOT.",
   "notes_sections": [],
@@ -477,10 +482,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logical_and/",
-    "label": "we.logical_and"
+    "href": "/docs/api/numpy/logical-and/",
+    "label": "fnp.logical_and"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.logical_not",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.logical_not.html",
   "returns": [
     {
@@ -498,8 +504,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_and",
-      "label": "we.logical_and",
+      "href": "/docs/api/numpy/logical-and/",
+      "label": "flops.logical_and",
       "original_target": "logical_and",
       "role": "",
       "target": "logical_and",
@@ -509,8 +515,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_or",
-      "label": "we.logical_or",
+      "href": "/docs/api/numpy/logical-or/",
+      "label": "flops.logical_or",
       "original_target": "logical_or",
       "role": "",
       "target": "logical_or",
@@ -520,20 +526,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_xor",
-      "label": "we.logical_xor",
+      "href": "/docs/api/numpy/logical-xor/",
+      "label": "flops.logical_xor",
       "original_target": "logical_xor",
       "role": "",
       "target": "logical_xor",
       "unresolved": false
     }
   ],
-  "signature": "we.logical_not(*args, **kwargs)",
+  "signature": "fnp.logical_not(*args, **kwargs)",
   "slug": "logical_not",
   "summary": "Compute the truth value of NOT x element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.logical_not",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

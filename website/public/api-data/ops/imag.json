@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/imag/",
+  "detail_href": "/docs/api/numpy/imag/",
   "detail_json_href": "/api-data/ops/imag.json",
   "docs": {
     "sections": [
@@ -139,8 +139,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/real",
-                "label": "we.real",
+                "href": "/docs/api/numpy/real/",
+                "label": "flops.real",
                 "original_target": "real",
                 "role": "",
                 "target": "real",
@@ -150,8 +150,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/angle",
-                "label": "we.angle",
+                "href": "/docs/api/numpy/angle/",
+                "label": "flops.angle",
                 "original_target": "angle",
                 "role": "",
                 "target": "angle",
@@ -161,8 +161,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/real_if_close",
-                "label": "we.real_if_close",
+                "href": "/docs/api/numpy/real-if-close/",
+                "label": "flops.real_if_close",
                 "original_target": "real_if_close",
                 "role": "",
                 "target": "real_if_close",
@@ -181,12 +181,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1+2j, 3+4j, 5+6j])"
+                "text": "a = flops.array([1+2j, 3+4j, 5+6j])"
               },
               {
                 "kind": "input",
@@ -200,7 +200,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a.imag = we.array([8, 10, 12])"
+                "text": "a.imag = flops.array([8, 10, 12])"
               },
               {
                 "kind": "input",
@@ -214,7 +214,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.imag(1 + 1j)"
+                "text": "flops.imag(1 + 1j)"
               },
               {
                 "kind": "output",
@@ -232,20 +232,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.imag",
     "module": "numpy",
     "name": "imag",
     "notes": "Return imaginary part of complex array.",
     "numpy_ref": "np.imag",
-    "signature": "we.imag(val)",
+    "signature": "fnp.imag(val)",
     "status": "supported",
     "summary": "Return the imaginary part of the complex argument.",
-    "weight": 1.0,
-    "whest_ref": "we.imag"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "imag",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L131",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L131"
   }
 }

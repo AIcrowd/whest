@@ -46,8 +46,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.rayleigh.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/rayleigh/",
                   "kind": "link",
                   "target": "random.Generator.rayleigh",
                   "text": "rayleigh"
@@ -89,7 +89,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.rayleigh`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.rayleigh`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -164,7 +164,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(scale).size"
+                      "text": "flops.array(scale).size"
                     },
                     {
                       "kind": "text",
@@ -214,7 +214,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(scale).size"
+                  "text": "flops.array(scale).size"
                 },
                 {
                   "kind": "text",
@@ -276,9 +276,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.rayleigh.html",
-              "href": "",
-              "label": "random.Generator.rayleigh",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/rayleigh/",
+              "label": "flops.random.Generator.rayleigh",
               "original_target": "random.Generator.rayleigh",
               "role": "",
               "target": "random.Generator.rayleigh",
@@ -355,7 +355,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "values = hist(we.random.rayleigh(3, 100000), bins=200, density=True)"
+              "text": "values = hist(flops.random.rayleigh(3, 100000), bins=200, density=True)"
             }
           ],
           "type": "doctest_block"
@@ -379,12 +379,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "modevalue = we.sqrt(2 / we.pi) * meanvalue"
+              "text": "modevalue = flops.sqrt(2 / flops.pi) * meanvalue"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.rayleigh(modevalue, 1000000)"
+              "text": "s = flops.random.rayleigh(modevalue, 1000000)"
             }
           ],
           "type": "doctest_block"
@@ -417,6 +417,7 @@
     }
   ],
   "canonical_name": "random.rayleigh",
+  "canonical_path": "numpy/random/rayleigh",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -436,16 +437,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "from matplotlib.pyplot import hist\n\nvalues = hist(we.random.rayleigh(3, 100000), bins=200, density=True)\n\nmeanvalue = 1\n\nmodevalue = we.sqrt(2 / we.pi) * meanvalue\n\ns = we.random.rayleigh(modevalue, 1000000)\n\n100.*sum(s>3)/1000000.",
+    "code": "from matplotlib.pyplot import hist\n\nvalues = hist(flops.random.rayleigh(3, 100000), bins=200, density=True)\n\nmeanvalue = 1\n\nmodevalue = flops.sqrt(2 / flops.pi) * meanvalue\n\ns = flops.random.rayleigh(modevalue, 1000000)\n\n100.*sum(s>3)/1000000.",
     "output": "0.087300000000000003 # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-rayleigh/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.rayleigh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
+  "href": "/docs/api/numpy/random/rayleigh/",
+  "legacy_href": "/docs/api/ops/random-rayleigh/",
   "module": "numpy.random",
   "name": "random.rayleigh",
   "next": {
-    "href": "/docs/api/ops/random-seed/",
-    "label": "we.random.seed"
+    "href": "/docs/api/numpy/random/seed/",
+    "label": "fnp.random.seed"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -467,17 +472,18 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``scale`` is a scalar.  Otherwise,",
-        "``we.array(scale).size`` samples are drawn."
+        "``flops.array(scale).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-random_sample/",
-    "label": "we.random.random_sample"
+    "href": "/docs/api/numpy/random/random-sample/",
+    "label": "fnp.random.random_sample"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.rayleigh",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.rayleigh.html",
   "returns": [
     {
@@ -497,21 +503,20 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.rayleigh.html",
-      "href": "",
-      "label": "random.Generator.rayleigh",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/rayleigh/",
+      "label": "flops.random.Generator.rayleigh",
       "original_target": "random.Generator.rayleigh",
       "role": "",
       "target": "random.Generator.rayleigh",
       "unresolved": false
     }
   ],
-  "signature": "we.random.rayleigh(scale=1.0, size=None)",
+  "signature": "fnp.random.rayleigh(scale=1.0, size=None)",
   "slug": "random-rayleigh",
   "summary": "Draw samples from a Rayleigh distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.rayleigh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

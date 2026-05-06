@@ -293,8 +293,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/log",
-              "label": "we.log",
+              "href": "/docs/api/numpy/log/",
+              "label": "flops.log",
               "original_target": "log",
               "role": "",
               "target": "log",
@@ -304,8 +304,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/log10",
-              "label": "we.log10",
+              "href": "/docs/api/numpy/log10/",
+              "label": "flops.log10",
               "original_target": "log10",
               "role": "",
               "target": "log10",
@@ -315,8 +315,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/log1p",
-              "label": "we.log1p",
+              "href": "/docs/api/numpy/log1p/",
+              "label": "flops.log1p",
               "original_target": "log1p",
               "role": "",
               "target": "log1p",
@@ -398,7 +398,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/log2",
+              "href": "/docs/api/numpy/log2/",
               "kind": "link",
               "target": "log2",
               "text": "log2"
@@ -434,7 +434,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/log2",
+              "href": "/docs/api/numpy/log2/",
               "kind": "link",
               "target": "log2",
               "text": "log2"
@@ -453,7 +453,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/log2",
+              "href": "/docs/api/numpy/log2/",
               "kind": "link",
               "target": "log2",
               "text": "log2"
@@ -500,17 +500,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([0, 1, 2, 2**4])"
+              "text": "x = flops.array([0, 1, 2, 2**4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.log2(x)"
+              "text": "flops.log2(x)"
             },
             {
               "kind": "output",
@@ -524,12 +524,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "xi = we.array([0+1.j, 1, 2+0.j, 4.j])"
+              "text": "xi = flops.array([0+1.j, 1, 2+0.j, 4.j])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.log2(xi)"
+              "text": "flops.log2(xi)"
             },
             {
               "kind": "output",
@@ -543,6 +543,7 @@
     }
   ],
   "canonical_name": "log2",
+  "canonical_path": "numpy/log2",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -566,16 +567,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([0, 1, 2, 2**4])\n\nwe.log2(x)\n\nxi = we.array([0+1.j, 1, 2+0.j, 4.j])\n\nwe.log2(xi)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([0, 1, 2, 2**4])\n\nflops.log2(x)\n\nxi = flops.array([0+1.j, 1, 2+0.j, 4.j])\n\nflops.log2(xi)",
     "output": "array([-inf,   0.,   1.,   4.])\n\narray([ 0.+2.26618007j,  0.+0.j        ,  1.+0.j        ,  2.+2.26618007j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/log2/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.log2",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/log2/",
+  "legacy_href": "/docs/api/ops/log2/",
   "module": "numpy",
   "name": "log2",
   "next": {
-    "href": "/docs/api/ops/logaddexp/",
-    "label": "we.logaddexp"
+    "href": "/docs/api/numpy/logaddexp/",
+    "label": "fnp.logaddexp"
   },
   "notes": "Element-wise base-2 logarithm.",
   "notes_sections": [
@@ -625,10 +630,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/log1p/",
-    "label": "we.log1p"
+    "href": "/docs/api/numpy/log1p/",
+    "label": "fnp.log1p"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.log2",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.log2.html",
   "returns": [
     {
@@ -645,8 +651,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/log",
-      "label": "we.log",
+      "href": "/docs/api/numpy/log/",
+      "label": "flops.log",
       "original_target": "log",
       "role": "",
       "target": "log",
@@ -656,8 +662,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/log10",
-      "label": "we.log10",
+      "href": "/docs/api/numpy/log10/",
+      "label": "flops.log10",
       "original_target": "log10",
       "role": "",
       "target": "log10",
@@ -667,8 +673,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/log1p",
-      "label": "we.log1p",
+      "href": "/docs/api/numpy/log1p/",
+      "label": "flops.log1p",
       "original_target": "log1p",
       "role": "",
       "target": "log1p",
@@ -686,12 +692,11 @@
       "unresolved": true
     }
   ],
-  "signature": "we.log2(*args, **kwargs)",
+  "signature": "fnp.log2(*args, **kwargs)",
   "slug": "log2",
   "summary": "Base-2 logarithm of `x`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.log2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 16.0
 }

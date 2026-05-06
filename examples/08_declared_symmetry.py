@@ -7,7 +7,7 @@ import math
 
 import numpy as np
 
-import whest as we
+import flopscope as we
 
 print("=== Symmetric matrix (S2 on axes 0,1) ===\n")
 

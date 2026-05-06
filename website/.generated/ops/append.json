@@ -276,7 +276,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/append",
+                      "href": "/docs/api/numpy/append/",
                       "kind": "link",
                       "target": "append",
                       "text": "append"
@@ -337,7 +337,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/append",
+                  "href": "/docs/api/numpy/append/",
                   "kind": "link",
                   "target": "append",
                   "text": "append"
@@ -386,8 +386,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/insert",
-              "label": "we.insert",
+              "href": "/docs/api/numpy/insert/",
+              "label": "flops.insert",
               "original_target": "insert",
               "role": "",
               "target": "insert",
@@ -402,8 +402,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/delete",
-              "label": "we.delete",
+              "href": "/docs/api/numpy/delete/",
+              "label": "flops.delete",
               "original_target": "delete",
               "role": "",
               "target": "delete",
@@ -422,12 +422,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])"
+              "text": "flops.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])"
             },
             {
               "kind": "output",
@@ -466,7 +466,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)"
+              "text": "flops.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)"
             },
             {
               "kind": "output",
@@ -488,7 +488,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)"
+              "text": "flops.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)"
             },
             {
               "kind": "output",
@@ -519,12 +519,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, 2], dtype=int)"
+              "text": "a = flops.array([1, 2], dtype=int)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "c = we.append(a, [])"
+              "text": "c = flops.append(a, [])"
             },
             {
               "kind": "input",
@@ -581,6 +581,7 @@
     }
   ],
   "canonical_name": "append",
+  "canonical_path": "numpy/append",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -591,16 +592,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])\n\nwe.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)\n\nwe.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)\n\na = we.array([1, 2], dtype=int)\n\nc = we.append(a, [])\n\nc\n\nc.dtype",
+    "code": "import flopscope.numpy as fnp\n\nflops.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])\n\nflops.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)\n\nflops.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)\n\na = flops.array([1, 2], dtype=int)\n\nc = flops.append(a, [])\n\nc\n\nc.dtype",
     "output": "array([1, 2, 3, ..., 7, 8, 9])\n\narray([[1, 2, 3],\n       [4, 5, 6],\n       [7, 8, 9]])\n\nTraceback (most recent call last):\n    ...\nValueError: all the input arrays must have same number of dimensions, but\nthe array at index 0 has 2 dimension(s) and the array at index 1 has 1\ndimension(s)\n\narray([1., 2.])\n\nfloat64",
     "source": "derived"
   },
-  "href": "/docs/api/ops/append/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.append",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L840",
+  "href": "/docs/api/numpy/append/",
+  "legacy_href": "/docs/api/ops/append/",
   "module": "numpy",
   "name": "append",
   "next": {
-    "href": "/docs/api/ops/apply_along_axis/",
-    "label": "we.apply_along_axis"
+    "href": "/docs/api/numpy/apply-along-axis/",
+    "label": "fnp.apply_along_axis"
   },
   "notes": "Append values to end of array. Cost: numel(values).",
   "notes_sections": [],
@@ -633,10 +638,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/any/",
-    "label": "we.any"
+    "href": "/docs/api/numpy/any/",
+    "label": "fnp.any"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.append",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.append.html",
   "returns": [
     {
@@ -659,8 +665,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/insert",
-      "label": "we.insert",
+      "href": "/docs/api/numpy/insert/",
+      "label": "flops.insert",
       "original_target": "insert",
       "role": "",
       "target": "insert",
@@ -675,20 +681,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/delete",
-      "label": "we.delete",
+      "href": "/docs/api/numpy/delete/",
+      "label": "flops.delete",
       "original_target": "delete",
       "role": "",
       "target": "delete",
       "unresolved": false
     }
   ],
-  "signature": "we.append(arr, values, axis=None)",
+  "signature": "fnp.append(arr, values, axis=None)",
   "slug": "append",
   "summary": "Append values to the end of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5644",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.append",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L652"
+  "weight": 1.0
 }

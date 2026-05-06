@@ -229,7 +229,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "take_along_axis(a, index_array, axis=axis)",
-                      "text": "we.take_along_axis(a, index_array, axis=axis)"
+                      "text": "flops.take_along_axis(a, index_array, axis=axis)"
                     },
                     {
                       "kind": "text",
@@ -290,7 +290,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "take_along_axis(a, index_array, axis=axis)",
-                  "text": "we.take_along_axis(a, index_array, axis=axis)"
+                  "text": "flops.take_along_axis(a, index_array, axis=axis)"
                 },
                 {
                   "kind": "text",
@@ -328,8 +328,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/partition",
-              "label": "we.partition",
+              "href": "/docs/api/numpy/partition/",
+              "label": "flops.partition",
               "original_target": "partition",
               "role": "",
               "target": "partition",
@@ -360,8 +360,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/argsort",
-              "label": "we.argsort",
+              "href": "/docs/api/numpy/argsort/",
+              "label": "flops.argsort",
               "original_target": "argsort",
               "role": "",
               "target": "argsort",
@@ -384,8 +384,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/take_along_axis",
-              "label": "we.take_along_axis",
+              "href": "/docs/api/numpy/take-along-axis/",
+              "label": "flops.take_along_axis",
               "original_target": "take_along_axis",
               "role": "",
               "target": "take_along_axis",
@@ -420,7 +420,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/argpartition",
+              "href": "/docs/api/numpy/argpartition/",
               "kind": "link",
               "target": "argpartition",
               "text": "argpartition"
@@ -431,7 +431,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/partition",
+              "href": "/docs/api/numpy/partition/",
               "kind": "link",
               "target": "partition",
               "text": "partition"
@@ -462,17 +462,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([3, 4, 2, 1])"
+              "text": "x = flops.array([3, 4, 2, 1])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x[we.argpartition(x, 3)]"
+              "text": "x[flops.argpartition(x, 3)]"
             },
             {
               "kind": "output",
@@ -481,7 +481,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x[we.argpartition(x, (1, 3))]"
+              "text": "x[flops.argpartition(x, (1, 3))]"
             },
             {
               "kind": "output",
@@ -500,7 +500,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array(x)[we.argpartition(x, 3)]"
+              "text": "flops.array(x)[flops.argpartition(x, 3)]"
             },
             {
               "kind": "output",
@@ -523,22 +523,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([[3, 4, 2], [1, 3, 1]])"
+              "text": "x = flops.array([[3, 4, 2], [1, 3, 1]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "index_array = we.argpartition(x, kth=1, axis=-1)"
+              "text": "index_array = flops.argpartition(x, kth=1, axis=-1)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "# below is the same as we.partition(x, kth=1)"
+              "text": "# below is the same as flops.partition(x, kth=1)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.take_along_axis(x, index_array, axis=-1)"
+              "text": "flops.take_along_axis(x, index_array, axis=-1)"
             },
             {
               "kind": "output",
@@ -556,6 +556,7 @@
     }
   ],
   "canonical_name": "argpartition",
+  "canonical_path": "numpy/argpartition",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -573,16 +574,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([3, 4, 2, 1])\n\nx[we.argpartition(x, 3)]\n\nx[we.argpartition(x, (1, 3))]\n\nx = [3, 4, 2, 1]\n\nwe.array(x)[we.argpartition(x, 3)]\n\nx = we.array([[3, 4, 2], [1, 3, 1]])\n\nindex_array = we.argpartition(x, kth=1, axis=-1)\n\nwe.take_along_axis(x, index_array, axis=-1)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([3, 4, 2, 1])\n\nx[flops.argpartition(x, 3)]\n\nx[flops.argpartition(x, (1, 3))]\n\nx = [3, 4, 2, 1]\n\nflops.array(x)[flops.argpartition(x, 3)]\n\nx = flops.array([[3, 4, 2], [1, 3, 1]])\n\nindex_array = flops.argpartition(x, kth=1, axis=-1)\n\nflops.take_along_axis(x, index_array, axis=-1)",
     "output": "array([2, 1, 3, 4]) # may vary\n\narray([1, 2, 3, 4]) # may vary\n\narray([2, 1, 3, 4]) # may vary\n\narray([[2, 3, 4],\n       [1, 1, 3]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/argpartition/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.argpartition",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L161",
+  "href": "/docs/api/numpy/argpartition/",
+  "legacy_href": "/docs/api/ops/argpartition/",
   "module": "numpy",
   "name": "argpartition",
   "next": {
-    "href": "/docs/api/ops/argsort/",
-    "label": "we.argsort"
+    "href": "/docs/api/numpy/argsort/",
+    "label": "fnp.argsort"
   },
   "notes": "Indirect partition; cost = n per slice.",
   "notes_sections": [
@@ -641,17 +646,18 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/argmin/",
-    "label": "we.argmin"
+    "href": "/docs/api/numpy/argmin/",
+    "label": "fnp.argmin"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.argpartition",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.argpartition.html",
   "returns": [
     {
       "body": [
         "Array of indices that partition `a` along the specified axis.",
         "If `a` is one-dimensional, ``a[index_array]`` yields a partitioned `a`.",
-        "More generally, ``we.take_along_axis(a, index_array, axis=axis)``",
+        "More generally, ``flops.take_along_axis(a, index_array, axis=axis)``",
         "always yields the partitioned `a`, irrespective of dimensionality."
       ],
       "name": "index_array",
@@ -668,8 +674,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/partition",
-      "label": "we.partition",
+      "href": "/docs/api/numpy/partition/",
+      "label": "flops.partition",
       "original_target": "partition",
       "role": "",
       "target": "partition",
@@ -700,8 +706,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/argsort",
-      "label": "we.argsort",
+      "href": "/docs/api/numpy/argsort/",
+      "label": "flops.argsort",
       "original_target": "argsort",
       "role": "",
       "target": "argsort",
@@ -724,20 +730,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/take_along_axis",
-      "label": "we.take_along_axis",
+      "href": "/docs/api/numpy/take-along-axis/",
+      "label": "flops.take_along_axis",
       "original_target": "take_along_axis",
       "role": "",
       "target": "take_along_axis",
       "unresolved": false
     }
   ],
-  "signature": "we.argpartition(a, kth, axis=-1, kind='introselect', order=None)",
+  "signature": "fnp.argpartition(a, kth, axis=-1, kind='introselect', order=None)",
   "slug": "argpartition",
   "summary": "Perform an indirect partition along the given axis using the algorithm specified by the `kind` keyword. It returns an array of indices of the same shape as `a` that index data along the given axis in partitioned order.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L876",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.argpartition",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L142"
+  "weight": 1.0
 }

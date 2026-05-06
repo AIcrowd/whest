@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unique_counts/",
+  "detail_href": "/docs/api/numpy/unique-counts/",
   "detail_json_href": "/api-data/ops/unique_counts.json",
   "docs": {
     "sections": [
@@ -38,7 +38,7 @@
           },
           {
             "language": null,
-            "text": "we.unique(x, return_counts=True, equal_nan=False)",
+            "text": "flops.unique(x, return_counts=True, equal_nan=False)",
             "type": "literal_block"
           },
           {
@@ -164,8 +164,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
-                "label": "we.unique",
+                "href": "/docs/api/numpy/unique/",
+                "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
                 "target": "unique",
@@ -184,7 +184,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -194,7 +194,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "uniq = we.unique_counts(x)"
+                "text": "uniq = flops.unique_counts(x)"
               },
               {
                 "kind": "input",
@@ -226,20 +226,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.unique_counts",
     "module": "numpy",
     "name": "unique_counts",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique_counts",
-    "signature": "we.unique_counts(x, /)",
+    "signature": "fnp.unique_counts(x: 'ArrayLike', /) -> 'Any'",
     "status": "supported",
     "summary": "Find the unique elements and counts of an input array `x`.",
-    "weight": 1.0,
-    "whest_ref": "we.unique_counts"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "unique_counts",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L468",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L303"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L335",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L468"
   }
 }

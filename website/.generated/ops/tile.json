@@ -263,8 +263,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/repeat",
-              "label": "we.repeat",
+              "href": "/docs/api/numpy/repeat/",
+              "label": "flops.repeat",
               "original_target": "repeat",
               "role": "",
               "target": "repeat",
@@ -279,8 +279,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_to",
-              "label": "we.broadcast_to",
+              "href": "/docs/api/numpy/broadcast-to/",
+              "label": "flops.broadcast_to",
               "original_target": "broadcast_to",
               "role": "",
               "target": "broadcast_to",
@@ -299,17 +299,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([0, 1, 2])"
+              "text": "a = flops.array([0, 1, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tile(a, 2)"
+              "text": "flops.tile(a, 2)"
             },
             {
               "kind": "output",
@@ -318,7 +318,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tile(a, (2, 2))"
+              "text": "flops.tile(a, (2, 2))"
             },
             {
               "kind": "output",
@@ -331,7 +331,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tile(a, (2, 1, 2))"
+              "text": "flops.tile(a, (2, 1, 2))"
             },
             {
               "kind": "output",
@@ -349,12 +349,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[1, 2], [3, 4]])"
+              "text": "b = flops.array([[1, 2], [3, 4]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tile(b, 2)"
+              "text": "flops.tile(b, 2)"
             },
             {
               "kind": "output",
@@ -367,7 +367,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tile(b, (2, 1))"
+              "text": "flops.tile(b, (2, 1))"
             },
             {
               "kind": "output",
@@ -393,12 +393,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "c = we.array([1,2,3,4])"
+              "text": "c = flops.array([1,2,3,4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tile(c,(4,1))"
+              "text": "flops.tile(c,(4,1))"
             },
             {
               "kind": "output",
@@ -424,6 +424,7 @@
     }
   ],
   "canonical_name": "tile",
+  "canonical_path": "numpy/tile",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -434,16 +435,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([0, 1, 2])\n\nwe.tile(a, 2)\n\nwe.tile(a, (2, 2))\n\nwe.tile(a, (2, 1, 2))\n\nb = we.array([[1, 2], [3, 4]])\n\nwe.tile(b, 2)\n\nwe.tile(b, (2, 1))\n\nc = we.array([1,2,3,4])\n\nwe.tile(c,(4,1))",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([0, 1, 2])\n\nflops.tile(a, 2)\n\nflops.tile(a, (2, 2))\n\nflops.tile(a, (2, 1, 2))\n\nb = flops.array([[1, 2], [3, 4]])\n\nflops.tile(b, 2)\n\nflops.tile(b, (2, 1))\n\nc = flops.array([1,2,3,4])\n\nflops.tile(c,(4,1))",
     "output": "array([0, 1, 2, 0, 1, 2])\n\narray([[0, 1, 2, 0, 1, 2],\n       [0, 1, 2, 0, 1, 2]])\n\narray([[[0, 1, 2, 0, 1, 2]],\n       [[0, 1, 2, 0, 1, 2]]])\n\narray([[1, 2, 1, 2],\n       [3, 4, 3, 4]])\n\narray([[1, 2],\n       [3, 4],\n       [1, 2],\n       [3, 4]])\n\narray([[1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/tile/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.tile",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L596",
+  "href": "/docs/api/numpy/tile/",
+  "legacy_href": "/docs/api/ops/tile/",
   "module": "numpy",
   "name": "tile",
   "next": {
-    "href": "/docs/api/ops/trace/",
-    "label": "we.trace"
+    "href": "/docs/api/numpy/trace/",
+    "label": "fnp.trace"
   },
   "notes": "Repeat array by tiling. Cost: numel(output).",
   "notes_sections": [],
@@ -465,10 +470,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tensordot/",
-    "label": "we.tensordot"
+    "href": "/docs/api/numpy/tensordot/",
+    "label": "fnp.tensordot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.tile",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tile.html",
   "returns": [
     {
@@ -489,8 +495,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/repeat",
-      "label": "we.repeat",
+      "href": "/docs/api/numpy/repeat/",
+      "label": "flops.repeat",
       "original_target": "repeat",
       "role": "",
       "target": "repeat",
@@ -505,20 +511,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_to",
-      "label": "we.broadcast_to",
+      "href": "/docs/api/numpy/broadcast-to/",
+      "label": "flops.broadcast_to",
       "original_target": "broadcast_to",
       "role": "",
       "target": "broadcast_to",
       "unresolved": false
     }
   ],
-  "signature": "we.tile(A, reps)",
+  "signature": "fnp.tile(A: 'ArrayLike', reps: 'int | Sequence[int]') -> 'FlopscopeArray'",
   "slug": "tile",
   "summary": "Construct an array by repeating A the number of times given by reps.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1204",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.tile",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L442"
+  "weight": 1.0
 }

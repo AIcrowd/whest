@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/dot/",
+  "detail_href": "/docs/api/numpy/dot/",
   "detail_json_href": "/api-data/ops/dot.json",
   "docs": {
     "sections": [
@@ -78,7 +78,7 @@
                         "display_text": "matmul",
                         "explicit_title": false,
                         "external_url": "",
-                        "href": "/docs/api/ops/matmul",
+                        "href": "/docs/api/numpy/matmul/",
                         "kind": "role_reference",
                         "original_target": "matmul",
                         "role": "func",
@@ -131,7 +131,7 @@
                         "display_text": "multiply",
                         "explicit_title": false,
                         "external_url": "",
-                        "href": "/docs/api/ops/multiply",
+                        "href": "/docs/api/numpy/multiply/",
                         "kind": "role_reference",
                         "original_target": "multiply",
                         "role": "func",
@@ -148,7 +148,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "multiply(a, b)",
-                        "text": "we.multiply(a, b)"
+                        "text": "flops.multiply(a, b)"
                       },
                       {
                         "kind": "text",
@@ -285,7 +285,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "linalg",
-                "text": "we.linalg"
+                "text": "flops.linalg"
               },
               {
                 "kind": "text",
@@ -581,8 +581,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vdot",
-                "label": "we.vdot",
+                "href": "/docs/api/numpy/vdot/",
+                "label": "flops.vdot",
                 "original_target": "vdot",
                 "role": "",
                 "target": "vdot",
@@ -597,8 +597,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
-                "label": "we.vecdot",
+                "href": "/docs/api/numpy/vecdot/",
+                "label": "flops.vecdot",
                 "original_target": "vecdot",
                 "role": "",
                 "target": "vecdot",
@@ -613,8 +613,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
-                "label": "we.tensordot",
+                "href": "/docs/api/numpy/tensordot/",
+                "label": "flops.tensordot",
                 "original_target": "tensordot",
                 "role": "",
                 "target": "tensordot",
@@ -629,8 +629,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "href": "/docs/api/numpy/einsum/",
+                "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -645,8 +645,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
-                "label": "we.matmul",
+                "href": "/docs/api/numpy/matmul/",
+                "label": "flops.matmul",
                 "original_target": "matmul",
                 "role": "",
                 "target": "matmul",
@@ -661,8 +661,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-multi_dot",
-                "label": "we.linalg.multi_dot",
+                "href": "/docs/api/numpy/linalg/multi-dot/",
+                "label": "flops.linalg.multi_dot",
                 "original_target": "linalg.multi_dot",
                 "role": "",
                 "target": "linalg.multi_dot",
@@ -681,12 +681,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dot(3, 4)"
+                "text": "flops.dot(3, 4)"
               },
               {
                 "kind": "output",
@@ -709,7 +709,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dot([2j, 3j], [2j, 3j])"
+                "text": "flops.dot([2j, 3j], [2j, 3j])"
               },
               {
                 "kind": "output",
@@ -742,7 +742,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dot(a, b)"
+                "text": "flops.dot(a, b)"
               },
               {
                 "kind": "output",
@@ -760,17 +760,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(3*4*5*6).reshape((3,4,5,6))"
+                "text": "a = flops.arange(3*4*5*6).reshape((3,4,5,6))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(3*4*5*6)[::-1].reshape((5,4,6,3))"
+                "text": "b = flops.arange(3*4*5*6)[::-1].reshape((5,4,6,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dot(a, b)[2,3,2,1,2,2]"
+                "text": "flops.dot(a, b)[2,3,2,1,2,2]"
               },
               {
                 "kind": "output",
@@ -797,20 +797,20 @@
     "category": "counted_custom",
     "cost_formula": "m * k * n (FMA=1)",
     "cost_formula_latex": "$m \\cdot k \\cdot n$",
+    "flopscope_ref": "fnp.dot",
     "module": "numpy",
     "name": "dot",
     "notes": "Dot product; cost = M*K*N (FMA=1).",
     "numpy_ref": "np.dot",
-    "signature": "we.dot(a, b)",
+    "signature": "fnp.dot(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Dot product of two arrays. Specifically,",
-    "weight": 1.0,
-    "whest_ref": "we.dot"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "dot",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dot.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L904"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1506",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dot.html"
   }
 }

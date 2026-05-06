@@ -144,7 +144,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -154,12 +154,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array(([1., -1.]))"
+              "text": "x1 = flops.array(([1., -1.]))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.positive(x1)"
+              "text": "flops.positive(x1)"
             },
             {
               "kind": "output",
@@ -184,10 +184,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/positive",
+              "href": "/docs/api/numpy/positive/",
               "kind": "link",
               "target": "positive",
-              "text": "we.positive"
+              "text": "flops.positive"
             },
             {
               "kind": "text",
@@ -201,7 +201,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array(([1., -1.]))"
+              "text": "x1 = flops.array(([1., -1.]))"
             },
             {
               "kind": "input",
@@ -220,6 +220,7 @@
     }
   ],
   "canonical_name": "positive",
+  "canonical_path": "numpy/positive",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -230,16 +231,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx1 = we.array(([1., -1.]))\n\nwe.positive(x1)\n\nx1 = we.array(([1., -1.]))\n\n+x1",
+    "code": "import flopscope.numpy as fnp\n\nx1 = flops.array(([1., -1.]))\n\nflops.positive(x1)\n\nx1 = flops.array(([1., -1.]))\n\n+x1",
     "output": "array([ 1., -1.])\n\narray([ 1., -1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/positive/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.positive",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/positive/",
+  "legacy_href": "/docs/api/ops/positive/",
   "module": "numpy",
   "name": "positive",
   "next": {
-    "href": "/docs/api/ops/power/",
-    "label": "we.power"
+    "href": "/docs/api/numpy/power/",
+    "label": "fnp.power"
   },
   "notes": "Element-wise unary plus (copy with sign preserved).",
   "notes_sections": [
@@ -256,10 +261,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polyval/",
-    "label": "we.polyval"
+    "href": "/docs/api/numpy/polyval/",
+    "label": "fnp.polyval"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.positive",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.positive.html",
   "returns": [
     {
@@ -272,12 +278,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.positive(*args, **kwargs)",
+  "signature": "fnp.positive(*args, **kwargs)",
   "slug": "positive",
   "summary": "Numerical positive, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.positive",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

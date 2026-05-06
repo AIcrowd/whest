@@ -285,8 +285,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isinf",
-              "label": "we.isinf",
+              "href": "/docs/api/numpy/isinf/",
+              "label": "flops.isinf",
               "original_target": "isinf",
               "role": "",
               "target": "isinf",
@@ -296,8 +296,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isneginf",
-              "label": "we.isneginf",
+              "href": "/docs/api/numpy/isneginf/",
+              "label": "flops.isneginf",
               "original_target": "isneginf",
               "role": "",
               "target": "isneginf",
@@ -307,8 +307,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isposinf",
-              "label": "we.isposinf",
+              "href": "/docs/api/numpy/isposinf/",
+              "label": "flops.isposinf",
               "original_target": "isposinf",
               "role": "",
               "target": "isposinf",
@@ -318,8 +318,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isfinite",
-              "label": "we.isfinite",
+              "href": "/docs/api/numpy/isfinite/",
+              "label": "flops.isfinite",
               "original_target": "isfinite",
               "role": "",
               "target": "isfinite",
@@ -363,12 +363,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isnan(we.nan)"
+              "text": "flops.isnan(flops.nan)"
             },
             {
               "kind": "output",
@@ -377,7 +377,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isnan(we.inf)"
+              "text": "flops.isnan(flops.inf)"
             },
             {
               "kind": "output",
@@ -386,7 +386,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isnan([we.log(-1.),1.,we.log(0)])"
+              "text": "flops.isnan([flops.log(-1.),1.,flops.log(0)])"
             },
             {
               "kind": "output",
@@ -400,6 +400,7 @@
     }
   ],
   "canonical_name": "isnan",
+  "canonical_path": "numpy/isnan",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -417,16 +418,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.isnan(we.nan)\n\nwe.isnan(we.inf)\n\nwe.isnan([we.log(-1.),1.,we.log(0)])",
+    "code": "import flopscope.numpy as fnp\n\nflops.isnan(flops.nan)\n\nflops.isnan(flops.inf)\n\nflops.isnan([flops.log(-1.),1.,flops.log(0)])",
     "output": "True\n\nFalse\n\narray([ True, False, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isnan/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isnan",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L793",
+  "href": "/docs/api/numpy/isnan/",
+  "legacy_href": "/docs/api/ops/isnan/",
   "module": "numpy",
   "name": "isnan",
   "next": {
-    "href": "/docs/api/ops/isneginf/",
-    "label": "we.isneginf"
+    "href": "/docs/api/numpy/isneginf/",
+    "label": "fnp.isneginf"
   },
   "notes": "Test for NaN element-wise. Cost: numel(input).",
   "notes_sections": [
@@ -473,10 +478,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isinf/",
-    "label": "we.isinf"
+    "href": "/docs/api/numpy/isinf/",
+    "label": "fnp.isinf"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isnan",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isnan.html",
   "returns": [
     {
@@ -493,8 +499,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isinf",
-      "label": "we.isinf",
+      "href": "/docs/api/numpy/isinf/",
+      "label": "flops.isinf",
       "original_target": "isinf",
       "role": "",
       "target": "isinf",
@@ -504,8 +510,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isneginf",
-      "label": "we.isneginf",
+      "href": "/docs/api/numpy/isneginf/",
+      "label": "flops.isneginf",
       "original_target": "isneginf",
       "role": "",
       "target": "isneginf",
@@ -515,8 +521,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isposinf",
-      "label": "we.isposinf",
+      "href": "/docs/api/numpy/isposinf/",
+      "label": "flops.isposinf",
       "original_target": "isposinf",
       "role": "",
       "target": "isposinf",
@@ -526,8 +532,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isfinite",
-      "label": "we.isfinite",
+      "href": "/docs/api/numpy/isfinite/",
+      "label": "flops.isfinite",
       "original_target": "isfinite",
       "role": "",
       "target": "isfinite",
@@ -545,12 +551,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.isnan(*args, **kwargs)",
+  "signature": "fnp.isnan(*args, **kwargs)",
   "slug": "isnan",
   "summary": "Test element-wise for NaN and return result as a boolean array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isnan",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L607"
+  "weight": 1.0
 }

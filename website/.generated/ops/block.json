@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/concatenate",
+              "href": "/docs/api/numpy/concatenate/",
               "kind": "link",
               "target": "concatenate",
               "text": "concatenate"
@@ -58,7 +58,7 @@
               "href": "",
               "kind": "link",
               "target": "block([v, 1])",
-              "text": "we.block([v, 1])"
+              "text": "flops.block([v, 1])"
             },
             {
               "kind": "text",
@@ -283,8 +283,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/concatenate",
-              "label": "we.concatenate",
+              "href": "/docs/api/numpy/concatenate/",
+              "label": "flops.concatenate",
               "original_target": "concatenate",
               "role": "",
               "target": "concatenate",
@@ -299,8 +299,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/stack",
-              "label": "we.stack",
+              "href": "/docs/api/numpy/stack/",
+              "label": "flops.stack",
               "original_target": "stack",
               "role": "",
               "target": "stack",
@@ -315,8 +315,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/vstack",
-              "label": "we.vstack",
+              "href": "/docs/api/numpy/vstack/",
+              "label": "flops.vstack",
               "original_target": "vstack",
               "role": "",
               "target": "vstack",
@@ -331,8 +331,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/hstack",
-              "label": "we.hstack",
+              "href": "/docs/api/numpy/hstack/",
+              "label": "flops.hstack",
               "original_target": "hstack",
               "role": "",
               "target": "hstack",
@@ -347,8 +347,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/dstack",
-              "label": "we.dstack",
+              "href": "/docs/api/numpy/dstack/",
+              "label": "flops.dstack",
               "original_target": "dstack",
               "role": "",
               "target": "dstack",
@@ -363,8 +363,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/column_stack",
-              "label": "we.column_stack",
+              "href": "/docs/api/numpy/column-stack/",
+              "label": "flops.column_stack",
               "original_target": "column_stack",
               "role": "",
               "target": "column_stack",
@@ -379,8 +379,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/vsplit",
-              "label": "we.vsplit",
+              "href": "/docs/api/numpy/vsplit/",
+              "label": "flops.vsplit",
               "original_target": "vsplit",
               "role": "",
               "target": "vsplit",
@@ -395,8 +395,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/unstack",
-              "label": "we.unstack",
+              "href": "/docs/api/numpy/unstack/",
+              "label": "flops.unstack",
               "original_target": "unstack",
               "role": "",
               "target": "unstack",
@@ -418,10 +418,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/block",
+              "href": "/docs/api/numpy/block/",
               "kind": "link",
               "target": "block",
-              "text": "we.block"
+              "text": "flops.block"
             },
             {
               "kind": "text",
@@ -432,7 +432,7 @@
               "href": "",
               "kind": "link",
               "target": "block([[1, 2], [3, 4]])",
-              "text": "we.block([[1, 2], [3, 4]])"
+              "text": "flops.block([[1, 2], [3, 4]])"
             },
             {
               "kind": "text",
@@ -443,7 +443,7 @@
               "href": "",
               "kind": "link",
               "target": "array([[1, 2], [3, 4]])",
-              "text": "we.array([[1, 2], [3, 4]])"
+              "text": "flops.array([[1, 2], [3, 4]])"
             },
             {
               "kind": "text",
@@ -463,7 +463,7 @@
               "href": "",
               "kind": "link",
               "target": "block([[a, b], [c, d]])",
-              "text": "we.block([[a, b], [c, d]])"
+              "text": "flops.block([[a, b], [c, d]])"
             },
             {
               "kind": "text",
@@ -507,7 +507,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/block",
+              "href": "/docs/api/numpy/block/",
               "kind": "link",
               "target": "block",
               "text": "block"
@@ -548,7 +548,7 @@
             },
             {
               "kind": "code",
-              "text": "we.block([[A, B, ...], [p, q, ...]])"
+              "text": "flops.block([[A, B, ...], [p, q, ...]])"
             },
             {
               "kind": "text",
@@ -576,32 +576,32 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.eye(2) * 2"
+              "text": "A = flops.eye(2) * 2"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "B = we.eye(3) * 3"
+              "text": "B = flops.eye(3) * 3"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block(["
+              "text": "flops.block(["
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "[A,               we.zeros((2, 3))],"
+              "text": "[A,               flops.zeros((2, 3))],"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "[we.ones((3, 2)), B               ]"
+              "text": "[flops.ones((3, 2)), B               ]"
             },
             {
               "kind": "input",
@@ -639,7 +639,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/block",
+              "href": "/docs/api/numpy/block/",
               "kind": "link",
               "target": "block",
               "text": "block"
@@ -650,7 +650,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/hstack",
+              "href": "/docs/api/numpy/hstack/",
               "kind": "link",
               "target": "hstack",
               "text": "hstack"
@@ -667,7 +667,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([1, 2, 3])              # hstack([1, 2, 3])"
+              "text": "flops.block([1, 2, 3])              # hstack([1, 2, 3])"
             },
             {
               "kind": "output",
@@ -681,17 +681,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, 2, 3])"
+              "text": "a = flops.array([1, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([4, 5, 6])"
+              "text": "b = flops.array([4, 5, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([a, b, 10])             # hstack([a, b, 10])"
+              "text": "flops.block([a, b, 10])             # hstack([a, b, 10])"
             },
             {
               "kind": "output",
@@ -705,7 +705,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.ones((2, 2), int)"
+              "text": "A = flops.ones((2, 2), int)"
             },
             {
               "kind": "input",
@@ -715,7 +715,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([A, B])                 # hstack([A, B])"
+              "text": "flops.block([A, B])                 # hstack([A, B])"
             },
             {
               "kind": "output",
@@ -736,7 +736,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/block",
+              "href": "/docs/api/numpy/block/",
               "kind": "link",
               "target": "block",
               "text": "block"
@@ -747,7 +747,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/vstack",
+              "href": "/docs/api/numpy/vstack/",
               "kind": "link",
               "target": "vstack",
               "text": "vstack"
@@ -764,17 +764,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, 2, 3])"
+              "text": "a = flops.array([1, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([4, 5, 6])"
+              "text": "b = flops.array([4, 5, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([[a], [b]])             # vstack([a, b])"
+              "text": "flops.block([[a], [b]])             # vstack([a, b])"
             },
             {
               "kind": "output",
@@ -792,7 +792,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.ones((2, 2), int)"
+              "text": "A = flops.ones((2, 2), int)"
             },
             {
               "kind": "input",
@@ -802,7 +802,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([[A], [B]])             # vstack([A, B])"
+              "text": "flops.block([[A], [B]])             # vstack([A, B])"
             },
             {
               "kind": "output",
@@ -831,7 +831,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/atleast_1d",
+              "href": "/docs/api/numpy/atleast-1d/",
               "kind": "link",
               "target": "atleast_1d",
               "text": "atleast_1d"
@@ -842,7 +842,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/atleast_2d",
+              "href": "/docs/api/numpy/atleast-2d/",
               "kind": "link",
               "target": "atleast_2d",
               "text": "atleast_2d"
@@ -859,17 +859,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array(0)"
+              "text": "a = flops.array(0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([1])"
+              "text": "b = flops.array([1])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([a])                    # atleast_1d(a)"
+              "text": "flops.block([a])                    # atleast_1d(a)"
             },
             {
               "kind": "output",
@@ -878,7 +878,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([b])                    # atleast_1d(b)"
+              "text": "flops.block([b])                    # atleast_1d(b)"
             },
             {
               "kind": "output",
@@ -892,7 +892,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([[a]])                  # atleast_2d(a)"
+              "text": "flops.block([[a]])                  # atleast_2d(a)"
             },
             {
               "kind": "output",
@@ -901,7 +901,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.block([[b]])                  # atleast_2d(b)"
+              "text": "flops.block([[b]])                  # atleast_2d(b)"
             },
             {
               "kind": "output",
@@ -915,6 +915,7 @@
     }
   ],
   "canonical_name": "block",
+  "canonical_path": "numpy/block",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -925,27 +926,31 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nA = we.eye(2) * 2\n\nB = we.eye(3) * 3\n\nwe.block([\n    [A,               we.zeros((2, 3))],\n    [we.ones((3, 2)), B               ]\n])\n\nwe.block([1, 2, 3])              # hstack([1, 2, 3])\n\na = we.array([1, 2, 3])\n\nb = we.array([4, 5, 6])\n\nwe.block([a, b, 10])             # hstack([a, b, 10])\n\nA = we.ones((2, 2), int)\n\nB = 2 * A\n\nwe.block([A, B])                 # hstack([A, B])\n\na = we.array([1, 2, 3])\n\nb = we.array([4, 5, 6])\n\nwe.block([[a], [b]])             # vstack([a, b])\n\nA = we.ones((2, 2), int)\n\nB = 2 * A\n\nwe.block([[A], [B]])             # vstack([A, B])\n\na = we.array(0)\n\nb = we.array([1])\n\nwe.block([a])                    # atleast_1d(a)\n\nwe.block([b])                    # atleast_1d(b)\n\nwe.block([[a]])                  # atleast_2d(a)\n\nwe.block([[b]])                  # atleast_2d(b)",
+    "code": "import flopscope.numpy as fnp\n\nA = flops.eye(2) * 2\n\nB = flops.eye(3) * 3\n\nflops.block([\n    [A,               flops.zeros((2, 3))],\n    [flops.ones((3, 2)), B               ]\n])\n\nflops.block([1, 2, 3])              # hstack([1, 2, 3])\n\na = flops.array([1, 2, 3])\n\nb = flops.array([4, 5, 6])\n\nflops.block([a, b, 10])             # hstack([a, b, 10])\n\nA = flops.ones((2, 2), int)\n\nB = 2 * A\n\nflops.block([A, B])                 # hstack([A, B])\n\na = flops.array([1, 2, 3])\n\nb = flops.array([4, 5, 6])\n\nflops.block([[a], [b]])             # vstack([a, b])\n\nA = flops.ones((2, 2), int)\n\nB = 2 * A\n\nflops.block([[A], [B]])             # vstack([A, B])\n\na = flops.array(0)\n\nb = flops.array([1])\n\nflops.block([a])                    # atleast_1d(a)\n\nflops.block([b])                    # atleast_1d(b)\n\nflops.block([[a]])                  # atleast_2d(a)\n\nflops.block([[b]])                  # atleast_2d(b)",
     "output": "array([[2., 0., 0., 0., 0.],\n       [0., 2., 0., 0., 0.],\n       [1., 1., 3., 0., 0.],\n       [1., 1., 0., 3., 0.],\n       [1., 1., 0., 0., 3.]])\n\narray([1, 2, 3])\n\narray([ 1,  2,  3,  4,  5,  6, 10])\n\narray([[1, 1, 2, 2],\n       [1, 1, 2, 2]])\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\narray([[1, 1],\n       [1, 1],\n       [2, 2],\n       [2, 2]])\n\narray([0])\n\narray([1])\n\narray([[0]])\n\narray([[1]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/block/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.block",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L967",
+  "href": "/docs/api/numpy/block/",
+  "legacy_href": "/docs/api/ops/block/",
   "module": "numpy",
   "name": "block",
   "next": {
-    "href": "/docs/api/ops/bmat/",
-    "label": "we.bmat"
+    "href": "/docs/api/numpy/bmat/",
+    "label": "fnp.bmat"
   },
   "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output).",
   "notes_sections": [
-    "When called with only scalars, ``we.block`` is equivalent to an ndarray call. So ``we.block([[1, 2], [3, 4]])`` is equivalent to ``we.array([[1, 2], [3, 4]])``.",
-    "This function does not enforce that the blocks lie on a fixed grid. ``we.block([[a, b], [c, d]])`` is not restricted to arrays of the form::",
+    "When called with only scalars, ``flops.block`` is equivalent to an ndarray call. So ``flops.block([[1, 2], [3, 4]])`` is equivalent to ``flops.array([[1, 2], [3, 4]])``.",
+    "This function does not enforce that the blocks lie on a fixed grid. ``flops.block([[a, b], [c, d]])`` is not restricted to arrays of the form::",
     "AAAbb AAAbb cccDD",
     "But is also allowed to produce, for some ``a, b, c, d``::",
     "AAAbb AAAbb cDDDD",
     "Since concatenation happens along the last axis first, `block` is *not* capable of producing the following directly::",
     "AAAbb cccbb cccDD",
-    "Matlab's \"square bracket stacking\", ``[A, B, ...; p, q, ...]``, is equivalent to ``we.block([[A, B, ...], [p, q, ...]])``."
+    "Matlab's \"square bracket stacking\", ``[A, B, ...; p, q, ...]``, is equivalent to ``flops.block([[A, B, ...], [p, q, ...]])``."
   ],
   "numpy_ref": "np.block",
   "parameters": [
@@ -963,10 +968,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/blackman/",
-    "label": "we.blackman"
+    "href": "/docs/api/numpy/blackman/",
+    "label": "fnp.blackman"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.block",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.block.html",
   "returns": [
     {
@@ -992,8 +998,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/concatenate",
-      "label": "we.concatenate",
+      "href": "/docs/api/numpy/concatenate/",
+      "label": "flops.concatenate",
       "original_target": "concatenate",
       "role": "",
       "target": "concatenate",
@@ -1008,8 +1014,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/stack",
-      "label": "we.stack",
+      "href": "/docs/api/numpy/stack/",
+      "label": "flops.stack",
       "original_target": "stack",
       "role": "",
       "target": "stack",
@@ -1024,8 +1030,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/vstack",
-      "label": "we.vstack",
+      "href": "/docs/api/numpy/vstack/",
+      "label": "flops.vstack",
       "original_target": "vstack",
       "role": "",
       "target": "vstack",
@@ -1040,8 +1046,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/hstack",
-      "label": "we.hstack",
+      "href": "/docs/api/numpy/hstack/",
+      "label": "flops.hstack",
       "original_target": "hstack",
       "role": "",
       "target": "hstack",
@@ -1056,8 +1062,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/dstack",
-      "label": "we.dstack",
+      "href": "/docs/api/numpy/dstack/",
+      "label": "flops.dstack",
       "original_target": "dstack",
       "role": "",
       "target": "dstack",
@@ -1072,8 +1078,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/column_stack",
-      "label": "we.column_stack",
+      "href": "/docs/api/numpy/column-stack/",
+      "label": "flops.column_stack",
       "original_target": "column_stack",
       "role": "",
       "target": "column_stack",
@@ -1088,8 +1094,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/vsplit",
-      "label": "we.vsplit",
+      "href": "/docs/api/numpy/vsplit/",
+      "label": "flops.vsplit",
       "original_target": "vsplit",
       "role": "",
       "target": "vsplit",
@@ -1104,20 +1110,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/unstack",
-      "label": "we.unstack",
+      "href": "/docs/api/numpy/unstack/",
+      "label": "flops.unstack",
       "original_target": "unstack",
       "role": "",
       "target": "unstack",
       "unresolved": false
     }
   ],
-  "signature": "we.block(arrays)",
+  "signature": "fnp.block(arrays)",
   "slug": "block",
   "summary": "Assemble an nd-array from nested lists of blocks.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L784",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.block",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L766"
+  "weight": 1.0
 }

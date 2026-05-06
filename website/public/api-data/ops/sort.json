@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/sort/",
+  "detail_href": "/docs/api/numpy/sort/",
   "detail_json_href": "/api-data/ops/sort.json",
   "docs": {
     "sections": [
@@ -338,8 +338,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
-                "label": "we.argsort",
+                "href": "/docs/api/numpy/argsort/",
+                "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
                 "target": "argsort",
@@ -354,8 +354,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/lexsort",
-                "label": "we.lexsort",
+                "href": "/docs/api/numpy/lexsort/",
+                "label": "flops.lexsort",
                 "original_target": "lexsort",
                 "role": "",
                 "target": "lexsort",
@@ -370,8 +370,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
-                "label": "we.searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
+                "label": "flops.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
                 "target": "searchsorted",
@@ -386,8 +386,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/partition",
-                "label": "we.partition",
+                "href": "/docs/api/numpy/partition/",
+                "label": "flops.partition",
                 "original_target": "partition",
                 "role": "",
                 "target": "partition",
@@ -447,7 +447,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "kind": "link",
                 "target": "sort",
                 "text": "sort"
@@ -457,8 +457,8 @@
                 "text": " makes a temporary copy if needed to make the data\n"
               },
               {
-                "external_url": "https://we.org/doc/stable/glossary.html#term-contiguous",
-                "href": "https://we.org/doc/stable/glossary.html#term-contiguous",
+                "external_url": "https://flops.org/doc/stable/glossary.html#term-contiguous",
+                "href": "https://flops.org/doc/stable/glossary.html#term-contiguous",
                 "kind": "link",
                 "text": "contiguous"
               },
@@ -648,17 +648,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1,4],[3,1]])"
+                "text": "a = flops.array([[1,4],[3,1]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a)                # sort along the last axis"
+                "text": "flops.sort(a)                # sort along the last axis"
               },
               {
                 "kind": "output",
@@ -671,7 +671,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, axis=None)     # sort the flattened array"
+                "text": "flops.sort(a, axis=None)     # sort the flattened array"
               },
               {
                 "kind": "output",
@@ -680,7 +680,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, axis=0)        # sort along the first axis"
+                "text": "flops.sort(a, axis=0)        # sort along the first axis"
               },
               {
                 "kind": "output",
@@ -730,12 +730,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array(values, dtype=dtype)       # create a structured array"
+                "text": "a = flops.array(values, dtype=dtype)       # create a structured array"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, order='height')                        # doctest: +SKIP"
+                "text": "flops.sort(a, order='height')                        # doctest: +SKIP"
               },
               {
                 "kind": "output",
@@ -766,7 +766,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, order=['age', 'height'])               # doctest: +SKIP"
+                "text": "flops.sort(a, order=['age', 'height'])               # doctest: +SKIP"
               },
               {
                 "kind": "output",
@@ -792,20 +792,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.sort",
     "module": "numpy",
     "name": "sort",
     "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
     "numpy_ref": "np.sort",
-    "signature": "we.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
+    "signature": "fnp.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
     "status": "supported",
     "summary": "Return a sorted copy of an array.",
-    "weight": 1.0,
-    "whest_ref": "we.sort"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "sort",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L969",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L44"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L48",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L969"
   }
 }

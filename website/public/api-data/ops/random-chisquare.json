@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-chisquare/",
+  "detail_href": "/docs/api/numpy/random/chisquare/",
   "detail_json_href": "/api-data/ops/random-chisquare.json",
   "docs": {
     "sections": [
@@ -46,8 +46,8 @@
                     "text": "New code should use the "
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.chisquare.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/chisquare/",
                     "kind": "link",
                     "target": "random.Generator.chisquare",
                     "text": "chisquare"
@@ -89,7 +89,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.chisquare`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.chisquare`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -164,7 +164,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(df).size"
+                        "text": "flops.array(df).size"
                       },
                       {
                         "kind": "text",
@@ -214,7 +214,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(df).size"
+                    "text": "flops.array(df).size"
                   },
                   {
                     "kind": "text",
@@ -286,7 +286,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -323,7 +323,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"
@@ -363,9 +363,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.chisquare.html",
-                "href": "",
-                "label": "random.Generator.chisquare",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/chisquare/",
+                "label": "flops.random.Generator.chisquare",
                 "original_target": "random.Generator.chisquare",
                 "role": "",
                 "target": "random.Generator.chisquare",
@@ -475,7 +475,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.chisquare(2,4)"
+                "text": "flops.random.chisquare(2,4)"
               },
               {
                 "kind": "output",
@@ -493,20 +493,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.chisquare",
     "module": "numpy.random",
     "name": "random.chisquare",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.chisquare",
-    "signature": "we.random.chisquare(df, size=None)",
+    "signature": "fnp.random.chisquare(df, size=None)",
     "status": "supported",
     "summary": "Draw samples from a chi-square distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.chisquare"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-chisquare",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.chisquare.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.chisquare.html"
   }
 }

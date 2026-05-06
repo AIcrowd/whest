@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-fft/",
+  "detail_href": "/docs/api/numpy/fft/fft/",
   "detail_json_href": "/api-data/ops/fft-fft.json",
   "docs": {
     "sections": [
@@ -170,7 +170,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "flops.fft"
                       },
                       {
                         "kind": "text",
@@ -201,7 +201,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "flops.fft"
                   },
                   {
                     "kind": "text",
@@ -394,7 +394,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "we.fft",
+                "label": "flops.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -540,7 +540,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "we.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -569,12 +569,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.fft(we.exp(2j * we.pi * we.arange(8) / 8))"
+                "text": "flops.fft.fft(flops.exp(2j * flops.pi * flops.arange(8) / 8))"
               },
               {
                 "kind": "output",
@@ -606,7 +606,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "we.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -625,17 +625,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "t = we.arange(256)"
+                "text": "t = flops.arange(256)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "sp = we.fft.fft(we.sin(t))"
+                "text": "sp = flops.fft.fft(flops.sin(t))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq = we.fft.fftfreq(t.shape[-1])"
+                "text": "freq = flops.fft.fftfreq(t.shape[-1])"
               },
               {
                 "kind": "input",
@@ -663,20 +663,20 @@
     "category": "counted_custom",
     "cost_formula": "5n * ceil(log2(n))",
     "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
+    "flopscope_ref": "fnp.fft.fft",
     "module": "numpy.fft",
     "name": "fft.fft",
     "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.fft",
-    "signature": "we.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.fft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the one-dimensional discrete Fourier Transform.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.fft"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-fft",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L113",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L166"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L169",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L113"
   }
 }

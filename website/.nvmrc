@@ -1,5 +1,1 @@
-24
-# Pinned to Node 24 because a few transitive deps (jsdom, html-encoding-sniffer,
-# @exodus/bytes) declare engines `^20.19.0 || ^22.12.0 || >=24.0.0`. It's fine to
-# relax this (e.g. drop to 22 LTS, or bump to 26) if a major dependency stops
-# supporting 24 — nothing in our own code depends on a specific Node version.
+23.6.1

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isreal/",
+  "detail_href": "/docs/api/numpy/isreal/",
   "detail_json_href": "/api-data/ops/isreal.json",
   "docs": {
     "sections": [
@@ -121,8 +121,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplex",
-                "label": "we.iscomplex",
+                "href": "/docs/api/numpy/iscomplex/",
+                "label": "flops.iscomplex",
                 "original_target": "iscomplex",
                 "role": "",
                 "target": "iscomplex",
@@ -137,8 +137,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isrealobj",
-                "label": "we.isrealobj",
+                "href": "/docs/api/numpy/isrealobj/",
+                "label": "flops.isrealobj",
                 "original_target": "isrealobj",
                 "role": "",
                 "target": "isrealobj",
@@ -156,7 +156,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/isreal",
+                "href": "/docs/api/numpy/isreal/",
                 "kind": "link",
                 "target": "isreal",
                 "text": "isreal"
@@ -178,17 +178,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1+1j, 1+0j, 4.5, 3, 2, 2j], dtype=complex)"
+                "text": "a = flops.array([1+1j, 1+0j, 4.5, 3, 2, 2j], dtype=complex)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isreal(a)"
+                "text": "flops.isreal(a)"
               },
               {
                 "kind": "output",
@@ -211,12 +211,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([2j, \"a\"], dtype=\"U\")"
+                "text": "a = flops.array([2j, \"a\"], dtype=\"U\")"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isreal(a)  # Warns about non-elementwise comparison"
+                "text": "flops.isreal(a)  # Warns about non-elementwise comparison"
               },
               {
                 "kind": "output",
@@ -247,12 +247,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, \"2\", 3+4j], dtype=object)"
+                "text": "a = flops.array([1, \"2\", 3+4j], dtype=object)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isreal(a)"
+                "text": "flops.isreal(a)"
               },
               {
                 "kind": "output",
@@ -275,12 +275,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1+2j, 2+1j], dtype=object)"
+                "text": "a = flops.array([1+2j, 2+1j], dtype=object)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isreal(a)"
+                "text": "flops.isreal(a)"
               },
               {
                 "kind": "output",
@@ -298,20 +298,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.isreal",
     "module": "numpy",
     "name": "isreal",
     "notes": "Test if element is real (imag == 0) element-wise.",
     "numpy_ref": "np.isreal",
-    "signature": "we.isreal(x)",
+    "signature": "fnp.isreal(x)",
     "status": "supported",
     "summary": "Returns a bool array, where True if input element is real.",
-    "weight": 1.0,
-    "whest_ref": "we.isreal"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "isreal",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L213",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L213"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arctan/",
+  "detail_href": "/docs/api/numpy/arctan/",
   "detail_json_href": "/api-data/ops/arctan.json",
   "docs": {
     "sections": [
@@ -377,8 +377,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/arctan2",
-                "label": "we.arctan2",
+                "href": "/docs/api/numpy/arctan2/",
+                "label": "flops.arctan2",
                 "original_target": "arctan2",
                 "role": "",
                 "target": "arctan2",
@@ -393,8 +393,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/angle",
-                "label": "we.angle",
+                "href": "/docs/api/numpy/angle/",
+                "label": "flops.angle",
                 "original_target": "angle",
                 "role": "",
                 "target": "angle",
@@ -412,7 +412,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctan",
+                "href": "/docs/api/numpy/arctan/",
                 "kind": "link",
                 "target": "arctan",
                 "text": "arctan"
@@ -472,7 +472,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctan",
+                "href": "/docs/api/numpy/arctan/",
                 "kind": "link",
                 "target": "arctan",
                 "text": "arctan"
@@ -508,7 +508,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctan",
+                "href": "/docs/api/numpy/arctan/",
                 "kind": "link",
                 "target": "arctan",
                 "text": "arctan"
@@ -544,7 +544,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctan",
+                "href": "/docs/api/numpy/arctan/",
                 "kind": "link",
                 "target": "arctan",
                 "text": "atan"
@@ -603,7 +603,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -613,7 +613,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arctan([0, 1])"
+                "text": "flops.arctan([0, 1])"
               },
               {
                 "kind": "output",
@@ -627,7 +627,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.pi/4"
+                "text": "flops.pi/4"
               },
               {
                 "kind": "output",
@@ -655,12 +655,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(-10, 10)"
+                "text": "x = flops.linspace(-10, 10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, we.arctan(x))"
+                "text": "plt.plot(x, flops.arctan(x))"
               },
               {
                 "kind": "input",
@@ -684,20 +684,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.arctan",
     "module": "numpy",
     "name": "arctan",
     "notes": "Element-wise inverse tangent.",
     "numpy_ref": "np.arctan",
-    "signature": "we.arctan(*args, **kwargs)",
+    "signature": "fnp.arctan(*args, **kwargs)",
     "status": "supported",
     "summary": "Trigonometric inverse tangent, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.arctan"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "arctan",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

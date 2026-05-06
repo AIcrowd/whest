@@ -368,8 +368,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/sum",
-              "label": "we.sum",
+              "href": "/docs/api/numpy/sum/",
+              "label": "flops.sum",
               "original_target": "sum",
               "role": "",
               "target": "sum",
@@ -379,8 +379,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/cumsum",
-              "label": "we.cumsum",
+              "href": "/docs/api/numpy/cumsum/",
+              "label": "flops.cumsum",
               "original_target": "cumsum",
               "role": "",
               "target": "cumsum",
@@ -460,7 +460,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -479,7 +479,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid([1, 2, 3])"
+              "text": "flops.trapezoid([1, 2, 3])"
             },
             {
               "kind": "output",
@@ -518,7 +518,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid([1, 2, 3], x=[4, 6, 8])"
+              "text": "flops.trapezoid([1, 2, 3], x=[4, 6, 8])"
             },
             {
               "kind": "output",
@@ -527,7 +527,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid([1, 2, 3], dx=2)"
+              "text": "flops.trapezoid([1, 2, 3], dx=2)"
             },
             {
               "kind": "output",
@@ -558,7 +558,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid([1, 2, 3], x=[8, 6, 4])"
+              "text": "flops.trapezoid([1, 2, 3], x=[8, 6, 4])"
             },
             {
               "kind": "output",
@@ -597,7 +597,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(0, 1, num=50)"
+              "text": "x = flops.linspace(0, 1, num=50)"
             },
             {
               "kind": "input",
@@ -607,7 +607,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid(y, x)"
+              "text": "flops.trapezoid(y, x)"
             },
             {
               "kind": "output",
@@ -630,12 +630,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "theta = we.linspace(0, 2 * we.pi, num=1000, endpoint=True)"
+              "text": "theta = flops.linspace(0, 2 * flops.pi, num=1000, endpoint=True)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid(we.cos(theta), x=we.sin(theta))"
+              "text": "flops.trapezoid(flops.cos(theta), x=flops.sin(theta))"
             },
             {
               "kind": "output",
@@ -648,10 +648,10 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/trapezoid",
+              "href": "/docs/api/numpy/trapezoid/",
               "kind": "link",
               "target": "trapezoid",
-              "text": "we.trapezoid"
+              "text": "flops.trapezoid"
             },
             {
               "kind": "text",
@@ -665,7 +665,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(6).reshape(2, 3)"
+              "text": "a = flops.arange(6).reshape(2, 3)"
             },
             {
               "kind": "input",
@@ -683,7 +683,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid(a, axis=0)"
+              "text": "flops.trapezoid(a, axis=0)"
             },
             {
               "kind": "output",
@@ -692,7 +692,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.trapezoid(a, axis=1)"
+              "text": "flops.trapezoid(a, axis=1)"
             },
             {
               "kind": "output",
@@ -706,6 +706,7 @@
     }
   ],
   "canonical_name": "trapezoid",
+  "canonical_path": "numpy/trapezoid",
   "category": "counted_custom",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -730,16 +731,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.trapezoid([1, 2, 3])\n\nwe.trapezoid([1, 2, 3], x=[4, 6, 8])\n\nwe.trapezoid([1, 2, 3], dx=2)\n\nwe.trapezoid([1, 2, 3], x=[8, 6, 4])\n\nx = we.linspace(0, 1, num=50)\n\ny = x**2\n\nwe.trapezoid(y, x)\n\ntheta = we.linspace(0, 2 * we.pi, num=1000, endpoint=True)\n\nwe.trapezoid(we.cos(theta), x=we.sin(theta))\n\na = we.arange(6).reshape(2, 3)\n\na\n\nwe.trapezoid(a, axis=0)\n\nwe.trapezoid(a, axis=1)",
+    "code": "import flopscope.numpy as fnp\n\nflops.trapezoid([1, 2, 3])\n\nflops.trapezoid([1, 2, 3], x=[4, 6, 8])\n\nflops.trapezoid([1, 2, 3], dx=2)\n\nflops.trapezoid([1, 2, 3], x=[8, 6, 4])\n\nx = flops.linspace(0, 1, num=50)\n\ny = x**2\n\nflops.trapezoid(y, x)\n\ntheta = flops.linspace(0, 2 * flops.pi, num=1000, endpoint=True)\n\nflops.trapezoid(flops.cos(theta), x=flops.sin(theta))\n\na = flops.arange(6).reshape(2, 3)\n\na\n\nflops.trapezoid(a, axis=0)\n\nflops.trapezoid(a, axis=1)",
     "output": "4.0\n\n8.0\n\n8.0\n\n-8.0\n\n0.33340274885464394\n\n3.141571941375841\n\narray([[0, 1, 2],\n       [3, 4, 5]])\n\narray([1.5, 2.5, 3.5])\n\narray([2.,  8.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/trapezoid/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.trapezoid",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L2009",
+  "href": "/docs/api/numpy/trapezoid/",
+  "legacy_href": "/docs/api/ops/trapezoid/",
   "module": "numpy",
   "name": "trapezoid",
   "next": {
-    "href": "/docs/api/ops/tri/",
-    "label": "we.tri"
+    "href": "/docs/api/numpy/tri/",
+    "label": "fnp.tri"
   },
   "notes": "Integrate using the trapezoidal rule.",
   "notes_sections": [
@@ -779,10 +784,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/transpose/",
-    "label": "we.transpose"
+    "href": "/docs/api/numpy/transpose/",
+    "label": "fnp.transpose"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.trapezoid",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.trapezoid.html",
   "returns": [
     {
@@ -801,8 +807,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/sum",
-      "label": "we.sum",
+      "href": "/docs/api/numpy/sum/",
+      "label": "flops.sum",
       "original_target": "sum",
       "role": "",
       "target": "sum",
@@ -812,20 +818,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/cumsum",
-      "label": "we.cumsum",
+      "href": "/docs/api/numpy/cumsum/",
+      "label": "flops.cumsum",
       "original_target": "cumsum",
       "role": "",
       "target": "cumsum",
       "unresolved": false
     }
   ],
-  "signature": "we.trapezoid(y, x=None, dx=1.0, axis=-1)",
+  "signature": "fnp.trapezoid(y: 'ArrayLike', x: 'ArrayLike | None' = None, dx: 'float' = 1.0, axis: 'int' = -1) -> 'FlopscopeArray'",
   "slug": "trapezoid",
   "summary": "Integrate along the given axis using the composite trapezoidal rule.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4959",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.trapezoid",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1281"
+  "weight": 1.0
 }

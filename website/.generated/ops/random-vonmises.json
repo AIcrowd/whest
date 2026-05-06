@@ -47,8 +47,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.vonmises.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/vonmises/",
                   "kind": "link",
                   "target": "random.Generator.vonmises",
                   "text": "vonmises"
@@ -90,7 +90,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.vonmises`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.vonmises`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -195,7 +195,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(mu, kappa).size"
+                      "text": "flops.broadcast(mu, kappa).size"
                     },
                     {
                       "kind": "text",
@@ -253,7 +253,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(mu, kappa).size"
+                  "text": "flops.broadcast(mu, kappa).size"
                 },
                 {
                   "kind": "text",
@@ -331,9 +331,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.vonmises.html",
-              "href": "",
-              "label": "random.Generator.vonmises",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/vonmises/",
+              "label": "flops.random.Generator.vonmises",
               "original_target": "random.Generator.vonmises",
               "role": "",
               "target": "random.Generator.vonmises",
@@ -443,7 +443,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.vonmises(mu, kappa, 1000)"
+              "text": "s = flops.random.vonmises(mu, kappa, 1000)"
             }
           ],
           "type": "doctest_block"
@@ -477,12 +477,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(-we.pi, we.pi, num=51)"
+              "text": "x = flops.linspace(-flops.pi, flops.pi, num=51)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.exp(kappa*we.cos(x-mu))/(2*we.pi*i0(kappa))  # doctest: +SKIP"
+              "text": "y = flops.exp(kappa*flops.cos(x-mu))/(2*flops.pi*i0(kappa))  # doctest: +SKIP"
             },
             {
               "kind": "input",
@@ -502,6 +502,7 @@
     }
   ],
   "canonical_name": "random.vonmises",
+  "canonical_path": "numpy/random/vonmises",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -521,16 +522,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "mu, kappa = 0.0, 4.0 # mean and concentration\n\ns = we.random.vonmises(mu, kappa, 1000)\n\nimport matplotlib.pyplot as plt\n\nfrom scipy.special import i0  # doctest: +SKIP\n\nplt.hist(s, 50, density=True)\n\nx = we.linspace(-we.pi, we.pi, num=51)\n\ny = we.exp(kappa*we.cos(x-mu))/(2*we.pi*i0(kappa))  # doctest: +SKIP\n\nplt.plot(x, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
+    "code": "mu, kappa = 0.0, 4.0 # mean and concentration\n\ns = flops.random.vonmises(mu, kappa, 1000)\n\nimport matplotlib.pyplot as plt\n\nfrom scipy.special import i0  # doctest: +SKIP\n\nplt.hist(s, 50, density=True)\n\nx = flops.linspace(-flops.pi, flops.pi, num=51)\n\ny = flops.exp(kappa*flops.cos(x-mu))/(2*flops.pi*i0(kappa))  # doctest: +SKIP\n\nplt.plot(x, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-vonmises/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.vonmises",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
+  "href": "/docs/api/numpy/random/vonmises/",
+  "legacy_href": "/docs/api/ops/random-vonmises/",
   "module": "numpy.random",
   "name": "random.vonmises",
   "next": {
-    "href": "/docs/api/ops/random-wald/",
-    "label": "we.random.wald"
+    "href": "/docs/api/numpy/random/wald/",
+    "label": "fnp.random.wald"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -560,17 +565,18 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``mu`` and ``kappa`` are both scalars.",
-        "Otherwise, ``we.broadcast(mu, kappa).size`` samples are drawn."
+        "Otherwise, ``flops.broadcast(mu, kappa).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-uniform/",
-    "label": "we.random.uniform"
+    "href": "/docs/api/numpy/random/uniform/",
+    "label": "fnp.random.uniform"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.vonmises",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.vonmises.html",
   "returns": [
     {
@@ -606,21 +612,20 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.vonmises.html",
-      "href": "",
-      "label": "random.Generator.vonmises",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/vonmises/",
+      "label": "flops.random.Generator.vonmises",
       "original_target": "random.Generator.vonmises",
       "role": "",
       "target": "random.Generator.vonmises",
       "unresolved": false
     }
   ],
-  "signature": "we.random.vonmises(mu, kappa, size=None)",
+  "signature": "fnp.random.vonmises(mu, kappa, size=None)",
   "slug": "random-vonmises",
   "summary": "Draw samples from a von Mises distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.vonmises",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

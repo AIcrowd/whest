@@ -1,0 +1,39 @@
+{
+  "aliases": [
+    "random.Generator",
+    "flops.random.Generator",
+    "flopscope.numpy.random.Generator"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "numpy Generator subclass with FLOP-counted sampler methods."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "random.Generator",
+  "canonical_path": "random/generator",
+  "display_name": "flops.random.Generator",
+  "href": "/docs/api/random/generator/",
+  "import_path": "flops.random.Generator",
+  "kind": "class",
+  "members": [],
+  "module": "flopscope.numpy.random._counted_classes",
+  "name": "random.Generator",
+  "related_guides": [],
+  "signature": "flops.random.Generator",
+  "slug": "random-generator",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/_counted_classes.py#L109",
+  "status_note": "",
+  "summary": "numpy Generator subclass with FLOP-counted sampler methods.",
+  "upstream_source_url": ""
+}

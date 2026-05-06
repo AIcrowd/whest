@@ -301,8 +301,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/power",
-              "label": "we.power",
+              "href": "/docs/api/numpy/power/",
+              "label": "flops.power",
               "original_target": "power",
               "role": "",
               "target": "power",
@@ -321,12 +321,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.exp2([2, 3])"
+              "text": "flops.exp2([2, 3])"
             },
             {
               "kind": "output",
@@ -340,6 +340,7 @@
     }
   ],
   "canonical_name": "exp2",
+  "canonical_path": "numpy/exp2",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -357,16 +358,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.exp2([2, 3])",
+    "code": "import flopscope.numpy as fnp\n\nflops.exp2([2, 3])",
     "output": "array([ 4.,  8.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/exp2/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.exp2",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/exp2/",
+  "legacy_href": "/docs/api/ops/exp2/",
   "module": "numpy",
   "name": "exp2",
   "next": {
-    "href": "/docs/api/ops/expand_dims/",
-    "label": "we.expand_dims"
+    "href": "/docs/api/numpy/expand-dims/",
+    "label": "fnp.expand_dims"
   },
   "notes": "Element-wise 2^x.",
   "notes_sections": [],
@@ -411,10 +416,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/exp/",
-    "label": "we.exp"
+    "href": "/docs/api/numpy/exp/",
+    "label": "fnp.exp"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.exp2",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.exp2.html",
   "returns": [
     {
@@ -431,20 +437,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/power",
-      "label": "we.power",
+      "href": "/docs/api/numpy/power/",
+      "label": "flops.power",
       "original_target": "power",
       "role": "",
       "target": "power",
       "unresolved": false
     }
   ],
-  "signature": "we.exp2(*args, **kwargs)",
+  "signature": "fnp.exp2(*args, **kwargs)",
   "slug": "exp2",
   "summary": "Calculate `2**p` for all `p` in the input array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.exp2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 16.0
 }

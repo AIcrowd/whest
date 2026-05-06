@@ -431,20 +431,18 @@ export default function StickyBar({
       )}
       data-compact={isCompact ? 'true' : 'false'}
     >
-      <div
-        className="mx-auto flex max-w-[1460px] items-center justify-between gap-4 px-6 py-4 md:px-8"
-      >
-        {/* Whest wordmark — the one in-product brand anchor. Matches the
-            `.brand` slot of design-system/Whest Einsum Explorer.html and
+      <div className="mx-auto flex max-w-[1460px] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
+        {/* Flopscope wordmark — the one in-product brand anchor. Matches the
+            `.brand` slot of design-system/Flopscope Einsum Explorer.html and
             the nav wordmark in lib/layout.shared.tsx. Reuses the global
-            `.whest-wordmark` utility (Newsreader 700 opsz32, coral dot);
+            `.flopscope-wordmark` utility (Newsreader 700 opsz32, coral dot);
             do not reimplement. */}
         <Link
           href="/"
-          aria-label="Whest."
-          className="whest-wordmark mr-4 shrink-0 text-[20px] no-underline"
+          aria-label="flopscope."
+          className="flopscope-wordmark mr-4 shrink-0 text-[20px] no-underline"
         >
-          Whest<span className="whest-wordmark__dot">.</span>
+          <span className="flopscope-wordmark__flop">flop</span>scope<span className="flopscope-wordmark__dot">.</span>
         </Link>
 
         <div className="ml-auto flex min-w-0 flex-1 items-center justify-end">

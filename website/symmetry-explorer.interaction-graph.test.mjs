@@ -192,7 +192,12 @@ test('StickyBar omits section nav pills so the live formula owns the top strip',
   assert.doesNotMatch(source, /href=\{`#\$\{act\.id\}`\}/);
   assert.match(source, /data-sticky-symmetry-summary="true"/);
   assert.match(source, /aria-label="Input and output symmetries"/);
-  assert.match(source, /mx-auto flex max-w-\[1460px\] items-center justify-between gap-4/);
+  // Main rebrand bumped the inner flex container to a mobile-first
+  // responsive layout: vertical stack on small screens, horizontal
+  // bar with center alignment on md+. Our V3.1 narrative work was
+  // pinning the flat md+-only form; the merge with origin/main makes
+  // the responsive form authoritative.
+  assert.match(source, /mx-auto flex max-w-\[1460px\] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between/);
 });
 
 test('StickyBar shows the current n in the leading pill and keeps the einsum formula as trigger', () => {

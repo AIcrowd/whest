@@ -2,6 +2,7 @@
 #
 #   make ci          run the full pipeline (lint → test → docs)
 #   make lint        ruff check + format check
+#   make typecheck   pyright in standard mode
 #   make test        pytest with coverage
 #   make docs-build  generate API docs, verify, then build the site
 #   make docs-serve  live-preview the docs locally
@@ -15,7 +16,7 @@ UV    := uv run
 # Composite targets
 # ---------------------------------------------------------------------------
 .PHONY: ci
-ci: lint lint-commits test test-numpy-compat check-sync docs-build  ## Run the full CI pipeline locally
+ci: lint lint-commits typecheck test test-numpy-compat check-sync docs-build  ## Run the full CI pipeline locally
 
 # ---------------------------------------------------------------------------
 # Lint  (mirrors: CI → lint job)
@@ -30,22 +31,26 @@ lint-commits:  ## Conventional-commit check on PR commits (origin/main..HEAD)
 	@if ! git rev-parse --verify origin/main >/dev/null 2>&1; then \
 		echo "lint-commits: origin/main not found; run 'git fetch origin main' first"; exit 1; \
 	fi
-	$(UV) gitlint --commits origin/main..HEAD
+	$(UV) gitlint --ignore-stdin --commits origin/main..HEAD
 
 .PHONY: fmt
 fmt:  ## Auto-fix lint and format issues
 	$(UV) ruff check --fix .
 	$(UV) ruff format .
 
+.PHONY: typecheck
+typecheck:  ## Pyright (standard mode) over src/ and tests/
+	$(UV) pyright src/flopscope tests
+
 # ---------------------------------------------------------------------------
 # Test  (mirrors: CI → test job)
 # ---------------------------------------------------------------------------
 .PHONY: test
 test:  ## Run pytest with coverage (fails if < 90%)
-	$(UV) pytest --cov=whest --cov-fail-under=90
+	$(UV) pytest --cov=flopscope --cov-fail-under=90
 
 .PHONY: test-numpy-compat
-test-numpy-compat:  ## Run NumPy's own tests against whest
+test-numpy-compat:  ## Run NumPy's own tests against flopscope
 	$(UV) pytest tests/numpy_compat/ -n auto -q \
 		--pyargs numpy._core.tests.test_umath \
 		          numpy._core.tests.test_ufunc \
@@ -88,7 +93,7 @@ sync-client:  ## Regenerate client files from core library
 
 .PHONY: test-integration
 test-integration:  ## Run client-server integration tests
-	cd whest-client && $(UV) pytest tests/test_full_integration.py -v --tb=short
+	cd flopscope-client && $(UV) pytest tests/test_full_integration.py -v --tb=short
 
 # ---------------------------------------------------------------------------
 # Setup

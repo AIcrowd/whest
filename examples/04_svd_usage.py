@@ -3,7 +3,7 @@
 Run: uv run python examples/04_svd_usage.py
 """
 
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=10**8) as budget:
     A = we.random.randn(256, 256)

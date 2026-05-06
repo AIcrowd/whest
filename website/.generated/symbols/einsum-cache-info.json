@@ -1,0 +1,202 @@
+{
+  "aliases": [
+    "einsum_cache_info",
+    "flops.einsum_cache_info",
+    "flopscope.einsum_cache_info",
+    "fnp.einsum_cache_info",
+    "flopscope.numpy.einsum_cache_info"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return einsum path cache statistics."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [],
+              "data_type": "",
+              "inline": [],
+              "name": "None",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The standard "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "functools.lru_cache"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " statistics tuple with "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "hits"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ",\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "misses"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "maxsize"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", and "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "currsize"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " fields."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "object",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The standard "
+                },
+                {
+                  "kind": "code",
+                  "text": "functools.lru_cache"
+                },
+                {
+                  "kind": "text",
+                  "text": " statistics tuple with "
+                },
+                {
+                  "kind": "code",
+                  "text": "hits"
+                },
+                {
+                  "kind": "text",
+                  "text": ",\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "misses"
+                },
+                {
+                  "kind": "text",
+                  "text": ", "
+                },
+                {
+                  "kind": "code",
+                  "text": "maxsize"
+                },
+                {
+                  "kind": "text",
+                  "text": ", and "
+                },
+                {
+                  "kind": "code",
+                  "text": "currsize"
+                },
+                {
+                  "kind": "text",
+                  "text": " fields."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "info = fnp.einsum_cache_info()"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "total = info.hits + info.misses"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "rate = info.hits / max(total, 1)"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "einsum_cache_info",
+  "canonical_path": "einsum-cache-info",
+  "display_name": "fnp.einsum_cache_info",
+  "href": "/docs/api/einsum-cache-info/",
+  "import_path": "fnp.einsum_cache_info",
+  "kind": "function",
+  "members": [],
+  "module": "flopscope._einsum",
+  "name": "einsum_cache_info",
+  "related_guides": [],
+  "signature": "fnp.einsum_cache_info()",
+  "slug": "einsum-cache-info",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L155",
+  "status_note": "",
+  "summary": "Return einsum path cache statistics.",
+  "upstream_source_url": ""
+}

@@ -86,8 +86,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.weibull.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/weibull/",
                   "kind": "link",
                   "target": "random.Generator.weibull",
                   "text": "weibull"
@@ -129,7 +129,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.weibull`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.weibull`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -204,7 +204,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(a).size"
+                      "text": "flops.array(a).size"
                     },
                     {
                       "kind": "text",
@@ -254,7 +254,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(a).size"
+                  "text": "flops.array(a).size"
                 },
                 {
                   "kind": "text",
@@ -360,9 +360,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.weibull.html",
-              "href": "",
-              "label": "random.Generator.weibull",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/weibull/",
+              "label": "flops.random.Generator.weibull",
               "original_target": "random.Generator.weibull",
               "role": "",
               "target": "random.Generator.weibull",
@@ -503,7 +503,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.weibull(a, 1000)"
+              "text": "s = flops.random.weibull(a, 1000)"
             }
           ],
           "type": "doctest_block"
@@ -527,7 +527,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(1,100.)/50."
+              "text": "x = flops.arange(1,100.)/50."
             },
             {
               "kind": "input",
@@ -537,7 +537,7 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "return (a / n) * (x / n)**(a - 1) * we.exp(-(x / n)**a)"
+              "text": "return (a / n) * (x / n)**(a - 1) * flops.exp(-(x / n)**a)"
             }
           ],
           "type": "doctest_block"
@@ -547,12 +547,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "count, bins, ignored = plt.hist(we.random.weibull(5.,1000))"
+              "text": "count, bins, ignored = plt.hist(flops.random.weibull(5.,1000))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(1,100.)/50."
+              "text": "x = flops.arange(1,100.)/50."
             },
             {
               "kind": "input",
@@ -577,6 +577,7 @@
     }
   ],
   "canonical_name": "random.weibull",
+  "canonical_path": "numpy/random/weibull",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -600,16 +601,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a = 5. # shape\n\ns = we.random.weibull(a, 1000)\n\nimport matplotlib.pyplot as plt\n\nx = we.arange(1,100.)/50.\n\ndef weib(x,n,a):\n    return (a / n) * (x / n)**(a - 1) * we.exp(-(x / n)**a)\n\ncount, bins, ignored = plt.hist(we.random.weibull(5.,1000))\n\nx = we.arange(1,100.)/50.\n\nscale = count.max()/weib(x, 1., 5.).max()\n\nplt.plot(x, weib(x, 1., 5.)*scale)\n\nplt.show()",
+    "code": "a = 5. # shape\n\ns = flops.random.weibull(a, 1000)\n\nimport matplotlib.pyplot as plt\n\nx = flops.arange(1,100.)/50.\n\ndef weib(x,n,a):\n    return (a / n) * (x / n)**(a - 1) * flops.exp(-(x / n)**a)\n\ncount, bins, ignored = plt.hist(flops.random.weibull(5.,1000))\n\nx = flops.arange(1,100.)/50.\n\nscale = count.max()/weib(x, 1., 5.).max()\n\nplt.plot(x, weib(x, 1., 5.)*scale)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-weibull/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.weibull",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
+  "href": "/docs/api/numpy/random/weibull/",
+  "legacy_href": "/docs/api/ops/random-weibull/",
   "module": "numpy.random",
   "name": "random.weibull",
   "next": {
-    "href": "/docs/api/ops/random-zipf/",
-    "label": "we.random.zipf"
+    "href": "/docs/api/numpy/random/zipf/",
+    "label": "fnp.random.zipf"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -634,17 +639,18 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``a`` is a scalar.  Otherwise,",
-        "``we.array(a).size`` samples are drawn."
+        "``flops.array(a).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-wald/",
-    "label": "we.random.wald"
+    "href": "/docs/api/numpy/random/wald/",
+    "label": "fnp.random.wald"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.weibull",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.weibull.html",
   "returns": [
     {
@@ -708,21 +714,20 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.weibull.html",
-      "href": "",
-      "label": "random.Generator.weibull",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/weibull/",
+      "label": "flops.random.Generator.weibull",
       "original_target": "random.Generator.weibull",
       "role": "",
       "target": "random.Generator.weibull",
       "unresolved": false
     }
   ],
-  "signature": "we.random.weibull(a, size=None)",
+  "signature": "fnp.random.weibull(a, size=None)",
   "slug": "random-weibull",
   "summary": "Draw samples from a Weibull distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.weibull",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

@@ -1,10 +1,10 @@
-"""Tests for whest.random counted wrappers."""
+"""Tests for flopscope.numpy.random counted wrappers."""
 
 import numpy
 
-from whest import random as merandom
-from whest._budget import BudgetContext
-from whest._flops import _ceil_log2
+from flopscope._budget import BudgetContext
+from flopscope._flops import _ceil_log2
+from flopscope.numpy import random as merandom
 
 
 class TestSeed:
@@ -93,11 +93,82 @@ class TestChoiceWithoutReplacement:
 
 
 class TestDefaultRng:
-    def test_is_free(self):
+    def test_constructor_is_free(self):
         with BudgetContext(flop_budget=10, quiet=True) as budget:
             merandom.default_rng(42)
             assert budget.flops_used == 0
 
-    def test_rng_passthrough(self):
+    def test_returned_rng_charges_flops_on_sample(self):
+        # Issue #18 regression: previously rng.standard_normal() was 0 FLOPs.
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rng = merandom.default_rng(42)
+            rng.standard_normal((3,))
+        assert budget.flops_used == 3
+
+    def test_returned_rng_returns_flopscope_array(self):
+        from flopscope._ndarray import FlopscopeArray
+
+        with BudgetContext(flop_budget=10**6, quiet=True):
+            rng = merandom.default_rng(42)
+            result = rng.standard_normal((3,))
+        assert isinstance(result, FlopscopeArray)
+
+    def test_returned_rng_is_numpy_generator_subclass(self):
         rng = merandom.default_rng(42)
-        assert rng.standard_normal((3,)).shape == (3,)
+        assert isinstance(rng, numpy.random.Generator)
+
+
+class TestRandomStateCounted:
+    def test_constructor_is_free(self):
+        with BudgetContext(flop_budget=10, quiet=True) as budget:
+            merandom.RandomState(42)
+            assert budget.flops_used == 0
+
+    def test_randn_charges_flops(self):
+        # Issue #18 regression: was 0 FLOPs.
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rs = merandom.RandomState(42)
+            rs.randn(10)
+        assert budget.flops_used == 10
+
+    def test_randn_returns_flopscope_array(self):
+        from flopscope._ndarray import FlopscopeArray
+
+        with BudgetContext(flop_budget=10**6, quiet=True):
+            rs = merandom.RandomState(42)
+            result = rs.randn(10)
+        assert isinstance(result, FlopscopeArray)
+
+    def test_isinstance_numpy_random_state(self):
+        rs = merandom.RandomState(42)
+        assert isinstance(rs, numpy.random.RandomState)
+
+
+class TestGetattrFallback:
+    def test_unknown_attr_raises(self):
+        # Issue #18 regression: was silent forward to numpy.
+        import pytest
+
+        with pytest.raises(AttributeError, match="default_rng"):
+            _ = merandom.completely_unknown_attribute
+
+    def test_random_integers_raises_via_fallback(self):
+        # numpy.random.random_integers is a deprecated alias not in our explicit list.
+        # Was silently forwarded; now must raise AttributeError.
+        import pytest
+
+        with pytest.raises(AttributeError):
+            _ = merandom.random_integers
+
+    def test_bit_generator_classes_pass_through(self):
+        # numpy bit-generator classes are pure machinery, no math; allowlisted.
+        for name in (
+            "BitGenerator",
+            "MT19937",
+            "PCG64",
+            "PCG64DXSM",
+            "Philox",
+            "SFC64",
+        ):
+            cls = getattr(merandom, name)
+            assert cls is getattr(numpy.random, name), name

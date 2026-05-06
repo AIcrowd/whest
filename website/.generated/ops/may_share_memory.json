@@ -84,7 +84,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/shares_memory",
+                      "href": "/docs/api/numpy/shares-memory/",
                       "kind": "link",
                       "target": "shares_memory",
                       "text": "shares_memory"
@@ -95,7 +95,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/may_share_memory",
+                      "href": "/docs/api/numpy/may-share-memory/",
                       "kind": "link",
                       "target": "may_share_memory",
                       "text": "may_share_memory"
@@ -116,7 +116,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/shares_memory",
+                  "href": "/docs/api/numpy/shares-memory/",
                   "kind": "link",
                   "target": "shares_memory",
                   "text": "shares_memory"
@@ -127,7 +127,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/may_share_memory",
+                  "href": "/docs/api/numpy/may-share-memory/",
                   "kind": "link",
                   "target": "may_share_memory",
                   "text": "may_share_memory"
@@ -173,8 +173,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/shares_memory",
-              "label": "we.shares_memory",
+              "href": "/docs/api/numpy/shares-memory/",
+              "label": "flops.shares_memory",
               "original_target": "shares_memory",
               "role": "",
               "target": "shares_memory",
@@ -193,12 +193,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.may_share_memory(we.array([1,2]), we.array([5,8,9]))"
+              "text": "flops.may_share_memory(flops.array([1,2]), flops.array([5,8,9]))"
             },
             {
               "kind": "output",
@@ -207,12 +207,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.zeros([3, 4])"
+              "text": "x = flops.zeros([3, 4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.may_share_memory(x[:,0], x[:,1])"
+              "text": "flops.may_share_memory(x[:,0], x[:,1])"
             },
             {
               "kind": "output",
@@ -226,6 +226,7 @@
     }
   ],
   "canonical_name": "may_share_memory",
+  "canonical_path": "numpy/may-share-memory",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -236,16 +237,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.may_share_memory(we.array([1,2]), we.array([5,8,9]))\n\nx = we.zeros([3, 4])\n\nwe.may_share_memory(x[:,0], x[:,1])",
+    "code": "import flopscope.numpy as fnp\n\nflops.may_share_memory(flops.array([1,2]), flops.array([5,8,9]))\n\nx = flops.zeros([3, 4])\n\nflops.may_share_memory(x[:,0], x[:,1])",
     "output": "False\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/may_share_memory/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.may_share_memory",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1535",
+  "href": "/docs/api/numpy/may-share-memory/",
+  "legacy_href": "/docs/api/ops/may_share_memory/",
   "module": "numpy",
   "name": "may_share_memory",
   "next": {
-    "href": "/docs/api/ops/mean/",
-    "label": "we.mean"
+    "href": "/docs/api/numpy/mean/",
+    "label": "fnp.mean"
   },
   "notes": "Determine if two arrays might share memory.",
   "notes_sections": [],
@@ -269,10 +274,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/maximum/",
-    "label": "we.maximum"
+    "href": "/docs/api/numpy/maximum/",
+    "label": "fnp.maximum"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.may_share_memory",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html",
   "returns": [
     {
@@ -286,20 +292,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/shares_memory",
-      "label": "we.shares_memory",
+      "href": "/docs/api/numpy/shares-memory/",
+      "label": "flops.shares_memory",
       "original_target": "shares_memory",
       "role": "",
       "target": "shares_memory",
       "unresolved": false
     }
   ],
-  "signature": "we.may_share_memory(*args, **kwargs)",
+  "signature": "fnp.may_share_memory(*args, **kwargs)",
   "slug": "may_share_memory",
   "summary": "Determine if two arrays might share memory",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.may_share_memory",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1249"
+  "weight": 0.0
 }

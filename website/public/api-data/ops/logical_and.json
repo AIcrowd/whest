@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logical_and/",
+  "detail_href": "/docs/api/numpy/logical-and/",
   "detail_json_href": "/api-data/ops/logical_and.json",
   "docs": {
     "sections": [
@@ -333,8 +333,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_or",
-                "label": "we.logical_or",
+                "href": "/docs/api/numpy/logical-or/",
+                "label": "flops.logical_or",
                 "original_target": "logical_or",
                 "role": "",
                 "target": "logical_or",
@@ -344,8 +344,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_not",
-                "label": "we.logical_not",
+                "href": "/docs/api/numpy/logical-not/",
+                "label": "flops.logical_not",
                 "original_target": "logical_not",
                 "role": "",
                 "target": "logical_not",
@@ -355,8 +355,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_xor",
-                "label": "we.logical_xor",
+                "href": "/docs/api/numpy/logical-xor/",
+                "label": "flops.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
                 "target": "logical_xor",
@@ -366,8 +366,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_and",
-                "label": "we.bitwise_and",
+                "href": "/docs/api/numpy/bitwise-and/",
+                "label": "flops.bitwise_and",
                 "original_target": "bitwise_and",
                 "role": "",
                 "target": "bitwise_and",
@@ -386,12 +386,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_and(True, False)"
+                "text": "flops.logical_and(True, False)"
               },
               {
                 "kind": "output",
@@ -400,7 +400,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_and([True, False], [False, False])"
+                "text": "flops.logical_and([True, False], [False, False])"
               },
               {
                 "kind": "output",
@@ -414,12 +414,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(5)"
+                "text": "x = flops.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_and(x>1, x<4)"
+                "text": "flops.logical_and(x>1, x<4)"
               },
               {
                 "kind": "output",
@@ -444,10 +444,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
+                "href": "/docs/api/numpy/logical-and/",
                 "kind": "link",
                 "target": "logical_and",
-                "text": "we.logical_and"
+                "text": "flops.logical_and"
               },
               {
                 "kind": "text",
@@ -461,12 +461,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([True, False])"
+                "text": "a = flops.array([True, False])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([False, False])"
+                "text": "b = flops.array([False, False])"
               },
               {
                 "kind": "input",
@@ -489,20 +489,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.logical_and",
     "module": "numpy",
     "name": "logical_and",
     "notes": "Element-wise logical AND.",
     "numpy_ref": "np.logical_and",
-    "signature": "we.logical_and(*args, **kwargs)",
+    "signature": "fnp.logical_and(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the truth value of x1 AND x2 element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.logical_and"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "logical_and",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L414",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

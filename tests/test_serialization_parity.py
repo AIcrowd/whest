@@ -10,14 +10,18 @@ import numpy as np
 import pytest
 
 _ROOT = Path(__file__).parent.parent
-_SERVER_SRC = str(_ROOT / "whest-server" / "src")
-_CLIENT_SRC = str(_ROOT / "whest-client" / "src")
+_SERVER_SRC = str(_ROOT / "flopscope-server" / "src")
+_CLIENT_SRC = str(_ROOT / "flopscope-client" / "src")
 
 if _SERVER_SRC not in sys.path:
     sys.path.insert(0, _SERVER_SRC)
 
-from whest_server._request_handler import RequestHandler  # noqa: E402
-from whest_server._session import Session  # noqa: E402
+from flopscope_server._request_handler import (  # pyright: ignore[reportMissingImports]
+    RequestHandler,  # noqa: E402
+)
+from flopscope_server._session import (  # pyright: ignore[reportMissingImports]
+    Session,  # noqa: E402
+)
 
 
 def _load_client_module(rel_path: str, module_name: str):
@@ -26,25 +30,25 @@ def _load_client_module(rel_path: str, module_name: str):
 
     module_file = Path(_CLIENT_SRC) / rel_path
     spec = importlib.util.spec_from_file_location(module_name, module_file)
-    module = importlib.util.module_from_spec(spec)
+    module = importlib.util.module_from_spec(spec)  # pyright: ignore[reportArgumentType]
     sys.modules[module_name] = module
-    spec.loader.exec_module(module)
+    spec.loader.exec_module(module)  # pyright: ignore[reportOptionalMemberAccess]
     return module
 
 
-_load_client_module("whest/_constants.py", "whest._constants")
-_load_client_module("whest/_math_compat.py", "whest._math_compat")
-_load_client_module("whest/_perm_group.py", "whest._perm_group")
+_load_client_module("flopscope/_constants.py", "flopscope._constants")
+_load_client_module("flopscope/_math_compat.py", "flopscope._math_compat")
+_load_client_module("flopscope/_perm_group.py", "flopscope._perm_group")
 _client_remote_array = _load_client_module(
-    "whest/_remote_array.py", "whest._remote_array"
+    "flopscope/_remote_array.py", "flopscope._remote_array"
 )
-_client_perm_group = sys.modules["whest._perm_group"]
+_client_perm_group = sys.modules["flopscope._perm_group"]
 
 _encode_arg = _client_remote_array._encode_arg
 _result_from_response = _client_remote_array._result_from_response
 ClientSymmetryGroup = _client_perm_group.SymmetryGroup
 
-import whest as we  # noqa: E402
+import flopscope as flops
 
 
 @pytest.fixture()
@@ -71,7 +75,7 @@ class TestSymmetryGroupRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, we.SymmetryGroup)
+        assert isinstance(resolved, flops.SymmetryGroup)
         assert resolved.axes == (0, 1, 2)
         assert resolved.order() == 6
 
@@ -83,7 +87,7 @@ class TestSymmetryGroupRoundTrip:
         resolved = handler._resolve_arg(encoded)
 
         assert isinstance(resolved, list)
-        assert isinstance(resolved[0], we.SymmetryGroup)
+        assert isinstance(resolved[0], flops.SymmetryGroup)
         assert resolved[0].axes == (0, 1, 2)
         assert resolved[0].order() == 3
         assert resolved[1] == 42
@@ -97,9 +101,9 @@ class TestSymmetryTransportRoundTrip:
 
     def test_symmetric_tensor_pack_unpack(self, handler_session):
         data = self._make_symmetric_array()
-        sym_tensor = we.as_symmetric(
+        sym_tensor = flops.as_symmetric(
             data,
-            symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
+            symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1)),
         )
 
         _, handler = handler_session
@@ -130,9 +134,9 @@ class TestSymmetryTransportRoundTrip:
         rng = np.random.default_rng(7)
         raw = rng.random((4, 4))
         data = (raw + raw.T) / 2.0
-        sym_tensor = we.as_symmetric(
+        sym_tensor = flops.as_symmetric(
             data,
-            symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
+            symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1)),
         )
 
         _, handler = handler_session
@@ -149,11 +153,11 @@ class TestSymmetryTransportRoundTrip:
         raw = rng.random((3, 3, 2, 2))
         raw = (raw + raw.transpose(1, 0, 2, 3)) / 2.0
         raw = (raw + raw.transpose(0, 1, 3, 2)) / 2.0
-        sym_tensor = we.as_symmetric(
+        sym_tensor = flops.as_symmetric(
             raw,
-            symmetry=we.SymmetryGroup.direct_product(
-                we.SymmetryGroup.symmetric(axes=(0, 1)),
-                we.SymmetryGroup.symmetric(axes=(2, 3)),
+            symmetry=flops.SymmetryGroup.direct_product(
+                flops.SymmetryGroup.symmetric(axes=(0, 1)),
+                flops.SymmetryGroup.symmetric(axes=(2, 3)),
             ),
         )
 

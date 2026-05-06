@@ -1,6 +1,6 @@
-"""Basic smoke test — verifies whest works under lockdown."""
+"""Basic smoke test — verifies flopscope works under lockdown."""
 
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=10_000_000) as budget:
     W = we.ones((256, 256))

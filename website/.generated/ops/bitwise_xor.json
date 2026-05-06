@@ -323,8 +323,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_xor",
-              "label": "we.logical_xor",
+              "href": "/docs/api/numpy/logical-xor/",
+              "label": "flops.logical_xor",
               "original_target": "logical_xor",
               "role": "",
               "target": "logical_xor",
@@ -334,8 +334,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_and",
-              "label": "we.bitwise_and",
+              "href": "/docs/api/numpy/bitwise-and/",
+              "label": "flops.bitwise_and",
               "original_target": "bitwise_and",
               "role": "",
               "target": "bitwise_and",
@@ -345,8 +345,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_or",
-              "label": "we.bitwise_or",
+              "href": "/docs/api/numpy/bitwise-or/",
+              "label": "flops.bitwise_or",
               "original_target": "bitwise_or",
               "role": "",
               "target": "bitwise_or",
@@ -381,7 +381,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_xor(13, 17)"
+              "text": "flops.bitwise_xor(13, 17)"
             },
             {
               "kind": "output",
@@ -433,7 +433,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.binary_repr(28)"
+              "text": "flops.binary_repr(28)"
             },
             {
               "kind": "output",
@@ -447,7 +447,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_xor(31, 5)"
+              "text": "flops.bitwise_xor(31, 5)"
             },
             {
               "kind": "output",
@@ -456,7 +456,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_xor([31,3], 5)"
+              "text": "flops.bitwise_xor([31,3], 5)"
             },
             {
               "kind": "output",
@@ -470,7 +470,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_xor([31,3], [5,6])"
+              "text": "flops.bitwise_xor([31,3], [5,6])"
             },
             {
               "kind": "output",
@@ -479,7 +479,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_xor([True, True], [False, True])"
+              "text": "flops.bitwise_xor([True, True], [False, True])"
             },
             {
               "kind": "output",
@@ -504,10 +504,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_xor",
+              "href": "/docs/api/numpy/bitwise-xor/",
               "kind": "link",
               "target": "bitwise_xor",
-              "text": "we.bitwise_xor"
+              "text": "flops.bitwise_xor"
             },
             {
               "kind": "text",
@@ -521,12 +521,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array([True, True])"
+              "text": "x1 = flops.array([True, True])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.array([False, True])"
+              "text": "x2 = flops.array([False, True])"
             },
             {
               "kind": "input",
@@ -545,6 +545,7 @@
     }
   ],
   "canonical_name": "bitwise_xor",
+  "canonical_path": "numpy/bitwise-xor",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -562,16 +563,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.bitwise_xor(13, 17)\n\nwe.binary_repr(28)\n\nwe.bitwise_xor(31, 5)\n\nwe.bitwise_xor([31,3], 5)\n\nwe.bitwise_xor([31,3], [5,6])\n\nwe.bitwise_xor([True, True], [False, True])\n\nx1 = we.array([True, True])\n\nx2 = we.array([False, True])\n\nx1 ^ x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.bitwise_xor(13, 17)\n\nflops.binary_repr(28)\n\nflops.bitwise_xor(31, 5)\n\nflops.bitwise_xor([31,3], 5)\n\nflops.bitwise_xor([31,3], [5,6])\n\nflops.bitwise_xor([True, True], [False, True])\n\nx1 = flops.array([True, True])\n\nx2 = flops.array([False, True])\n\nx1 ^ x2",
     "output": "28\n\n'11100'\n\n26\n\narray([26,  6])\n\narray([26,  5])\n\narray([ True, False])\n\narray([ True, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_xor/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.bitwise_xor",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L414",
+  "href": "/docs/api/numpy/bitwise-xor/",
+  "legacy_href": "/docs/api/ops/bitwise_xor/",
   "module": "numpy",
   "name": "bitwise_xor",
   "next": {
-    "href": "/docs/api/ops/blackman/",
-    "label": "we.blackman"
+    "href": "/docs/api/numpy/blackman/",
+    "label": "fnp.blackman"
   },
   "notes": "Element-wise bitwise XOR.",
   "notes_sections": [],
@@ -618,10 +623,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_right_shift/",
-    "label": "we.bitwise_right_shift"
+    "href": "/docs/api/numpy/bitwise-right-shift/",
+    "label": "fnp.bitwise_right_shift"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.bitwise_xor",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_xor.html",
   "returns": [
     {
@@ -638,8 +644,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_xor",
-      "label": "we.logical_xor",
+      "href": "/docs/api/numpy/logical-xor/",
+      "label": "flops.logical_xor",
       "original_target": "logical_xor",
       "role": "",
       "target": "logical_xor",
@@ -649,8 +655,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_and",
-      "label": "we.bitwise_and",
+      "href": "/docs/api/numpy/bitwise-and/",
+      "label": "flops.bitwise_and",
       "original_target": "bitwise_and",
       "role": "",
       "target": "bitwise_and",
@@ -660,8 +666,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_or",
-      "label": "we.bitwise_or",
+      "href": "/docs/api/numpy/bitwise-or/",
+      "label": "flops.bitwise_or",
       "original_target": "bitwise_or",
       "role": "",
       "target": "bitwise_or",
@@ -684,12 +690,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.bitwise_xor(*args, **kwargs)",
+  "signature": "fnp.bitwise_xor(*args, **kwargs)",
   "slug": "bitwise_xor",
   "summary": "Compute the bit-wise XOR of two arrays element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.bitwise_xor",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 1.0
 }

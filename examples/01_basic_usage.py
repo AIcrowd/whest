@@ -1,9 +1,9 @@
-"""Basic whest usage — BudgetContext, free ops, counted ops, summary.
+"""Basic flopscope usage — BudgetContext, free ops, counted ops, summary.
 
 Run: uv run python examples/01_basic_usage.py
 """
 
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=10_000_000) as budget:
     # Free operations (0 FLOPs)

@@ -2,10 +2,10 @@
 
 import numpy
 
-import whest.linalg as la
-from whest import SymmetryGroup
-from whest._budget import BudgetContext
-from whest._symmetric import SymmetricTensor, as_symmetric
+import flopscope.numpy.linalg as la
+from flopscope import SymmetryGroup
+from flopscope._budget import BudgetContext
+from flopscope._symmetric import SymmetricTensor, as_symmetric
 
 
 class TestEighValidation:

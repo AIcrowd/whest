@@ -1,0 +1,119 @@
+{
+  "aliases": [
+    "stats.uniform",
+    "flops.stats.uniform",
+    "flopscope.stats.uniform"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Continuous uniform random variable on "
+            },
+            {
+              "kind": "code",
+              "text": "[loc, loc + scale]"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This object mirrors "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/stats/uniform/",
+              "kind": "link",
+              "target": "stats.uniform",
+              "text": "scipy.stats.uniform"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " is the lower bound and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " is the interval width. Each\npublic method deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active budget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "stats.uniform",
+  "canonical_path": "stats/uniform",
+  "display_name": "flops.stats.uniform",
+  "href": "/docs/api/stats/uniform/",
+  "import_path": "flops.stats.uniform",
+  "kind": "object",
+  "members": [
+    {
+      "href": "/docs/api/stats/uniform/cdf/",
+      "label": "flops.stats.uniform.cdf"
+    },
+    {
+      "href": "/docs/api/stats/uniform/pdf/",
+      "label": "flops.stats.uniform.pdf"
+    },
+    {
+      "href": "/docs/api/stats/uniform/ppf/",
+      "label": "flops.stats.uniform.ppf"
+    }
+  ],
+  "module": "flopscope.stats._uniform",
+  "name": "stats.uniform",
+  "related_guides": [],
+  "signature": "flops.stats.uniform",
+  "slug": "stats-uniform",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Continuous uniform random variable on ``[loc, loc + scale]``.",
+  "upstream_source_url": ""
+}

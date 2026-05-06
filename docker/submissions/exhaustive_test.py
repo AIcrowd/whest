@@ -1,5 +1,5 @@
 """
-Exhaustive smoke test: calls EVERY non-blacklisted function in the whest
+Exhaustive smoke test: calls EVERY non-blacklisted function in the flopscope
 registry through the client-server proxy to verify it works end-to-end.
 
 Runs INSIDE the participant container (no numpy).
@@ -7,7 +7,7 @@ Runs INSIDE the participant container (no numpy).
 
 import sys
 
-import whest as we
+import flopscope as we
 
 # ── Results tracking ──────────────────────────────────────────────────────
 
@@ -34,7 +34,7 @@ def skip(name, reason="not testable in this context"):
 # ── Main test run ─────────────────────────────────────────────────────────
 
 print("=" * 70)
-print("  Exhaustive Whest Smoke Test")
+print("  Exhaustive Flopscope Smoke Test")
 print("=" * 70)
 
 with we.BudgetContext(flop_budget=10**9) as budget:

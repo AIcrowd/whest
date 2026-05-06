@@ -21,10 +21,10 @@ import warnings
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._config import configure
-from whest._perm_group import SymmetryGroup as PermutationGroup
-from whest._pointwise import (
+from flopscope._budget import BudgetContext
+from flopscope._config import configure
+from flopscope._perm_group import SymmetryGroup as PermutationGroup
+from flopscope._pointwise import (
     abs,
     add,
     # Reductions
@@ -66,8 +66,8 @@ from whest._pointwise import (
     trapezoid,
     vdot,
 )
-from whest._symmetric import SymmetricTensor, as_symmetric
-from whest.errors import SymmetryLossWarning
+from flopscope._symmetric import SymmetricTensor, as_symmetric
+from flopscope.errors import SymmetryLossWarning
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -244,14 +244,14 @@ class TestBinarySymmetric:
             via_dunder = st * st
         assert functional_budget.flops_used == dunder_budget.flops_used
         assert isinstance(via_dunder, SymmetricTensor)
-        assert via_dunder.symmetry == functional.symmetry
+        assert via_dunder.symmetry == functional.symmetry  # pyright: ignore[reportAttributeAccessIssue]
         assert numpy.allclose(via_dunder, functional)
 
     def test_add_with_plain_out_preserves_output_identity(self):
         st = _make_symmetric_2d(4)
         out = numpy.empty_like(numpy.asarray(st))
         with BudgetContext(flop_budget=10**6):
-            result = add(st, 1.0, out=out)
+            result = add(st, 1.0, out=out)  # pyright: ignore[reportArgumentType]
         assert result is out
         assert numpy.allclose(result, numpy.asarray(st) + 1.0)
 
@@ -262,7 +262,7 @@ class TestBinarySymmetric:
             result = negative(st, out=out)
         assert result is out
         assert numpy.allclose(result, -numpy.asarray(st))
-        assert result.symmetry == st.symmetry
+        assert result.symmetry == st.symmetry  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_clip_with_symmetric_out_preserves_output_identity(self):
         st = _make_symmetric_2d(4)
@@ -271,7 +271,7 @@ class TestBinarySymmetric:
             result = clip(st, 0.25, 0.75, out=out)
         assert result is out
         assert numpy.allclose(result, numpy.clip(numpy.asarray(st), 0.25, 0.75))
-        assert result.symmetry == st.symmetry
+        assert result.symmetry == st.symmetry  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_add_with_incompatible_symmetric_out_raises_without_mutation(self):
         st = _make_symmetric_2d(4)
@@ -321,7 +321,7 @@ class TestReductionSymmetric:
         st = _make_symmetric_3d(3)  # symmetric in (0, 1), shape (3,3,3)
         with BudgetContext(flop_budget=10**6):
             result = sum(st, axis=2)
-        # Axes (0,1) should survive since we reduced axis 2
+        # Axes (0,1) should survive since fnp reduced axis 2
         assert isinstance(result, SymmetricTensor)
 
     def test_sum_over_reduced_block_preserves_unaffected_symmetry(self):
@@ -356,7 +356,7 @@ class TestReductionSymmetric:
             result = sum(st, axis=2, out=out)
         assert result is out
         assert numpy.allclose(result, numpy.sum(numpy.asarray(st), axis=2))
-        assert result.symmetry == PermutationGroup.symmetric(axes=(0, 1))
+        assert result.symmetry == PermutationGroup.symmetric(axes=(0, 1))  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_sum_along_symmetric_axis_reduces_group(self):
         """Reducing one axis of a symmetric group partially breaks it."""
@@ -576,7 +576,7 @@ class TestIscloseScalar:
 )
 class TestBitwiseCount:
     def test_bitwise_count_basic(self):
-        from whest._pointwise import bitwise_count
+        from flopscope._pointwise import bitwise_count
 
         a = numpy.array([0, 1, 3, 7, 15], dtype=numpy.uint8)
         with BudgetContext(flop_budget=10**6) as budget:
@@ -596,7 +596,7 @@ class TestBitwiseCount:
 )
 class TestVecdot:
     def test_vecdot_1d(self):
-        from whest._pointwise import vecdot
+        from flopscope._pointwise import vecdot
 
         a = numpy.array([1.0, 2.0, 3.0])
         b = numpy.array([4.0, 5.0, 6.0])
@@ -607,7 +607,7 @@ class TestVecdot:
         assert budget.flops_used == 3
 
     def test_vecdot_2d(self):
-        from whest._pointwise import vecdot
+        from flopscope._pointwise import vecdot
 
         a = numpy.ones((5, 4))
         b = numpy.ones((5, 4))
@@ -619,7 +619,7 @@ class TestVecdot:
 
     def test_vecdot_from_list(self):
         """vecdot should convert non-ndarray inputs."""
-        from whest._pointwise import vecdot
+        from flopscope._pointwise import vecdot
 
         with BudgetContext(flop_budget=10**6):
             result = vecdot([1, 2, 3], [4, 5, 6])
@@ -663,6 +663,70 @@ class TestMultiOutputOps:
         ref = numpy.divmod(x, y)
         assert numpy.allclose(result[0], ref[0])
         assert numpy.allclose(result[1], ref[1])
+
+    def test_modf_with_out_tuple(self):
+        x = numpy.array([1.5, 2.7, -3.2])
+        out_frac = numpy.zeros(3)
+        out_int = numpy.zeros(3)
+        with BudgetContext(flop_budget=10**6):
+            result = modf(x, out=(out_frac, out_int))  # pyright: ignore[reportArgumentType]
+        assert result[0] is out_frac
+        assert result[1] is out_int
+        ref = numpy.modf(x)
+        assert numpy.allclose(out_frac, ref[0])
+        assert numpy.allclose(out_int, ref[1])
+
+    def test_frexp_with_out_tuple(self):
+        x = numpy.array([2.0, 4.0, 8.0])
+        out_mant = numpy.zeros(3)
+        out_exp = numpy.zeros(3, dtype=numpy.int32)
+        with BudgetContext(flop_budget=10**6):
+            result = frexp(x, out=(out_mant, out_exp))  # pyright: ignore[reportArgumentType]
+        assert result[0] is out_mant
+        assert result[1] is out_exp
+        ref = numpy.frexp(x)
+        assert numpy.allclose(out_mant, ref[0])
+        assert numpy.array_equal(out_exp, ref[1])
+
+    def test_divmod_with_out_tuple(self):
+        x = numpy.array([7.0, 10.0, 13.0])
+        y = numpy.array([3.0, 4.0, 5.0])
+        out_q = numpy.zeros(3)
+        out_r = numpy.zeros(3)
+        with BudgetContext(flop_budget=10**6):
+            result = divmod(x, y, out=(out_q, out_r))  # pyright: ignore[reportArgumentType]
+        assert result[0] is out_q
+        assert result[1] is out_r
+        ref = numpy.divmod(x, y)
+        assert numpy.allclose(out_q, ref[0])
+        assert numpy.allclose(out_r, ref[1])
+
+    def test_divmod_with_partial_out(self):
+        x = numpy.array([7.0, 10.0])
+        y = numpy.array([3.0, 4.0])
+        out_q = numpy.zeros(2)
+        with BudgetContext(flop_budget=10**6):
+            result = divmod(x, y, out=(out_q, None))  # pyright: ignore[reportArgumentType]
+        assert result[0] is out_q
+        # Second slot was allocated by numpy; should still be a usable array
+        assert result[1] is not None
+        ref = numpy.divmod(x, y)
+        assert numpy.allclose(out_q, ref[0])
+        assert numpy.allclose(result[1], ref[1])
+
+    def test_modf_invalid_out_length_raises(self):
+        x = numpy.array([1.5, 2.7])
+        single = numpy.zeros(2)
+        with BudgetContext(flop_budget=10**6):
+            with pytest.raises(TypeError, match="length"):
+                modf(x, out=(single,))  # pyright: ignore[reportArgumentType]
+
+    def test_modf_invalid_out_type_raises(self):
+        x = numpy.array([1.5, 2.7])
+        single = numpy.zeros(2)
+        with BudgetContext(flop_budget=10**6):
+            with pytest.raises(TypeError, match="tuple"):
+                modf(x, out=single)  # pyright: ignore[reportArgumentType]
 
 
 # ---------------------------------------------------------------------------
@@ -823,6 +887,61 @@ class TestCustomOps:
         # contracted = 4, result.size = 15, cost = 60
         assert budget.flops_used == 60
 
+    def test_tensordot_no_symmetry_unchanged(self):
+        """Without any input symmetry, the cost equals the dense
+        formula (a.size * b.size / contracted) — no behaviour change
+        from the pre-symmetry-adjustment code."""
+        n = 6
+        a = numpy.ones((n, n))
+        b = numpy.ones((n, n))
+        with BudgetContext(flop_budget=10**8) as budget:
+            tensordot(a, b, axes=1)
+        # output shape (n, n) = 36 elements, contracted = n = 6,
+        # dense = 6*6*6 = 216
+        assert budget.flops_used == n * n * n
+
+    def test_tensordot_surviving_symmetry_lowers_cost(self):
+        """A 4D × 4D contraction that preserves S₂ symmetry on each
+        operand's surviving (uncontracted) axes charges fewer FLOPs
+        than the dense baseline. Output symmetry is the direct product
+        of the two surviving S₂ groups."""
+        n = 8
+        sym = PermutationGroup.symmetric(axes=(0, 1))
+
+        with BudgetContext(flop_budget=10**10) as dense_bc:
+            a = numpy.ones((n, n, n, n))
+            b = numpy.ones((n, n, n, n))
+            dense_result = tensordot(a, b, axes=((2,), (2,)))
+
+        with BudgetContext(flop_budget=10**10) as sym_bc:
+            a_sym = as_symmetric(numpy.ones((n, n, n, n)), symmetry=sym)
+            b_sym = as_symmetric(numpy.ones((n, n, n, n)), symmetry=sym)
+            sym_result = tensordot(a_sym, b_sym, axes=((2,), (2,)))
+
+        # Output shape unchanged.
+        assert sym_result.shape == dense_result.shape == (n, n, n, n, n, n)
+        # Symmetric path's tensordot cost is strictly lower.
+        assert sym_bc.flops_used < dense_bc.flops_used
+        # Output retains the direct-product symmetry on (0,1) and (3,4).
+        assert isinstance(sym_result, SymmetricTensor)
+        assert sym_result.symmetry is not None
+        assert set(sym_result.symmetry.axes) == {0, 1, 3, 4}  # pyright: ignore[reportArgumentType]
+
+    def test_tensordot_contraction_through_sym_axis_drops_symmetry(self):
+        """If the contracted axes overlap with the input's symmetry
+        axes (e.g. a = (n,n) sym(0,1), contract axis 1), the surviving
+        axis is alone — no symmetry survives."""
+        n = 5
+        sym = PermutationGroup.symmetric(axes=(0, 1))
+        a_sym = as_symmetric(numpy.ones((n, n)), symmetry=sym)
+        b = numpy.ones((n, n))
+        with BudgetContext(flop_budget=10**6):
+            result = tensordot(a_sym, b, axes=1)
+        # Output shape = (n, n) — surviving axes are a's axis 0 and b's axis 1.
+        assert result.shape == (n, n)
+        # No surviving axis pair has the original S2 symmetry.
+        assert getattr(result, "symmetry", None) is None
+
     def test_kron_basic(self):
         a = numpy.array([[1, 0], [0, 1]])
         b = numpy.array([[1, 2], [3, 4]])
@@ -884,13 +1003,13 @@ class TestAroundRoundOut:
         """around() with an out parameter should not return scalar even for scalar input."""
         out = numpy.zeros(1)
         with BudgetContext(flop_budget=10**6):
-            result = around(numpy.array([3.7]), decimals=0, out=out)
+            result = around(numpy.array([3.7]), decimals=0, out=out)  # pyright: ignore[reportArgumentType]
         assert isinstance(result, numpy.ndarray)
 
     def test_round_with_out_param(self):
         out = numpy.zeros(1)
         with BudgetContext(flop_budget=10**6):
-            result = round(numpy.array([2.3]), decimals=0, out=out)
+            result = round(numpy.array([2.3]), decimals=0, out=out)  # pyright: ignore[reportArgumentType]
         assert isinstance(result, numpy.ndarray)
 
 
@@ -1048,7 +1167,7 @@ class TestAdditionalCustomOps:
 @pytest.mark.skipif(not hasattr(numpy, "trapz"), reason="numpy 2.4+ removed trapz")
 class TestTrapz:
     def test_trapz_basic(self):
-        from whest._pointwise import trapz
+        from flopscope._pointwise import trapz
 
         y = numpy.array([1.0, 2.0, 3.0])
         with warnings.catch_warnings():
@@ -1058,7 +1177,7 @@ class TestTrapz:
             assert budget.flops_used == 3
 
     def test_trapz_from_list(self):
-        from whest._pointwise import trapz
+        from flopscope._pointwise import trapz
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
@@ -1073,7 +1192,7 @@ class TestTrapz:
 
 class TestPtp:
     def test_ptp_basic(self):
-        from whest._pointwise import ptp
+        from flopscope._pointwise import ptp
 
         x = numpy.array([1.0, 5.0, 3.0, 2.0])
         with BudgetContext(flop_budget=10**6) as budget:
@@ -1081,7 +1200,7 @@ class TestPtp:
         assert numpy.isclose(result, 4.0)
 
     def test_ptp_from_list(self):
-        from whest._pointwise import ptp
+        from flopscope._pointwise import ptp
 
         with BudgetContext(flop_budget=10**6):
             result = ptp([1.0, 10.0, 5.0])
@@ -1123,7 +1242,7 @@ class TestReductionSymmetryPartialLoss:
             with warnings.catch_warnings(record=True) as w:
                 warnings.simplefilter("always")
                 result = sum(st, axis=0)
-                # Check that we get a SymmetryLossWarning about partial loss
+                # Check that fnp get a SymmetryLossWarning about partial loss
                 sym_warnings = [
                     x for x in w if issubclass(x.category, SymmetryLossWarning)
                 ]

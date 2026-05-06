@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-lognorm-pdf/",
+  "detail_href": "/docs/api/stats/lognorm/pdf/",
   "detail_json_href": "/api-data/ops/stats-lognorm-pdf.json",
   "docs": {
     "sections": [
@@ -9,46 +9,13 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Probability density function at "
-              },
-              {
-                "kind": "emphasis",
-                "text": "x"
-              },
-              {
-                "kind": "text",
-                "text": "."
+                "text": "Evaluate the probability density function."
               }
             ],
             "type": "paragraph"
           }
         ],
         "title": "Summary"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "Equivalent to "
-              },
-              {
-                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.pdf(x, s, loc, scale).html",
-                "href": "",
-                "kind": "link",
-                "target": "stats.lognorm.pdf(x, s, loc, scale)",
-                "text": "scipy.stats.lognorm.pdf(x, s, loc, scale)"
-              },
-              {
-                "kind": "text",
-                "text": "."
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "title": "Extended Summary"
       },
       {
         "blocks": [
@@ -60,7 +27,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Quantiles."
+                        "text": "Points at which to evaluate the density."
                       }
                     ],
                     "type": "paragraph"
@@ -70,7 +37,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Quantiles."
+                    "text": "Points at which to evaluate the density."
                   }
                 ],
                 "name": "x",
@@ -82,7 +49,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Shape parameter (std dev of the underlying normal)."
+                        "text": "Shape parameter of the distribution."
                       }
                     ],
                     "type": "paragraph"
@@ -92,7 +59,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Shape parameter (std dev of the underlying normal)."
+                    "text": "Shape parameter of the distribution."
                   }
                 ],
                 "name": "s",
@@ -104,7 +71,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Location parameter (default 0)."
+                        "text": "Location parameter. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "0"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -114,7 +89,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Location parameter (default 0)."
+                    "text": "Location parameter. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "0"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "loc",
@@ -126,7 +109,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Scale parameter (default 1)."
+                        "text": "Scale parameter. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -136,7 +127,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Scale parameter (default 1)."
+                    "text": "Scale parameter. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "scale",
@@ -159,10 +158,10 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "PDF evaluated at "
+                        "text": "Probability density evaluated elementwise at "
                       },
                       {
-                        "kind": "emphasis",
+                        "kind": "code",
                         "text": "x"
                       },
                       {
@@ -173,14 +172,14 @@
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "WhestArray",
+                "data_type": "FlopscopeArray",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "PDF evaluated at "
+                    "text": "Probability density evaluated elementwise at "
                   },
                   {
-                    "kind": "emphasis",
+                    "kind": "code",
                     "text": "x"
                   },
                   {
@@ -197,6 +196,73 @@
           }
         ],
         "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Equivalent to "
+              },
+              {
+                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.pdf(x, s, loc, scale).html",
+                "href": "",
+                "kind": "link",
+                "target": "stats.lognorm.pdf(x, s, loc, scale)",
+                "text": "scipy.stats.lognorm.pdf(x, s, loc, scale)"
+              },
+              {
+                "kind": "text",
+                "text": ".\nFLOP cost: "
+              },
+              {
+                "kind": "code",
+                "text": "1 * numel(x)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope.numpy as fnp"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope as flops"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "x = flops.array([0.5, 1.0, 2.0])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "flops.round(flops.stats.lognorm.pdf(x, s=0.5), 3)"
+              },
+              {
+                "kind": "output",
+                "text": "array([0.61 , 0.798, 0.153])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
   },
@@ -204,20 +270,20 @@
     "category": "counted_custom",
     "cost_formula": "15n",
     "cost_formula_latex": "$15n$",
-    "module": "whest.stats",
+    "flopscope_ref": "flops.stats.lognorm.pdf",
+    "module": "flopscope.stats",
     "name": "stats.lognorm.pdf",
     "notes": "Log-normal PDF; cost = numel(input).",
-    "numpy_ref": "np.stats.lognorm.pdf",
-    "signature": "we.stats.lognorm.pdf(x, s, loc=0, scale=1)",
+    "numpy_ref": "scipy.stats.lognorm.pdf",
+    "signature": "flops.stats.lognorm.pdf(x, s, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Probability density function at *x*.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.lognorm.pdf"
+    "summary": "Evaluate the probability density function.",
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-lognorm-pdf",
   "source": {
-    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_lognorm.py#L43"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_lognorm.py#L40",
+    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html"
   }
 }

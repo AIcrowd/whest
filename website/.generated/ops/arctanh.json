@@ -306,7 +306,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctanh",
+              "href": "/docs/api/numpy/arctanh/",
               "kind": "link",
               "target": "arctanh",
               "text": "arctanh"
@@ -366,7 +366,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctanh",
+              "href": "/docs/api/numpy/arctanh/",
               "kind": "link",
               "target": "arctanh",
               "text": "arctanh"
@@ -402,7 +402,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctanh",
+              "href": "/docs/api/numpy/arctanh/",
               "kind": "link",
               "target": "arctanh",
               "text": "arctanh"
@@ -438,7 +438,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctanh",
+              "href": "/docs/api/numpy/arctanh/",
               "kind": "link",
               "target": "arctanh",
               "text": "atanh"
@@ -483,12 +483,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arctanh([0, -0.5])"
+              "text": "flops.arctanh([0, -0.5])"
             },
             {
               "kind": "output",
@@ -502,6 +502,7 @@
     }
   ],
   "canonical_name": "arctanh",
+  "canonical_path": "numpy/arctanh",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -534,16 +535,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.arctanh([0, -0.5])",
+    "code": "import flopscope.numpy as fnp\n\nflops.arctanh([0, -0.5])",
     "output": "array([ 0.        , -0.54930614])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arctanh/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arctanh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/arctanh/",
+  "legacy_href": "/docs/api/ops/arctanh/",
   "module": "numpy",
   "name": "arctanh",
   "next": {
-    "href": "/docs/api/ops/argmax/",
-    "label": "we.argmax"
+    "href": "/docs/api/numpy/argmax/",
+    "label": "fnp.argmax"
   },
   "notes": "Element-wise inverse hyperbolic tangent.",
   "notes_sections": [
@@ -593,10 +598,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arctan2/",
-    "label": "we.arctan2"
+    "href": "/docs/api/numpy/arctan2/",
+    "label": "fnp.arctan2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.arctanh",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arctanh.html",
   "returns": [
     {
@@ -621,12 +627,11 @@
       "unresolved": true
     }
   ],
-  "signature": "we.arctanh(*args, **kwargs)",
+  "signature": "fnp.arctanh(*args, **kwargs)",
   "slug": "arctanh",
   "summary": "Inverse hyperbolic tangent element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arctanh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 16.0
 }

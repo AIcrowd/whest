@@ -288,8 +288,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/trunc",
-              "label": "we.trunc",
+              "href": "/docs/api/numpy/trunc/",
+              "label": "flops.trunc",
               "original_target": "fix",
               "role": "",
               "target": "trunc",
@@ -299,8 +299,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/ceil",
-              "label": "we.ceil",
+              "href": "/docs/api/numpy/ceil/",
+              "label": "flops.ceil",
               "original_target": "ceil",
               "role": "",
               "target": "ceil",
@@ -310,8 +310,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/floor",
-              "label": "we.floor",
+              "href": "/docs/api/numpy/floor/",
+              "label": "flops.floor",
               "original_target": "floor",
               "role": "",
               "target": "floor",
@@ -321,8 +321,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/trunc",
-              "label": "we.trunc",
+              "href": "/docs/api/numpy/trunc/",
+              "label": "flops.trunc",
               "original_target": "trunc",
               "role": "",
               "target": "trunc",
@@ -355,17 +355,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
+              "text": "a = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.rint(a)"
+              "text": "flops.rint(a)"
             },
             {
               "kind": "output",
@@ -379,6 +379,7 @@
     }
   ],
   "canonical_name": "rint",
+  "canonical_path": "numpy/rint",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -396,16 +397,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nwe.rint(a)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nflops.rint(a)",
     "output": "array([-2., -2., -0.,  0.,  2.,  2.,  2.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/rint/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.rint",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L341",
+  "href": "/docs/api/numpy/rint/",
+  "legacy_href": "/docs/api/ops/rint/",
   "module": "numpy",
   "name": "rint",
   "next": {
-    "href": "/docs/api/ops/roll/",
-    "label": "we.roll"
+    "href": "/docs/api/numpy/roll/",
+    "label": "fnp.roll"
   },
   "notes": "Round to nearest integer element-wise.",
   "notes_sections": [
@@ -452,10 +457,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/right_shift/",
-    "label": "we.right_shift"
+    "href": "/docs/api/numpy/right-shift/",
+    "label": "fnp.right_shift"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.rint",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.rint.html",
   "returns": [
     {
@@ -472,8 +478,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/trunc",
-      "label": "we.trunc",
+      "href": "/docs/api/numpy/trunc/",
+      "label": "flops.trunc",
       "original_target": "fix",
       "role": "",
       "target": "trunc",
@@ -483,8 +489,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/ceil",
-      "label": "we.ceil",
+      "href": "/docs/api/numpy/ceil/",
+      "label": "flops.ceil",
       "original_target": "ceil",
       "role": "",
       "target": "ceil",
@@ -494,8 +500,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/floor",
-      "label": "we.floor",
+      "href": "/docs/api/numpy/floor/",
+      "label": "flops.floor",
       "original_target": "floor",
       "role": "",
       "target": "floor",
@@ -505,20 +511,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/trunc",
-      "label": "we.trunc",
+      "href": "/docs/api/numpy/trunc/",
+      "label": "flops.trunc",
       "original_target": "trunc",
       "role": "",
       "target": "trunc",
       "unresolved": false
     }
   ],
-  "signature": "we.rint(*args, **kwargs)",
+  "signature": "fnp.rint(*args, **kwargs)",
   "slug": "rint",
   "summary": "Round elements of the array to the nearest integer.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.rint",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

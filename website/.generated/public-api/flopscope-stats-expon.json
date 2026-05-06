@@ -1,0 +1,119 @@
+{
+  "aliases": [
+    "flops.stats.expon"
+  ],
+  "area": "stats",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Exponential continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This object mirrors "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.expon.html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.expon",
+              "text": "scipy.stats.expon"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " shifts the origin and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " is the reciprocal of the rate.\nEach public method deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active\nbudget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flopscope.stats.expon",
+  "canonical_path": "/docs/api/stats/expon/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.stats.expon",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.stats.expon",
+  "flopscope_source_url": "",
+  "href": "/docs/api/stats/expon/",
+  "import_path": "flopscope.stats.expon",
+  "is_operation_cost_leaf": false,
+  "kind": "object",
+  "legacy_href": "/docs/api/stats/expon/",
+  "module": "flopscope.stats._expon",
+  "name": "expon",
+  "next": null,
+  "notes": "",
+  "notes_sections": [
+    "``loc`` shifts the origin and ``scale`` is the reciprocal of the rate. Each public method deducts ``1 * numel(input)`` FLOPs from the active budget."
+  ],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.stats.expon",
+  "slug": "flopscope-stats-expon",
+  "summary": "Exponential continuous random variable.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

@@ -1,0 +1,39 @@
+{
+  "aliases": [
+    "random.RandomState",
+    "flops.random.RandomState",
+    "flopscope.numpy.random.RandomState"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "numpy RandomState subclass with FLOP-counted sampler methods."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "random.RandomState",
+  "canonical_path": "random/random-state",
+  "display_name": "flops.random.RandomState",
+  "href": "/docs/api/random/random-state/",
+  "import_path": "flops.random.RandomState",
+  "kind": "class",
+  "members": [],
+  "module": "flopscope.numpy.random._counted_classes",
+  "name": "random.RandomState",
+  "related_guides": [],
+  "signature": "flops.random.RandomState",
+  "slug": "random-random-state",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/_counted_classes.py#L138",
+  "status_note": "",
+  "summary": "numpy RandomState subclass with FLOP-counted sampler methods.",
+  "upstream_source_url": ""
+}

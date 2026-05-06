@@ -51,12 +51,12 @@
               "text": "This function is Array API compatible, contrary to\n"
             },
             {
-              "display_text": "we.cross",
+              "display_text": "flops.cross",
               "explicit_title": false,
               "external_url": "",
-              "href": "/docs/api/ops/cross",
+              "href": "/docs/api/numpy/cross/",
               "kind": "role_reference",
-              "original_target": "we.cross",
+              "original_target": "flops.cross",
               "role": "func",
               "suppress_link": false,
               "target": "cross",
@@ -270,8 +270,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/cross",
-              "label": "we.cross",
+              "href": "/docs/api/numpy/cross/",
+              "label": "flops.cross",
               "original_target": "numpy.cross",
               "role": "",
               "target": "cross",
@@ -299,17 +299,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 2, 3])"
+              "text": "x = flops.array([1, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([4, 5, 6])"
+              "text": "y = flops.array([4, 5, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.cross(x, y)"
+              "text": "flops.linalg.cross(x, y)"
             },
             {
               "kind": "output",
@@ -340,17 +340,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([[1,2,3], [4,5,6]])"
+              "text": "x = flops.array([[1,2,3], [4,5,6]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([[4,5,6], [1,2,3]])"
+              "text": "y = flops.array([[4,5,6], [1,2,3]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.cross(x, y)"
+              "text": "flops.linalg.cross(x, y)"
             },
             {
               "kind": "output",
@@ -368,17 +368,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([[1, 2], [3, 4], [5, 6]])"
+              "text": "x = flops.array([[1, 2], [3, 4], [5, 6]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([[4, 5], [6, 1], [2, 3]])"
+              "text": "y = flops.array([[4, 5], [6, 1], [2, 3]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.cross(x, y, axis=0)"
+              "text": "flops.linalg.cross(x, y, axis=0)"
             },
             {
               "kind": "output",
@@ -400,8 +400,9 @@
     }
   ],
   "canonical_name": "linalg.cross",
+  "canonical_path": "numpy/linalg/cross",
   "category": "counted_custom",
-  "cost_formula": "delegates to we.cross",
+  "cost_formula": "delegates to flops.cross",
   "cost_formula_latex": "delegates to `cross`",
   "display_type": "custom",
   "doc_coverage": {
@@ -410,18 +411,22 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "x = we.array([1, 2, 3])\n\ny = we.array([4, 5, 6])\n\nwe.linalg.cross(x, y)\n\nx = we.array([[1,2,3], [4,5,6]])\n\ny = we.array([[4,5,6], [1,2,3]])\n\nwe.linalg.cross(x, y)\n\nx = we.array([[1, 2], [3, 4], [5, 6]])\n\ny = we.array([[4, 5], [6, 1], [2, 3]])\n\nwe.linalg.cross(x, y, axis=0)",
+    "code": "x = flops.array([1, 2, 3])\n\ny = flops.array([4, 5, 6])\n\nflops.linalg.cross(x, y)\n\nx = flops.array([[1,2,3], [4,5,6]])\n\ny = flops.array([[4,5,6], [1,2,3]])\n\nflops.linalg.cross(x, y)\n\nx = flops.array([[1, 2], [3, 4], [5, 6]])\n\ny = flops.array([[4, 5], [6, 1], [2, 3]])\n\nflops.linalg.cross(x, y, axis=0)",
     "output": "array([-3,  6, -3])\n\narray([[-3,  6, -3],\n       [ 3, -6,  3]])\n\narray([[-24,  6],\n       [ 18, 24],\n       [-6,  -18]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-cross/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.cross",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L30",
+  "href": "/docs/api/numpy/linalg/cross/",
+  "legacy_href": "/docs/api/ops/linalg-cross/",
   "module": "numpy.linalg",
   "name": "linalg.cross",
   "next": {
-    "href": "/docs/api/ops/linalg-det/",
-    "label": "we.linalg.det"
+    "href": "/docs/api/numpy/linalg/det/",
+    "label": "fnp.linalg.det"
   },
-  "notes": "Delegates to `we.cross` which charges `numel(output)` FLOPs.",
+  "notes": "Delegates to `fnp.cross` which charges `numel(output)` FLOPs.",
   "notes_sections": [],
   "numpy_ref": "np.linalg.cross",
   "parameters": [
@@ -452,10 +457,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-cond/",
-    "label": "we.linalg.cond"
+    "href": "/docs/api/numpy/linalg/cond/",
+    "label": "fnp.linalg.cond"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.cross",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cross.html",
   "returns": [
     {
@@ -471,20 +477,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/cross",
-      "label": "we.cross",
+      "href": "/docs/api/numpy/cross/",
+      "label": "flops.cross",
       "original_target": "numpy.cross",
       "role": "",
       "target": "cross",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.cross(x1, x2, /, *, axis=-1)",
+  "signature": "fnp.linalg.cross(x1: 'ArrayLike', x2: 'ArrayLike', /, *, axis: 'int' = -1) -> 'FlopscopeArray'",
   "slug": "linalg-cross",
   "summary": "Returns the cross product of 3-element vectors.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3223",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.cross",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L26"
+  "weight": 1.0
 }

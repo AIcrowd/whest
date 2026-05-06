@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/floor_divide",
+              "href": "/docs/api/numpy/floor-divide/",
               "kind": "link",
               "target": "floor_divide",
               "text": "floor_divide"
@@ -54,10 +54,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/remainder",
+              "href": "/docs/api/numpy/remainder/",
               "kind": "link",
               "target": "remainder",
-              "text": "we.remainder"
+              "text": "flops.remainder"
             },
             {
               "kind": "text",
@@ -65,7 +65,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/mod",
+              "href": "/docs/api/numpy/mod/",
               "kind": "link",
               "target": "mod",
               "text": "mod"
@@ -109,7 +109,7 @@
                         },
                         {
                           "external_url": "",
-                          "href": "/docs/api/ops/remainder",
+                          "href": "/docs/api/numpy/remainder/",
                           "kind": "link",
                           "target": "remainder",
                           "text": "remainder"
@@ -517,8 +517,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/floor_divide",
-              "label": "we.floor_divide",
+              "href": "/docs/api/numpy/floor-divide/",
+              "label": "flops.floor_divide",
               "original_target": "floor_divide",
               "role": "",
               "target": "floor_divide",
@@ -533,8 +533,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/floor_divide",
-              "label": "we.floor_divide",
+              "href": "/docs/api/numpy/floor-divide/",
+              "label": "flops.floor_divide",
               "original_target": "divmod",
               "role": "",
               "target": "floor_divide",
@@ -557,8 +557,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fmod",
-              "label": "we.fmod",
+              "href": "/docs/api/numpy/fmod/",
+              "label": "flops.fmod",
               "original_target": "fmod",
               "role": "",
               "target": "fmod",
@@ -568,8 +568,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/divide",
-              "label": "we.divide",
+              "href": "/docs/api/numpy/divide/",
+              "label": "flops.divide",
               "original_target": "divide",
               "role": "",
               "target": "divide",
@@ -579,8 +579,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/floor",
-              "label": "we.floor",
+              "href": "/docs/api/numpy/floor/",
+              "label": "flops.floor",
               "original_target": "floor",
               "role": "",
               "target": "floor",
@@ -626,7 +626,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/mod",
+              "href": "/docs/api/numpy/mod/",
               "kind": "link",
               "target": "mod",
               "text": "mod"
@@ -637,7 +637,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/remainder",
+              "href": "/docs/api/numpy/remainder/",
               "kind": "link",
               "target": "remainder",
               "text": "remainder"
@@ -659,12 +659,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.remainder([4, 7], [2, 3])"
+              "text": "flops.remainder([4, 7], [2, 3])"
             },
             {
               "kind": "output",
@@ -673,7 +673,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.remainder(we.arange(7), 5)"
+              "text": "flops.remainder(flops.arange(7), 5)"
             },
             {
               "kind": "output",
@@ -698,10 +698,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/remainder",
+              "href": "/docs/api/numpy/remainder/",
               "kind": "link",
               "target": "remainder",
-              "text": "we.remainder"
+              "text": "flops.remainder"
             },
             {
               "kind": "text",
@@ -715,7 +715,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.arange(7)"
+              "text": "x1 = flops.arange(7)"
             },
             {
               "kind": "input",
@@ -734,6 +734,7 @@
     }
   ],
   "canonical_name": "remainder",
+  "canonical_path": "numpy/remainder",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -751,16 +752,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.remainder([4, 7], [2, 3])\n\nwe.remainder(we.arange(7), 5)\n\nx1 = we.arange(7)\n\nx1 % 5",
+    "code": "import flopscope.numpy as fnp\n\nflops.remainder([4, 7], [2, 3])\n\nflops.remainder(flops.arange(7), 5)\n\nx1 = flops.arange(7)\n\nx1 % 5",
     "output": "array([0, 1])\n\narray([0, 1, 2, 3, 4, 0, 1])\n\narray([0, 1, 2, 3, 4, 0, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/remainder/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.remainder",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L414",
+  "href": "/docs/api/numpy/remainder/",
+  "legacy_href": "/docs/api/ops/remainder/",
   "module": "numpy",
   "name": "remainder",
   "next": {
-    "href": "/docs/api/ops/repeat/",
-    "label": "we.repeat"
+    "href": "/docs/api/numpy/repeat/",
+    "label": "fnp.repeat"
   },
   "notes": "Element-wise remainder (same as mod).",
   "notes_sections": [
@@ -816,10 +821,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/reciprocal/",
-    "label": "we.reciprocal"
+    "href": "/docs/api/numpy/reciprocal/",
+    "label": "fnp.reciprocal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.remainder",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.remainder.html",
   "returns": [
     {
@@ -849,8 +855,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/floor_divide",
-      "label": "we.floor_divide",
+      "href": "/docs/api/numpy/floor-divide/",
+      "label": "flops.floor_divide",
       "original_target": "floor_divide",
       "role": "",
       "target": "floor_divide",
@@ -865,8 +871,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/floor_divide",
-      "label": "we.floor_divide",
+      "href": "/docs/api/numpy/floor-divide/",
+      "label": "flops.floor_divide",
       "original_target": "divmod",
       "role": "",
       "target": "floor_divide",
@@ -889,8 +895,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fmod",
-      "label": "we.fmod",
+      "href": "/docs/api/numpy/fmod/",
+      "label": "flops.fmod",
       "original_target": "fmod",
       "role": "",
       "target": "fmod",
@@ -900,8 +906,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/divide",
-      "label": "we.divide",
+      "href": "/docs/api/numpy/divide/",
+      "label": "flops.divide",
       "original_target": "divide",
       "role": "",
       "target": "divide",
@@ -911,20 +917,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/floor",
-      "label": "we.floor",
+      "href": "/docs/api/numpy/floor/",
+      "label": "flops.floor",
       "original_target": "floor",
       "role": "",
       "target": "floor",
       "unresolved": false
     }
   ],
-  "signature": "we.remainder(*args, **kwargs)",
+  "signature": "fnp.remainder(*args, **kwargs)",
   "slug": "remainder",
   "summary": "Returns the element-wise remainder of division.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.remainder",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 16.0
 }

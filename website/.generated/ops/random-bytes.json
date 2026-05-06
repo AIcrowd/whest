@@ -29,8 +29,8 @@
                   "text": "New code should use the "
                 },
                 {
-                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.bytes.html",
-                  "href": "",
+                  "external_url": "",
+                  "href": "/docs/api/numpy/random/generator/bytes/",
                   "kind": "link",
                   "target": "random.Generator.bytes",
                   "text": "bytes"
@@ -72,7 +72,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.bytes`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.bytes`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -173,9 +173,9 @@
                   "text": "which should be used for new code."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.bytes.html",
-              "href": "",
-              "label": "random.Generator.bytes",
+              "external_url": "",
+              "href": "/docs/api/numpy/random/generator/bytes/",
+              "label": "flops.random.Generator.bytes",
               "original_target": "random.Generator.bytes",
               "role": "",
               "target": "random.Generator.bytes",
@@ -194,7 +194,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.bytes(10)"
+              "text": "flops.random.bytes(10)"
             },
             {
               "kind": "output",
@@ -208,6 +208,7 @@
     }
   ],
   "canonical_name": "random.bytes",
+  "canonical_path": "numpy/random/bytes",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -218,16 +219,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.bytes(10)",
+    "code": "flops.random.bytes(10)",
     "output": "b' eh\\x85\\x022SZ\\xbf\\xa4' #random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-bytes/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.bytes",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L547",
+  "href": "/docs/api/numpy/random/bytes/",
+  "legacy_href": "/docs/api/ops/random-bytes/",
   "module": "numpy.random",
   "name": "random.bytes",
   "next": {
-    "href": "/docs/api/ops/random-chisquare/",
-    "label": "we.random.chisquare"
+    "href": "/docs/api/numpy/random/chisquare/",
+    "label": "fnp.random.chisquare"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -242,10 +247,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-binomial/",
-    "label": "we.random.binomial"
+    "href": "/docs/api/numpy/random/binomial/",
+    "label": "fnp.random.binomial"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.bytes",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.bytes.html",
   "returns": [
     {
@@ -265,21 +271,20 @@
           "text": "which should be used for new code."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.bytes.html",
-      "href": "",
-      "label": "random.Generator.bytes",
+      "external_url": "",
+      "href": "/docs/api/numpy/random/generator/bytes/",
+      "label": "flops.random.Generator.bytes",
       "original_target": "random.Generator.bytes",
       "role": "",
       "target": "random.Generator.bytes",
       "unresolved": false
     }
   ],
-  "signature": "we.random.bytes(length)",
+  "signature": "fnp.random.bytes(length)",
   "slug": "random-bytes",
   "summary": "Return random bytes.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.bytes",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L417"
+  "weight": 1.0
 }

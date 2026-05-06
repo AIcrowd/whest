@@ -1,0 +1,573 @@
+{
+  "aliases": [
+    "flops.symmetrize"
+  ],
+  "area": "flopscope",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Project an array onto the invariant subspace of a permutation group."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This applies Reynolds symmetrization:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "R_G(T) = (1 / |G|) * sum_{g in G} g \u00b7 T"
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array to project."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array to project."
+                }
+              ],
+              "name": "data",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Symmetry group to average over. If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "symmetry.axes"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " is "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", axes are\ninterpreted as "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "tuple(range(symmetry.degree))"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetryGroup",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Symmetry group to average over. If "
+                },
+                {
+                  "kind": "code",
+                  "text": "symmetry.axes"
+                },
+                {
+                  "kind": "text",
+                  "text": " is "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": ", axes are\ninterpreted as "
+                },
+                {
+                  "kind": "code",
+                  "text": "tuple(range(symmetry.degree))"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "symmetry",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The projected tensor, validated and wrapped as a "
+                    },
+                    {
+                      "display_text": "SymmetricTensor",
+                      "explicit_title": false,
+                      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.SymmetricTensor.html",
+                      "href": "",
+                      "kind": "role_reference",
+                      "original_target": "SymmetricTensor",
+                      "role": "class",
+                      "suppress_link": false,
+                      "target": "SymmetricTensor",
+                      "unresolved": false
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetricTensor",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The projected tensor, validated and wrapped as a "
+                },
+                {
+                  "display_text": "SymmetricTensor",
+                  "explicit_title": false,
+                  "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.SymmetricTensor.html",
+                  "href": "",
+                  "kind": "role_reference",
+                  "original_target": "SymmetricTensor",
+                  "role": "class",
+                  "suppress_link": false,
+                  "target": "SymmetricTensor",
+                  "unresolved": false
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "data"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " has incompatible dimensions for "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "group"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " axes or if the\nprojected result cannot be validated as symmetric for "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "group"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetryError",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "data"
+                },
+                {
+                  "kind": "text",
+                  "text": " has incompatible dimensions for "
+                },
+                {
+                  "kind": "code",
+                  "text": "group"
+                },
+                {
+                  "kind": "text",
+                  "text": " axes or if the\nprojected result cannot be validated as symmetric for "
+                },
+                {
+                  "kind": "code",
+                  "text": "group"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Raises",
+          "type": "field_list"
+        }
+      ],
+      "title": "Raises"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "symmetrize"
+            },
+            {
+              "kind": "text",
+              "text": " performs exact Reynolds averaging internally and then delegates\nto "
+            },
+            {
+              "display_text": "as_symmetric",
+              "explicit_title": false,
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.as_symmetric.html",
+              "href": "",
+              "kind": "role_reference",
+              "original_target": "as_symmetric",
+              "role": "func",
+              "suppress_link": false,
+              "target": "as_symmetric",
+              "unresolved": false
+            },
+            {
+              "kind": "text",
+              "text": " so the result participates in downstream symmetry\ntracking and validation in the usual way."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Estimated FLOP cost is approximately:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "|G| * n_elem + n_elem"
+            },
+            {
+              "kind": "text",
+              "text": " for projection, plus validation from\n"
+            },
+            {
+              "kind": "code",
+              "text": "as_symmetric"
+            },
+            {
+              "kind": "text",
+              "text": ":"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "items": [
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "code",
+                      "text": "|G|"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " transposed add passes over "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "n_elem"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " elements"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            },
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "one final scaling pass"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            },
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "symmetry checks inside validation"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            }
+          ],
+          "ordered": false,
+          "type": "list"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "where "
+            },
+            {
+              "kind": "code",
+              "text": "|G|"
+            },
+            {
+              "kind": "text",
+              "text": " is the group order and "
+            },
+            {
+              "kind": "code",
+              "text": "n_elem = data.size"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The canonical pattern for generating random data with symmetry is:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "fnp.random.symmetric(shape, symmetry_group, distribution=...)"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "data = fnp.random.randn(4, 4)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "S = flops.symmetrize(data, flops.SymmetryGroup.symmetric(axes=(0, 1)))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "S.is_symmetric((0, 1))"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "flopscope.symmetrize",
+  "canonical_path": "/docs/api/flopscope/symmetrize/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.symmetrize",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": ">>> import flopscope as flops\n>>> import flopscope.numpy as fnp\n>>> data = fnp.random.randn(4, 4)\n>>> S = flops.symmetrize(data, flops.SymmetryGroup.symmetric(axes=(0, 1)))\n>>> S.is_symmetric((0, 1))\nTrue",
+    "output": "",
+    "source": "derived"
+  },
+  "flopscope_ref": "flopscope.symmetrize",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L60",
+  "href": "/docs/api/flopscope/symmetrize/",
+  "import_path": "flopscope.symmetrize",
+  "is_operation_cost_leaf": false,
+  "kind": "function",
+  "legacy_href": "/docs/api/flopscope/symmetrize/",
+  "module": "flopscope._symmetric",
+  "name": "symmetrize",
+  "next": null,
+  "notes": "",
+  "notes_sections": [
+    "``symmetrize`` performs exact Reynolds averaging internally and then delegates to :func:`as_symmetric` so the result participates in downstream symmetry tracking and validation in the usual way.",
+    "Estimated FLOP cost is approximately:",
+    "``|G| * n_elem + n_elem`` for projection, plus validation from ``as_symmetric``:",
+    "- ``|G|`` transposed add passes over ``n_elem`` elements - one final scaling pass - symmetry checks inside validation",
+    "where ``|G|`` is the group order and ``n_elem = data.size``.",
+    "The canonical pattern for generating random data with symmetry is:",
+    "``fnp.random.symmetric(shape, symmetry_group, distribution=...)``."
+  ],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [
+    {
+      "body": [
+        "Input array to project."
+      ],
+      "name": "data",
+      "type": "array_like"
+    },
+    {
+      "body": [
+        "Symmetry group to average over. If ``symmetry.axes`` is ``None``, axes are",
+        "interpreted as ``tuple(range(symmetry.degree))``."
+      ],
+      "name": "symmetry",
+      "type": "SymmetryGroup"
+    }
+  ],
+  "previous": null,
+  "returns": [
+    {
+      "body": [
+        "The projected tensor, validated and wrapped as a :class:`SymmetricTensor`."
+      ],
+      "name": "",
+      "type": "SymmetricTensor"
+    }
+  ],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.symmetrize(data: 'np.ndarray', *, symmetry) -> 'SymmetricTensor'",
+  "slug": "flopscope-symmetrize",
+  "summary": "Project an array onto the invariant subspace of a permutation group.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

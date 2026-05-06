@@ -733,7 +733,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             (app/(home)/page.tsx). Uppercase kicker with leading rule +
             Newsreader display-serif headline ending in a coral period +
             Source Serif 4 italic lede. The same typographic rhythm the
-            reader sees at aicrowd.github.io/whest/ carries directly
+            reader sees at aicrowd.github.io/flopscope/ carries directly
             into the explorer so the two pages feel like one product. */}
         <header className="mx-auto flex w-full max-w-[1460px] flex-col px-6 pb-10 md:px-8 lg:px-10">
           <div

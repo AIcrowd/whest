@@ -348,8 +348,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/array_split",
-              "label": "we.array_split",
+              "href": "/docs/api/numpy/array-split/",
+              "label": "flops.array_split",
               "original_target": "array_split",
               "role": "",
               "target": "array_split",
@@ -364,8 +364,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/hsplit",
-              "label": "we.hsplit",
+              "href": "/docs/api/numpy/hsplit/",
+              "label": "flops.hsplit",
               "original_target": "hsplit",
               "role": "",
               "target": "hsplit",
@@ -380,8 +380,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/vsplit",
-              "label": "we.vsplit",
+              "href": "/docs/api/numpy/vsplit/",
+              "label": "flops.vsplit",
               "original_target": "vsplit",
               "role": "",
               "target": "vsplit",
@@ -396,8 +396,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/dsplit",
-              "label": "we.dsplit",
+              "href": "/docs/api/numpy/dsplit/",
+              "label": "flops.dsplit",
               "original_target": "dsplit",
               "role": "",
               "target": "dsplit",
@@ -412,8 +412,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/concatenate",
-              "label": "we.concatenate",
+              "href": "/docs/api/numpy/concatenate/",
+              "label": "flops.concatenate",
               "original_target": "concatenate",
               "role": "",
               "target": "concatenate",
@@ -428,8 +428,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/stack",
-              "label": "we.stack",
+              "href": "/docs/api/numpy/stack/",
+              "label": "flops.stack",
               "original_target": "stack",
               "role": "",
               "target": "stack",
@@ -444,8 +444,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/hstack",
-              "label": "we.hstack",
+              "href": "/docs/api/numpy/hstack/",
+              "label": "flops.hstack",
               "original_target": "hstack",
               "role": "",
               "target": "hstack",
@@ -460,8 +460,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/vstack",
-              "label": "we.vstack",
+              "href": "/docs/api/numpy/vstack/",
+              "label": "flops.vstack",
               "original_target": "vstack",
               "role": "",
               "target": "vstack",
@@ -476,8 +476,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/dstack",
-              "label": "we.dstack",
+              "href": "/docs/api/numpy/dstack/",
+              "label": "flops.dstack",
               "original_target": "dstack",
               "role": "",
               "target": "dstack",
@@ -496,17 +496,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(9.0)"
+              "text": "x = flops.arange(9.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.split(x, 3)"
+              "text": "flops.split(x, 3)"
             },
             {
               "kind": "output",
@@ -520,12 +520,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(8.0)"
+              "text": "x = flops.arange(8.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.split(x, [3, 5, 6, 10])"
+              "text": "flops.split(x, [3, 5, 6, 10])"
             },
             {
               "kind": "output",
@@ -555,6 +555,7 @@
     }
   ],
   "canonical_name": "split",
+  "canonical_path": "numpy/split",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -565,16 +566,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(9.0)\n\nwe.split(x, 3)\n\nx = we.arange(8.0)\n\nwe.split(x, [3, 5, 6, 10])",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(9.0)\n\nflops.split(x, 3)\n\nx = flops.arange(8.0)\n\nflops.split(x, [3, 5, 6, 10])",
     "output": "[array([0.,  1.,  2.]), array([3.,  4.,  5.]), array([6.,  7.,  8.])]\n\n[array([0.,  1.,  2.]),\n array([3.,  4.]),\n array([5.]),\n array([6.,  7.]),\n array([], dtype=float64)]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/split/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.split",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L469",
+  "href": "/docs/api/numpy/split/",
+  "legacy_href": "/docs/api/ops/split/",
   "module": "numpy",
   "name": "split",
   "next": {
-    "href": "/docs/api/ops/sqrt/",
-    "label": "we.sqrt"
+    "href": "/docs/api/numpy/sqrt/",
+    "label": "fnp.sqrt"
   },
   "notes": "Split array into sub-arrays. Cost: numel(output).",
   "notes_sections": [],
@@ -616,10 +621,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/spacing/",
-    "label": "we.spacing"
+    "href": "/docs/api/numpy/spacing/",
+    "label": "fnp.spacing"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.split",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.split.html",
   "returns": [
     {
@@ -640,8 +646,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/array_split",
-      "label": "we.array_split",
+      "href": "/docs/api/numpy/array-split/",
+      "label": "flops.array_split",
       "original_target": "array_split",
       "role": "",
       "target": "array_split",
@@ -656,8 +662,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/hsplit",
-      "label": "we.hsplit",
+      "href": "/docs/api/numpy/hsplit/",
+      "label": "flops.hsplit",
       "original_target": "hsplit",
       "role": "",
       "target": "hsplit",
@@ -672,8 +678,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/vsplit",
-      "label": "we.vsplit",
+      "href": "/docs/api/numpy/vsplit/",
+      "label": "flops.vsplit",
       "original_target": "vsplit",
       "role": "",
       "target": "vsplit",
@@ -688,8 +694,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/dsplit",
-      "label": "we.dsplit",
+      "href": "/docs/api/numpy/dsplit/",
+      "label": "flops.dsplit",
       "original_target": "dsplit",
       "role": "",
       "target": "dsplit",
@@ -704,8 +710,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/concatenate",
-      "label": "we.concatenate",
+      "href": "/docs/api/numpy/concatenate/",
+      "label": "flops.concatenate",
       "original_target": "concatenate",
       "role": "",
       "target": "concatenate",
@@ -720,8 +726,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/stack",
-      "label": "we.stack",
+      "href": "/docs/api/numpy/stack/",
+      "label": "flops.stack",
       "original_target": "stack",
       "role": "",
       "target": "stack",
@@ -736,8 +742,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/hstack",
-      "label": "we.hstack",
+      "href": "/docs/api/numpy/hstack/",
+      "label": "flops.hstack",
       "original_target": "hstack",
       "role": "",
       "target": "hstack",
@@ -752,8 +758,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/vstack",
-      "label": "we.vstack",
+      "href": "/docs/api/numpy/vstack/",
+      "label": "flops.vstack",
       "original_target": "vstack",
       "role": "",
       "target": "vstack",
@@ -768,20 +774,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/dstack",
-      "label": "we.dstack",
+      "href": "/docs/api/numpy/dstack/",
+      "label": "flops.dstack",
       "original_target": "dstack",
       "role": "",
       "target": "dstack",
       "unresolved": false
     }
   ],
-  "signature": "we.split(ary, indices_or_sections, axis=0)",
+  "signature": "fnp.split(ary: 'ArrayLike', indices_or_sections: 'int | Sequence[int]', axis: 'int' = 0) -> 'list[FlopscopeArray]'",
   "slug": "split",
   "summary": "Split an array into multiple sub-arrays as views into `ary`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L803",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.split",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L346"
+  "weight": 0.0
 }

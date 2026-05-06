@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/result_type/",
+  "detail_href": "/docs/api/numpy/result-type/",
   "detail_json_href": "/api-data/ops/result_type.json",
   "docs": {
     "sections": [
@@ -125,8 +125,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/promote_types",
-                "label": "we.promote_types",
+                "href": "/docs/api/numpy/promote-types/",
+                "label": "flops.promote_types",
                 "original_target": "promote_types",
                 "role": "",
                 "target": "promote_types",
@@ -136,8 +136,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/min_scalar_type",
-                "label": "we.min_scalar_type",
+                "href": "/docs/api/numpy/min-scalar-type/",
+                "label": "flops.min_scalar_type",
                 "original_target": "min_scalar_type",
                 "role": "",
                 "target": "min_scalar_type",
@@ -147,8 +147,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/can_cast",
-                "label": "we.can_cast",
+                "href": "/docs/api/numpy/can-cast/",
+                "label": "flops.can_cast",
                 "original_target": "can_cast",
                 "role": "",
                 "target": "can_cast",
@@ -190,7 +190,7 @@
                 "display_text": "promote_types",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/promote_types",
+                "href": "/docs/api/numpy/promote-types/",
                 "kind": "role_reference",
                 "original_target": "promote_types",
                 "role": "func",
@@ -213,7 +213,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/min_scalar_type",
+                "href": "/docs/api/numpy/min-scalar-type/",
                 "kind": "link",
                 "target": "min_scalar_type",
                 "text": "min_scalar_type"
@@ -226,7 +226,7 @@
                 "display_text": "promote_types",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/promote_types",
+                "href": "/docs/api/numpy/promote-types/",
                 "kind": "role_reference",
                 "original_target": "promote_types",
                 "role": "func",
@@ -251,7 +251,7 @@
                 "display_text": "min_scalar_type",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/min_scalar_type",
+                "href": "/docs/api/numpy/min-scalar-type/",
                 "kind": "role_reference",
                 "original_target": "min_scalar_type",
                 "role": "func",
@@ -265,7 +265,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/result_type",
+                "href": "/docs/api/numpy/result-type/",
                 "kind": "link",
                 "target": "result_type",
                 "text": "result_type"
@@ -287,12 +287,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.result_type(3, we.arange(7, dtype='i1'))"
+                "text": "flops.result_type(3, flops.arange(7, dtype='i1'))"
               },
               {
                 "kind": "output",
@@ -306,7 +306,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.result_type('i4', 'c8')"
+                "text": "flops.result_type('i4', 'c8')"
               },
               {
                 "kind": "output",
@@ -320,7 +320,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.result_type(3.0, -2)"
+                "text": "flops.result_type(3.0, -2)"
               },
               {
                 "kind": "output",
@@ -338,20 +338,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.result_type",
     "module": "numpy",
     "name": "result_type",
     "notes": "Return type that results from applying NumPy type promotion.",
     "numpy_ref": "np.result_type",
-    "signature": "we.result_type(*args, **kwargs)",
+    "signature": "fnp.result_type(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the type that results from applying the NumPy type promotion rules to the arguments.",
-    "weight": 0.0,
-    "whest_ref": "we.result_type"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "result_type",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.result_type.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1420"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1772",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.result_type.html"
   }
 }

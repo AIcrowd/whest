@@ -9,46 +9,13 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Probability density function at "
-            },
-            {
-              "kind": "emphasis",
-              "text": "x"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Evaluate the probability density function."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Summary"
-    },
-    {
-      "blocks": [
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Equivalent to "
-            },
-            {
-              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.pdf(x, loc, scale).html",
-              "href": "",
-              "kind": "link",
-              "target": "stats.uniform.pdf(x, loc, scale)",
-              "text": "scipy.stats.uniform.pdf(x, loc, scale)"
-            },
-            {
-              "kind": "text",
-              "text": "."
-            }
-          ],
-          "type": "paragraph"
-        }
-      ],
-      "title": "Extended Summary"
     },
     {
       "blocks": [
@@ -60,7 +27,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Quantiles."
+                      "text": "Points at which to evaluate the density."
                     }
                   ],
                   "type": "paragraph"
@@ -70,7 +37,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Quantiles."
+                  "text": "Points at which to evaluate the density."
                 }
               ],
               "name": "x",
@@ -82,7 +49,15 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Lower bound (default 0)."
+                      "text": "Lower bound of the support. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "0"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
@@ -92,7 +67,15 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Lower bound (default 0)."
+                  "text": "Lower bound of the support. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "0"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "loc",
@@ -104,7 +87,15 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Width of the interval (default 1)."
+                      "text": "Width of the support interval. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "1"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
@@ -114,7 +105,15 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Width of the interval (default 1)."
+                  "text": "Width of the support interval. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "1"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "scale",
@@ -137,10 +136,10 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "PDF evaluated at "
+                      "text": "Probability density evaluated elementwise at "
                     },
                     {
-                      "kind": "emphasis",
+                      "kind": "code",
                       "text": "x"
                     },
                     {
@@ -151,14 +150,14 @@
                   "type": "paragraph"
                 }
               ],
-              "data_type": "WhestArray",
+              "data_type": "FlopscopeArray",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "PDF evaluated at "
+                  "text": "Probability density evaluated elementwise at "
                 },
                 {
-                  "kind": "emphasis",
+                  "kind": "code",
                   "text": "x"
                 },
                 {
@@ -175,9 +174,77 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.pdf(x, loc, scale).html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.uniform.pdf(x, loc, scale)",
+              "text": "scipy.stats.uniform.pdf(x, loc, scale)"
+            },
+            {
+              "kind": "text",
+              "text": ".\nFLOP cost: "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(x)"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "x = flops.array([-0.5, 0.5, 1.5])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.round(flops.stats.uniform.pdf(x), 3)"
+            },
+            {
+              "kind": "output",
+              "text": "array([0., 1., 0.])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "stats.uniform.pdf",
+  "canonical_path": "stats/uniform/pdf",
   "category": "counted_custom",
   "cost_formula": "3n",
   "cost_formula_latex": "$3n$",
@@ -187,62 +254,72 @@
     "unresolved_references": [],
     "unsupported_directives": []
   },
-  "example": null,
-  "href": "/docs/api/ops/stats-uniform-pdf/",
-  "module": "whest.stats",
+  "example": {
+    "code": "import flopscope.numpy as fnp\n\nimport flopscope as flops\n\nx = flops.array([-0.5, 0.5, 1.5])\n\nflops.round(flops.stats.uniform.pdf(x), 3)",
+    "output": "array([0., 1., 0.])",
+    "source": "derived"
+  },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "flops.stats.uniform.pdf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_uniform.py#L33",
+  "href": "/docs/api/stats/uniform/pdf/",
+  "legacy_href": "/docs/api/ops/stats-uniform-pdf/",
+  "module": "flopscope.stats",
   "name": "stats.uniform.pdf",
   "next": {
-    "href": "/docs/api/ops/stats-uniform-ppf/",
-    "label": "we.stats.uniform.ppf"
+    "href": "/docs/api/stats/uniform/ppf/",
+    "label": "flops.stats.uniform.ppf"
   },
   "notes": "Uniform PDF; cost = numel(input).",
-  "notes_sections": [],
-  "numpy_ref": "np.stats.uniform.pdf",
+  "notes_sections": [
+    "Equivalent to ``scipy.stats.uniform.pdf(x, loc, scale)``. FLOP cost: ``1 * numel(x)``."
+  ],
+  "numpy_ref": "scipy.stats.uniform.pdf",
   "parameters": [
     {
       "body": [
-        "Quantiles."
+        "Points at which to evaluate the density."
       ],
       "name": "x",
       "type": "array_like"
     },
     {
       "body": [
-        "Lower bound (default 0)."
+        "Lower bound of the support. Defaults to ``0``."
       ],
       "name": "loc",
       "type": "float, optional"
     },
     {
       "body": [
-        "Width of the interval (default 1)."
+        "Width of the support interval. Defaults to ``1``."
       ],
       "name": "scale",
       "type": "float, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-uniform-cdf/",
-    "label": "we.stats.uniform.cdf"
+    "href": "/docs/api/stats/uniform/cdf/",
+    "label": "flops.stats.uniform.cdf"
   },
-  "provenance_label": "Adapted from NumPy docs",
+  "provenance_label": "Adapted from SciPy docs",
+  "provenance_ref": "scipy.stats.uniform",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html",
   "returns": [
     {
       "body": [
-        "PDF evaluated at *x*."
+        "Probability density evaluated elementwise at ``x``."
       ],
       "name": "",
-      "type": "WhestArray"
+      "type": "FlopscopeArray"
     }
   ],
   "see_also": [],
-  "signature": "we.stats.uniform.pdf(x, loc=0, scale=1)",
+  "signature": "flops.stats.uniform.pdf(x, loc=0, scale=1)",
   "slug": "stats-uniform-pdf",
-  "summary": "Probability density function at *x*.",
+  "summary": "Evaluate the probability density function.",
+  "upstream_ref_label": "SciPy Ref",
+  "upstream_source_label": "scipy source",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.uniform.pdf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_uniform.py#L32"
+  "weight": 1.0
 }

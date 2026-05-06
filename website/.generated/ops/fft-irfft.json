@@ -267,7 +267,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -298,7 +298,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -571,7 +571,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "we.fft",
+              "label": "flops.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -790,12 +790,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.ifft([1, -1j, -1, 1j])"
+              "text": "flops.fft.ifft([1, -1j, -1, 1j])"
             },
             {
               "kind": "output",
@@ -804,7 +804,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.irfft([1, -1j, -1])"
+              "text": "flops.fft.irfft([1, -1j, -1])"
             },
             {
               "kind": "output",
@@ -843,6 +843,7 @@
     }
   ],
   "canonical_name": "fft.irfft",
+  "canonical_path": "numpy/fft/irfft",
   "category": "counted_custom",
   "cost_formula": "5(n/2) * ceil(log2(n))",
   "cost_formula_latex": "$5(n/2) \\cdot \\lceil\\log_2 n\\rceil$",
@@ -853,16 +854,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.fft.ifft([1, -1j, -1, 1j])\n\nwe.fft.irfft([1, -1j, -1])",
+    "code": "import flopscope.numpy as fnp\n\nflops.fft.ifft([1, -1j, -1, 1j])\n\nflops.fft.irfft([1, -1j, -1])",
     "output": "array([0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j]) # may vary\n\narray([0.,  1.,  0.,  0.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-irfft/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.irfft",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L256",
+  "href": "/docs/api/numpy/fft/irfft/",
+  "legacy_href": "/docs/api/ops/fft-irfft/",
   "module": "numpy.fft",
   "name": "fft.irfft",
   "next": {
-    "href": "/docs/api/ops/fft-irfft2/",
-    "label": "we.fft.irfft2"
+    "href": "/docs/api/numpy/fft/irfft2/",
+    "label": "fnp.fft.irfft2"
   },
   "notes": "Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -901,7 +906,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -924,10 +929,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-ihfft/",
-    "label": "we.fft.ihfft"
+    "href": "/docs/api/numpy/fft/ihfft/",
+    "label": "fnp.fft.ihfft"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.irfft",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfft.html",
   "returns": [
     {
@@ -953,7 +959,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "we.fft",
+      "label": "flops.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -1040,12 +1046,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.irfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.irfft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-irfft",
   "summary": "Computes the inverse of `rfft`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L415",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.irfft",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L217"
+  "weight": 1.0
 }

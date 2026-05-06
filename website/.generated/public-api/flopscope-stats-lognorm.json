@@ -1,0 +1,135 @@
+{
+  "aliases": [
+    "flops.stats.lognorm"
+  ],
+  "area": "stats",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Log-normal continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This object mirrors "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.lognorm",
+              "text": "scipy.stats.lognorm"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "s"
+            },
+            {
+              "kind": "text",
+              "text": " is the shape parameter: the standard deviation of the underlying\nnormal distribution. It is the first positional argument, ahead of\n"
+            },
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": ", matching SciPy's "
+            },
+            {
+              "kind": "code",
+              "text": "lognorm"
+            },
+            {
+              "kind": "text",
+              "text": " signature. Each\npublic method deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active budget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flopscope.stats.lognorm",
+  "canonical_path": "/docs/api/stats/lognorm/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.stats.lognorm",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.stats.lognorm",
+  "flopscope_source_url": "",
+  "href": "/docs/api/stats/lognorm/",
+  "import_path": "flopscope.stats.lognorm",
+  "is_operation_cost_leaf": false,
+  "kind": "object",
+  "legacy_href": "/docs/api/stats/lognorm/",
+  "module": "flopscope.stats._lognorm",
+  "name": "lognorm",
+  "next": null,
+  "notes": "",
+  "notes_sections": [
+    "``s`` is the shape parameter: the standard deviation of the underlying normal distribution. It is the first positional argument, ahead of ``loc`` and ``scale``, matching SciPy's ``lognorm`` signature. Each public method deducts ``1 * numel(input)`` FLOPs from the active budget."
+  ],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.stats.lognorm",
+  "slug": "flopscope-stats-lognorm",
+  "summary": "Log-normal continuous random variable.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

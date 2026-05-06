@@ -1,5 +1,6 @@
 """Tests for the numpy audit script."""
 
+# pyright: reportMissingImports=false
 import sys
 
 

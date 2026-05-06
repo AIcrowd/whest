@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/append/",
+  "detail_href": "/docs/api/numpy/append/",
   "detail_json_href": "/api-data/ops/append.json",
   "docs": {
     "sections": [
@@ -276,7 +276,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/append",
+                        "href": "/docs/api/numpy/append/",
                         "kind": "link",
                         "target": "append",
                         "text": "append"
@@ -337,7 +337,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/append",
+                    "href": "/docs/api/numpy/append/",
                     "kind": "link",
                     "target": "append",
                     "text": "append"
@@ -386,8 +386,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/insert",
-                "label": "we.insert",
+                "href": "/docs/api/numpy/insert/",
+                "label": "flops.insert",
                 "original_target": "insert",
                 "role": "",
                 "target": "insert",
@@ -402,8 +402,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/delete",
-                "label": "we.delete",
+                "href": "/docs/api/numpy/delete/",
+                "label": "flops.delete",
                 "original_target": "delete",
                 "role": "",
                 "target": "delete",
@@ -422,12 +422,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])"
+                "text": "flops.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])"
               },
               {
                 "kind": "output",
@@ -466,7 +466,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)"
+                "text": "flops.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)"
               },
               {
                 "kind": "output",
@@ -488,7 +488,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)"
+                "text": "flops.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)"
               },
               {
                 "kind": "output",
@@ -519,12 +519,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2], dtype=int)"
+                "text": "a = flops.array([1, 2], dtype=int)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.append(a, [])"
+                "text": "c = flops.append(a, [])"
               },
               {
                 "kind": "input",
@@ -585,20 +585,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.append",
     "module": "numpy",
     "name": "append",
     "notes": "Append values to end of array. Cost: numel(values).",
     "numpy_ref": "np.append",
-    "signature": "we.append(arr, values, axis=None)",
+    "signature": "fnp.append(arr, values, axis=None)",
     "status": "supported",
     "summary": "Append values to the end of an array.",
-    "weight": 1.0,
-    "whest_ref": "we.append"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "append",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5644",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L652"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L840",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5644"
   }
 }

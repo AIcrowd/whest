@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/asarray_chkfinite/",
+  "detail_href": "/docs/api/numpy/asarray-chkfinite/",
   "detail_json_href": "/api-data/ops/asarray_chkfinite.json",
   "docs": {
     "sections": [
@@ -237,8 +237,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/asarray",
-                "label": "we.asarray",
+                "href": "/docs/api/numpy/asarray/",
+                "label": "flops.asarray",
                 "original_target": "asarray",
                 "role": "",
                 "target": "asarray",
@@ -301,8 +301,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromiter",
-                "label": "we.fromiter",
+                "href": "/docs/api/numpy/fromiter/",
+                "label": "flops.fromiter",
                 "original_target": "fromiter",
                 "role": "",
                 "target": "fromiter",
@@ -317,8 +317,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromfunction",
-                "label": "we.fromfunction",
+                "href": "/docs/api/numpy/fromfunction/",
+                "label": "flops.fromfunction",
                 "original_target": "fromfunction",
                 "role": "",
                 "target": "fromfunction",
@@ -337,7 +337,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -350,7 +350,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/asarray_chkfinite",
+                "href": "/docs/api/numpy/asarray-chkfinite/",
                 "kind": "link",
                 "target": "asarray_chkfinite",
                 "text": "asarray_chkfinite"
@@ -361,7 +361,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/asarray",
+                "href": "/docs/api/numpy/asarray/",
                 "kind": "link",
                 "target": "asarray",
                 "text": "asarray"
@@ -383,7 +383,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray_chkfinite(a, dtype=float)"
+                "text": "flops.asarray_chkfinite(a, dtype=float)"
               },
               {
                 "kind": "output",
@@ -406,7 +406,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = [1, 2, we.inf]"
+                "text": "a = [1, 2, flops.inf]"
               },
               {
                 "kind": "input",
@@ -416,7 +416,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "we.asarray_chkfinite(a)"
+                "text": "flops.asarray_chkfinite(a)"
               },
               {
                 "kind": "input",
@@ -449,20 +449,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.asarray_chkfinite",
     "module": "numpy",
     "name": "asarray_chkfinite",
     "notes": "Convert to array, raising if NaN or inf. Cost: numel(input).",
     "numpy_ref": "np.asarray_chkfinite",
-    "signature": "we.asarray_chkfinite(a, dtype=None, order=None)",
+    "signature": "fnp.asarray_chkfinite(a, dtype=None, order=None)",
     "status": "supported",
     "summary": "Convert the input to an array, checking for NaNs or Infs.",
-    "weight": 1.0,
-    "whest_ref": "we.asarray_chkfinite"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "asarray_chkfinite",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L579",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L695"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L890",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L579"
   }
 }

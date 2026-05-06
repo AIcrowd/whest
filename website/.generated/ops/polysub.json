@@ -33,7 +33,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "polynomial",
-                  "text": "we.polynomial"
+                  "text": "flops.polynomial"
                 },
                 {
                   "kind": "text",
@@ -61,7 +61,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `we.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `flops.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
           "supported": true,
           "type": "directive_block"
         },
@@ -215,8 +215,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polyval",
-              "label": "we.polyval",
+              "href": "/docs/api/numpy/polyval/",
+              "label": "flops.polyval",
               "original_target": "polyval",
               "role": "",
               "target": "polyval",
@@ -226,8 +226,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polydiv",
-              "label": "we.polydiv",
+              "href": "/docs/api/numpy/polydiv/",
+              "label": "flops.polydiv",
               "original_target": "polydiv",
               "role": "",
               "target": "polydiv",
@@ -237,8 +237,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polymul",
-              "label": "we.polymul",
+              "href": "/docs/api/numpy/polymul/",
+              "label": "flops.polymul",
               "original_target": "polymul",
               "role": "",
               "target": "polymul",
@@ -248,8 +248,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polyadd",
-              "label": "we.polyadd",
+              "href": "/docs/api/numpy/polyadd/",
+              "label": "flops.polyadd",
               "original_target": "polyadd",
               "role": "",
               "target": "polyadd",
@@ -274,7 +274,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -284,7 +284,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.polysub([2, 10, -2], [3, 10, -4])"
+              "text": "flops.polysub([2, 10, -2], [3, 10, -4])"
             },
             {
               "kind": "output",
@@ -298,6 +298,7 @@
     }
   ],
   "canonical_name": "polysub",
+  "canonical_path": "numpy/polysub",
   "category": "counted_custom",
   "cost_formula": "max(n1, n2)",
   "cost_formula_latex": "$\\max(n_1, n_2)$",
@@ -315,16 +316,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.polysub([2, 10, -2], [3, 10, -4])",
+    "code": "import flopscope.numpy as fnp\n\nflops.polysub([2, 10, -2], [3, 10, -4])",
     "output": "array([-1,  0,  2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polysub/",
-  "module": "whest._polynomial",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.polysub",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L118",
+  "href": "/docs/api/numpy/polysub/",
+  "legacy_href": "/docs/api/ops/polysub/",
+  "module": "flopscope._polynomial",
   "name": "polysub",
   "next": {
-    "href": "/docs/api/ops/polyval/",
-    "label": "we.polyval"
+    "href": "/docs/api/numpy/polyval/",
+    "label": "fnp.polyval"
   },
   "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
   "notes_sections": [],
@@ -339,10 +344,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polymul/",
-    "label": "we.polymul"
+    "href": "/docs/api/numpy/polymul/",
+    "label": "fnp.polymul"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.polysub",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.polysub.html",
   "returns": [
     {
@@ -358,8 +364,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polyval",
-      "label": "we.polyval",
+      "href": "/docs/api/numpy/polyval/",
+      "label": "flops.polyval",
       "original_target": "polyval",
       "role": "",
       "target": "polyval",
@@ -369,8 +375,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polydiv",
-      "label": "we.polydiv",
+      "href": "/docs/api/numpy/polydiv/",
+      "label": "flops.polydiv",
       "original_target": "polydiv",
       "role": "",
       "target": "polydiv",
@@ -380,8 +386,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polymul",
-      "label": "we.polymul",
+      "href": "/docs/api/numpy/polymul/",
+      "label": "flops.polymul",
       "original_target": "polymul",
       "role": "",
       "target": "polymul",
@@ -391,20 +397,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polyadd",
-      "label": "we.polyadd",
+      "href": "/docs/api/numpy/polyadd/",
+      "label": "flops.polyadd",
       "original_target": "polyadd",
       "role": "",
       "target": "polyadd",
       "unresolved": false
     }
   ],
-  "signature": "we.polysub(a1, a2)",
+  "signature": "fnp.polysub(a1: 'ArrayLike', a2: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "polysub",
   "summary": "Difference (subtraction) of two polynomials.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L855",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.polysub",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L115"
+  "weight": 1.0
 }

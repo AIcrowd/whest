@@ -9,8 +9,8 @@ import math
 
 import numpy
 
-from whest._budget import BudgetContext
-from whest.fft import (
+from flopscope._budget import BudgetContext
+from flopscope.numpy.fft import (
     fft,
     fft2,
     fftn,
@@ -26,7 +26,7 @@ from whest.fft import (
     rfft2,
     rfftn,
 )
-from whest.fft._transforms import (
+from flopscope.numpy.fft._transforms import (
     fft_cost,
     fftn_cost,
     hfft_cost,

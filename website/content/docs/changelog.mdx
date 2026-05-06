@@ -5,7 +5,82 @@ title: Changelog
 
 ## Unreleased
 
+### Fixed
+
+- **`fnp.random.default_rng()` and `fnp.random.RandomState()` now properly count
+  FLOPs.** Sampler methods on the returned objects (e.g. `rng.standard_normal()`,
+  `rs.randn()`) deduct FLOPs from the active budget and return `FlopscopeArray`
+  instead of raw `numpy.ndarray`. Previously these silently bypassed FLOP
+  accounting — a real risk for the ARC Whitebox Estimation Challenge, since
+  submissions could burn arbitrary compute without deducting a single FLOP.
+  Closes [flopscope#18](https://github.com/AIcrowd/flopscope/issues/18).
+
+### Changed
+
+- **`fnp.random.__getattr__` no longer silently forwards unknown attributes to
+  `numpy.random`.** Bit-generator classes (`BitGenerator`, `MT19937`, `PCG64`,
+  `PCG64DXSM`, `Philox`, `SFC64`) pass through unchanged. Anything else now
+  raises `AttributeError` with a pointer to `default_rng()`. Use
+  `numpy.random` directly if you need an unwrapped/unsupported function.
+  Module-level samplers (`fnp.random.randn`, `normal`, `uniform`, …) are
+  unchanged — same semantics as numpy, no warnings.
+
+### Notes
+
+- Downstream repos (`whestbench`, `whest-starterkit`) can now drop the
+  `fnp.asarray(rng.uniform(...).astype(...))` workaround around `default_rng`
+  / `RandomState` sampler outputs — the wrap is no longer needed.
+
 ### Added
+
+- **Method-level registry entries for `random.Generator.<method>` and
+  `random.RandomState.<method>`** (~94 entries with categories
+  `counted_random_method` / `free_random_method` and a `cost_formula` field).
+  `scripts/numpy_audit.py` now drift-checks the new slice on every numpy
+  version bump, so future numpy releases that add a new sampler method will
+  fail the audit until the maintainer adds a registry entry.
+
+- **NumPy `__array_ufunc__` (NEP 13) and `__array_function__` (NEP 18) protocols on
+  `FlopscopeArray`.** Calls like `np.add(flopscope, x)`, `np.add.reduce(a)`,
+  `np.add.outer(a, b)`, `np.divmod(a, b)`, `np.modf(a)`, `np.frexp(a)`,
+  `np.add.at(a, idx, val)`, `np.add.reduceat(a, idx)`, plus ~108
+  function-form callables (`np.sort`, `np.transpose`, `np.linalg.solve`, …)
+  now route through flopscope's FLOP-counted wrappers automatically. Closes #58
+  (ndarray methods bypassing tracking), #38 (in-place dunders on
+  `SymmetricTensor` rebinding instead of mutating), and #62 (no-symmetry
+  `SymmetricTensor` type ambiguity). See the new
+  [Edge cases when SymmetricTensors meet NumPy protocols](/docs/guides/symmetry/#edge-cases-when-symmetrictensors-meet-numpy-protocols)
+  section for the corner-case rules.
+
+- **25 ndarray method overrides on `FlopscopeArray`.** `a.sum()`, `a.dot(b)`,
+  `a.argsort()`, `a.compress()`, `a.trace()`, `a.round()`, `a.clip()`, etc.
+  now produce the same FLOP count as `fnp.sum(a)`, `fnp.dot(a, b)`, etc.
+
+- **In-place dunder rewrites with symmetry-corruption guards.** `A_sym += B`
+  mutates `A_sym` in place when the result preserves `A_sym`'s declared
+  symmetry, and raises `ValueError` when it would weaken or destroy it
+  (instead of silently rebinding to a new array, the pre-#67 behaviour).
+  Covers `__iadd__`, `__isub__`, `__imul__`, `__itruediv__`, `__ifloordiv__`,
+  `__imod__`, `__ipow__`, `__iand__`, `__ior__`, `__ixor__`, `__ilshift__`,
+  `__irshift__`, `__imatmul__`. In-place `sort` / `partition` similarly refuse
+  on `SymmetricTensor`.
+
+- **Multi-output ufuncs `np.divmod` / `np.frexp` / `np.modf`** now route through
+  flopscope with full `out=(o1, o2)` support, including partial allocation
+  (`out=(o1, None)`). Both outputs preserve any symmetry the input had.
+
+- **Symmetry-aware cost adjustment for `ufunc.outer` and `tensordot`** —
+  placeholder model charges `dense_cost × unique_output_elements /
+  dense_output_elements` to reflect the savings a symmetry-aware
+  implementation could realise. Above `SymmetryGroup` degree 12, the
+  adjustment is skipped (Burnside enumeration on `S_n` for `n > 12` is
+  infeasible) and a new `CostFallbackWarning` fires once per
+  `(op_name, degree)` pair per process. Suppress via
+  `flops.configure(symmetry_warnings=False)` (shares the flag with
+  `SymmetryLossWarning`).
+
+- **`CostFallbackWarning`** added to both the core library and the client
+  package. Subclass of `FlopscopeWarning`.
 
 - **Wall-clock time limits.** `BudgetContext` now accepts `wall_time_limit_s` to
   set a wall-clock deadline. When exceeded, `TimeExhaustedError` is raised at the
@@ -13,20 +88,22 @@ title: Changelog
   The deadline is checked both before and after each numpy call (cooperative
   enforcement). The entry banner shows the time limit when set.
 
-- **Per-operation duration tracking.** Every operation now records its wall-clock
-  duration in `OpRecord.duration`. The budget summary (both plain-text and Rich)
-  shows wall time, tracked/untracked breakdown, and per-operation timing. Use
-  `budget.summary()` or `we.budget_summary()` to see the timing data.
+- **Timing attribution.** Every operation now records its backend duration in
+  `flopscope_backend_duration_s` and its attributed flopscope overhead in
+  `flopscope_overhead_duration_s`. The budget summary (both
+  plain-text and Rich) shows `wall_time_s`, `flopscope_backend_time_s`,
+  `flopscope_overhead_time_s`, and `residual_wall_time_s`. Use
+  `budget.summary()` or `flops.budget_summary()` to see the timing data.
 
 - **`TimeExhaustedError`** added to both the core library and the client package.
 
 - **Einsum path caching.** Contraction paths are now cached in a module-level
-  LRU cache (default 4096 entries). Repeated `we.einsum()` calls with the same
+  LRU cache (default 4096 entries). Repeated `fnp.einsum()` calls with the same
   subscripts, shapes, optimizer, and symmetry structure reuse the cached path
-  instead of recomputing it. New public API: `we.clear_einsum_cache()`,
-  `we.einsum_cache_info()`, and `we.configure(einsum_path_cache_size=N)`.
+  instead of recomputing it. New public API: `fnp.clear_einsum_cache()`,
+  `fnp.einsum_cache_info()`, and `flops.configure(einsum_path_cache_size=N)`.
 
-- **Multi-version NumPy support.** whest now supports NumPy 2.0, 2.1, and 2.2
+- **Multi-version NumPy support.** flopscope now supports NumPy 2.0, 2.1, and 2.2
   (`>=2.0.0,<2.3.0`). Default install resolves to NumPy 2.2. Functions not available
   in older NumPy versions raise `UnsupportedFunctionError` with an actionable message
   at call time (not import time).
@@ -41,9 +118,9 @@ title: Changelog
 
 ### Changed
 
-- **Renamed package from `mechestim` to `whest`** to reflect the new challenge
+- **Renamed package from `mechestim` to `flopscope`** to reflect the new challenge
   name "ARC Whitebox Estimation Challenge". The import convention changes from
-  `import mechestim as me` to `import whest as we`.
+  `import mechestim as me` to `import flopscope as we`.
 
 - **Symmetric BLAS classification restored.** Pairwise contractions with
   symmetric inputs now correctly report `SYMM`, `SYMV`, or `SYDT` BLAS
@@ -103,7 +180,7 @@ title: Changelog
 
 ### Added
 
-- **Enriched `PathInfo` display** — `we.einsum_path().format_table(verbose=False)`
+- **Enriched `PathInfo` display** — `fnp.einsum_path().format_table(verbose=False)`
   (called by `__str__`) now shows an `Optimizer:` header line resolving
   `optimize='auto'`/`'auto-hq'` to the inner choice that actually ran
   (e.g. `optimal`, `dynamic_programming`, `random_greedy_128`), a
@@ -129,13 +206,13 @@ Second release with unified einsum cost model, NumPy compatibility testing, and 
 
 - **Unified einsum cost model** — all einsum-like operations (einsum, dot, matmul, tensordot) now share a single cost model based on opt_einsum's contraction path optimizer
 - **Symmetry-aware path finding** — the opt_einsum path optimizer now factors symmetry savings into contraction ordering decisions, producing different (cheaper) paths for symmetric inputs
-- **NumPy compatibility test harness** — run NumPy's own test suite against whest via monkeypatching; 7,300+ tests passing across 7 NumPy test modules
+- **NumPy compatibility test harness** — run NumPy's own test suite against flopscope via monkeypatching; 7,300+ tests passing across 7 NumPy test modules
 - **Polynomial operations** — `polyval`, `polyfit`, `polymul`, `polydiv`, `polyadd`, `polysub`, `poly`, `roots`, `polyder`, `polyint` with analytical FLOP costs
 - **Window functions** — `bartlett`, `hamming`, `hanning`, `blackman`, `kaiser` with per-function cost formulas
 - **FFT module** — `fft`, `ifft`, `rfft`, `irfft`, `fft2`, `ifft2`, `fftn`, `ifftn`, `rfftn`, `irfftn` and free helpers (`fftfreq`, `rfftfreq`, `fftshift`, `ifftshift`)
-- **Client-server architecture** — `whest-client` and `whest-server` packages for sandboxed competition evaluation over ZMQ
+- **Client-server architecture** — `flopscope-client` and `flopscope-server` packages for sandboxed competition evaluation over ZMQ
 - **Global default budget** — a 1e15 FLOP budget auto-activates on first use, so explicit `BudgetContext` is no longer required for quick scripts
-- **`WHEST_DEFAULT_BUDGET` env var** — configure the global default budget amount
+- **`FLOPSCOPE_DEFAULT_BUDGET` env var** — configure the global default budget amount
 - **`budget_live()`** — Rich-based live-updating budget display context manager
 - **`einsum_path()`** — inspect contraction plans with per-step symmetry savings without spending budget
 - **90%+ test coverage gate** enforced in CI
@@ -143,11 +220,11 @@ Second release with unified einsum cost model, NumPy compatibility testing, and 
 ### Breaking changes
 
 - Einsum cost formula now uses `product_of_all_index_dims × op_factor` (op_factor=2 for inner products, 1 for outer products), matching opt_einsum convention. Previously used a different formula.
-- `we.dot` and `we.matmul` costs are now computed via the einsum cost model instead of separate formulas.
+- `fnp.dot` and `fnp.matmul` costs are now computed via the einsum cost model instead of separate formulas.
 
 ### Bug fixes
 
-- Accept scalars and array-likes in all whest functions
+- Accept scalars and array-likes in all flopscope functions
 - Fix symmetry-aware greedy algorithm to actually use symmetry in path selection
 - Fix `contract_path` cost reporting for output indices
 - Correctly handle `symmetric_dims` propagation through multi-step contraction paths
@@ -170,4 +247,4 @@ Initial release for warm-up round.
 - Free tensor creation and manipulation ops
 - Budget enforcement via BudgetContext
 - FLOP cost query API
-- NumPy-compatible API (`import whest as we`)
+- NumPy-compatible API (`import flopscope as we`)

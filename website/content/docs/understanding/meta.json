@@ -1,7 +1,7 @@
 {
-  "title": "Understanding whest",
+  "title": "Understanding Flopscope",
   "pages": [
-    "how-whest-works",
+    "how-flopscope-works",
     "flop-counting-model",
     "operation-categories",
     "symmetry-detection"

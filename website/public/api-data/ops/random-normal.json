@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-normal/",
+  "detail_href": "/docs/api/numpy/random/normal/",
   "detail_json_href": "/api-data/ops/random-normal.json",
   "docs": {
     "sections": [
@@ -63,8 +63,8 @@
                     "text": "New code should use the "
                   },
                   {
-                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.normal.html",
-                    "href": "",
+                    "external_url": "",
+                    "href": "/docs/api/numpy/random/generator/normal/",
                     "kind": "link",
                     "target": "random.Generator.normal",
                     "text": "normal"
@@ -106,7 +106,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.normal`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.normal`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -211,7 +211,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(loc, scale).size"
+                        "text": "flops.broadcast(loc, scale).size"
                       },
                       {
                         "kind": "text",
@@ -269,7 +269,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(loc, scale).size"
+                    "text": "flops.broadcast(loc, scale).size"
                   },
                   {
                     "kind": "text",
@@ -347,9 +347,9 @@
                     "text": "which should be used for new code."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.normal.html",
-                "href": "",
-                "label": "random.Generator.normal",
+                "external_url": "",
+                "href": "/docs/api/numpy/random/generator/normal/",
+                "label": "flops.random.Generator.normal",
                 "original_target": "random.Generator.normal",
                 "role": "",
                 "target": "random.Generator.normal",
@@ -483,7 +483,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.normal(mu, sigma, 1000)"
+                "text": "s = flops.random.normal(mu, sigma, 1000)"
               }
             ],
             "type": "doctest_block"
@@ -502,7 +502,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "abs(mu - we.mean(s))"
+                "text": "abs(mu - flops.mean(s))"
               },
               {
                 "kind": "output",
@@ -516,7 +516,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "abs(sigma - we.std(s, ddof=1))"
+                "text": "abs(sigma - flops.std(s, ddof=1))"
               },
               {
                 "kind": "output",
@@ -549,12 +549,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(bins, 1/(sigma * we.sqrt(2 * we.pi)) *"
+                "text": "plt.plot(bins, 1/(sigma * flops.sqrt(2 * flops.pi)) *"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "we.exp( - (bins - mu)**2 / (2 * sigma**2) ),"
+                "text": "flops.exp( - (bins - mu)**2 / (2 * sigma**2) ),"
               },
               {
                 "kind": "input",
@@ -583,7 +583,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.normal(3, 2.5, size=(2, 4))"
+                "text": "flops.random.normal(3, 2.5, size=(2, 4))"
               },
               {
                 "kind": "output",
@@ -605,20 +605,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.normal",
     "module": "numpy.random",
     "name": "random.normal",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.normal",
-    "signature": "we.random.normal(loc=0.0, scale=1.0, size=None)",
+    "signature": "fnp.random.normal(loc=0.0, scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw random samples from a normal (Gaussian) distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.normal"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-normal",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.normal.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L86",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.normal.html"
   }
 }

@@ -473,7 +473,7 @@
             },
             {
               "kind": "code",
-              "text": "S.max() *\nwe.finfo(A.dtype).eps / 2. * we.sqrt(m + n + 1.)"
+              "text": "S.max() *\nflops.finfo(A.dtype).eps / 2. * flops.sqrt(m + n + 1.)"
             },
             {
               "kind": "text",
@@ -532,17 +532,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "from we.linalg import matrix_rank"
+              "text": "from flops.linalg import matrix_rank"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "matrix_rank(we.eye(4)) # Full rank matrix"
+              "text": "matrix_rank(flops.eye(4)) # Full rank matrix"
             },
             {
               "kind": "output",
@@ -551,7 +551,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "I=we.eye(4); I[-1,-1] = 0. # rank deficient matrix"
+              "text": "I=flops.eye(4); I[-1,-1] = 0. # rank deficient matrix"
             },
             {
               "kind": "input",
@@ -565,7 +565,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "matrix_rank(we.ones((4,))) # 1 dimension - rank 1 unless all 0"
+              "text": "matrix_rank(flops.ones((4,))) # 1 dimension - rank 1 unless all 0"
             },
             {
               "kind": "output",
@@ -574,7 +574,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "matrix_rank(we.zeros((4,)))"
+              "text": "matrix_rank(flops.zeros((4,)))"
             },
             {
               "kind": "output",
@@ -588,6 +588,7 @@
     }
   ],
   "canonical_name": "linalg.matrix_rank",
+  "canonical_path": "numpy/linalg/matrix-rank",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -607,22 +608,26 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom we.linalg import matrix_rank\n\nmatrix_rank(we.eye(4)) # Full rank matrix\n\nI=we.eye(4); I[-1,-1] = 0. # rank deficient matrix\n\nmatrix_rank(I)\n\nmatrix_rank(we.ones((4,))) # 1 dimension - rank 1 unless all 0\n\nmatrix_rank(we.zeros((4,)))",
+    "code": "import flopscope.numpy as fnp\n\nfrom flops.linalg import matrix_rank\n\nmatrix_rank(flops.eye(4)) # Full rank matrix\n\nI=flops.eye(4); I[-1,-1] = 0. # rank deficient matrix\n\nmatrix_rank(I)\n\nmatrix_rank(flops.ones((4,))) # 1 dimension - rank 1 unless all 0\n\nmatrix_rank(flops.zeros((4,)))",
     "output": "4\n\n3\n\n1\n\n0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-matrix_rank/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.matrix_rank",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L478",
+  "href": "/docs/api/numpy/linalg/matrix-rank/",
+  "legacy_href": "/docs/api/ops/linalg-matrix_rank/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_rank",
   "next": {
-    "href": "/docs/api/ops/linalg-matrix_transpose/",
-    "label": "we.linalg.matrix_transpose"
+    "href": "/docs/api/numpy/linalg/matrix-transpose/",
+    "label": "fnp.linalg.matrix_transpose"
   },
   "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
   "notes_sections": [
     "The default threshold to detect rank deficiency is a test on the magnitude of the singular values of `A`.  By default, we identify singular values less than ``S.max() * max(M, N) * eps`` as indicating rank deficiency (with the symbols defined above). This is the algorithm MATLAB uses [1]. It also appears in *Numerical recipes* in the discussion of SVD solutions for linear least squares [2].",
     "This default threshold is designed to detect rank deficiency accounting for the numerical errors of the SVD computation. Imagine that there is a column in `A` that is an exact (in floating point) linear combination of other columns in `A`. Computing the SVD on `A` will not produce a singular value exactly equal to 0 in general: any difference of the smallest SVD value from 0 will be caused by numerical imprecision in the calculation of the SVD. Our threshold for small SVD values takes this numerical imprecision into account, and the default threshold will detect such numerical rank deficiency. The threshold may declare a matrix `A` rank deficient even if the linear combination of some columns of `A` is not exactly equal to another column of `A` but only numerically very close to another column of `A`.",
-    "We chose our default threshold because it is in wide use. Other thresholds are possible.  For example, elsewhere in the 2007 edition of *Numerical recipes* there is an alternative threshold of ``S.max() * we.finfo(A.dtype).eps / 2. * we.sqrt(m + n + 1.)``. The authors describe this threshold as being based on \"expected roundoff error\" (p 71).",
+    "We chose our default threshold because it is in wide use. Other thresholds are possible.  For example, elsewhere in the 2007 edition of *Numerical recipes* there is an alternative threshold of ``S.max() * flops.finfo(A.dtype).eps / 2. * flops.sqrt(m + n + 1.)``. The authors describe this threshold as being based on \"expected roundoff error\" (p 71).",
     "The thresholds above deal with floating point roundoff error in the calculation of the SVD.  However, you may have more information about the sources of error in `A` that would make you consider other tolerance values to detect *effective* rank deficiency. The most useful measure of the tolerance depends on the operations you intend to use on your matrix. For example, if your data come from uncertain measurements with uncertainties greater than floating point epsilon, choosing a tolerance near that uncertainty may be preferable. The tolerance may be absolute if the uncertainties are absolute rather than relative."
   ],
   "numpy_ref": "np.linalg.matrix_rank",
@@ -665,10 +670,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-matrix_power/",
-    "label": "we.linalg.matrix_power"
+    "href": "/docs/api/numpy/linalg/matrix-power/",
+    "label": "fnp.linalg.matrix_power"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.matrix_rank",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_rank.html",
   "returns": [
     {
@@ -680,12 +686,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
+  "signature": "fnp.linalg.matrix_rank(A: 'ArrayLike', tol: 'float | None' = None, hermitian: 'bool' = False, *, rtol: 'float | None' = None) -> 'FlopscopeArray | int'",
   "slug": "linalg-matrix_rank",
   "summary": "Return matrix rank of array using SVD method",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2010",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.matrix_rank",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L424"
+  "weight": 4.0
 }
