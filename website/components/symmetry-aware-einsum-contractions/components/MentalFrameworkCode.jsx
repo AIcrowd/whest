@@ -13,13 +13,14 @@ import { notationLatex } from '../lib/notationSystem.js';
  *      "annotation rows" sit at the exact indent of the lines they describe,
  *      carrying a coloured bar marker:
  *         ┃ Step 1 · multiply once    (coral, indent 4, before base_val)
- *         ┃ Step 2 · accumulate many  (coral, indent 8, before R[out] +=)
+ *         ┃ Step 2 · accumulate many  (coral, indent 8, before R[out_rep] +=)
  *
  * Key goal: the reader sees the "multiply once, accumulate many" shape
  * directly in the code, with step labels anchored at the exact spot they
  * explain — no visual discontinuity between annotation and the code it
- * annotates. The accumulation line shows `coeff(rep, out) * base_val` so
- * the weighting (how many orbit members land on a bin) is visible.
+ * annotates. The accumulation line shows `coeff(rep, out_rep) * base_val`
+ * so the weighting (how many orbit members reach a stored output
+ * representative) is visible.
  */
 
 const TOKEN_CLASS = {
@@ -114,16 +115,16 @@ function wrapCommentLines(commentText, maxChars = 84) {
 // Each row has `kind: 'code' | 'annotation'`. Annotation rows sit inline at
 // the same indent as the code line they describe and carry a coloured ┃ bar.
 const BASE_LINES = [
-  { id: 'comment-rep',  number: 1,  kind: 'code', code: '# RepSet     — unique input tuples to multiply.' },
-  { id: 'comment-outs', number: 2,  kind: 'code', code: '# Outs(rep)  — unique output bins this product lands in.' },
-  { id: 'comment-coef', number: 3,  kind: 'code', code: '# coeff      — how many orbit copies land on that bin.' },
+  { id: 'comment-rep',  number: 1,  kind: 'code', code: '# RepSet           — one representative for each equal-product orbit.' },
+  { id: 'comment-outs', number: 2,  kind: 'code', code: '# Outs(rep)        — stored output representatives reached by that product orbit.' },
+  { id: 'comment-coef', number: 3,  kind: 'code', code: '# coeff(rep, out_rep) — how many orbit members contribute to that stored representative.' },
   { id: 'blank-1',      number: 4,  kind: 'code', code: '' },
   { id: 'rep-loop',     number: 5,  kind: 'code', code: 'for rep in RepSet:' },
   { id: 'step1-ann',    number: 6,  kind: 'annotation', step: 'mult', indent: 4 },
   { id: 'base-val',     number: 7,  kind: 'code', code: '    base_val = product_at(rep)' },
-  { id: 'out-loop',     number: 8,  kind: 'code', code: '    for out in Outs(rep):' },
+  { id: 'out-loop',     number: 8,  kind: 'code', code: '    for out_rep in Outs(rep):' },
   { id: 'step2-ann',    number: 9,  kind: 'annotation', step: 'acc', indent: 8 },
-  { id: 'reduce',       number: 10, kind: 'code', code: '        R[out] += coeff(rep, out) * base_val' },
+  { id: 'reduce',       number: 10, kind: 'code', code: '        R[out_rep] += coeff(rep, out_rep) * base_val' },
 ];
 
 function buildLines(example) {
@@ -134,7 +135,7 @@ function buildLines(example) {
       return { ...line, code: `    base_val = product_at(rep)${baseValueComment}` };
     }
     if (line.id === 'reduce') {
-      return { ...line, code: `        R[out] += coeff(rep, out) * base_val${reduceComment}` };
+      return { ...line, code: `        R[out_rep] += coeff(rep, out_rep) * base_val${reduceComment}` };
     }
     return line;
   });
@@ -166,12 +167,18 @@ function CodeRow({ line }) {
   const leadingWhitespace = codePrefix.match(/^\s*/)?.[0] ?? '';
   const tokens = tokenizePseudocodeLine(codePrefix);
   const wrappedCommentLines = commentSuffix ? wrapCommentLines(commentSuffix) : [];
+  // Pure-comment lines (start with `#`) are tokenized as a single comment token
+  // whose width is the entire comment string. Under `whitespace-pre` that would
+  // overflow the column on long lines; switch to `whitespace-pre-wrap` so the
+  // comment wraps on whitespace while preserving leading indent.
+  const isPureCommentLine = line.code.trimStart().startsWith('#');
+  const codeWhitespaceClass = isPureCommentLine ? 'whitespace-pre-wrap' : 'whitespace-pre';
   return (
     <Fragment>
       <span className="select-none pr-3 text-right text-xs text-stone-400">
         {line.number}
       </span>
-      <code className="whitespace-pre border-l border-stone-200/80 pl-4 text-stone-800">
+      <code className={`${codeWhitespaceClass} border-l border-stone-200/80 pl-4 text-stone-800`}>
         {tokens.length === 0 ? (
           <span>&nbsp;</span>
         ) : (
@@ -249,9 +256,9 @@ export default function MentalFrameworkCode({ example }) {
           />
           {' '}for those multiplication-chain events. Every{' '}
           <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
-            R[out] += coeff · base_val
+            R[out_rep] += coeff(rep, out_rep) · base_val
           </code>{' '}
-          is one direct output-bin update event, implemented as a fused multiply-add when the coefficient is not one; summing those events gives{' '}
+          is one accumulation update into a stored output representative, implemented as a fused multiply-add when the coefficient is not one; summing those events gives{' '}
           <Latex math={notationLatex('alpha_total')} />
           <span>. This page reports </span>
           <Latex math={String.raw`${notationLatex('mu_total')} + ${notationLatex('alpha_total')}`} />

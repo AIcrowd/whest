@@ -57,7 +57,6 @@ test('cleanup references only the standalone symmetry-aware route', async () => 
   const filesToScan = [
     'symmetry-explorer.act1.test.mjs',
     'symmetry-explorer.narrative.test.mjs',
-    'symmetry-explorer.savings.test.mjs',
     'symmetry-explorer.state.test.mjs',
     'symmetry-explorer.teaching-model.test.mjs',
     'app/symmetry-aware-einsum-contractions/page.tsx',

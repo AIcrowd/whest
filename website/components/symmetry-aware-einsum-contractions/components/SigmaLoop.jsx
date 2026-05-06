@@ -3,12 +3,18 @@ import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
+import CertificationCard from './CertificationCard.jsx';
+import WitnessGallery from './WitnessGallery.jsx';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
-const VISIBLE_VALID_PAIR_LIMIT = 4;
+// All identified σ pairs (valid + rejected) are rendered inline. The earlier
+// VISIBLE_VALID_PAIR_LIMIT (= 4) hid extra valid pairs behind a "▸ N more"
+// toggle and rejected σ's behind a separate modal trigger; multiple readers
+// reported wanting the full list visible at a glance, since the σ list is
+// conceptually more important than the certification card detail beneath.
 
-export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange }) {
+export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange, onSwitchToDirectedTriangle }) {
   const allPairs = results.filter((result) => !result.skipped);
   const validPairs = allPairs.filter((result) => result.isValid);
   const rejectedPairs = allPairs.filter((result) => !result.isValid);
@@ -41,11 +47,12 @@ export default function SigmaLoop({ results, graph, matrixData, example, variabl
       results={results}
       group={group}
       onSelectedPairChange={onSelectedPairChange}
+      onSwitchToDirectedTriangle={onSwitchToDirectedTriangle}
     />
   );
 }
 
-function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results, group, onSelectedPairChange }) {
+function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData, example, variableColors, results, group, onSelectedPairChange, onSwitchToDirectedTriangle }) {
   const { uVertices, freeLabels } = graph;
   const uLabels = buildUVertexLabels(uVertices, example);
   const labels = matrixData.labels;
@@ -61,20 +68,24 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   const [stage, setStage] = useState(0); // 0=M, 1=σ(M), 2=π(σ(M))
   const [playing, setPlaying] = useState(false);
   const playRef = useRef(false);
-  const [showRejected, setShowRejected] = useState(false);
-  const [showMoreValid, setShowMoreValid] = useState(false);
+  // `modalIdx` opens a per-σ "why rejected?" detail dialog. The earlier
+  // `showRejected` (open-the-bulk-list) and `showMoreValid` (expand the
+  // valid-pair overflow) state was removed when both lists were inlined.
   const [modalIdx, setModalIdx] = useState(null); // index into allPairs for rejected modal
+  // C21: hover bus for the CertificationCard. When the user hovers a labeled
+  // field on the witness card, we bridge the moved-row / moved-label sets
+  // into IncidenceMatrix's existing movedRows / movedCols highlight props
+  // so the M view glows the same rows/columns the witness moves.
+  const [certHoverRows, setCertHoverRows] = useState(null);
+  const [certHoverLabels, setCertHoverLabels] = useState(null);
+  const matrixContainerRef = useRef(null);
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
-  const inlineValidPairs = validPairs.slice(0, VISIBLE_VALID_PAIR_LIMIT);
-  const remainingValidPairs = validPairs.slice(VISIBLE_VALID_PAIR_LIMIT);
   const provenance = group?.generatorSelection;
   const selectedPermutationKey = selected?.pi ? permutationKeyFromPi(selected.pi, group?.allLabels || labels) : null;
   const selectedCandidate = provenance?.candidatePermutations?.find((candidate) => candidate.permutationKey === selectedPermutationKey) ?? null;
 
   const closeAllModals = () => {
-    setShowRejected(false);
-    setShowMoreValid(false);
     setModalIdx(null);
   };
 
@@ -87,17 +98,20 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [showRejected, showMoreValid, modalIdx]);
+  }, [modalIdx]);
 
   // Compute the three matrix stages
   const stages = computeStages(selected, originalMatrix, labels, uVertices);
 
+  // C22: max-stage policy. Both ACCEPTED (`isValid`) and REJECTED pairs walk
+  // the full M → σ(M) → π(σ(M)) loop. The third stage is the visual register
+  // for the verdict — green "= M ✓" for accepted, red "✗ no compatible π"
+  // for rejected. Skipped (identity) entries never reach the animation panel.
+  const maxStage = selected ? 2 : 0;
+
   // Playback
   function stepForward() {
-    setStage(s => {
-      const max = selected?.isValid ? 2 : 1;
-      return Math.min(s + 1, max);
-    });
+    setStage(s => Math.min(s + 1, maxStage));
   }
 
   function reset() {
@@ -109,18 +123,17 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   useEffect(() => {
     playRef.current = playing;
     if (!playing) return;
-    const max = selected?.isValid ? 2 : 1;
-    if (stage >= max) return;
+    if (stage >= maxStage) return;
     const timer = setTimeout(() => {
       if (!playRef.current) return;
       setStage(s => {
         const next = s + 1;
-        if (next >= max) setPlaying(false);
-        return Math.min(next, max);
+        if (next >= maxStage) setPlaying(false);
+        return Math.min(next, maxStage);
       });
     }, 900);
     return () => clearTimeout(timer);
-  }, [playing, stage, selected]);
+  }, [playing, stage, maxStage]);
 
   useEffect(() => {
     if (selectedIdx === null) {
@@ -140,19 +153,48 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   }
 
   function handlePlay() {
-    if (stage >= (selected?.isValid ? 2 : 1)) setStage(0);
+    if (stage >= maxStage) setStage(0);
     setPlaying(true);
   }
 
   return (
-    <div className="sigma-loop bg-white p-4">
-      <div className="explorer-support-prose mb-2">
+    // The flex column + per-child `order-…` utilities below visually promote
+    // the σ→σ(M)→π(σ(M)) animation panel to be the FIRST visual under the
+    // section header, ahead of the witness gallery / stats / pair-selector.
+    // V3.1 §6 lists the Incidence Fingerprint Visual as the second teaching
+    // artifact (right after the Certificate card), and its job is to be the
+    // visual hero of certification — but in the rendered DOM it sits ~815 px
+    // below the section header (after WitnessGallery + summary stats + pair
+    // chips). On the narrow side-by-side σ-Loop column this means the matrix
+    // is offscreen until the reader scrolls a long way, which makes it look
+    // like it disappeared. Reordering only the visual layout (DOM order is
+    // preserved for tests and accessibility) gives the matrix the prominence
+    // V3.1 wants without rewriting the JSX tree.
+    <div className="sigma-loop flex flex-col bg-white p-4">
+      <div className="explorer-support-prose mb-2 order-1">
         <InlineMathText>
           {`Each $${notationLatex('sigma_row_move')}$ is a wreath element; each accepted pair shows a row move together with its matching relabeling $${notationLatex('pi_relabeling')}$.`}
         </InlineMathText>
       </div>
+
+      {/* C25: Witness gallery — accepted vs rejected (σ, π) cards side-by-side
+          so the reader can compare what the certifier admits and what it
+          refuses without having to click through individual pairs. Hover
+          handlers feed the same matrix-highlight bus that CertificationCard
+          uses (certHoverRows / certHoverLabels). */}
+      <div className="witness-gallery-mount mb-3 order-4">
+        <WitnessGallery
+          pairs={allPairs}
+          uLabels={uLabels}
+          group={group}
+          onHoverSigma={setCertHoverRows}
+          onHoverPi={setCertHoverLabels}
+          onSwitchToDirectedTriangle={onSwitchToDirectedTriangle}
+        />
+      </div>
+
       {/* Summary stats */}
-      <div className="sigma-summary">
+      <div className="sigma-summary order-5">
         <div className="sigma-stat">
           <span className="stat-num">{results.length}</span>
           <span className="stat-label">total <Latex math={String.raw`\sigma`} inheritColor />&apos;s</span>
@@ -171,12 +213,20 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       </div>
 
-      {/* Valid pairs — shown inline in a 2-column grid */}
+      {/* All identified σ pairs — both valid (with their matching π) and
+          rejected — shown inline in a 2-column grid. Per user feedback,
+          the σ list is conceptually more important than the certification
+          card detail below; promoting it to `order-3` puts it directly
+          beneath the matrix animation, so a reader can scan everything
+          the σ-loop produced before drilling into the selected pair's
+          detail card. Clicking a valid chip selects it (driving the
+          matrix animation above + the cert card below). Clicking a
+          rejected chip opens the per-σ "why rejected?" detail modal. */}
       {validPairs.length > 0 && (
-        <div className="pair-selector">
+        <div className="pair-selector order-3">
           <span className="pair-selector-label">Valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pairs:</span>
           <div className="pair-chips pair-chips-grid">
-            {inlineValidPairs.map((r) => {
+            {validPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
               return (
                 <button key={origIdx}
@@ -194,45 +244,72 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       )}
 
-      {/* Overflow + rejected toggles — share one row */}
-      {(remainingValidPairs.length > 0 || rejectedPairs.length > 0) && (
-        <div className="sigma-toggles-row">
-          {remainingValidPairs.length > 0 && (
-            <button
-              className="valid-toggle"
-              onClick={() => setShowMoreValid(true)}
-            >
-              ▸ {remainingValidPairs.length} more (<Latex math={String.raw`\sigma`} inheritColor />, <Latex math={String.raw`\pi`} inheritColor />) pair{remainingValidPairs.length !== 1 ? 's' : ''}
-            </button>
-          )}
-          {rejectedPairs.length > 0 && (
-            <button
-              className="rejected-toggle"
-              onClick={() => setShowRejected(true)}>
-              ▸ {rejectedPairs.length} rejected <Latex math={String.raw`\sigma`} inheritColor />{rejectedPairs.length !== 1 ? "'s" : ''}
-            </button>
-          )}
+      {rejectedPairs.length > 0 && (
+        <div className="pair-selector order-3" style={{ marginTop: 8 }}>
+          <span className="pair-selector-label">Rejected <Latex math={String.raw`\sigma`} />&apos;s:</span>
+          <div className="pair-chips pair-chips-grid">
+            {rejectedPairs.map((r) => {
+              const origIdx = allPairs.indexOf(r);
+              return (
+                <button key={origIdx}
+                  className="pair-chip pair-invalid"
+                  onClick={() => setModalIdx(origIdx)}
+                  aria-label={`Rejected σ ${fmtSigma(r.sigmaRowPerm, uLabels)} — open detail`}>
+                  <span className="pair-sigma"><Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
+                  <span className="pair-rejected">{r.reason || 'rejected'}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
-      {/* Animation panel */}
+      {/* C21: Certification card — moved OUT of the .anim-panel block
+          (which carries 20 px of padding all around for the matrix-stage
+          chrome) so the card spans the full σ-Loop column rather than
+          being inset by the anim-panel padding. `order-2` puts it next to
+          the anim-panel in the visual stack; flexbox ties go to DOM order,
+          and the card sits AFTER the anim-panel in source, so it renders
+          right beneath the matrix as before. */}
+      {selected && selected.isValid && selected.pi && (
+        <div className="cert-card-mount order-6" style={{ marginTop: 12 }}>
+          <CertificationCard
+            pair={selected}
+            uLabels={uLabels}
+            onHoverSigma={setCertHoverRows}
+            onHoverPi={setCertHoverLabels}
+            onScrollToMatrix={() => {
+              if (matrixContainerRef.current && typeof matrixContainerRef.current.scrollIntoView === 'function') {
+                matrixContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }}
+          />
+        </div>
+      )}
+
+      {/* Animation panel — `order-2` flexbox-promotes it to render
+          directly below the prose intro (before the witness gallery /
+          stats / pair-selector) so the M → σ(M) → π(σ(M)) walk is the
+          visual hero V3.1 §6 calls for. DOM order is unchanged for
+          test/a11y stability; only the visual layout shifts. */}
       {selected && (
-        <div className="anim-panel">
+        <div className="anim-panel order-2" data-pair-status={selected.isValid ? 'accepted' : 'rejected'}>
           {/* Stage indicator */}
           <div className="stage-track">
             {STAGE_LABELS.map((label, i) => {
-              const reachable = selected.isValid || i <= 1;
+              // C22: every selected pair (accepted OR rejected) can walk the
+              // three stages. Rejected pairs land on a red π(σ(M)) verdict.
+              const reachable = true;
               return (
                 <div key={i} className="stage-step-wrapper">
                   {i > 0 && (
-                    <div className={`stage-connector ${stage >= i ? 'stage-connector-done' : ''} ${!reachable ? 'stage-connector-disabled' : ''}`}>
+                    <div className={`stage-connector ${stage >= i ? 'stage-connector-done' : ''}`}>
                       <span className="stage-connector-label">{i === 1 ? <>apply <Latex math={String.raw`\sigma`} inheritColor /></> : <>apply <Latex math={String.raw`\pi`} inheritColor /></>}</span>
                     </div>
                   )}
                   <button
-                    className={`stage-dot ${stage === i ? 'stage-dot-active' : ''} ${stage > i ? 'stage-dot-done' : ''} ${!reachable ? 'stage-dot-disabled' : ''}`}
-                    onClick={() => reachable && setStage(i)}
-                    disabled={!reachable}>
+                    className={`stage-dot ${stage === i ? 'stage-dot-active' : ''} ${stage > i ? 'stage-dot-done' : ''} ${!selected.isValid && i === 2 && stage === 2 ? 'stage-dot-rejected' : ''}`}
+                    onClick={() => reachable && setStage(i)}>
                     {label}
                   </button>
                 </div>
@@ -240,24 +317,35 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
             })}
           </div>
 
-          {/* Playback controls */}
+          {/* Playback controls. The earlier collapse-to-fingerprints toggle
+              (C22) was removed — the column-signature strip beneath the
+              matrix is rendered unconditionally in IncidenceMatrix, so the
+              toggle's only effect was to hide the grid above. Most readers
+              found that affordance jargon-heavy and unclear. */}
           <div className="stage-controls">
             <button className="ctrl-btn" onClick={reset} title="Reset">
               ↺ Reset
             </button>
             <button className="ctrl-btn ctrl-play" onClick={handlePlay}
-              disabled={playing || stage >= (selected.isValid ? 2 : 1)}>
+              disabled={playing || stage >= maxStage}>
               ▶ Play
             </button>
             <button className="ctrl-btn" onClick={stepForward}
-              disabled={stage >= (selected.isValid ? 2 : 1)}>
+              disabled={stage >= maxStage}>
               Step →
             </button>
           </div>
 
-          {/* Animated matrix — uses shared IncidenceMatrix */}
+          {/* Animated matrix — uses shared IncidenceMatrix.
+              C22: pass `rejected` on the third stage when no π exists, and
+              `mismatchedLabels` so domain-mismatch columns get red borders +
+              × overlays. `compactMode` is driven by the toggle. */}
           {stages && (
-            <div className="anim-matrix-container">
+            <div className="anim-matrix-container" ref={matrixContainerRef}>
+              {/* C21: when the user hovers σ / π on the CertificationCard
+                  we splice the moved-row / moved-label sets into the M-view
+                  highlight props. The hover overlay only applies on stage 0
+                  (the original M) — stage 1 / 2 have their own moved sets. */}
               <IncidenceMatrix
                 matrix={stages[stage].matrix}
                 colLabels={stages[stage].colOrder}
@@ -267,17 +355,26 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 variableColors={variableColors}
                 rowPerm={stages[stage].rowPerm}
                 colPerm={stages[stage].colPerm}
-                movedRows={stages[stage].movedRows}
-                movedCols={stages[stage].movedCols}
+                movedRows={stage === 0 && certHoverRows ? certHoverRows : stages[stage].movedRows}
+                movedCols={stage === 0 && certHoverLabels
+                  ? new Set(labels.map((lbl, i) => certHoverLabels.has(lbl) ? i : -1).filter((v) => v !== -1))
+                  : stages[stage].movedCols}
                 animate={true}
                 label={STAGE_LABELS[stage]}
+                rejected={stage === 2 && !selected.isValid}
+                mismatchedLabels={stage >= 1 && !selected.isValid ? computeDomainMismatchedLabels(selected, originalMatrix, labels) : null}
               />
               {stage === 2 && selected.isValid && (
-                <div className="recovery-badge">= M ✓</div>
+                <div className="recovery-badge-below recovery-pass">= M ✓ — accepted</div>
               )}
-              {stage >= 1 && !selected.isValid && (
+              {stage === 2 && !selected.isValid && (
+                <div className="recovery-badge-below recovery-fail" data-rejected-verdict="true">
+                  ✗ <Latex math={String.raw`\pi`} inheritColor /> not found — {selected.reason}
+                </div>
+              )}
+              {stage === 1 && !selected.isValid && (
                 <div className="recovery-badge-below recovery-fail">
-                  <Latex math={String.raw`\pi`} inheritColor /> not found — {selected.reason}
+                  Step → to see why <Latex math={String.raw`\pi`} inheritColor /> cannot recover M ({selected.reason})
                 </div>
               )}
             </div>
@@ -339,8 +436,9 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       )}
 
-      {/* Modal for rejected σ — list or detail view */}
-      {(showRejected || modalIdx !== null) && (
+      {/* Modal for rejected σ — list or detail view. order-7 keeps it
+          last in the visual stack regardless of where it sits in JSX. */}
+      {modalIdx !== null && (
         <RejectedModal
           rejectedPairs={rejectedPairs}
           allPairs={allPairs}
@@ -358,22 +456,6 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           fmtSigma={fmtSigma}
         />
       )}
-
-      {showMoreValid && (
-        <ValidPairsModal
-          pairs={remainingValidPairs}
-          allPairs={allPairs}
-          uLabels={uLabels}
-          onSelectPair={(origIdx) => {
-            handleSelectPair(origIdx);
-            setShowMoreValid(false);
-          }}
-          onClose={closeAllModals}
-          fmtSigma={fmtSigma}
-          fmtPi={fmtPi}
-          kindLabel={kindLabel}
-        />
-      )}
     </div>
   );
 }
@@ -388,13 +470,13 @@ function kindLabel(kind) {
 
 function kindCaption(kind) {
   if (kind === 'cross') {
-    return 'This symmetry keeps one evaluation representative but can still update multiple output bins because it crosses the V/W boundary.';
+    return 'This symmetry keeps one product representative but may still branch to several stored output representatives because it crosses the visible/summed boundary.';
   }
   if (kind === 'w-only') {
-    return 'This symmetry preserves the output bin and only compresses the summed side, so it can reduce both evaluation and reduction work.';
+    return 'This symmetry preserves the visible-label set, so each product orbit has one stored output destination; it can still reduce the product-orbit count.';
   }
   if (kind === 'v-only') {
-    return 'This symmetry acts only on output labels, so it shrinks the representative set but can still scatter into multiple output bins.';
+    return 'This symmetry acts only on output labels, so it changes the stored output representative action H without creating projection branching.';
   }
   if (kind === 'correlated') {
     return 'This symmetry acts on both V and W without crossing between them, so the full group still matters even though the V/W roles stay separate.';
@@ -460,47 +542,11 @@ function RejectedModal({
   );
 }
 
-function ValidPairsModal({
-  pairs,
-  allPairs,
-  uLabels,
-  onSelectPair,
-  onClose,
-  fmtSigma,
-  fmtPi,
-  kindLabel,
-}) {
-  return (
-    <div className="rejected-modal-overlay" onClick={onClose}>
-      <div className="rejected-modal" onClick={(event) => event.stopPropagation()}>
-        <div className="rejected-modal-header">
-          <h4>{pairs.length} additional valid <Latex math={String.raw`\sigma`} />{pairs.length === 1 ? '' : "'s"}</h4>
-          <button className="rejected-modal-close" onClick={onClose}>✕</button>
-        </div>
-
-        <div className="rejected-list">
-          {pairs.map((r) => {
-            const origIdx = allPairs.indexOf(r);
-            return (
-              <button key={origIdx} className="rejected-list-item" onClick={() => onSelectPair(origIdx)}>
-                <span className="rejected-list-sigma">
-                  <Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
-                </span>
-                <span className="pair-pi">
-                  <Latex math={String.raw`\pi`} inheritColor /> = {fmtPi(r.pi)}
-                </span>
-                <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
-                  {kindLabel(r.piKind)}
-                </span>
-                <span className="rejected-list-arrow">→</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
+/* The ValidPairsModal that backed the "▸ N more (σ, π) pairs" overflow
+   button was removed when all valid pairs became inline (see header
+   comment near top of file). The component definition is gone; if a
+   future iteration needs an "additional pairs" drawer, prefer reusing
+   the inline pair-chips-grid pattern over reintroducing a modal. */
 
 /* ── Rejected Detail — M → σ(M) with animation, no π step ── */
 
@@ -556,6 +602,43 @@ function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels,
       {/* Fingerprints are now shown by IncidenceMatrix automatically */}
     </>
   );
+}
+
+/* ── Domain-mismatch labels (C22) ──
+ *
+ * When π search fails with `reason: 'No matching π (fingerprint mismatch)'`,
+ * one or more columns of σ(M) carry a fingerprint that does not appear in the
+ * fingerprint set of M. Those columns are the visual culprit: they cannot be
+ * mapped to any column of M by π, so the σ → π recovery breaks.
+ *
+ * We compute fingerprints from the original M, then flag every column of
+ * σ(M) whose own fingerprint has no matching column in M. The set is
+ * surfaced to IncidenceMatrix as `mismatchedLabels` so those columns get a
+ * red border + × overlay in both the matrix grid and the fingerprint pills.
+ */
+function computeDomainMismatchedLabels(result, originalMatrix, labels) {
+  if (!result || result.isValid) return null;
+  if (!result.sigmaMatrix) return null;
+
+  const numRows = originalMatrix.length;
+
+  // Collect M's column fingerprints (string keys = comma-joined column data).
+  const mFingerprints = new Set();
+  labels.forEach((_, ci) => {
+    const fp = [];
+    for (let r = 0; r < numRows; r++) fp.push(originalMatrix[r][ci]);
+    mFingerprints.add(fp.join(','));
+  });
+
+  // For σ(M), flag any column whose fingerprint is not present in M.
+  const mismatched = new Set();
+  labels.forEach((lbl, ci) => {
+    const fp = [];
+    for (let r = 0; r < numRows; r++) fp.push(result.sigmaMatrix[r][ci]);
+    if (!mFingerprints.has(fp.join(','))) mismatched.add(lbl);
+  });
+
+  return mismatched;
 }
 
 /* ── Compute stage data ── */

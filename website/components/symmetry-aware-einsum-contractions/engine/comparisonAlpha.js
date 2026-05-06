@@ -3,15 +3,19 @@
 // Pedagogical helpers for the appendix chapter that contrasts the pointwise
 // compression group G_pt with the larger formal group G_f = V-sub × S(W).
 //
-// `computeExpressionAlphaTotal` preserves the existing scalar helper:
-//   what α would be if one naively counted orbits under G_f instead of G_pt.
+// Both sides use the unified output-orbit metric:
 //
-// `computeExpressionAlphaComparison` adds the chapter-ready comparison object:
-//   - exprAlpha:   naive α under G_f
-//   - correctAlpha: true α under G_pt
-//   - state:       none | coincident | mismatch
-//   - witness:     one concrete bad formal orbit witness when a real mismatch
-//                  exists for the current preset
+//   α = #{(O, Q) ∈ X/G × Y/H : π_V(O) ∩ Q ≠ ∅},   H = Stab_G(V)|_V.
+//
+// `computeExpressionAlphaTotal` evaluates that count under G_expr (the formal
+// group). `computeExpressionAlphaComparison` returns it alongside the engine's
+// G_pt count and detects when the two diverge.
+
+import {
+  canonicalTupleUnderGroup,
+  restrictStabilizerToPositions,
+  visibleTupleFromFullTuple,
+} from './outputOrbit.js';
 
 function applyPerm(tuple, perm) {
   const out = new Array(tuple.length);
@@ -215,12 +219,14 @@ function computeExpressionAlphaData({ analysis }) {
 
   const assignments = allAssignments(sizes);
   const exprPartition = buildOrbitPartition(assignments, expressionGroup.elements);
+  const hExprElements = restrictStabilizerToPositions(expressionGroup.elements, vPos);
 
   let exprAlpha = 0;
   for (const orbit of exprPartition.orbits) {
     const projected = new Set();
     for (const tuple of orbit.members) {
-      projected.add(tupleKey(toOutputTuple(tuple, vPos)));
+      const v = visibleTupleFromFullTuple(tuple, vPos);
+      projected.add(canonicalTupleUnderGroup(v, hExprElements));
     }
     exprAlpha += projected.size;
   }

@@ -20,7 +20,7 @@ test('PSEUDOCODE_LINES defines a stable teaching scaffold', () => {
       '# Those pi relabelings generate the full symmetry group G for this step.',
       '# multiplication_cost counts one product evaluation per G-orbit representative.',
       'multiplication_cost = 0',
-      '# accumulation_cost counts one accumulation per distinct projected output bin.',
+      '# accumulation_cost counts one update per stored output representative reached.',
       'accumulation_cost = 0',
       '',
       '# RepSet = one representative full tuple from each orbit of G.',
@@ -33,8 +33,8 @@ test('PSEUDOCODE_LINES defines a stable teaching scaffold', () => {
       '    # project_V keeps only the output labels V from a full tuple.',
       '    # Example Outs(rep) = [...]',
       '    # Example coeff(rep, (...)) = ?',
-      '    for out in Outs(rep):',
-      '        R[out] += coeff(rep, out) * base_val',
+      '    for out_rep in Outs(rep):',
+      '        R[out_rep] += coeff(rep, out_rep) * base_val',
       '        accumulation_cost += 1',
     ],
   );
@@ -76,11 +76,11 @@ test('tokenizePseudocodeLine marks keywords, state variables, functions, and num
     { text: '0', kind: 'number' },
   ]);
 
-  assert.deepEqual(tokenizePseudocodeLine('    for out in Outs(rep):'), [
+  assert.deepEqual(tokenizePseudocodeLine('    for out_rep in Outs(rep):'), [
     { text: '    ', kind: 'plain' },
     { text: 'for', kind: 'keyword' },
     { text: ' ', kind: 'plain' },
-    { text: 'out', kind: 'state' },
+    { text: 'out_rep', kind: 'state' },
     { text: ' ', kind: 'plain' },
     { text: 'in', kind: 'keyword' },
     { text: ' ', kind: 'plain' },

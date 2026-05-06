@@ -326,7 +326,9 @@ test('section five formulas route visible noir-math symbols through distinct not
   assert.match(totalCostSource, /tc\(SYM\.projection, notationLatex\('projection_pi_v_free'\)\)/);
   assert.match(totalCostSource, /notationLatex\('r_complement'\)/);
   assert.match(totalCostSource, /notationLatex\('l_labels'\)/);
-  assert.match(totalCostSource, /notationLatex\('g_w_factor'\)/);
+  // g_w_factor was a directProduct-only role; that row was removed in V4 because
+  // directProduct is no longer a primary regime under the unified output-orbit
+  // metric. The summed-side group still appears in the legend glossary.
   assert.match(totalCostSource, /notationLatex\('n_omega'\)/);
   assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
 
@@ -334,10 +336,8 @@ test('section five formulas route visible noir-math symbols through distinct not
     String.raw`\frac{n_\Omega}{|G_a|} \sum_g \Bigl(\prod_{c \in R} n_c\Bigr)\Bigl(n_\Omega^{c_\Omega(g)} - (n_\Omega - 1)^{c_\Omega(g)}\Bigr)`,
   );
 
-  assert.match(totalCostSource, /tc\(SYM\.ambient, 'X'\)/);
-  assert.match(totalCostSource, /tc\(SYM\.wlabel, notationLatex\('w_summed'\)\)/);
-  assert.match(totalCostSource, /tc\(SYM\.summedGroup, notationLatex\('g_w_factor'\)\)/);
-
+  // The directProduct row's X_W / w_summed / summedGroup colors were removed
+  // when that row was retired (V4: every regime computes the same alpha).
   assert.match(singletonColored, /#4A7E9A/);
   assert.match(singletonColored, /#4A6288/);
   assert.match(singletonColored, /#557048/);
@@ -522,7 +522,9 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(priceSavingsSource, /notationLatex\('g_component'\)/);
   assert.match(constructionSource, /Formal-group construction/);
   assert.match(constructionSource, /notationLatex\('g_formal'\)/);
-  assert.match(constructionSource, /notationLatex\('g_output'\)/);
+  // V4: VSubSwConstruction switched the visible output action from
+  // notationLatex('g_output') to notationLatex('h_output') (= H).
+  assert.match(constructionSource, /notationLatex\('h_output'\)/);
   assert.match(constructionSource, /const COLOR_V = explorerThemeColor\(explorerThemeId, 'hero'\)/);
   assert.match(constructionSource, /const COLOR_W = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
   assert.match(constructionSource, /InlineMathText>\{`\(\s*visible output action, inherited from \$\$\{notationLatex\('g_pointwise'\)\}\$\s*\)`\}<\/InlineMathText>/);
@@ -535,12 +537,17 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(constructionSource, /is trivial for this einsum\./);
   assert.match(appendixSource, /Pointwise group/);
   assert.match(appendixSource, /anchorId="appendix-section-3"/);
-  assert.match(appendixSource, /The restriction <Latex math=\{String\.raw`G_\{\\text\{pt\}\}\\|_V`\} \/> to output labels/);
-  assert.match(appendixSource, /notationLatex\('g_output'\)/);
+  // V4 rewrote the output-action card to use H = Stab_{G_pt}(V)|_V (notation
+  // key h_output) instead of the legacy G_out alias.
+  assert.match(appendixSource, /H = \\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)\\|_V/);
+  assert.match(appendixSource, /notationLatex\('h_output'\)/);
   assert.match(appendixSource, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
   assert.match(appendixSource, /appendixSection6\.title/);
-  assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);
-  assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('w_summed'\)\}\)/);
+  // V4: Young glossary entry now frames H = Sym(V) as the output action
+  // when G = Sym(L), instead of overemphasising Sym(W) as the Young subgroup.
+  assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('v_free'\)\}\)/);
+  assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('l_labels'\)\}\)/);
+  assert.doesNotMatch(regimeSpecSource, /Young subgroup/);
   assert.match(regimeSpecSource, /notationLatex\('c_omega_cycles'\)/);
 });
 

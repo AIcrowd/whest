@@ -14,11 +14,11 @@ export default function GlossaryList({ entries, themeOverride = null }) {
   return (
     <dl className="space-y-1.5">
       {entries.map(({ term, definition }, i) => (
-        <div key={`${term}-${i}`} className="flex items-baseline gap-2">
-          <dt className="shrink-0 whitespace-nowrap text-gray-900">
+        <div key={`${term}-${i}`} className="min-w-0 max-w-full text-gray-700">
+          <dt className="inline max-w-full whitespace-nowrap pr-1.5 text-gray-900">
             <Latex math={term} themeOverride={themeOverride} />
           </dt>
-          <dd className="min-w-0 flex-1 text-gray-700">
+          <dd className="inline min-w-0">
             <GlossaryProse text={definition} themeOverride={themeOverride} />
           </dd>
         </div>

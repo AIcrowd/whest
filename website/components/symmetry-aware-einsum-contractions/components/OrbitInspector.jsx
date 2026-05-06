@@ -18,7 +18,7 @@ export default function OrbitInspector({
   onSelectOrbit,
   title = 'Explore one representative orbit',
   kicker = 'Orbit Inspector',
-  description = 'Each orbit is one evaluation representative. The projected outputs show why reduction cost can stay high even when evaluation cost drops.',
+  description = 'Each orbit is one product-orbit representative. The projected outputs show why the number of stored-output-representative updates can stay high even when the product-orbit count drops.',
   showHeader = true,
   formulaMath = null,
   dimensionN = null,
@@ -30,7 +30,7 @@ export default function OrbitInspector({
         <div className="orbit-inspector-header">
           <span className="orbit-inspector-kicker">{kicker}</span>
           <h3>Representative orbits will appear here</h3>
-          <p>Once the engine has orbit rows, this panel shows one representative, its full orbit, and the output bins it updates.</p>
+          <p>Once the engine has orbit rows, this panel shows one representative, its full orbit, and the stored output representatives it updates.</p>
         </div>
       </div>
     );

@@ -60,9 +60,13 @@ test('comparison helper reports coincident state when G_f is larger but α happe
   const analysis = analyzeExample(ex, 5);
   const comparison = computeExpressionAlphaComparison({ analysis, example: ex });
 
+  // Under the unified output-orbit metric, young-s3 'abc→ab' with G_pt = S_3 and
+  // n=5 gives α = C(n+|V|-1,|V|) · C(n+|W|-1,|W|) = C(6,2) · C(5,1) = 15 · 5 = 75
+  // (oracle-validated against engine/regimes/young.js and computeABruteforce).
+  // G_expr is larger but its H_expr-canonicalized α happens to equal 75 too.
   assert.equal(comparison.state, 'coincident');
   assert.equal(comparison.exprAlpha, comparison.correctAlpha);
-  assert.equal(comparison.exprAlpha, 125);
+  assert.equal(comparison.exprAlpha, 75);
   assert.equal(comparison.witness, null);
 });
 

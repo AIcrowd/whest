@@ -141,23 +141,23 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   assert.match(source, /role="tooltip"/);
   assert.match(source, /createPortal\(/);
 
-  // The three hover targets — keep the kind strings stable; the tooltip
-  // content dispatch is keyed on them.
+  // The two visible hover targets — keep the kind strings stable; the
+  // tooltip content dispatch is keyed on them. The 'edge' kind is preserved
+  // in the tooltip switch (handlers at the kind === 'edge' branch) for the
+  // moment, but no edge geometry is rendered — the toggle that exposed
+  // edges was removed; only nodes and hulls remain visible. The edge
+  // dispatch path is dead-but-reserved for a future hover affordance.
   assert.match(source, /kind: 'node'/);
-  assert.match(source, /kind: 'edge'/);
   assert.match(source, /kind: 'hull'/);
+  assert.match(source, /kind === 'edge'/);
 
   // Defensive dismissal mirrors the DecisionLadder pattern.
   assert.match(source, /addEventListener\('scroll', dismiss, true\)/);
   assert.match(source, /addEventListener\('pointerdown', dismissIfOutside\)/);
   assert.match(source, /addEventListener\('keydown', dismissOnEscape\)/);
 
-  // Edge hit area must be widened — the visible line is 1 px which is
-  // effectively un-hoverable on its own.
-  assert.match(source, /stroke="transparent"/);
-  assert.match(source, /strokeWidth=\{10\}/);
-
-  // Edge tooltip attributes the edge to a specific generator.
+  // Edge tooltip attributes the edge to a specific generator (string lives
+  // in the dispatch handler that runs when an 'edge' kind tooltip fires).
   assert.match(source, /Generator σ\$\{genIdx \+ 1\}/);
   // Hull tooltip surfaces the regime/shape presentation body (the whole
   // point of unifying hull color with the ladder via getRegimePresentation).
@@ -180,17 +180,24 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   assert.doesNotMatch(componentCostSource, /backgroundColor: notationColor\('v_free'\)/);
 });
 
-test('StickyBar selected section pill keeps a visible coral inner marker and aligned geometry', () => {
+test('StickyBar omits section nav pills so the live formula owns the top strip', () => {
   const source = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/components/StickyBar.jsx', import.meta.url),
     'utf8',
   );
 
-  assert.match(source, /isActive\s*\?\s*'border-\[var\(--coral\)\] bg-white text-\[var\(--coral-hover\)\]/);
-  assert.match(source, /isActive\s*\?\s*'border-\[var\(--coral\)\] bg-\[var\(--coral\)\] text-white'/);
-  assert.match(source, /inline-flex h-9 min-h-9 items-center gap-2 rounded-full border px-3/);
-  assert.match(source, /h-5 min-w-5 items-center justify-center rounded-full/);
-  assert.doesNotMatch(source, /isActive\s*\?\s*'bg-primary\/20 text-primary'/);
+  assert.doesNotMatch(source, /EXPLORER_ACTS\.map/);
+  assert.doesNotMatch(source, /buttonVariants/);
+  assert.doesNotMatch(source, /act\.navTitle/);
+  assert.doesNotMatch(source, /href=\{`#\$\{act\.id\}`\}/);
+  assert.match(source, /data-sticky-symmetry-summary="true"/);
+  assert.match(source, /aria-label="Input and output symmetries"/);
+  // Main rebrand bumped the inner flex container to a mobile-first
+  // responsive layout: vertical stack on small screens, horizontal
+  // bar with center alignment on md+. Our V3.1 narrative work was
+  // pinning the flat md+-only form; the merge with origin/main makes
+  // the responsive form authoritative.
+  assert.match(source, /mx-auto flex max-w-\[1460px\] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between/);
 });
 
 test('StickyBar shows the current n in the leading pill and keeps the einsum formula as trigger', () => {
@@ -205,23 +212,30 @@ test('StickyBar shows the current n in the leading pill and keeps the einsum for
   assert.match(source, /bg-white/);
   assert.match(source, /dimensionN = null/);
   assert.match(source, /`\{?n=\$\{dimensionN \?\? '—'\}\}?`/);
-  assert.match(source, /import SymmetryBadge from '\.\/SymmetryBadge\.jsx'/);
+  assert.match(source, /import \{ restrictStabilizerToPositions \} from '\.\.\/engine\/outputOrbit\.js'/);
   assert.match(source, /function SymmetryChip/);
+  assert.match(source, /function CompactSymmetrySummary/);
   assert.match(source, /buildMetadataItems/);
   assert.match(source, /const operandNames = Array\.isArray\(example\?\.operandNames\)/);
   assert.match(source, /function symmetryLabelFromPerOp/);
+  assert.match(source, /function outputSymmetryLabel/);
+  assert.match(source, /restrictStabilizerToPositions\(elements, visiblePositions\)/);
   assert.match(source, /const perOpSymmetry = Array\.isArray\(example\?\.perOpSymmetry\) \? example\.perOpSymmetry : \[\]/);
   assert.match(source, /const variablesByName = new Map/);
   assert.match(source, /const operands = operandNames\.map\(\(name, idx\) => \(\{/);
   assert.match(source, /idx < perOpSymmetry\.length && perOpSymmetry\[idx\] !== undefined/);
   assert.match(source, /symmetryLabelFromPerOp\(perOpSymmetry\[idx\]\)/);
   assert.match(source, /symmetryLabel\(variablesByName\.get\(name\)\)/);
-  assert.match(source, /<SymmetryBadge value=\{groupLabel\}/);
-  assert.match(source, /inline-flex h-6 items-center gap-1 rounded-full/);
-  assert.match(source, /className="h-6 px-2\.5 text-\[11px\] leading-5 shadow-none"/);
-  assert.match(source, /text-stone-400">,<\//);
-  assert.match(source, /text-stone-500">→<\//);
-  assert.match(source, /group\?\.fullGroupName \|\| 'trivial'/);
+  assert.match(source, /outputLabel: outputSymmetryLabel\(group\)/);
+  assert.match(source, /flex min-w-0 flex-nowrap items-center justify-start gap-2 overflow-x-auto/);
+  assert.match(source, /inline-flex h-7 shrink-0 items-center/);
+  assert.match(source, /h-5 w-px shrink-0 bg-gray-200/);
+  assert.match(source, /<CompactSymmetrySummary/);
+  assert.match(source, /text-stone-400">×<\//);
+  assert.match(source, /text-stone-400">→<\//);
+  assert.match(source, /font-semibold text-primary">R<\//);
+  assert.match(source, /return `\|H\|=\$\{outputElements\.length\}`/);
+  assert.doesNotMatch(source, /group\?\.fullGroupName \|\| 'trivial'/);
   assert.match(source, /inline-flex w-max max-w-\[calc\(100vw-2rem\)\]/);
   assert.match(source, /clampedCenterX/);
   assert.doesNotMatch(source, /title="Detected symmetry group — drives compression/);

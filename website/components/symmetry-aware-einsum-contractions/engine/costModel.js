@@ -1,5 +1,19 @@
+import {
+  canonicalTupleUnderGroup,
+  restrictStabilizerToPositions,
+} from './outputOrbit.js';
+
 function tupleKey(labels, tuple) {
   return labels.map((label) => tuple[label]).join('|');
+}
+
+function vPositionsFromLabels(labels, vLabels) {
+  const positionByLabel = new Map(labels.map((label, position) => [label, position]));
+  return vLabels.map((label) => positionByLabel.get(label));
+}
+
+function tupleArrayFromObject(tuple, labels) {
+  return labels.map((label) => tuple[label]);
 }
 
 function enumerateTuples(labels, sizesByLabel) {
@@ -59,6 +73,8 @@ export function computeExactCostModel({ labels, vLabels, groupElements, dimensio
   const effectiveElements = groupElements.length > 0
     ? groupElements
     : [{ arr: Array.from({ length: labels.length }, (_, idx) => idx) }];
+  const visiblePositions = vPositionsFromLabels(labels, vLabels);
+  const hElements = restrictStabilizerToPositions(effectiveElements, visiblePositions);
   const seen = new Set();
   const orbitRows = [];
   let reductionCostExact = 0;
@@ -78,8 +94,9 @@ export function computeExactCostModel({ labels, vLabels, groupElements, dimensio
     const outputs = new Map();
     for (const moved of orbitMap.values()) {
       const outTuple = projectTuple(moved, vLabels);
-      const outKey = tupleKey(vLabels, outTuple);
-      const current = outputs.get(outKey) ?? { outTuple, coeff: 0 };
+      const outArray = tupleArrayFromObject(outTuple, vLabels);
+      const outKey = canonicalTupleUnderGroup(outArray, hElements);
+      const current = outputs.get(outKey) ?? { outTuple, outKey, coeff: 0 };
       current.coeff += 1;
       outputs.set(outKey, current);
     }

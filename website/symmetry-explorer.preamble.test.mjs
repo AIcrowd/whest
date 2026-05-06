@@ -59,9 +59,11 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.match(src, /operandCount/);
   assert.match(src, /labelCount/);
   assert.match(src, /The summed labels/);
-  assert.match(src, /survive as the axes of \$R\$/);
+  assert.match(src, /survive as the axes of/);
+  assert.match(src, /<Latex math="R" \/>/);
   assert.match(src, /Declared symmetries:/);
-  assert.match(src, /The dense direct grid has \$\$\{view\.denseGridScalingLatex\}\$ assignments before symmetry is used\./);
+  assert.match(src, /The dense direct grid has/);
+  assert.match(src, /<Latex math=\{view\.denseGridScalingLatex\} \/>/);
   assert.doesNotMatch(src, /DENSE_SCALING/);
   assert.doesNotMatch(src, /What this fixes/);
   assert.doesNotMatch(src, /CHAIN_FORMULA/);
@@ -77,7 +79,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
     'expanded contraction should render before the prose explanation',
   );
   assert.ok(
-    src.indexOf('The summed labels') < src.indexOf('<ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />'),
+    src.indexOf('The summed labels') < src.indexOf('<LabelRoleLegend'),
     'legend should stay inside the same einsum surface after the explanatory prose',
   );
   assert.match(src, /textAlign: 'justify'/);
@@ -111,6 +113,7 @@ test('AlgorithmAtAGlance sources its narrative prose from the content registry',
 
   assert.match(src, /import\s+\{\s*default as renderProseBlocks\s*\}\s+from\s+'\.\.\/content\/renderProseBlocks\.jsx'/);
   assert.match(src, /import\s+mainPreamble\s+from\s+'\.\.\/content\/main\/preamble\.js'/);
+  assert.match(src, /description=\{<InlineMathText>\{mainPreamble\.deck\}<\/InlineMathText>\}/);
   assert.match(src, /function renderSingleProseBlock\(blocks = \[\], keyPrefix = 'main-prose-block'\)/);
   assert.match(src, /renderSingleProseBlock\(mainPreamble\.slots\.calloutFooter,\s*'symmetry-callout-footer'\)/);
   assert.match(src, /mainPreamble\.slots\.einsumIntroBeforeSummed/);
@@ -158,10 +161,11 @@ test('MentalFrameworkCode renders a short, natural-reading pseudocode (not the 2
   assert.doesNotMatch(src, /buildMentalModelLines/);
   // The two core lines of the algorithm.
   assert.match(src, /for rep in RepSet:/);
-  assert.match(src, /for out in Outs\(rep\)/);
+  assert.match(src, /for out_rep in Outs\(rep\)/);
   // Accumulation line now surfaces the symmetry coefficient so the reader
-  // sees that one product can land with different weights in different bins.
-  assert.match(src, /R\[out\] \+= coeff\(rep, out\) \* base_val/);
+  // sees that one product can land with different weights in different
+  // stored output representatives.
+  assert.match(src, /R\[out_rep\] \+= coeff\(rep, out_rep\) \* base_val/);
   // Syntax colouring still reuses the shared tokenizer so the palette stays
   // consistent with the rest of the site.
   assert.match(src, /tokenizePseudocodeLine/);
@@ -215,7 +219,7 @@ test('MentalFrameworkCode renders the Counting Convention panel introducing μ a
   assert.match(src, /<Latex math=\{String\.raw`\$\{notationLatex\('mu_total'\)\} \+ \$\{notationLatex\('alpha_total'\)\}`\} \/>/);
   // Anchors into the code above — names both lines it talks about.
   assert.match(src, /base_val/);
-  assert.match(src, /R\[out\] \+= coeff/);
+  assert.match(src, /R\[out_rep\] \+= coeff/);
   // Panel sits inside the figure as its own bottom band with a soft
   // top border; mt-auto anchors it to the bottom of the figure so that
   // when the parent column stretches to match the left side's height
@@ -242,19 +246,21 @@ test('Preamble columns are forced to equal height so both bottoms align', () => 
 
 test('MentalFrameworkCode uses Feynman-friendly comments for RepSet, Outs(rep) and coeff', () => {
   const src = readComponent('MentalFrameworkCode.jsx');
-  // Three separate one-line comments, in plain language.
-  assert.match(src, /# RepSet\s+— unique input tuples to multiply/);
-  assert.match(src, /# Outs\(rep\)\s+— unique output bins this product lands in/);
-  assert.match(src, /# coeff\s+— how many orbit copies land on that bin/);
+  // Three separate one-line comments, in plain language. The output-orbit
+  // refactor renamed `out` → `out_rep` and replaced "output bins" with
+  // "stored output representatives" throughout.
+  assert.match(src, /# RepSet\s+— one representative for each equal-product orbit/);
+  assert.match(src, /# Outs\(rep\)\s+— stored output representatives reached by that product orbit/);
+  assert.match(src, /# coeff\(rep, out_rep\)\s+— how many orbit members contribute/);
   // No jargon-heavy "representatives we walk" phrasing anywhere.
   assert.doesNotMatch(src, /representatives we walk/);
 });
 
-test('MentalFramework column renders RepSet, Outs(rep), and coeff(rep, out) as soft inline-code chips', () => {
+test('MentalFramework column renders RepSet, Outs(rep), and coeff(rep, out_rep) as soft inline-code chips', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
   assert.match(src, /className="explorer-inline-code">RepSet<\/code>/);
   assert.match(src, /className="explorer-inline-code">Outs\(rep\)<\/code>/);
-  assert.match(src, /className="explorer-inline-code">coeff\(rep, out\)<\/code>/);
+  assert.match(src, /className="explorer-inline-code">coeff\(rep, out_rep\)<\/code>/);
   assert.doesNotMatch(src, /<code className="font-mono">RepSet<\/code>/);
 });
 
@@ -264,7 +270,7 @@ test('MentalFrameworkCode parameterizes inline comments from the active example'
   assert.match(src, /function buildBaseValueComment/);
   assert.match(src, /function buildReduceComment/);
   assert.match(src, /base_val = product_at\(rep\)\$\{baseValueComment\}/);
-  assert.match(src, /R\[out\] \+= coeff\(rep, out\) \* base_val\$\{reduceComment\}/);
+  assert.match(src, /R\[out_rep\] \+= coeff\(rep, out_rep\) \* base_val\$\{reduceComment\}/);
   assert.match(src, /across all contracted indices/);
   assert.match(src, /# R\[/);
 });

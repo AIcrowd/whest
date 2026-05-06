@@ -38,6 +38,36 @@
   vertical-align: baseline;
 }
 
+.projection-example-math .katex-display {
+  margin: 0.28rem 0;
+}
+
+.projection-example-math .katex {
+  font-size: 1.12em;
+}
+
+/* Wrappers around inline math/equation displays carry `overflow-x-auto`
+   so wide equations (or narrow viewports) can still scroll horizontally.
+   But KaTeX rounds equation widths to fractional pixels, so even a
+   perfectly-fitting equation can trigger a 1-px overflow and surface a
+   persistent scrollbar gutter underneath. Hide the visual scrollbar
+   while preserving the underlying scroll behaviour, so genuine
+   narrow-viewport overflow still scrolls via touch swipe / shift-wheel
+   / keyboard. Apply this class to any wrapper that renders a single
+   compact math display.
+
+   Sites: section 3 (.projection-example-math) and section 9 cost-savings
+   wrappers (.math-display-row in TotalCostView). */
+.projection-example-math,
+.math-display-row {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* legacy Edge/IE */
+}
+.projection-example-math::-webkit-scrollbar,
+.math-display-row::-webkit-scrollbar {
+  display: none;                  /* Chrome / Safari */
+}
+
 /* ─── Orbit Inspector ─────────────────── */
 
 .orbit-inspector-kicker {
@@ -265,11 +295,22 @@
 
 /* ─── Matrix ─────────────────────────── */
 
+.matrix-view {
+  /* Constrain to parent column so the absolute-positioned matrix inside
+     scrolls horizontally on narrow viewports instead of forcing the
+     view wider than its grid track and overflowing the section card. */
+  max-width: 100%;
+  min-width: 0;
+}
+
 .matrix-wrapper {
   overflow-x: auto;
   background: var(--white);
   padding: 16px;
   margin-bottom: 14px;
+  /* Same as .matrix-view — ensure the inner overflow-x:auto wrapper actually
+     clips against the parent column and exposes the scrollbar. */
+  max-width: 100%;
 }
 
 .matrix-table {
@@ -1081,22 +1122,13 @@
   font-weight: 600 !important;
 }
 
-/* Recovery badge */
-.recovery-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--success);
-  background: color-mix(in oklab, var(--success) 8%, transparent);
-  padding: 4px 14px;
-  border-radius: 20px;
-  border: 1px solid color-mix(in oklab, var(--success) 25%, transparent);
-  animation: anim-fade-in 0.3s ease-out;
-}
-
+/* Recovery badge — rendered inline beneath the matrix on stage 2.
+   The previous absolute-positioned `.recovery-badge` floated at the
+   top-right of the matrix container and overlapped the COLUMNS legend
+   pill at narrow column widths. Both accepted ("= M ✓") and rejected
+   ("✗ π not found") verdicts now use the same below-the-matrix flow
+   via `.recovery-badge-below` plus a tone modifier (`.recovery-pass`
+   for green, `.recovery-fail` for coral). */
 .recovery-badge-below {
   text-align: center;
   font-family: var(--font-mono);
@@ -1108,10 +1140,96 @@
   animation: anim-fade-in 0.3s ease-out;
 }
 
+.recovery-pass {
+  color: var(--success);
+  background: color-mix(in oklab, var(--success) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--success) 25%, transparent);
+}
+
 .recovery-fail {
   color: var(--coral);
   background: var(--coral-light);
   border: 1px solid color-mix(in oklab, var(--coral) 20%, transparent);
+}
+
+/* C22 — Incidence Fingerprint Visual: rejected π verdict + domain-mismatch
+ * marking + Show fingerprints toggle.
+ *
+ * The third stage of the σ-loop turns red on rejected pairs so the verdict is
+ * visually distinct from the green "= M ✓" badge. Mismatched columns (those
+ * whose σ(M) fingerprint has no partner in M) get a red border + × overlay
+ * in both the matrix grid and the fingerprint pill row.
+ */
+.inc-matrix-rejected .inc-matrix {
+  border: 1.5px solid color-mix(in oklab, var(--coral) 35%, transparent);
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--coral) 3%, transparent);
+}
+
+.inc-matrix-rejected .inc-matrix-label {
+  color: var(--coral);
+}
+
+.inc-matrix-reject-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--coral-light);
+  color: var(--coral);
+  border: 1px solid color-mix(in oklab, var(--coral) 25%, transparent);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  vertical-align: middle;
+}
+
+.inc-col-mismatch {
+  position: relative;
+  border-bottom: 2px solid var(--coral) !important;
+  color: var(--coral) !important;
+}
+
+.inc-col-mismatch-mark {
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--coral);
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.inc-cell.inc-cell-mismatch {
+  border-color: color-mix(in oklab, var(--coral) 40%, transparent);
+  box-shadow: inset 0 -2px 0 color-mix(in oklab, var(--coral) 30%, transparent);
+}
+
+.inc-fp-mismatch {
+  position: relative;
+}
+
+.inc-fp-mismatch-mark {
+  color: var(--coral);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  margin-left: 2px;
+}
+
+.inc-matrix-compact-mode .inc-matrix-legend {
+  margin-bottom: 4px;
+}
+
+.stage-dot-rejected {
+  background: var(--coral) !important;
+  border-color: var(--coral) !important;
+  color: var(--white) !important;
+}
+
+.ctrl-fingerprints-toggle {
+  margin-left: auto;
+  font-size: 11px;
 }
 
 /* π detail panel */

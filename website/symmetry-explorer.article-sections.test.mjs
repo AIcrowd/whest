@@ -7,14 +7,21 @@ import { ARTICLE_SECTIONS, EXPLORER_ACTS } from './components/symmetry-aware-ein
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-test('ARTICLE_SECTIONS exports 8 Distill-style sections with id, heading, lede', () => {
+test('ARTICLE_SECTIONS exports the V4 6-section narrative arc with id, heading, lede', () => {
+  // V4 collapsed the legacy 8-section arc (problem / shape / ladder / 3 spotlights /
+  // playground / appendix) into a tighter 6-section story aligned with the
+  // output-orbit narrative.
   assert.ok(Array.isArray(ARTICLE_SECTIONS));
-  assert.equal(ARTICLE_SECTIONS.length, 8);
+  assert.equal(ARTICLE_SECTIONS.length, 6);
   for (const s of ARTICLE_SECTIONS) {
     assert.equal(typeof s.id, 'string');
     assert.equal(typeof s.heading, 'string');
     assert.equal(typeof s.lede, 'string');
   }
+  assert.deepEqual(
+    ARTICLE_SECTIONS.map((s) => s.id),
+    ['problem', 'pointwise-group', 'output-action', 'branching', 'partition-counting', 'appendix'],
+  );
 });
 
 test('EXPLORER_ACTS still exported (backward compat)', () => {
@@ -28,14 +35,15 @@ test('EXPLORER_ACTS sources main-page copy from registry modules', () => {
     'utf-8',
   );
 
-  assert.match(src, /import\s+\{[\s\S]*mainSection1[\s\S]*mainSection5[\s\S]*\}\s+from\s+'\.\.\/content\/main\/index\.js'/);
+  assert.match(src, /import\s+\{[\s\S]*mainEinsumGlance[\s\S]*mainAppendixTransition[\s\S]*\}\s+from\s+'\.\.\/content\/main\/index\.js'/);
   assert.match(src, /const getParagraphTexts = \(blocks = \[\]\) => blocks/);
   assert.match(src, /filter\(\(\{ kind \}\) => kind === 'paragraph'\)/);
-  assert.match(src, /heading:\s*mainSection1\.title/);
-  assert.match(src, /question:\s*mainSection1\.deck/);
-  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainSection1\.slots\.intro\)/);
-  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainSection2\.slots\.intro\)/);
-  assert.match(src, /produces:\s*getFirstParagraphText\(mainSection1\.slots\.produces\)/);
+  assert.match(src, /heading:\s*mainEinsumGlance\.title/);
+  assert.match(src, /question:\s*mainEinsumGlance\.deck/);
+  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainEinsumGlance\.slots\.intro\)/);
+  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainProductSymmetry\.slots\.intro\)/);
+  assert.match(src, /introParagraphs:\s*getParagraphTexts\(mainAssembleCost\.slots\.intro\)/);
+  assert.match(src, /produces:\s*getFirstParagraphText\(mainEinsumGlance\.slots\.produces\)/);
   assert.doesNotMatch(src, /The first step is to fix the mathematical object/);
   assert.doesNotMatch(src, /Once the contraction is fixed, we forget the numerical entries/);
 });

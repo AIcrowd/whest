@@ -10,13 +10,16 @@ const read = (...parts) => readFileSync(root(...parts), 'utf-8');
 
 test('main copy distinguishes M, μ, and α', () => {
   const preamble = read('components/symmetry-aware-einsum-contractions/content/main/preamble.js');
-  const section4 = read('components/symmetry-aware-einsum-contractions/content/main/section4.js');
+  const rowsCols = read('components/symmetry-aware-einsum-contractions/content/main/rowsCols.js');
   const total = read('components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');
 
-  assert.match(preamble, /\$M\$ \(representative products\)/);
+  assert.match(preamble, /\$M\$ \(product-orbit representatives\)/);
   assert.match(preamble, /\\mu = \(k-1\)M/);
-  assert.match(section4, /\\\\alpha = \\\\sum_\{O \\\\in X\/G_\{\\\\text\{pt\}\}\}/);
-  assert.match(total, /let \$M_a\$ be the number of product orbits/);
+  // rowsCols (§4 Rows and Columns) uses the unified output-orbit formulation
+  // α = #{(O,Q) ∈ X/G_pt × Y/H : π_V(O) ∩ Q ≠ ∅} with H = Stab_{G_pt}(V)|_V.
+  assert.match(rowsCols, /eq\('\\\\displaystyle \\\\alpha = \\\\#\\\\\{\(O,Q\) \\\\in X\/G_\{\\\\text\{pt\}\}/);
+  assert.match(rowsCols, /eq\('\\\\displaystyle H = \\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)\|_V,\\\\qquad Q \\\\in Y\/H', 2, false, 'Column quotient'\)/);
+  assert.match(total, /For each independent component, \$M_a\$ counts representative products and \$\\alpha_a\$ counts filled local \$O \\to Q\$ cells/);
 });
 
 test('main copy does not overclaim n^5 divided by group order', () => {
@@ -32,7 +35,7 @@ test('main copy does not overclaim n^5 divided by group order', () => {
 test('scope copy names direct event model and unsupported features', () => {
   const app = read('components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
   assert.match(app, /direct indexed scalar-event count/);
-  assert.match(app, /not flopscope’s general FMA FLOP convention/);
+  assert.match(app, /not flopscope's general FMA FLOP convention/);
   assert.match(app, /repeated operand names denote the same tensor object/);
   assert.match(app, /forbids[\s\S]*ellipsis, broadcasting, repeated labels within one input, and[\s\S]*duplicate output labels/);
 });
@@ -44,6 +47,10 @@ test('appendix copy uses domain-compatible formal dummy renaming', () => {
 
   assert.match(section2, /same-domain blocks/);
   assert.match(section4, /\\\\prod_d S\(W_d\)/);
-  assert.match(section5, /domain-compatible dummy-label factor/);
-  assert.doesNotMatch(section4, /G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times S\(W_\{\\mathrm\{summed\}\}\)/);
+  // V4 rephrased the rule paragraph; legacy "domain-compatible dummy-label
+  // factor" was tightened to "dummy-label factor" referencing the same product.
+  assert.match(section5, /dummy-label factor \$\\\\prod_d S\(W_d\)\$/);
+  // Section 4's G_f formula now uses H instead of the legacy G_out.
+  assert.doesNotMatch(section4, /G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times/);
+  assert.match(section4, /G_\{\\\\text\{f\}\} = H \\\\times \\\\prod_d S\(W_d\)/);
 });

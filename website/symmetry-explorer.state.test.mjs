@@ -59,7 +59,7 @@ test('getPresetSummary compresses mixed presets to shape + terminal regime badge
     color: '#23B761',
   });
 
-  assert.deepEqual(getPresetSummary(EXAMPLES.find((example) => example.id === 'direct-s2-c3')).caseIds, ['mixed', 'directProduct']);
+  assert.deepEqual(getPresetSummary(EXAMPLES.find((example) => example.id === 'direct-s2-c3')).caseIds, ['mixed', 'functionalProjection']);
   assert.deepEqual(getPresetSummary(EXAMPLES.find((example) => example.id === 'cross-s3')).caseIds, ['mixed', 'singleton']);
 });
 

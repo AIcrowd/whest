@@ -54,7 +54,7 @@ export default function WreathStructureView({ analysis, example }) {
     <div className="bg-white p-4">
       <p className="font-serif text-[16px] leading-[1.75] text-gray-700">
         <InlineMathText>
-          {`We build $${notationLatex('g_wreath')} = \\prod_i (${notationLatex('h_family')} \\wr S_{m_i})$ because it is the search space of row moves worth testing: declared axis symmetries inside each repeated-operand family together with permutations of identical copies. For each $${notationLatex('sigma_row_move')}$, we then ask whether there is a matching relabeling $${notationLatex('pi_relabeling')}$ of the labels.`}
+          {`Candidate row moves come from declared axis symmetries inside each repeated-operand family together with permutations of identical copies. A candidate row move still needs a matching label relabeling $${notationLatex('pi_relabeling')}$ before it enters $${notationLatex('g_detected')}$. Formally we build $${notationLatex('g_wreath')} = \\prod_i (${notationLatex('h_family')} \\wr S_{m_i})$ as the candidate search space worth testing.`}
         </InlineMathText>
       </p>
 
@@ -109,7 +109,7 @@ export default function WreathStructureView({ analysis, example }) {
             color: explorerThemeColor(explorerThemeId, 'hero'),
           }}
         >
-          kept in G: {validCount}
+          ✓ kept in G_pt: {validCount}
         </span>
         <span
           className={summaryPillClass}
@@ -134,14 +134,14 @@ export default function WreathStructureView({ analysis, example }) {
       </div>
 
       <ExplorerModal
-        title={<Latex math={`\\text{All row moves in } ${notationLatex('g_wreath')}`} />}
+        title="All row moves in the candidate wreath space"
         titleId="wreath-rows-title"
         open={showAllRows}
         onClose={() => setShowAllRows(false)}
         width="min(1180px, 96vw)"
       >
         <p className="mb-4 font-serif text-[15px] leading-7 text-gray-700">
-          This modal shows every row move in the wreath-product search space, together with the matching relabeling test that decides whether the move is kept in the detected symmetry group.
+          This modal shows row moves from the candidate space and the matching relabeling test that decides whether each move is accepted into the detected pointwise product group.
         </p>
         <WreathElementTable elements={wreathElements} />
       </ExplorerModal>
@@ -177,7 +177,7 @@ function WreathElementTable({ elements }) {
 function WreathElementRow({ element, index }) {
   const explorerThemeId = getActiveExplorerThemeId();
   const classLabel = {
-    valid: '✓ kept in G',
+    valid: '✓ kept in G_pt',
     'matrix-preserving': 'identity only',
     rejected: '✗ no matching relabeling',
   }[element.classification];

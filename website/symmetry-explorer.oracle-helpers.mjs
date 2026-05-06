@@ -4,6 +4,11 @@
 // Used by the cross-V/W-aware regression tests.
 
 import { Permutation } from './components/symmetry-aware-einsum-contractions/engine/permutation.js';
+import {
+  canonicalTupleUnderGroup,
+  restrictStabilizerToPositions,
+  visibleTupleFromFullTuple,
+} from './components/symmetry-aware-einsum-contractions/engine/outputOrbit.js';
 
 /**
  * Enumerate all tuples in [n]^length.
@@ -62,10 +67,15 @@ export function enumerateOrbits(elements, n, labelCount) {
 }
 
 /**
- * Ground-truth μ and α for a group acting on [n]^L.
- *   μ = number of orbits
- *   α = Σ_{O ∈ X/G} |π_V(O)|  (each orbit contributes one accumulation per
- *                                 distinct V-projection it touches)
+ * Ground-truth μ and α for a group acting on [n]^L under the unified
+ * output-orbit accumulation metric.
+ *
+ *   μ = number of product orbits |X/G|
+ *   α = #{(O, Q) ∈ X/G × Y/H : π_V(O) ∩ Q ≠ ∅},   H = Stab_G(V)|_V.
+ *
+ * Equivalently α = Σ_{O ∈ X/G} |π_V(O) / H|: per orbit, count distinct
+ * H-canonical visible projections. Mirrors engine/__tests__/oracle.mjs and
+ * engine/regimes/bruteForceOrbit.js.
  *
  * Requires uniform dimension across labels (asserts).
  */
@@ -76,10 +86,14 @@ export function muAlphaGroundTruth(elements, sizes, vPositions) {
   }
   const orbits = enumerateOrbits(elements, n, sizes.length);
   const mu = orbits.length;
+  const hElements = restrictStabilizerToPositions(elements, vPositions);
   let alpha = 0;
   for (const O of orbits) {
     const vImages = new Set();
-    for (const t of O) vImages.add(vPositions.map((p) => t[p]).join(','));
+    for (const t of O) {
+      const v = visibleTupleFromFullTuple(t, vPositions);
+      vImages.add(canonicalTupleUnderGroup(v, hElements));
+    }
     alpha += vImages.size;
   }
   return { mu, alpha };

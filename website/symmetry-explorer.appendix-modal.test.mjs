@@ -38,14 +38,26 @@ test('appendix modal shell keeps the editorial rail and the new cost-vs-expressi
   assert.match(source, /throw new Error\(APPENDIX_REQUIRED_SLOT_ERRORS\[slotKey\] \?\? `Missing appendix slot: \$\{slotKey\}`\)/);
   assert.match(source, /throw new Error\(`Missing appendix slot block: \$\{slotKey\}\[\$\{index\}\]`\)/);
   assert.match(source, /renderProseBlocks\(normalizedBlocks/);
-  assert.match(source, /import \{ explorerThemeColor, getActiveExplorerThemeId \} from '\.\.\/lib\/explorerTheme\.js';/);
+  // Theme color helpers (vStyle/wStyle) live in the shared workedExample
+  // module after the Task-1 hoist; ExpressionLevelModal pulls them in via
+  // that module rather than importing explorerTheme.js directly. The new
+  // module is the source of truth for the colored coordinate styling.
+  assert.match(source, /vStyle,\s*\n\s*wStyle,\s*\n\}\s*from\s*'\.\/workedExample\/index\.jsx'/);
+  const workedExampleSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/workedExample/index.jsx', import.meta.url),
+    'utf8',
+  );
+  assert.match(workedExampleSource, /import \{ explorerThemeColor, getActiveExplorerThemeId \} from '\.\.\/\.\.\/lib\/explorerTheme\.js';/);
   assert.match(source, /relative w-full max-w-\[(1460px|var\(--content-max\))\] rounded-lg border border-gray-200 bg-white shadow-2xl/);
   assert.match(source, /appendixRailClass = 'mx-auto w-full max-w-\[(1460px|var\(--content-max\))\] px-6 md:px-8 lg:px-10'/);
-  assert.match(source, /id="expr-modal-heading"[\s\S]*>\s*Why expression symmetry is not the cost symmetry\s*<span style=\{\{ color: 'var\(--coral\)' \}\}>/);
+  // V3.1 letter-strip restructure: title now reflects the whole appendix,
+  // not §5's narrower lesson. The italic deck below it (lines 786–795)
+  // continues to explain the appendix's cost-vs-expression scope.
+  assert.match(source, /id="expr-modal-heading"[\s\S]*>\s*Appendix to the symmetry-aware count\s*<span style=\{\{ color: 'var\(--coral\)' \}\}>/);
   assert.match(source, /<SectionReferenceLink href="#cost-savings" beforeNavigate=\{onClose\}>Section 5<\/SectionReferenceLink>/);
   assert.match(source, /on the main page computed a symmetry-aware accumulation count/);
   assert.match(source, /href="#cost-savings"/);
-  assert.match(source, /pointwise symmetry for accumulation, formal symmetry for the completed expression, and output symmetry for storage/);
+  assert.match(source, /product-side symmetry for representative products, output-side action for stored output representatives, and formal dummy symmetry after summation/);
   assert.match(source, /max-w-\[min\(100%,980px\)\]/);
   assert.doesNotMatch(source, /Act 5 computed a symmetry-aware accumulation count\./);
   assert.doesNotMatch(source, /This appendix has two parts\./);
@@ -54,10 +66,17 @@ test('appendix modal shell keeps the editorial rail and the new cost-vs-expressi
 });
 
 test('appendix uses an editorial spine with asymmetric support shelves', () => {
+  // V3.1 letter-strip restructure: sub-section eyebrows use `n` as the
+  // sub-position WITHIN their AppendixGroup (so n=1 appears in A.1, B, C,
+  // D.1, and E). The unique-per-section anchor is `appendix-section-{N}`.
+  // We slice by anchorId, walking back to the section's `<AppendixSection`
+  // open and forward to the next mount.
   const sectionBlock = (n) => {
-    const start = source.indexOf(`n={${n}}`);
-    assert.notEqual(start, -1, `missing section marker n={${n}}`);
-    const next = source.indexOf('<AppendixSection', start + 1);
+    const anchor = source.indexOf(`anchorId="appendix-section-${n}"`);
+    assert.notEqual(anchor, -1, `missing section marker anchorId="appendix-section-${n}"`);
+    const start = source.lastIndexOf('<AppendixSection', anchor);
+    assert.notEqual(start, -1, `<AppendixSection open not found before anchor ${n}`);
+    const next = source.indexOf('<AppendixSection', start + '<AppendixSection'.length);
     return source.slice(start, next === -1 ? undefined : next);
   };
 
@@ -100,15 +119,27 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.match(section5, /supportClassName="space-y-5 xl:pt-1"/);
   assert.doesNotMatch(section5, /supportClassName=\{APPENDIX_SUPPORT_SHELF_CLASS\}/);
 
-  assert.doesNotMatch(section6, /AppendixSupportSplit/);
-  assert.match(section6, /Storage-only saving/);
+  // Section 6 (styling pass): renders intro + footer slots inside the shared
+  // `AppendixSupportSplit` lane + shelf grid (matching Sections 1–5). The
+  // partition-counting equation appears as KaTeX display math inside an
+  // The right-hand shelf now renders the equation and glossary entries
+  // directly in a centered container — no AppendixDefinitionPanel box.
+  // Legacy savings-comparison table, scopeLabel, tableNote, footnote slots,
+  // and the negative-margin footer band are gone.
+  assert.match(section6, /AppendixSupportSplit/);
+  assert.doesNotMatch(section6, /AppendixDefinitionPanel/);
+  assert.match(section6, /<Latex\s+math=\{[^}]+\}\s+display[^/]*\/>/);
+  assert.match(section6, /themeOverride=\{APPENDIX_SECTION_SIX_THEME_OVERRIDE\}/);
   assert.match(section6, /deckClassName="max-w-none"/);
+  assert.match(section6, /appendixSection6\.slots\.intro/);
+  assert.match(section6, /appendixSection6\.slots\.footer/);
+  assert.doesNotMatch(section6, /Storage-only saving/);
+  assert.doesNotMatch(section6, /appendixSection6\.slots\.scopeLabel/);
+  assert.doesNotMatch(section6, /appendixSection6\.slots\.tableNote/);
   assert.match(section6, /-mx-6 -mb-10 mt-8 border-t border-stone-200\/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10/);
-  assert.match(section6, /appendixSection6\.slots\.scopeLabel/);
-  assert.match(section6, /text-\[12\.5px\] leading-6 text-stone-700/);
-  assert.doesNotMatch(section6, /max-w-\[78ch\]/);
-  assert(section6.indexOf('Storage-only saving') < section6.indexOf('-mx-6 -mb-10 mt-8 border-t border-stone-200/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10'), 'footer band should come after the table');
-  assert(section6.indexOf('appendixSection6.slots.tableNote') > section6.indexOf('Storage-only saving'), 'storage explanatory paragraph should move below the table');
+  assert.doesNotMatch(section6, /bg-stone-50\/60/);
+  assert.doesNotMatch(section6, /isModelBlock/);
+  assert(section6.indexOf('appendixSection6.slots.intro') < section6.indexOf('appendixSection6.slots.footer'), 'intro should render before footer');
 
   assert.match(appendixSectionSource, /anchorId = ''/);
   assert.match(appendixSectionSource, /deckClassName = ''/);
@@ -127,127 +158,148 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
 });
 
 test('section 1 explains G_pt first and moves the σ-loop ledger into an audit block', () => {
-  assert.match(source, /n=\{1\}[\s\S]*title=\{appendixSection1\.title\}/);
-  assert.match(source, /n=\{1\}[\s\S]*deck=\{appendixSection1\.deck\}/);
-  assert.match(source, /n=\{1\}[\s\S]*appendixSection1\.slots\.intro/);
-  assert.match(source, /n=\{1\}[\s\S]*appendixSection1\.slots\.takeaway/);
-  assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.auditIntro, 0\)/);
-  assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.auditIntro, 1\)/);
-  assert.match(source, /n=\{1\}[\s\S]*appendixSection1\.slots\.columnGuide/);
-  assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 0\)/);
-  assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 1\)/);
-  assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 2\)/);
-  assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 3\)/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*title=\{appendixSection1\.title\}/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*deck=\{appendixSection1\.deck\}/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*appendixSection1\.slots\.intro/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*appendixSection1\.slots\.takeaway/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.auditIntro, 0\)/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.auditIntro, 1\)/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*appendixSection1\.slots\.columnGuide/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 0\)/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 1\)/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 2\)/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 3\)/);
   assert.match(source, /data-takeaway=\{String\.raw`G_\{\\mathrm\{pt\}\} is a cost group: it is valid for direct product\/update compression because it identifies equal indexed products under the declared equality model\.`\}/);
-  assert.match(source, /n=\{1\}[\s\S]*className=\{APPENDIX_PROSE_JUSTIFIED_CLASS\}/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*className=\{APPENDIX_PROSE_JUSTIFIED_CLASS\}/);
   assert.match(source, /appendixSection1\.slots\.auditIntro/);
-  assert.match(source, /n=\{1\}[\s\S]*appendixSection1\.slots\.columnGuide/);
-  assert.match(source, /n=\{1\}[\s\S]*<Latex math="\|G_\{\\mathrm\{wreath\}\}\|" \/>/);
-  assert.match(source, /n=\{1\}[\s\S]*<Latex math="\|G_\{\\text\{pt\}\}\|" \/>/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*appendixSection1\.slots\.columnGuide/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*<Latex math="\|G_\{\\mathrm\{wreath\}\}\|" \/>/);
+  assert.match(source, /anchorId="appendix-section-1"[\s\S]*<Latex math="\|G_\{\\text\{pt\}\}\|" \/>/);
   assert.doesNotMatch(source, /`\$\|G_\{\\mathrm\{wreath\}\}\|\$ counts candidate row moves before filtering\.[\s\S]*\$\|G_\{\\text\{pt\}\}\|\$ is the final detected pointwise group size\.`/);
   assert.match(source, /appendixSection1\.slots\.followups/);
   assert.match(source, /trace-product/);
   assert.match(source, /triangle/);
   assert.match(source, /young-s3/);
-  assert.doesNotMatch(source, /n=\{1\}[\s\S]*Let \$\$\{notationLatex\('l_labels'\)\}\$ be the set of all labels/);
-  assert.doesNotMatch(source, /n=\{1\}[\s\S]*When such a bijection exists, it induces a label relabeling/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-1"[\s\S]*Let \$\$\{notationLatex\('l_labels'\)\}\$ be the set of all labels/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-1"[\s\S]*When such a bijection exists, it induces a label relabeling/);
   assert.doesNotMatch(source, /<AppendixAuditBlock/);
   assert.doesNotMatch(source, /Audit detail/);
   assert.doesNotMatch(source, /Takeaway\.\s*<\/span>\s*<Latex math=\{String\.raw`G_\\\{\\text\\\{pt\\\}\\\}`/);
 });
 
 test('sections 2 through 4 introduce same-domain dummy renaming, then G_out, then G_f in dependency order', () => {
-  assert.match(source, /n=\{2\}[\s\S]*title=\{appendixSection2\.title\}/);
-  assert.match(source, /n=\{2\}[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection2\.deck\)\}\s*<\/InlineMathText>\s*\}/);
-  assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.intro/);
-  assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.takeaway/);
-  assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.runningExampleLabelPrefix/);
-  assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.runningExamplePresetLabel/);
-  assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.runningExampleLead/);
-  assert.match(source, /n=\{2\}[\s\S]*<FormulaHighlighted example=\{runningExamplePreset\} hoveredLabels=\{null\} \/>/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*title=\{appendixSection2\.title\}/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection2\.deck\)\}\s*<\/InlineMathText>\s*\}/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*appendixSection2\.slots\.intro/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*appendixSection2\.slots\.takeaway/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*appendixSection2\.slots\.runningExampleLabelPrefix/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*appendixSection2\.slots\.runningExamplePresetLabel/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*appendixSection2\.slots\.runningExampleLead/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*<FormulaHighlighted example=\{runningExamplePreset\} hoveredLabels=\{null\} \/>/);
   assert.match(source, /const runningExampleExpressionParts = useMemo\(/);
   assert.match(source, /const runningExampleFactors = useMemo\(/);
-  assert.match(source, /n=\{2\}[\s\S]*outputCoords=\{runningExampleExpressionParts\.outputLabels\}/);
-  assert.match(source, /n=\{2\}[\s\S]*sumCoords=\{runningExampleExpressionParts\.summedLabels\}/);
-  assert.match(source, /n=\{2\}[\s\S]*factors=\{runningExampleFactors\}/);
-  assert.match(source, /n=\{2\}[\s\S]*coords: \['i', 'l'\]/);
-  assert.match(source, /n=\{2\}[\s\S]*coords: \['j', 'k'\]/);
-  assert.doesNotMatch(source, /n=\{2\}[\s\S]*This gives a second group, \$\$\{notationLatex\('s_w_summed'\)\}\$/);
-  assert.doesNotMatch(source, /n=\{2\}[\s\S]*Rename dummy variables back/);
-  assert.doesNotMatch(source, /n=\{2\}[\s\S]*The swap [\s\S]* preserves the double sum as a formal expression/);
-  assert.match(source, /n=\{2\}[\s\S]*className=\{APPENDIX_PROSE_JUSTIFIED_CLASS\}/);
-  assert.doesNotMatch(source, /n=\{2\}[\s\S]*rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm/);
-  assert.doesNotMatch(source, /n=\{2\}[\s\S]*4 \\neq 6/);
-  assert.match(source, /n=\{3\}[\s\S]*title=\{appendixSection3\.title\}/);
-  assert.match(source, /n=\{3\}[\s\S]*deck=\{appendixSection3\.deck\}/);
-  assert.match(source, /n=\{3\}[\s\S]*appendixSection3\.slots\.definitionLead/);
-  assert.match(source, /n=\{3\}[\s\S]*appendixSection3\.slots\.takeaway/);
-  assert.match(source, /n=\{3\}[\s\S]*appendixSection3\.slots\.workedExampleLead/);
-  assert.match(source, /n=\{3\}[\s\S]*appendixSection3\.slots\.workedExampleNote/);
-  assert.match(source, /n=\{3\}[\s\S]*data-reader-facing-formula=/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*outputCoords=\{runningExampleExpressionParts\.outputLabels\}/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*sumCoords=\{runningExampleExpressionParts\.summedLabels\}/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*factors=\{runningExampleFactors\}/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*coords: \['i', 'l'\]/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*coords: \['j', 'k'\]/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-2"[\s\S]*This gives a second group, \$\$\{notationLatex\('s_w_summed'\)\}\$/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-2"[\s\S]*Rename dummy variables back/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-2"[\s\S]*The swap [\s\S]* preserves the double sum as a formal expression/);
+  assert.match(source, /anchorId="appendix-section-2"[\s\S]*className=\{APPENDIX_PROSE_JUSTIFIED_CLASS\}/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-2"[\s\S]*rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-2"[\s\S]*4 \\neq 6/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*title=\{appendixSection3\.title\}/);
+  // Section 3's deck contains LaTeX (`$H = \mathrm{Stab}_{G_{\text{pt}}}(V)|_V$`)
+  // so the modal wraps it in <InlineMathText> + normalizeAppendixDisplayText
+  // — same pattern sections 2 / 5 / 6 use for their LaTeX-bearing decks.
+  // Without this wrap, the dollar-delimited math renders as raw `$...$`
+  // text in the deck under the A.2 sub-section heading.
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection3\.deck\)\}\s*<\/InlineMathText>\s*\}/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.definitionLead/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.takeaway/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.workedExampleLead/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.workedExampleNote/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*data-reader-facing-formula=/);
   assert.match(source, /const APPENDIX_G_OUT_DEFINITION_LATEX/);
   assert.match(source, /APPENDIX_PI_RESTRICT_V_LATEX/);
-  assert.match(source, /n=\{3\}[\s\S]*appendixSection3\.slots\.workedExampleLead/);
-  assert.match(source, /n=\{3\}[\s\S]*<FormulaHighlighted example=\{EXAMPLES_BY_ID\.get\('bilinear-trace'\)\} hoveredLabels=\{null\} \/>/);
-  assert.match(source, /n=\{3\}[\s\S]*\\begin\{bmatrix\} 1 & 2 \\\\ 3 & 4 \\end\{bmatrix\}/);
-  assert.doesNotMatch(source, /n=\{3\}[\s\S]*Among the elements of \$\$\{notationLatex\('g_pointwise'\)\}\$/);
-  assert.doesNotMatch(source, /n=\{3\}[\s\S]*supportClassName=\{`\$\{APPENDIX_SUPPORT_SHELF_CLASS\} xl:pt-5`\}/);
-  assert.match(source, /n=\{4\}[\s\S]*title=\{appendixSection4\.title\}/);
-  assert.match(source, /n=\{4\}[\s\S]*deck=\{appendixSection4\.deck\}/);
-  assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.intro/);
-  assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.takeaway/);
-  assert.match(source, /n=\{4\}[\s\S]*renderAppendixSingleBlock\(appendixSection4\.slots\.constructionTitle, 0\)/);
-  assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.presetPickerLabel/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*appendixSection3\.slots\.workedExampleLead/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*<FormulaHighlighted example=\{EXAMPLES_BY_ID\.get\('bilinear-trace'\)\} hoveredLabels=\{null\} \/>/);
+  assert.match(source, /anchorId="appendix-section-3"[\s\S]*\\begin\{bmatrix\} 1 & 2 \\\\ 3 & 4 \\end\{bmatrix\}/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-3"[\s\S]*Among the elements of \$\$\{notationLatex\('g_pointwise'\)\}\$/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-3"[\s\S]*supportClassName=\{`\$\{APPENDIX_SUPPORT_SHELF_CLASS\} xl:pt-5`\}/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*title=\{appendixSection4\.title\}/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*deck=\{appendixSection4\.deck\}/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*appendixSection4\.slots\.intro/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*appendixSection4\.slots\.takeaway/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*renderAppendixSingleBlock\(appendixSection4\.slots\.constructionTitle, 0\)/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*appendixSection4\.slots\.presetPickerLabel/);
   assert.match(source, /SECTION4_FORMAL_GROUP_PRESET_IDS/);
   assert.match(source, /frobenius/);
   assert.match(source, /direct-s2-c3/);
   assert.match(source, /triple-outer/);
-  assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.constructionNote/);
-  assert.match(source, /n=\{4\}[\s\S]*<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
-  assert.match(source, /n=\{4\}[\s\S]*<VSubSwConstruction/);
-  assert.doesNotMatch(source, /n=\{4\}[\s\S]*We can now name the label-renaming formal group considered in this appendix\./);
-  assert.doesNotMatch(source, /n=\{4\}[\s\S]*rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-center/);
-  assert.doesNotMatch(source, /n=\{4\}[\s\S]*supportClassName=\{`\$\{APPENDIX_SUPPORT_SHELF_CLASS\} xl:pt-1`\}/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*appendixSection4\.slots\.constructionNote/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*<Latex math=\{String\.raw`G_\{\\text\{f\}\} = H \\times \\prod_d S\(W_d\)`\} \/>/);
+  assert.match(source, /anchorId="appendix-section-4"[\s\S]*<VSubSwConstruction/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-4"[\s\S]*We can now name the label-renaming formal group considered in this appendix\./);
+  assert.doesNotMatch(source, /anchorId="appendix-section-4"[\s\S]*rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-center/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-4"[\s\S]*supportClassName=\{`\$\{APPENDIX_SUPPORT_SHELF_CLASS\} xl:pt-1`\}/);
   assert.doesNotMatch(source, /Takeaway\.\s*\\\$?\$\$\{notationLatex\('s_w_summed'\)\}\$/);
   assert.doesNotMatch(source, /Takeaway\.\s*\\\$?\$\$\{notationLatex\('g_output'\)\}\$/);
   assert.doesNotMatch(source, /Takeaway\.\s*\\\$?\$\$\{notationLatex\('g_formal'\)\}\$/);
 });
 
 test('section 5 uses alphaComparison branches and the bilinear witness to reject Burnside on G_f for cost', () => {
-  assert.match(source, /n=\{5\}[\s\S]*title=\{appendixSection5\.title\}/);
-  assert.match(source, /n=\{5\}[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection5\.deck\)\}\s*<\/InlineMathText>\s*\}/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.intro/);
-  assert.match(source, /n=\{5\}[\s\S]*renderAppendixSingleBlock\(appendixSection5\.slots\.rule, 0\)/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.presetPickerLabel/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.mismatchLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.coincidentLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.noneLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.workedExampleLabelPrefix/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.workedExampleLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.assignmentLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.bilinearOrbitLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.directOrbitLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.mixedOrbitLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.genericOrbitLead/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.genericAssignmentTemplate/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.genericNoteTemplate/);
-  assert.match(source, /function WorkedExampleIndex\(/);
-  assert.match(source, /function WorkedExampleCoords\(/);
-  assert.match(source, /function WorkedExampleTensorRef\(/);
-  assert.match(source, /function WorkedExampleTensorProduct\(/);
-  assert.match(source, /function WorkedExampleDisplayEquation\(/);
-  assert.match(source, /function vStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'hero'\),\s*fontWeight: 600,\s*\};\s*\}/);
-  assert.match(source, /function wStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'summedSide'\),\s*fontWeight: 600,\s*\};\s*\}/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*title=\{appendixSection5\.title\}/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection5\.deck\)\}\s*<\/InlineMathText>\s*\}/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.intro/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*renderAppendixSingleBlock\(appendixSection5\.slots\.rule, 0\)/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.presetPickerLabel/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.mismatchLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.coincidentLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.noneLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.workedExampleLabelPrefix/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.workedExampleLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.assignmentLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.bilinearOrbitLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.directOrbitLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.mixedOrbitLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.genericOrbitLead/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.genericAssignmentTemplate/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*appendixSection5\.slots\.genericNoteTemplate/);
+  // Worked-example primitives (and the vStyle/wStyle theme helpers they
+  // build on) were hoisted into a sibling shared module in Task 1 of the
+  // orbit-rep-matrix redesign. ExpressionLevelModal now imports them
+  // rather than redefining; the bodies live (verbatim) in
+  // components/workedExample/index.jsx. Pin the imports here, and check
+  // the function bodies in the shared module instead.
+  {
+    const workedExampleSource = fs.readFileSync(
+      new URL('./components/symmetry-aware-einsum-contractions/components/workedExample/index.jsx', import.meta.url),
+      'utf8',
+    );
+    assert.match(workedExampleSource, /export function WorkedExampleIndex\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleCoords\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleTensorRef\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleTensorProduct\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleDisplayEquation\(/);
+    assert.match(workedExampleSource, /export function vStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'hero'\),\s*fontWeight: 600,\s*\};\s*\}/);
+    assert.match(workedExampleSource, /export function wStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'summedSide'\),\s*fontWeight: 600,\s*\};\s*\}/);
+    assert.match(source, /WorkedExampleTensorRef,/);
+    assert.match(source, /WorkedExampleCoords,/);
+    assert.match(source, /WorkedExampleTensorProduct,/);
+    assert.match(source, /WorkedExampleDisplayEquation,/);
+  }
   assert.match(source, /function buildWorkedExampleFactors\(/);
   assert.match(source, /alphaComparison\.state === 'mismatch'/);
   assert.match(source, /alphaComparison\.state === 'coincident'/);
   assert.match(source, /alphaComparison\.state === 'none'/);
-  assert.doesNotMatch(source, /n=\{5\}[\s\S]*The main page’s \$\\alpha\$ counts accumulation representatives/);
-  assert.doesNotMatch(source, /n=\{5\}[\s\S]*A naive formal count using \$\$\{notationLatex\('g_formal'\)\}\$ gives \$\\alpha_\{\\text\{formal\}\}/);
-  assert.doesNotMatch(source, /n=\{5\}[\s\S]*The pointwise accumulation count used by the engine is \$\\alpha_\{\\text\{engine\}\}/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-5"[\s\S]*The main page’s \$\\alpha\$ counts accumulation representatives/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-5"[\s\S]*A naive formal count using \$\$\{notationLatex\('g_formal'\)\}\$ gives \$\\alpha_\{\\text\{formal\}\}/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-5"[\s\S]*The pointwise accumulation count used by the engine is \$\\alpha_\{\\text\{engine\}\}/);
   assert.match(source, /\\begin\{bmatrix\} 1 & 2 \\\\ 3 & 4 \\end\{bmatrix\}/);
   assert.doesNotMatch(source, /A = \[\[1, 2\], \[3, 4\]\]/);
-  assert.match(source, /n=\{5\}[\s\S]*<WorkedExampleDisplayEquation/);
+  assert.match(source, /anchorId="appendix-section-5"[\s\S]*<WorkedExampleDisplayEquation/);
   assert.match(source, /appendixSection5\.slots\.assignmentLead/);
   assert.match(source, /<Latex math=\{String\.raw`i = 0,\\; j = 1`\} \/>/);
   assert.match(source, /outputCoords=\{\[0, 1\]\}/);
@@ -293,7 +345,7 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   assert.doesNotMatch(source, /formatWitnessTuple\(alphaComparison\.witness\.tupleA\)/);
   assert.doesNotMatch(source, /formatWitnessTuple\(alphaComparison\.witness\.tupleB\)/);
   assert.doesNotMatch(source, /The following two assignments lie in the same formal orbit and contribute to the same output entry, but they belong to different pointwise orbits and produce different products\./);
-  const section5Start = source.indexOf('n={5}');
+  const section5Start = source.indexOf('anchorId="appendix-section-5"');
   const presetsIdx = source.indexOf('appendixSection5.slots.presetPickerLabel', section5Start);
   const mismatchIdx = source.indexOf("alphaComparison.state === 'mismatch'", section5Start);
   assert.equal(source.includes('appendixSection5.slots.selectedEinsumLabel'), false);
@@ -303,48 +355,33 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   assert(presetsIdx < mismatchIdx, 'preset jump row should appear before the branch-specific explanation block');
 });
 
-test('section 6 frames storage as a separate optimization axis with α_engine and α_storage', () => {
-  assert.match(source, /n=\{6\}[\s\S]*title=\{appendixSection6\.title\}/);
-  assert.match(source, /n=\{6\}[\s\S]*deckClassName="max-w-none"/);
-  assert.match(source, /n=\{6\}[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection6\.deck\)\}\s*<\/InlineMathText>\s*\}/);
-  assert.match(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.intro/);
-  assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.footnote, 0\)/);
-  assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.tableNote, 0\)/);
-  assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.scopeLabel, 0\)/);
-  assert.match(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.footer/);
-  assert.match(source, /n=\{6\}[\s\S]*const isModelBlock = index >= 1 && index <= 3;/);
-  assert.match(source, /n=\{6\}[\s\S]*rounded-lg border border-stone-200\/70 bg-stone-50\/60 px-4 py-3/);
-  assert.match(source, /n=\{6\}[\s\S]*strongClassName: isModelBlock \? 'font-semibold text-\[var\(--primary\)\]' : null/);
-  assert.match(source, /n=\{6\}[\s\S]*const operandChips = operands\.map\(\(operand\) => \(\{/);
-  assert.match(source, /n=\{6\}[\s\S]*chipName: operand\.count > 1 \? `\$\{operand\.name\}×\$\{operand\.count\}` : operand\.name/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="flex flex-wrap gap-1\.5">\s*\{operandChips\.map\(\(operand\) => \(/);
-  assert.match(source, /n=\{6\}[\s\S]*<SymmetryChip key=\{`\$\{operand\.name\}-\$\{operand\.sym\}`\} name=\{operand\.chipName\} symmetry=\{operand\.sym\} \/>/);
-  assert.match(source, /import \{ buildStorageSavingsRows \} from '\.\.\/engine\/storageSavings\.js';/);
-  assert.match(source, /const savingsTableRows = useMemo\(\s*\(\) => buildStorageSavingsRows\(EXAMPLES, 3\),\s*\[\],\s*\)/);
-  assert.doesNotMatch(source, /const SAVINGS_TABLE_ROWS = \[/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*<span className="font-mono font-semibold">\{o\.name\}<\/span>/);
-  assert.match(source, /Accumulation representatives/);
-  assert.match(source, /Output-orbit representatives/);
-  assert.match(source, /Storage-only saving/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{engine\}\}" \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Accumulation representatives<\/div>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{storage\}\}" \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Output-orbit representatives<\/div>/);
-  assert.match(source, /n=\{6\}[\s\S]*r\.vLatex === '\\\\varnothing' \? '\\\\varnothing' : `\\\\\{\$\{r\.vLatex\}\\\\\}`/);
-  assert.match(source, /n=\{6\}[\s\S]*<Latex math=\{r\.vSubLatex\} \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*\{r\.alphaEngine\}/);
-  assert.match(source, /n=\{6\}[\s\S]*\{r\.alphaStorage\}/);
-  assert.match(source, /n=\{6\}[\s\S]*\$\{r\.saving\} \(\$\{r\.savingPct\}%\)/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*Accumulation is governed by \$\$\{notationLatex\('g_pointwise'\)\}\$/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*Output storage is governed by \$\$\{notationLatex\('g_output'\)\}\$/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*The dummy-label group \$\$\{notationLatex\('s_w_summed'\)\}\$ contributes nothing to output storage/);
-  assert.doesNotMatch(source, /Appendix note/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*SCOPE/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*The \$\\alpha\$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model with \$\$\{notationLatex\('g_pointwise'\)\}\$ as the summand-value equivalence relation\./);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*Output-tensor storage collapse, algebraic restructuring such as factoring \$R = v v\^\\top\$, and contraction re-ordering all sit outside that scope and require different machinery than the pointwise orbit compression measured on the main page\./);
-  assert.doesNotMatch(source, /This appendix separates three optimization questions/);
-  assert.doesNotMatch(source, /The formal group \$\$\{notationLatex\('g_formal'\)\}\$ is essential for explaining expression-level label-renaming symmetry/);
-  assert.doesNotMatch(source, /space-y-3 text-\[13px\] leading-6 text-gray-700/);
+test('section 6 explains the unified output-orbit accumulation count', () => {
+  // Task-9 rewrite: section 6 dropped the storage-savings table, the
+  // alpha_engine vs alpha_storage comparison, the Model 1/2/3 framing, and
+  // the buildStorageSavingsRows/savingsTableRows machinery. It now renders
+  // the intro slot followed by the footer band — both describe how H is
+  // induced from G_pt and why the legacy G_out / storage-only model is
+  // subsumed by the unified metric.
+  assert.match(source, /anchorId="appendix-section-6"[\s\S]*title=\{appendixSection6\.title\}/);
+  assert.match(source, /anchorId="appendix-section-6"[\s\S]*deckClassName="max-w-none"/);
+  assert.match(source, /anchorId="appendix-section-6"[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection6\.deck\)\}\s*<\/InlineMathText>\s*\}/);
+  assert.match(source, /anchorId="appendix-section-6"[\s\S]*appendixSection6\.slots\.intro/);
+  assert.match(source, /anchorId="appendix-section-6"[\s\S]*appendixSection6\.slots\.footer/);
+
+  // Removed in Task 9.
+  assert.doesNotMatch(source, /import \{ buildStorageSavingsRows \}/);
+  assert.doesNotMatch(source, /buildStorageSavingsRows\(EXAMPLES, 3\)/);
+  assert.doesNotMatch(source, /const savingsTableRows = useMemo/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-6"[\s\S]*appendixSection6\.slots\.footnote/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-6"[\s\S]*appendixSection6\.slots\.tableNote/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-6"[\s\S]*appendixSection6\.slots\.scopeLabel/);
+  assert.doesNotMatch(source, /Accumulation representatives/);
+  assert.doesNotMatch(source, /Output-orbit representatives/);
+  assert.doesNotMatch(source, /Storage-only saving/);
+  assert.doesNotMatch(source, /\\alpha_\{\\text\{engine\}\}/);
+  assert.doesNotMatch(source, /\\alpha_\{\\text\{storage\}\}/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-6"[\s\S]*\{r\.alphaEngine\}/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-6"[\s\S]*\{r\.alphaStorage\}/);
 });
 
 test('appendix avoids raw unthemed math literals for key semantic symbols and example algebra', () => {
@@ -360,7 +397,6 @@ test('section 6 model prefixes are emphasized through copy plus InlineMathText s
   assert.match(inlineMathTextSource, /export function renderTooltipInlineText\(text, keyPrefix, options = \{\}\)/);
   assert.match(inlineMathTextSource, /const strongClassName = options\.strongClassName \?\? 'font-semibold text-current';/);
   assert.match(inlineMathTextSource, /className=\{strongClassName\}/);
-  assert.match(source, /strongClassName: isModelBlock \? 'font-semibold text-\[var\(--primary\)\]' : null/);
 });
 
 test('appendix hover surfaces and shared typography registers remain intact', () => {
@@ -369,12 +405,27 @@ test('appendix hover surfaces and shared typography registers remain intact', ()
   assert.match(source, /function AppendixPresetHoverLabel\(/);
   assert.match(source, /createPortal\(/);
   assert.match(source, /pointer-events-none fixed z-\[9999\]/);
-  assert.match(source, /const APPENDIX_PROSE_CLASS = 'font-serif text-\[17px\] leading-\[1\.75\] text-gray-900';/);
+  // APPENDIX_PROSE_CLASS and APPENDIX_MONO_LEDGER_CLASS were hoisted into
+  // the shared workedExample module in Task 1 of the orbit-rep-matrix
+  // redesign so OrbitDetailCard and similar surfaces can reuse them. Verify the
+  // canonical declarations there, and confirm ExpressionLevelModal pulls
+  // them in via the import. The remaining APPENDIX_* class constants
+  // (justified prose, article lane, app text, etc.) still live alongside
+  // the modal's local helpers.
+  {
+    const workedExampleSource = fs.readFileSync(
+      new URL('./components/symmetry-aware-einsum-contractions/components/workedExample/index.jsx', import.meta.url),
+      'utf8',
+    );
+    assert.match(workedExampleSource, /export const APPENDIX_PROSE_CLASS = 'font-serif text-\[17px\] leading-\[1\.75\] text-gray-900';/);
+    assert.match(workedExampleSource, /export const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-\[13px\] leading-relaxed text-gray-900';/);
+    assert.match(source, /APPENDIX_PROSE_CLASS,/);
+    assert.match(source, /APPENDIX_MONO_LEDGER_CLASS,/);
+  }
   assert.match(source, /const APPENDIX_PROSE_JUSTIFIED_CLASS = `\$\{APPENDIX_PROSE_CLASS\} text-justify`;/);
   assert.match(source, /const APPENDIX_ARTICLE_LANE_CLASS = 'max-w-\[78ch\] space-y-4 \[\&_p\]:text-justify';/);
   assert.match(source, /const APPENDIX_APP_TEXT_CLASS = 'text-\[13px\] leading-\[1\.55\] text-gray-700';/);
   assert.match(source, /const APPENDIX_SMALL_TEXT_CLASS = 'text-\[12px\] leading-5 text-gray-600';/);
-  assert.match(source, /const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-\[13px\] leading-relaxed text-gray-900';/);
   assert.match(source, /const APPENDIX_KICKER_CLASS = 'text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-gray-400';/);
   assert.match(source, /const APPENDIX_FOOTNOTE_CLASS = 'text-\[11px\] italic text-muted-foreground';/);
 });
@@ -386,15 +437,15 @@ test('appendix callout cards reuse the main-page "Where symmetry enters" shell',
   assert.match(preambleSource, /import EditorialCallout from '\.\/EditorialCallout\.jsx';/);
   assert.match(source, /function AppendixTakeaway\(/);
   assert.match(source, /function AppendixDefinitionPanel\(/);
-  assert.doesNotMatch(source, /n=\{5\}[\s\S]*<EditorialCallout[\s\S]*label="Rule"/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*<EditorialCallout[\s\S]*label="Scope"/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-5"[\s\S]*<EditorialCallout[\s\S]*label="Rule"/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-6"[\s\S]*<EditorialCallout[\s\S]*label="Scope"/);
   assert.doesNotMatch(source, /alphaComparison\.state === 'coincident' \|\| alphaComparison\.state === 'none'[\s\S]*<EditorialCallout[\s\S]*label="Try presets with a visible gap"/);
   assert.doesNotMatch(source, /label=\{label\}/);
   assert.doesNotMatch(source, /label=\{title\}/);
   assert.doesNotMatch(source, /function AppendixTakeaway[\s\S]*rounded-lg border border-gray-200 bg-gray-50 px-5 py-4/);
   assert.doesNotMatch(source, /function AppendixDefinitionPanel[\s\S]*rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm/);
-  assert.doesNotMatch(source, /n=\{5\}[\s\S]*rounded-lg border border-gray-900\/10 bg-stone-50 px-5 py-4/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*rounded-lg border border-gray-200 bg-gray-50 px-5 py-4/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-5"[\s\S]*rounded-lg border border-gray-900\/10 bg-stone-50 px-5 py-4/);
+  assert.doesNotMatch(source, /anchorId="appendix-section-6"[\s\S]*rounded-lg border border-gray-200 bg-gray-50 px-5 py-4/);
   assert.doesNotMatch(source, /function AppendixCalloutShell\(/);
   assert.doesNotMatch(source, /APPENDIX_CALLOUT_SHELL_CLASS/);
   assert.doesNotMatch(source, /APPENDIX_CALLOUT_KICKER_CLASS/);
@@ -414,8 +465,8 @@ test('appendix roadmap cards are formula-first with white background and black b
   assert.doesNotMatch(roadmapBlock, /Output group/);
   assert.doesNotMatch(roadmapBlock, /Dummy group/);
   assert.doesNotMatch(roadmapBlock, /Formal group/);
-  assert.ok(roadmapBlock.includes('The restriction <Latex math={String.raw`G_{\\text{pt}}\\|_V`} /> to output labels.'));
-  assert.match(roadmapBlock, /This is the output-level symmetry inherited from pointwise equality; in this appendix it is used to discuss output equality and storage collapse\./);
+  assert.ok(roadmapBlock.includes('H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V'));
+  assert.match(roadmapBlock, /the main accumulation count: stored output representatives in/);
   assert.match(source, /same-domain dummy renamings of bound summation variables/);
-  assert.match(source, /<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
+  assert.match(source, /<Latex math=\{String\.raw`G_\{\\text\{f\}\} = H \\times \\prod_d S\(W_d\)`\} \/>/);
 });

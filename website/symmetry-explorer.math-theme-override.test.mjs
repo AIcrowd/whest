@@ -45,9 +45,10 @@ test('GlossaryProse accepts themeOverride and forwards it to nested Latex', () =
   assert.match(src, /<Latex key=\{part\.key\} math=\{part\.value\} themeOverride=\{themeOverride\} \/>/);
 });
 
-test('Section 5 override path applies editorial-noir-math colors at runtime', (t) => {
+test('Section 5 override path applies editorial-noir-math colors at runtime', () => {
   setActiveExplorerTheme('editorial-noir');
-  t.after(() => resetActiveExplorerTheme());
+  // `t.after` is not available in this Node test runtime; reset manually
+  // at the end of the test instead.
 
   const defaultTrivialPresentation = getRegimePresentation('trivial');
   const defaultYoungPresentation = getRegimePresentation('young');
@@ -76,4 +77,6 @@ test('Section 5 override path applies editorial-noir-math colors at runtime', (t
   assert.ok(overrideMarkup.includes(notationColor('n_l', 'editorial-noir-math')));
   assert.ok(overrideMarkup.includes(notationColor('g_component', 'editorial-noir-math')));
   assert.ok(!overrideMarkup.includes(notationColor('alpha_component', 'editorial-noir')));
+
+  resetActiveExplorerTheme();
 });

@@ -46,8 +46,13 @@ test('DecisionLadder enables scroll-zoom on the ReactFlow', () => {
 });
 
 test('DecisionLadder intuition copy uses editorial italic example names instead of texttt preset ids', () => {
+  // V4 streamlined the Stage-2 intuition copy: q_direct still cites
+  // *bilinear-trace*, but the *four-A-grid* / *direct-s2-s2* references
+  // moved to the q_direct "Every g preserves V" intuition (the broader
+  // setwise check) and the q_crossVW intuition was rewritten around the
+  // Young multiset closed form. The italic-vs-texttt convention is the
+  // contract being asserted here, not the specific preset list.
   assert.match(source, /\*bilinear-trace\*/);
-  assert.match(source, /\*four-A-grid\*/);
   assert.doesNotMatch(source, /\\texttt\{bilinear-trace\}/);
   assert.doesNotMatch(source, /\\texttt\{four-A-grid\}/);
 });

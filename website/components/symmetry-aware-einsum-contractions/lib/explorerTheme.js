@@ -387,8 +387,10 @@ export const EXPLORER_THEME_PRESETS = [
       caseAllSummed: HERO_MUTED,
       caseMixed: LIGHT_SLATE,
       caseSingleton: DEEP_SLATE,
+      caseFunctionalProjection: SUMMED_SIDE,
       caseDirectProduct: SUMMED_SIDE,
       caseYoung: MID_SLATE,
+      casePartitionCount: MID_GRAY,
       caseBruteForceOrbit: INK,
     }),
   ),
@@ -410,8 +412,10 @@ export const EXPLORER_THEME_PRESETS = [
       caseAllSummed: HERO_MUTED,
       caseMixed: LIGHT_SLATE,
       caseSingleton: DEEP_SLATE,
+      caseFunctionalProjection: SUMMED_SIDE,
       caseDirectProduct: SUMMED_SIDE,
       caseYoung: MID_SLATE,
+      casePartitionCount: MID_GRAY,
       caseBruteForceOrbit: INK,
     }),
     {
@@ -566,6 +570,9 @@ export function getExplorerThemeCssVariables(themeOrId) {
   return {
     '--coral': roles.hero,
     '--coral-hover': roles.heroMuted,
+    // Explorer shell intentionally strengthens --coral-light so selected
+    // cells remain legible inside dense operational widgets; global
+    // --coral-light stays the quieter #FEF2F1 surface tint.
     '--coral-light': rgba(roles.hero, 0.14),
     '--success': roles.quantity,
     '--warning': roles.action,

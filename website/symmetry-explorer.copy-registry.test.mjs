@@ -62,13 +62,13 @@ test('copy renderers thread stable key prefixes through singleton prose helpers'
   const algorithm = readFromWebsiteRoot('components/symmetry-aware-einsum-contractions/components/AlgorithmAtAGlance.jsx');
   const appendix = readFromWebsiteRoot('components/symmetry-aware-einsum-contractions/components/ExpressionLevelModal.jsx');
 
-  assert.match(renderer, /renderProseBlocks\(\s*blocks = \[\],\s*\{ renderCallout, strongClassName = null, keyPrefix = 'prose' \} = \{\},\s*\)/);
+  assert.match(renderer, /renderProseBlocks\(\s*blocks = \[\],\s*\{ renderCallout, strongClassName = null, keyPrefix = 'prose', themeOverride = null \} = \{\},\s*\)/);
   assert.match(renderer, /const blockKey = `\$\{keyPrefix\}-\$\{block\.kind\}-\$\{index\}`;/);
   assert.match(renderer, /<Fragment key=\{blockKey\}>/);
-  assert.match(renderer, /<InlineMathText key=\{blockKey\} strongClassName=\{strongClassName\}>/);
+  assert.match(renderer, /<InlineMathText key=\{blockKey\} strongClassName=\{strongClassName\} themeOverride=\{themeOverride\}>/);
   assert.match(algorithm, /function renderSingleProseBlock\(blocks = \[\], keyPrefix = 'main-prose-block'\)/);
   assert.match(algorithm, /return renderProseBlocks\(blocks, \{ keyPrefix \}\)\[0\] \?\? null;/);
-  assert.match(appendix, /return renderProseBlocks\(normalizedBlocks, \{ renderCallout, strongClassName, keyPrefix: slotKey \}\);/);
+  assert.match(appendix, /return renderProseBlocks\(normalizedBlocks, \{ renderCallout, strongClassName, keyPrefix: slotKey, themeOverride \}\);/);
   assert.match(appendix, /return renderAppendixSlot\(\[block\], \{ \.\.\.options, slotKey: `\$\{slotKey\}-\$\{index\}` \}\)\[0\] \?\? null;/);
 });
 
@@ -92,8 +92,9 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
 
   assert.match(index, /export\s+const\s+contentRegistry\s*=\s*\{/);
   assert.match(mainIndex, /export \{ default as mainPreamble \} from '\.\/preamble\.js';/);
-  assert.match(mainIndex, /export \{ default as mainSection5 \} from '\.\/section5\.js';/);
-  for (const [group, section, binding] of expectedMappings) {
+  assert.match(mainIndex, /export \{ default as mainAssembleCost \} from '\.\/assembleCost\.js';/);
+  // Appendix mappings remain in index.ts
+  for (const [group, section, binding] of expectedMappings.filter(([g]) => g === 'appendix')) {
     assert.match(
       index,
       new RegExp(`${group}:\\s*\\{[\\s\\S]*?\\b${section}:\\s*${binding}\\b`),
@@ -101,13 +102,21 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
     );
   }
 
-  const modules = [
+  const mainModules = [
     'main/preamble.js',
-    'main/section1.js',
-    'main/section2.js',
-    'main/section3.js',
-    'main/section4.js',
-    'main/section5.js',
+    'main/einsumGlance.js',
+    'main/productSymmetry.js',
+    'main/projection.js',
+    'main/rowsCols.js',
+    'main/componentFactorization.js',
+    'main/certification.js',
+    'main/countingShortcuts.js',
+    'main/typedPartition.js',
+    'main/assembleCost.js',
+    'main/appendixTransition.js',
+  ];
+
+  const appendixModules = [
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -115,6 +124,8 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
     'appendix/section5.ts',
     'appendix/section6.ts',
   ];
+
+  const modules = [...mainModules, ...appendixModules];
 
   for (const relativePath of modules) {
     const source = read(relativePath);
@@ -131,11 +142,16 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
 test('content registry does not wrap inline math in markdown code ticks', () => {
   const modules = [
     'main/preamble.js',
-    'main/section1.js',
-    'main/section2.js',
-    'main/section3.js',
-    'main/section4.js',
-    'main/section5.js',
+    'main/einsumGlance.js',
+    'main/productSymmetry.js',
+    'main/projection.js',
+    'main/rowsCols.js',
+    'main/componentFactorization.js',
+    'main/certification.js',
+    'main/countingShortcuts.js',
+    'main/typedPartition.js',
+    'main/assembleCost.js',
+    'main/appendixTransition.js',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -154,33 +170,43 @@ test('content registry does not wrap inline math in markdown code ticks', () => 
   }
 });
 
-test('appendix section 3 takeaway states that G_out is inherited from G_pt', () => {
+test('appendix section 3 takeaway introduces H = Stab_{G_pt}(V)|_V as the output action', () => {
   const source = read('appendix/section3.ts');
 
+  // Section 3 was renamed to 'Output representatives induced by the
+  // product-side group' (V4) and now defines H rather than describing
+  // G_out as a separate storage-only concept.
   assert.match(
     source,
-    /\$G_\{\\\\mathrm\{out\}\}\$ is the output-level symmetry inherited from \$G_\{\\\\text\{pt\}\}\$/,
+    /Output representatives induced by the product-side group/,
   );
-  assert.match(source, /collapsing storage to one representative per output orbit/);
+  assert.match(source, /\$H = \\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)\|_V\$/);
+  assert.match(source, /already present in \$\\\\alpha = \\\\#\\\\\{\(O,Q\)/);
   assert.doesNotMatch(source, /direct dense-output evaluator/);
   assert.doesNotMatch(source, /symmetry-aware accumulation model/);
 });
 
-test('appendix section 6 names the three evaluator models for output symmetry', () => {
+test('appendix section 6 explains the unified output-orbit accumulation count', () => {
   const source = read('appendix/section6.ts');
 
-  assert.match(source, /Model 1 — current page\./);
-  assert.match(source, /Model 2 — symmetry-aware storage only\./);
-  assert.match(source, /Model 3 — symmetry-aware storage plus symmetry-aware accumulation\./);
-  assert.match(source, /output-orbit representatives/);
+  // V4 turned section 6 into the partition-counting theorem section. The
+  // older 'unified accumulation count' framing has been folded into the
+  // theorem's intro and the per-section explanations live in sections 3, 4, 5.
+  assert.match(source, /Partition-counting theorem for branching projections/);
+  assert.match(source, /typed equality pattern/);
+  assert.match(source, /\\\\mathrm\{Stab\}_G\(V\)/);
+  assert.match(source, /\\\\sum_\{\\\\tilde\{x\}/);
+  assert.doesNotMatch(source, /Model 1/);
+  assert.doesNotMatch(source, /Model 2/);
+  assert.doesNotMatch(source, /Model 3/);
 });
 
 test('copy modules use canonical notation keys for pointwise and formal groups', () => {
   const modules = [
     'main/preamble.js',
-    'main/section3.js',
-    'main/section4.js',
-    'main/section5.js',
+    'main/certification.js',
+    'main/rowsCols.js',
+    'main/assembleCost.js',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -214,11 +240,16 @@ test('COPY_MAP documents the copy surface and the JSX-owned exceptions', () => {
 
   assert.match(copyMap, /^# Copy Map$/m);
   assertMapped('main/preamble.js', 'AlgorithmAtAGlance.jsx');
-  assertMapped('main/section1.js', 'explorerNarrative.js');
-  assertMapped('main/section2.js', 'explorerNarrative.js');
-  assertMapped('main/section3.js', 'explorerNarrative.js');
-  assertMapped('main/section4.js', 'explorerNarrative.js');
-  assertMapped('main/section5.js', 'explorerNarrative.js');
+  assertMapped('main/einsumGlance.js', 'explorerNarrative.js');
+  assertMapped('main/productSymmetry.js', 'explorerNarrative.js');
+  assertMapped('main/projection.js', 'explorerNarrative.js');
+  assertMapped('main/rowsCols.js', 'explorerNarrative.js');
+  assertMapped('main/componentFactorization.js', 'explorerNarrative.js');
+  assertMapped('main/certification.js', 'explorerNarrative.js');
+  assertMapped('main/countingShortcuts.js', 'explorerNarrative.js');
+  assertMapped('main/typedPartition.js', 'explorerNarrative.js');
+  assertMapped('main/assembleCost.js', 'explorerNarrative.js');
+  assertMapped('main/appendixTransition.js', 'explorerNarrative.js');
   assertMapped('appendix/section1.ts', 'ExpressionLevelModal.jsx');
   assertMapped('appendix/section2.ts', 'ExpressionLevelModal.jsx');
   assertMapped('appendix/section3.ts', 'ExpressionLevelModal.jsx');

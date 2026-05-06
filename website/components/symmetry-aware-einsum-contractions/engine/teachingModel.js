@@ -33,7 +33,7 @@ export function buildMentalModelLines(selectedOrbitRow = null) {
     { id: 'intro-2', number: 2, code: '# Those pi relabelings generate the full symmetry group G for this step.' },
     { id: 'intro-3', number: 3, code: '# multiplication_cost counts one product evaluation per G-orbit representative.' },
     { id: 'init-eval', number: 4, code: 'multiplication_cost = 0' },
-    { id: 'intro-4', number: 5, code: '# accumulation_cost counts one accumulation per distinct projected output bin.' },
+    { id: 'intro-4', number: 5, code: '# accumulation_cost counts one update per stored output representative reached.' },
     { id: 'init-reduce', number: 6, code: 'accumulation_cost = 0' },
     { id: 'blank-1', number: 7, code: '' },
     { id: 'rep-comment-1', number: 8, code: '# RepSet = one representative full tuple from each orbit of G.' },
@@ -46,8 +46,8 @@ export function buildMentalModelLines(selectedOrbitRow = null) {
     { id: 'reduce-comment-1', number: 15, code: '    # project_V keeps only the output labels V from a full tuple.' },
     { id: 'reduce-comment-2', number: 16, code: `    # Example Outs(rep) = ${exampleOuts}` },
     { id: 'reduce-comment-3', number: 17, code: `    # Example coeff(rep, ${exampleCoeff.outTuple}) = ${exampleCoeff.coeff}` },
-    { id: 'out-loop', number: 18, code: '    for out in Outs(rep):' },
-    { id: 'reduce-update', number: 19, code: '        R[out] += coeff(rep, out) * base_val' },
+    { id: 'out-loop', number: 18, code: '    for out_rep in Outs(rep):' },
+    { id: 'reduce-update', number: 19, code: '        R[out_rep] += coeff(rep, out_rep) * base_val' },
     { id: 'reduce-inc', number: 20, code: '        accumulation_cost += 1' },
   ];
 }
@@ -77,7 +77,7 @@ const STATE_TOKENS = new Set([
   'multiplication_cost',
   'accumulation_cost',
   'base_val',
-  'out',
+  'out_rep',
   'rep',
   'num_terms',
   'R',

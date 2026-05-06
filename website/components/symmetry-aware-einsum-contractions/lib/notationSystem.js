@@ -31,6 +31,12 @@ const NOTATION_THEME_ROLE_BY_ID = {
   v_free: 'freeSide',
   v_free_component: 'freeSide',
   g_output: 'freeSide',
+  h_output: 'freeSide',
+  output_orbit_q: 'freeSide',
+  output_orbit_space: 'freeSide',
+  typed_partition_pattern: 'symmetryObject',
+  induced_maps: 'symmetryObject',
+  block_action_group: 'symmetryObject',
   g_pointwise_restricted_v: 'freeSide',
   g_v_factor: 'freeSide',
   projection_pi_v_free: 'freeSide',
@@ -130,6 +136,22 @@ export const NOTATION_REGISTRY = {
   g_component: makeEntry('G_a', 'G_a', NOTATION_COLORS.object),
   g_formal: makeEntry('G_f', String.raw`G_{\text{f}}`, NOTATION_COLORS.object),
   g_pointwise: makeEntry('G_pt', String.raw`G_{\text{pt}}`, NOTATION_COLORS.object),
+  // Primary output representative action used by the unified accumulation
+  // count alpha = #{(O, Q) ∈ X/G × Y/H : pi_V(O) ∩ Q ≠ ∅}.
+  h_output: makeEntry('H', 'H', NOTATION_COLORS.free),
+  output_orbit_q: makeEntry('Q', 'Q', NOTATION_COLORS.free),
+  output_orbit_space: makeEntry('Y/H', String.raw`Y/H`, NOTATION_COLORS.free),
+  typed_partition_pattern: makeEntry('x_tilde', String.raw`\tilde{x}`, NOTATION_COLORS.object),
+  induced_maps: makeEntry('A_x_tilde', String.raw`A_{\tilde{x}}`, NOTATION_COLORS.object),
+  block_action_group: makeEntry('Gbar_x_tilde', String.raw`\overline{G}_{\tilde{x}}`, NOTATION_COLORS.object),
+  // Deprecated alias kept for back-compat. Primary narrative uses h_output = H.
+  // TODO(remove-legacy-output-name): three follow-ups before this entry can go away.
+  //   1. Drop the g_output entry once the notation-system test no longer asserts it
+  //      (the test is the only remaining external consumer of the alias).
+  //   2. Rename the internal `gOutput` local variable inside VSubSwConstruction.jsx
+  //      to `hOutput` for consistency — the visible math already renders via h_output.
+  //   3. Any other retained legacy alias (g_output, gOutput) is internal-only and is
+  //      not part of the article narrative; readers learn H, not G_out.
   g_output: makeEntry('G_out', String.raw`G_{\mathrm{out}}`, NOTATION_COLORS.free),
   g_pointwise_restricted_v: makeEntry('G_pt|_V_free', String.raw`G_{\text{pt}}\big|_{V_{\mathrm{free}}}`, NOTATION_COLORS.free),
   s_w_summed: makeEntry('S(W_summed)', String.raw`S(W_{\mathrm{summed}})`, NOTATION_COLORS.summed),

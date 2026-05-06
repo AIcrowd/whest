@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Handle, Panel, Position, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react';
 import PanZoomControls, { PanZoomHint } from './PanZoomControls.jsx';
 import '@xyflow/react/dist/style.css';
@@ -10,6 +10,16 @@ import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import { notationColor, notationTint } from '../lib/notationSystem.js';
+import {
+  subscribeActiveAlphaMethod,
+  getActiveAlphaMethod,
+} from '../lib/alphaMethodBus.js';
+import {
+  mixWithWhite,
+  mixWithBlack,
+  relativeLuminance,
+  isDarkColor,
+} from '../lib/nodeColorUtils.js';
 
 // ─── DecisionLadder (two-stage hybrid) ─────────────────────────────────
 //
@@ -18,7 +28,7 @@ import { notationColor, notationTint } from '../lib/notationSystem.js';
 //
 //   STAGE 1 — Structural checks. Decisions here only need (V, W, generators).
 //             No group enumeration (dimino) required to REACH a leaf.
-//             Leaves: allVisible · allSummed · trivial · directProduct.
+//             Leaves: allVisible · allSummed · trivial.
 //
 //   STAGE 2 — Symmetry checks. We materialise G and run the remaining
 //             ladder: singleton vs bruteForceOrbit fallback.
@@ -166,67 +176,41 @@ const QUESTIONS = [
   },
   {
     id: 'q_direct',
-    short: 'Factorization check passes ?',
-    checks: 'Three post-dimino conditions, all required: (1) no element of $G$ maps a $V$-label to a $W$-label (no cross), (2) $|G| = |G_V| \\cdot |G_W|$ where $G_V$, $G_W$ are the projections onto $V$ and $W$, and (3) both $|G_V| > 1$ and $|G_W| > 1$ (meaningfulness guard).',
-    why: 'All three together say $G$ is exactly the direct product of its $V$-action and its $W$-action, with no coupling. $\\alpha$ then decomposes: for each $V$-tuple, Burnside runs independently on the $W$-side. Closed form: $\\alpha = (\\prod_{\\ell \\in V} n_\\ell) \\cdot |[n]^W / G_W|$.',
-    intuition: '"No cross" alone is not enough — *bilinear-trace* has no cross elements but $|G|=2 \\neq |G_V| \\cdot |G_W| = 4$ because its single non-identity element $(i\\;j)(k\\;l)$ is a *coupled* $\\mathbb{Z}_2$ (swapping $V$ forces swapping $W$). Passing examples: *four-A-grid*, *direct-s2-s2*, *direct-s2-c3*, *direct-s3-s2*.',
-    onTrue: 'directProduct', onFalse: 'q_crossVW',
+    short: 'Every g preserves V ?',
+    checks: 'For every $g \\in G$, does $g$ map the visible-label set $V$ into itself as a set? Equivalently: does no element of $G$ cross $V$/$W$? This is the post-dimino setwise check.',
+    why: 'When every $g$ preserves $V$ as a set, projection $\\pi_V$ descends from product orbits to stored output representatives functionally — each product orbit reaches exactly one $Q \\in Y/H$. So $\\alpha = M = |X/G|$, computed by size-aware Burnside.',
+    intuition: 'This is the "one destination per product orbit" branch. It includes coupled symmetries that pair $V$-labels with $V$-labels and $W$-labels with $W$-labels (like *bilinear-trace* $\\mathbb{Z}_2$), independent direct products like *direct-s2-s2*, and any element that simply does not cross $V$/$W$. The earlier "factorization" formulation was a strict subset; the corrected setwise check covers more cases.',
+    onTrue: 'functionalProjection', onFalse: 'q_crossVW',
     stage: 2,
   },
   {
     id: 'q_crossVW',
-    short: 'Cross-V/W element ?',
-    checks: 'Does any element $g \\in G$ move at least one $V$-label to a $W$-label (or vice versa)? An element-level scan: for each $g$, does there exist $\\ell \\in V$ with $g(\\ell) \\in W$?',
-    why: 'The Young regime (the leaf reached via "yes" → "G = Sym(L_c)" → "yes") requires at least one cross element — its multinomial closed form assumes $G$ genuinely mixes $V$ and $W$. Without cross, the Young regime cannot fire and brute-force orbit is the only remaining option.',
-    intuition: 'Reaching this node with answer "no" happens when the factorization check above refused for a *numeric* reason, not because of cross. Examples: *four-A-grid*\'s $S_2\\{a,b\\} \\times S_2\\{i,j\\}$ has zero cross elements, but it already fired the direct-product regime at the factorization check and never reaches here. *bilinear-trace*\'s coupled $\\mathbb{Z}_2$ also has zero cross elements, but the factorization check refused on $|G| = 2 \\neq |G_V| \\cdot |G_W| = 4$ — that is a "no-cross but reach here" case, and it falls straight to brute-force orbit. Cross elements themselves arise from base-group generators — declared axis symmetries on an operand that span $V$ and $W$ — or from top-group transpositions in the wreath — identical-operand swaps that pair a $V$-label with a $W$-label.',
-    onTrue: 'q_fullSym',
-    onFalse: 'bruteForceOrbit',
+    short: 'Full Sym(L), same domain ?',
+    checks: 'Is $G$ the full symmetric group on the component\'s label set — every permutation of $L_c$? Equivalently $|G| = |L_c|!$, with every label in the component sharing the same domain (the same label size $n_L$) and both $V_a$ and $W_a$ nonempty.',
+    why: 'When the test passes, both visible and summed assignments collapse into multisets and the closed-form multiset count fires: $\\alpha_a = \\binom{n_L + |V_a| - 1}{|V_a|} \\binom{n_L + |W_a| - 1}{|W_a|}$. When it does not, the engine prefers typed partition counting if its equality-pattern budget passes; otherwise it falls back to corrected brute-force enumeration when the tuple-enumeration budget passes.',
+    intuition: 'Examples that fire the multiset closed form: *young-s3* ($\\texttt{abc→ab}$ with $T$ fully symmetric, $|G|=3!=6$), *young-s4-v2w2*, *young-s4-v3w1*. The visible side is also quotiented by $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ — the multiset count is exactly $|Y/H|$ when $G$ is the full symmetric group.',
+    onTrue: 'young',
+    onFalse: 'q_fullSym',
     stage: 2,
   },
   {
     id: 'q_fullSym',
-    short: 'G = Sym(L_c) ?',
-    checks: 'Is $G$ the full symmetric group on the component\'s label set — every permutation of $L_c$? The cardinality test $|G| = |L_c|!$ decides this.',
-    why: 'When $G = \\mathrm{Sym}(L)$, the pointwise $V$-stabilizer is exactly the Young subgroup $\\mathrm{Sym}(W)$. The orbit count collapses to a multinomial: $\\alpha = n_L^{|V|} \\cdot \\binom{n_L + |W| - 1}{|W|}$, with no orbit enumeration.',
-    intuition: 'Examples that fire the Young regime: *young-s3* ($\\texttt{abc→ab}$ with $T$ fully symmetric, $|G|=6=3!$), *young-s4-v2w2*, *young-s4-v3w1*. Example with cross elements but $G \\neq \\mathrm{Sym}$: *cross-c3-partial* ($C_3 \\subsetneq S_3$). It falls to brute-force orbit because the closed form requires the full symmetric group on the component\'s label set.',
-    onTrue: 'young',
+    short: 'Typed partitions feasible ?',
+    checks: 'Can typed equality patterns $\\tilde{x}$ on $L_c$ be enumerated within the interactive partition budget?',
+    why: 'Typed partition counting is an exact compressed counter. It groups assignments by same-domain equality patterns and counts which stored output representatives each pattern can reach. When the equality-pattern budget passes, this is the preferred general counter. Otherwise the engine falls back to corrected brute-force orbit enumeration if the tuple budget is still acceptable.',
+    intuition: 'Examples: *cross-c3-partial* ($C_3 \\subsetneq S_3$) lands here when the closed-form multiset test refuses; the typed partition counter handles it exactly. The corrected brute-force fallback canonicalizes projected outputs under $H$ before counting, so its result is the same $\\alpha$.',
+    onTrue: 'partitionCount',
     onFalse: 'bruteForceOrbit',
     stage: 2,
   },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────
-
-function mixWithWhite(hex, amount) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  const mix = (c) => Math.round(c + (255 - c) * amount);
-  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
-}
-
-function mixWithBlack(hex, amount) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  const mix = (c) => Math.round(c * (1 - amount));
-  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
-}
-
-function relativeLuminance(hex) {
-  const rgb = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)]
-    .map((part) => parseInt(part, 16) / 255)
-    .map((channel) => (
-      channel <= 0.03928
-        ? channel / 12.92
-        : ((channel + 0.055) / 1.055) ** 2.4
-    ));
-  return (0.2126 * rgb[0]) + (0.7152 * rgb[1]) + (0.0722 * rgb[2]);
-}
-
-function isDarkColor(hex) {
-  return relativeLuminance(hex) < 0.28;
-}
+//
+// Color-mixing helpers (mixWithWhite, mixWithBlack, relativeLuminance,
+// isDarkColor) live in lib/nodeColorUtils.js so OrbitProjectionGraph and
+// future xyflow node renderers can reuse them without duplicating the
+// WCAG luminance calculation.
 
 function specFor(leafId) {
   return SHAPE_SPEC[leafId] || REGIME_SPEC[leafId] || null;
@@ -274,10 +258,15 @@ function LeafNode({ data }) {
   const shadow = [
     data.spotlight ? `0 0 0 9px ${SPOTLIGHT_RING}26` : null,
     data.active ? `0 0 0 3px #FFFFFF, 0 0 0 5px ${ACTIVE_RING}` : null,
+    // alphaHighlight: coral outer ring added when the α-method bus emits this
+    // leaf's id (StickyBar badge hover or ComponentCostView method badge hover).
+    // The ring is drawn as a large box-shadow so it does not affect layout and
+    // is visible over the page's white background.
+    data.alphaHighlight ? `0 0 0 3px #FFFFFF, 0 0 0 6px ${CORAL_OUTLINE}` : null,
   ].filter(Boolean).join(', ') || undefined;
   const borderColor = data.active
     ? ACTIVE_RING
-    : (data.spotlight ? SPOTLIGHT_RING : baseBorderColor);
+    : (data.spotlight ? SPOTLIGHT_RING : (data.alphaHighlight ? CORAL_OUTLINE : baseBorderColor));
   const textColor = darkSurface ? '#F8FAFC' : '#132228';
   // Allow 2-line wrap for longer leaf labels (e.g. the Young regime's
   // "Young subgroup (full Sym, cross V/W)"). Shorter labels render on one
@@ -295,6 +284,7 @@ function LeafNode({ data }) {
       }}
       data-tree-node={data.nodeId}
       data-leaf-spotlight={data.spotlight ? 'true' : undefined}
+      data-leaf-alpha-highlight={data.alphaHighlight ? 'true' : undefined}
     >
       <Handle id="right" type="target" position={Position.Right} className="pointer-events-none opacity-0" />
       <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
@@ -384,7 +374,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
   if (nodeId === 'enumerate') {
     return {
       title: 'Enumerate G (dimino)',
-      whenText: 'Paid once, only when structural checks all refuse',
+      stageLabel: 'Paid once, only when structural checks all refuse',
       body: 'Materialise every group element via Dimino\'s algorithm. After this point the remaining ladder has access to the full group and can use Burnside / orbit enumeration.',
       latex: null,
       color: notationColor('g_detected'),
@@ -394,7 +384,10 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
   if (q) {
     return {
       title: q.short,
-      whenText: q.stage === 1 ? 'Stage 1 — structural check (no dimino)' : 'Stage 2 — symmetry check (dimino done)',
+      // stageLabel is the context banner for the node (Stage 1 / Stage 2).
+      // It is NOT an "Applies when" condition — the renderer shows it with
+      // different styling (plain uppercase caption, no "Applies when:" prefix).
+      stageLabel: q.stage === 1 ? 'Stage 1 — structural check (no dimino)' : 'Stage 2 — symmetry check (dimino done)',
       // Structured sections replace the old single `body` string for
       // question nodes. The render path displays `checks`, `why`, and
       // `intuition` under their own captioned headings when present.
@@ -412,15 +405,34 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
     return {
       title: labelForLeaf(nodeId, presentation?.label ?? spec.label),
       whenText: spec.when,
+      // V3.1 CaseBadge "Counts" line: leaf tooltips always show this fixed caption
+      // so the reader understands what α counts regardless of which leaf fired.
+      countsLine: 'Filled O → Q cells for this component',
       body: spec.description,
       latex: spec.latex,
       glossary: spec.glossary,
+      // V3.1 "Full statement" link to Appendix B (classification cases).
+      // Lives at #appendix-section-7 in the modal — see ExpressionLevelModal
+      // where AppendixSection n=7 is mounted between §5 and §6. The legacy
+      // #appendix-section-2 anchor was V3.1 Appendix D (dummy renamings).
+      appendixHref: '#appendix-section-7',
       color: presentation?.color ?? spec.color,
       liveReasons,
     };
   }
   return null;
 }
+
+// Coral outline for the activeAlphaMethod highlight. This is the same coral
+// used as the site's accent; using a CSS variable would require a theme
+// context unavailable inside the ReactFlow node renderer, so we inline the
+// stable value here.
+// Use the design-system CSS variable (defined in tokens.css under --coral).
+// Inlining the raw coral hex would (a) duplicate the V_free notation color and
+// (b) fail the notation-system host-files audit, which forbids hardcoded
+// notation colors in any host file. CSS variables work in inline styles for
+// both box-shadow and borderColor — React passes them through unchanged.
+const CORAL_OUTLINE = 'var(--coral)';
 
 // ─── Layout ──────────────────────────────────────────────────────────
 //
@@ -429,7 +441,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
 //   - a pair of dashed "Stage 1 / Stage 2" bands behind the rows.
 //   - an "enumerate G" node sitting on the spine between the two stages.
 
-function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
+function buildLadderLayout(activeLeafIds, spotlightLeafIds, activeAlphaMethod = null) {
   const active = activeLeafIds instanceof Set
     ? activeLeafIds
     : new Set(activeLeafIds || []);
@@ -459,6 +471,9 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
         color: presentation?.color ?? spec.color,
         active: active.has(leafId),
         spotlight: spotlight.has(leafId),
+        // alphaHighlight: true when the StickyBar / ComponentCostView α-method
+        // badge is hovered and this leaf's id matches the emitted method id.
+        alphaHighlight: activeAlphaMethod != null && activeAlphaMethod === leafId,
         nodeId: leafId, // keep the canonical id for active/spotlight testing
       },
     };
@@ -637,12 +652,12 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
-  // q_direct yes → directProduct leaf on the left.
-  nodes.push(leafNode('directProduct', Q_DIRECT_Y));
+  // q_direct yes → functionalProjection leaf on the left.
+  nodes.push(leafNode('functionalProjection', Q_DIRECT_Y));
   edges.push({
-    id: `${directQ.id}-directProduct`,
+    id: `${directQ.id}-functionalProjection`,
     source: directQ.id, sourceHandle: 'side',
-    target: 'directProduct', targetHandle: 'right',
+    target: 'functionalProjection', targetHandle: 'right',
     label: EDGE_YES.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
@@ -666,28 +681,18 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
-  // Single bruteForceOrbit leaf serves BOTH "no" branches (q_crossVW-no and
-  // q_fullSym-no). Positioned at the bottom of the tree (centered under
-  // the spine, below q_fullSym) so:
-  //   - q_fullSym-no connects cleanly via a short vertical edge from its
-  //     bottom handle into BFO's top handle.
-  //   - q_crossVW-no exits the RIGHT side of the question, sweeps down and
-  //     around the spine, and connects into BFO's right handle.
-  const bruteY = Q_FULLSYM_Y + ROW_GAP;
-  nodes.push(leafNode('bruteForceOrbit', bruteY, true));
+  // q_crossVW yes → young leaf on the left (full-symmetric multiset closed form).
+  nodes.push(leafNode('young', Q_CROSSVW_Y));
   edges.push({
-    id: `${crossVWQ.id}-bruteForceOrbit`,
-    source: crossVWQ.id, sourceHandle: 'right',
-    target: 'bruteForceOrbit', targetHandle: 'right',
-    label: EDGE_NO.label,
-    // This edge's step path has a long vertical segment on the RIGHT side
-    // of the tree, so the midpoint sits on a vertical line — treat it as
-    // a vertical edge and shift the label horizontally.
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
-    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
+    id: `${crossVWQ.id}-young`,
+    source: crossVWQ.id, sourceHandle: 'side',
+    target: 'young', targetHandle: 'right',
+    label: EDGE_YES.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
+    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_crossVW yes → q_fullSym question on the spine.
+  // q_crossVW no → q_fullSym (typed partitions feasible?) on the spine.
   const fullSymQ = QUESTIONS.find((q) => q.id === 'q_fullSym');
   nodes.push({
     id: fullSymQ.id,
@@ -700,24 +705,25 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     id: `${crossVWQ.id}-${fullSymQ.id}`,
     source: crossVWQ.id, sourceHandle: 'bottom',
     target: fullSymQ.id, targetHandle: 'top',
-    label: EDGE_YES.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_VERTICAL },
-    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
+    label: EDGE_NO.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
+    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
-  // q_fullSym yes → young leaf on the left.
-  nodes.push(leafNode('young', Q_FULLSYM_Y));
+  // q_fullSym yes → partitionCount leaf on the left (typed partition count).
+  nodes.push(leafNode('partitionCount', Q_FULLSYM_Y));
   edges.push({
-    id: `${fullSymQ.id}-young`,
+    id: `${fullSymQ.id}-partitionCount`,
     source: fullSymQ.id, sourceHandle: 'side',
-    target: 'young', targetHandle: 'right',
+    target: 'partitionCount', targetHandle: 'right',
     label: EDGE_YES.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_fullSym no → same single bruteForceOrbit leaf at the bottom. Short
-  // vertical edge from q_fullSym's bottom handle into BFO's top handle.
+  // q_fullSym no → bruteForceOrbit at the bottom (corrected explicit fallback).
+  const bruteY = Q_FULLSYM_Y + ROW_GAP;
+  nodes.push(leafNode('bruteForceOrbit', bruteY, true));
   edges.push({
     id: `${fullSymQ.id}-bruteForceOrbit`,
     source: fullSymQ.id, sourceHandle: 'bottom',
@@ -760,6 +766,7 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
   edges,
   onNodeMouseEnter,
   onNodeMouseLeave,
+  onNodeClick,
 }) {
   const wrapRef = useRef(null);
   const flowRef = useRef(null);
@@ -837,6 +844,7 @@ const DecisionLadderGraph = memo(function DecisionLadderGraph({
           onInit={(instance) => { flowRef.current = instance; }}
           onNodeMouseEnter={onNodeMouseEnter}
           onNodeMouseLeave={onNodeMouseLeave}
+          onNodeClick={onNodeClick}
         >
           <LadderHintPanel />
           <LadderControlsPanel />
@@ -858,6 +866,11 @@ export default function DecisionLadder({
   // that has live reasons, the tooltip appends them so the reader sees the
   // concrete numbers (e.g. "estimate 800,000,000 exceeds budget").
   liveReasonsByLeaf = null,
+  // activeAlphaMethod bus (C01/C39 wire): when the StickyBar α-method badge
+  // or a ComponentCostView method badge is hovered, the App emits the hovered
+  // method's leaf id here. The matching tree leaf gets a coral outline so the
+  // reader can trace from the badge back to the classification tree.
+  activeAlphaMethod = null,
 }) {
   const effectiveLeafIds = useMemo(() => {
     if (Array.isArray(activeLeafIds) || activeLeafIds instanceof Set) {
@@ -868,6 +881,18 @@ export default function DecisionLadder({
     if (activeShapeId) legacy.push(activeShapeId);
     return new Set(legacy);
   }, [activeLeafIds, activeRegimeId, activeShapeId]);
+
+  // Subscribe to the α-method bus so that StickyBar / ComponentCostView badge
+  // hover highlights the matching leaf even when the prop is not forwarded by
+  // an intermediate component. The explicit `activeAlphaMethod` prop takes
+  // precedence (e.g. for stories and direct usage); the bus value is the
+  // fallback that works without ComponentCostView needing modification.
+  const busAlphaMethod = useSyncExternalStore(
+    subscribeActiveAlphaMethod,
+    getActiveAlphaMethod,
+    () => null,
+  );
+  const effectiveAlphaMethod = activeAlphaMethod ?? busAlphaMethod;
 
   const [hoveredNode, setHoveredNode] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, flipped: false });
@@ -882,8 +907,8 @@ export default function DecisionLadder({
   }, [spotlightLeafIds]);
 
   const { nodes, edges } = useMemo(
-    () => buildLadderLayout(effectiveLeafIds, effectiveSpotlight),
-    [effectiveLeafIds, effectiveSpotlight],
+    () => buildLadderLayout(effectiveLeafIds, effectiveSpotlight, effectiveAlphaMethod),
+    [effectiveLeafIds, effectiveSpotlight, effectiveAlphaMethod],
   );
 
   const openTooltipForNode = useCallback((nodeId, rect) => {
@@ -950,6 +975,22 @@ export default function DecisionLadder({
 
   const handleNodeMouseLeave = useCallback(() => hideTooltip(), [hideTooltip]);
 
+  // Click-leaf → Appendix B anchor (C29 V3.1 interaction).
+  // Only leaf nodes navigate — question/source/enumerate/stageBand nodes do
+  // not carry appendix anchors. We detect leaf nodes by checking whether
+  // specFor returns a non-null value for the node's canonical id.
+  // The Appendix B section is mounted at #appendix-section-7 by
+  // ExpressionLevelModal (n=7). The previously used #appendix-section-2
+  // anchor was Appendix D (dummy renamings) — wrong content for B.
+  const handleNodeClick = useCallback((_evt, node) => {
+    // Use the canonical id stored in data.nodeId (node.id may carry a suffix
+    // like "bruteForceOrbit__alt" for duplicate leaf instances).
+    const canonicalId = node.data?.nodeId ?? node.id;
+    if (specFor(canonicalId)) {
+      window.location.hash = '#appendix-section-7';
+    }
+  }, []);
+
   useEffect(() => () => cancelHide(), [cancelHide]);
 
   useEffect(() => {
@@ -992,6 +1033,7 @@ export default function DecisionLadder({
           edges={edges}
           onNodeMouseEnter={handleNodeMouseEnter}
           onNodeMouseLeave={handleNodeMouseLeave}
+          onNodeClick={handleNodeClick}
         />
       </div>
       {activeTooltip && (
@@ -1012,13 +1054,23 @@ export default function DecisionLadder({
             />
             <span className="text-sm font-semibold">{activeTooltip.title}</span>
           </div>
-          {activeTooltip.whenText && (
+          {activeTooltip.stageLabel && (
             <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+              <InlineMathText>{activeTooltip.stageLabel}</InlineMathText>
+            </div>
+          )}
+          {activeTooltip.whenText && (
+            <div className="mb-1 text-[11px] uppercase tracking-wider text-stone-500">
               <InlineMathText>
-                {activeTooltip.whenText.toLowerCase().startsWith('when')
+                {activeTooltip.whenText.toLowerCase().startsWith('applies when')
                   ? activeTooltip.whenText
-                  : `When: ${activeTooltip.whenText}`}
+                  : `Applies when: ${activeTooltip.whenText}`}
               </InlineMathText>
+            </div>
+          )}
+          {activeTooltip.countsLine && (
+            <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+              Counts: {activeTooltip.countsLine}
             </div>
           )}
           {activeTooltip.body && (
@@ -1073,6 +1125,21 @@ export default function DecisionLadder({
                   <li key={i}>· {r}</li>
                 ))}
               </ul>
+            </div>
+          )}
+          {activeTooltip.appendixHref && (
+            <div className="pointer-events-auto mt-3 border-t border-stone-200 pt-2 text-[11px] text-stone-500">
+              Full statement:{' '}
+              <a
+                href={activeTooltip.appendixHref}
+                className="font-medium text-stone-700 underline underline-offset-2 hover:text-stone-900"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.location.hash = activeTooltip.appendixHref;
+                }}
+              >
+                Appendix B
+              </a>
             </div>
           )}
         </div>

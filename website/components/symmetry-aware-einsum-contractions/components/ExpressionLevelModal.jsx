@@ -3,7 +3,9 @@ import { createPortal } from 'react-dom';
 import Latex from './Latex.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import VSubSwConstruction from './VSubSwConstruction.jsx';
+import AppendixGroup from './AppendixGroup.jsx';
 import AppendixSection from './AppendixSection.jsx';
+import AppendixTheoremBlock from './AppendixTheoremBlock.jsx';
 import EditorialCallout from './EditorialCallout.jsx';
 import SectionReferenceLink from './SectionReferenceLink.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
@@ -15,12 +17,25 @@ import appendixSection3 from '../content/appendix/section3.ts';
 import appendixSection4 from '../content/appendix/section4.ts';
 import appendixSection5 from '../content/appendix/section5.ts';
 import appendixSection6 from '../content/appendix/section6.ts';
+import appendixSection7 from '../content/appendix/section7.ts';
+import appendixSection8 from '../content/appendix/section8.ts';
 import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
-import { buildStorageSavingsRows } from '../engine/storageSavings.js';
 import { EXAMPLES } from '../data/examples.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
-import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import { notationColor, notationColoredLatex, notationLatex } from '../lib/notationSystem.js';
+import {
+  WorkedExampleTensorRef,
+  WorkedExampleCoords,
+  WorkedExampleTensorProduct,
+  WorkedExampleDisplayEquation,
+  WorkedExampleEquation,
+  WorkedExampleEquationLedger,
+  WorkedExampleNote,
+  APPENDIX_PROSE_CLASS,
+  APPENDIX_MONO_LEDGER_CLASS,
+  vStyle,
+  wStyle,
+} from './workedExample/index.jsx';
 
 // Lookup map keyed by preset id so §7's savings table can pull the raw
 // einsum and per-operand symmetry declarations straight from the source
@@ -185,31 +200,31 @@ function EinsumConstructionTooltip({ preset, groupLabel }) {
   );
 }
 
-function vStyle() {
-  return {
-    color: explorerThemeColor(getActiveExplorerThemeId(), 'hero'),
-    fontWeight: 600,
-  };
-}
-
-function wStyle() {
-  return {
-    color: explorerThemeColor(getActiveExplorerThemeId(), 'summedSide'),
-    fontWeight: 600,
-  };
-}
-
-const APPENDIX_PROSE_CLASS = 'font-serif text-[17px] leading-[1.75] text-gray-900';
 const APPENDIX_PROSE_JUSTIFIED_CLASS = `${APPENDIX_PROSE_CLASS} text-justify`;
 const APPENDIX_FORMAL_PROSE_CLASS = 'font-serif text-[17px] leading-[1.85] text-gray-800';
 const APPENDIX_APP_TEXT_CLASS = 'text-[13px] leading-[1.55] text-gray-700';
 const APPENDIX_APP_TEXT_STRONG_CLASS = 'text-[13px] leading-[1.55] text-gray-900';
 const APPENDIX_SMALL_TEXT_CLASS = 'text-[12px] leading-5 text-gray-600';
-const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-[13px] leading-relaxed text-gray-900';
 const APPENDIX_KICKER_CLASS = 'text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400';
+// Run-in heading style for compact, prose-flow sub-sections (e.g., the
+// Appendix E "passing disclaimer" tier where E.1, E.2, … live inline at
+// the start of their paragraphs rather than as full headings). Uses the
+// same serif body as APPENDIX_PROSE_CLASS so the heading does not break
+// the line; differentiation comes from font-weight, not size.
+const APPENDIX_RUN_IN_HEADING_CLASS = 'font-semibold text-gray-900';
+// Fine-print disclaimer style for the Appendix E tier. Smaller serif at
+// 13px / leading-1.65 / stone-600 — closer to a footnote than to body
+// prose. Pairs with APPENDIX_DISCLAIMER_HEADING_CLASS for the run-in
+// labels (E.1, E.2, … rendered semibold stone-900 inline).
+const APPENDIX_DISCLAIMER_PROSE_CLASS = 'font-serif text-[13px] leading-[1.65] text-stone-600';
+const APPENDIX_DISCLAIMER_HEADING_CLASS = 'font-semibold text-stone-900';
 const APPENDIX_FOOTNOTE_CLASS = 'text-[11px] italic text-muted-foreground';
 const APPENDIX_ARTICLE_LANE_CLASS = 'max-w-[78ch] space-y-4 [&_p]:text-justify';
 const APPENDIX_SUPPORT_SHELF_CLASS = 'rounded-xl border border-gray-200 bg-white p-4 md:p-5';
+// Section 6 (partition-counting theorem) opts into the same colored-variable
+// theme that main-page Section 5 uses so the equation and its glossary share
+// the noir math palette (α, L, G colored consistently with TotalCostView).
+const APPENDIX_SECTION_SIX_THEME_OVERRIDE = 'editorial-noir-math';
 const APPENDIX_SHORT_V_LATEX = () => notationColoredLatex('v_free', 'V');
 const APPENDIX_SHORT_W_LATEX = () => notationColoredLatex('w_summed', 'W');
 const APPENDIX_SHORT_S_W_LATEX = () => notationColoredLatex('s_w_summed', 'S(W)');
@@ -217,8 +232,11 @@ const APPENDIX_W_EQUALS_L_MINUS_V_LATEX = () => `${APPENDIX_SHORT_W_LATEX()} = $
 const APPENDIX_M_SIGMA_LATEX = `${notationLatex('m_incidence')}_{${notationLatex('sigma_row_move')}}`;
 const APPENDIX_PI_SIGMA_LATEX = `${notationLatex('pi_relabeling')}_{${notationLatex('sigma_row_move')}}`;
 const APPENDIX_PI_RESTRICT_V_LATEX = () => `${notationLatex('pi_relabeling')}|_{${APPENDIX_SHORT_V_LATEX()}}`;
+// V4: visible definition is the output representative action H = Stab_{G_pt}(V)|_V.
+// The constant name is kept (APPENDIX_G_OUT_DEFINITION_LATEX) so existing tests
+// that look it up continue to find the same hook; the rendered math defines H.
 const APPENDIX_G_OUT_DEFINITION_LATEX = () =>
-  `${notationLatex('g_output')} := \\{ ${APPENDIX_PI_RESTRICT_V_LATEX()} : ${notationLatex('pi_relabeling')} \\in ${notationLatex('g_pointwise')} \\text{ and } ${notationLatex('pi_relabeling')}(${APPENDIX_SHORT_V_LATEX()}) = ${APPENDIX_SHORT_V_LATEX()} \\}.`;
+  `${notationLatex('h_output')} = \\mathrm{Stab}_{${notationLatex('g_pointwise')}}(${APPENDIX_SHORT_V_LATEX()})|_{${APPENDIX_SHORT_V_LATEX()}} = \\{ ${APPENDIX_PI_RESTRICT_V_LATEX()} : ${notationLatex('pi_relabeling')} \\in ${notationLatex('g_pointwise')} \\text{ and } ${notationLatex('pi_relabeling')}(${APPENDIX_SHORT_V_LATEX()}) = ${APPENDIX_SHORT_V_LATEX()} \\}.`;
 const APPENDIX_REQUIRED_SLOT_ERRORS = {};
 
 function invariantAppendixSlot(blocks, slotKey) {
@@ -242,7 +260,7 @@ function replaceAppendixDisplayText(text = '', replacements = []) {
   );
 }
 
-function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slotKey = 'appendix-slot', strongClassName = null } = {}) {
+function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slotKey = 'appendix-slot', strongClassName = null, themeOverride = null } = {}) {
   const requiredBlocks = invariantAppendixSlot(blocks, slotKey);
   const normalizedBlocks = requiredBlocks.map((block) => ({
     ...block,
@@ -251,7 +269,7 @@ function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slo
       replacements,
     ),
   }));
-  return renderProseBlocks(normalizedBlocks, { renderCallout, strongClassName, keyPrefix: slotKey });
+  return renderProseBlocks(normalizedBlocks, { renderCallout, strongClassName, keyPrefix: slotKey, themeOverride });
 }
 
 function renderAppendixSingleBlock(blocks = [], index = 0, options = {}) {
@@ -461,122 +479,6 @@ function AppendixWorkedExample({
   );
 }
 
-function WorkedExampleIndex({ value, role = 'plain' }) {
-  const style =
-    role === 'v' ? vStyle() :
-    role === 'w' ? wStyle() :
-    undefined;
-  return <span style={style}>{value}</span>;
-}
-
-function WorkedExampleCoords({ coords = [], roles = [] }) {
-  return coords.map((coord, idx) => (
-    <span key={`${coord}-${idx}`}>
-      {idx > 0 ? ',' : null}
-      <WorkedExampleIndex value={coord} role={roles[idx] ?? 'plain'} />
-    </span>
-  ));
-}
-
-function WorkedExampleTensorRef({ name, coords = [], roles = [] }) {
-  if (!coords.length) return <>{name}</>;
-  return (
-    <>
-      {name}[<WorkedExampleCoords coords={coords} roles={roles} />]
-    </>
-  );
-}
-
-function WorkedExampleTensorProduct({ factors = [], scalarValues = null, total = null }) {
-  return (
-    <>
-      {factors.map((factor, idx) => (
-        <span key={`${factor.name}-${idx}`}>
-          {idx > 0 ? ' · ' : null}
-          <WorkedExampleTensorRef
-            name={factor.name}
-            coords={factor.coords}
-            roles={factor.roles}
-          />
-        </span>
-      ))}
-      {Array.isArray(scalarValues) && scalarValues.length ? (
-        <>
-          {' = '}
-          {scalarValues.map((value, idx) => (
-            <span key={`${value}-${idx}`}>
-              {idx > 0 ? ' · ' : null}
-              {value}
-            </span>
-          ))}
-          {total !== null ? (
-            <>
-              {' = '}
-              <strong>{total}</strong>
-            </>
-          ) : null}
-        </>
-      ) : null}
-    </>
-  );
-}
-
-function WorkedExampleDisplayEquation({
-  outputCoords = [],
-  outputRoles = [],
-  sumCoords = [],
-  sumRoles = [],
-  factors = [],
-}) {
-  return (
-    <div className={`pl-0 sm:pl-4 ${APPENDIX_MONO_LEDGER_CLASS}`}>
-      <div>
-        <WorkedExampleTensorRef name="R" coords={outputCoords} roles={outputRoles} />
-        {' = '}
-        {sumCoords.length ? (
-          <>
-            ∑
-            <sub className="text-[0.72em]">
-              <WorkedExampleCoords coords={sumCoords} roles={sumRoles} />
-            </sub>
-            {' '}
-          </>
-        ) : null}
-        <WorkedExampleTensorProduct factors={factors} />
-      </div>
-    </div>
-  );
-}
-
-function WorkedExampleEquation({ assignment, numeric }) {
-  return (
-    <div className="space-y-1">
-      <div className="text-gray-900">{assignment}</div>
-      <div className="pl-[5.5ch] text-gray-700">{numeric}</div>
-    </div>
-  );
-}
-
-function WorkedExampleEquationLedger({ children }) {
-  return (
-    <div className={APPENDIX_MONO_LEDGER_CLASS}>
-      <div className="space-y-3">{children}</div>
-    </div>
-  );
-}
-
-function WorkedExampleNote({ tone = 'neutral', children }) {
-  const contentClass =
-    tone === 'success'
-      ? APPENDIX_PROSE_CLASS.replace('text-gray-900', 'text-gray-800')
-      : APPENDIX_PROSE_CLASS.replace('text-gray-900', 'text-gray-700');
-  return (
-    <div className={contentClass}>
-      {children}
-    </div>
-  );
-}
-
 function AppendixTakeaway({ children }) {
   return (
     <EditorialCallout
@@ -611,11 +513,11 @@ function AppendixRoadmap() {
           </div>
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
-          <div className="font-mono text-[15px] font-semibold" style={{ color: notationColor('g_output') }}>
-            <Latex math={notationLatex('g_output')} />
+          <div className="font-mono text-[15px] font-semibold" style={{ color: notationColor('h_output') }}>
+            <Latex math={notationLatex('h_output')} />
           </div>
           <div className="mt-2 text-[12.5px] leading-6 text-gray-700">
-            The restriction <Latex math={String.raw`G_{\text{pt}}\|_V`} /> to output labels. This is the output-level symmetry inherited from pointwise equality; in this appendix it is used to discuss output equality and storage collapse.
+            The output representative action <Latex math={String.raw`H = \mathrm{Stab}_{G_{\text{pt}}}(V)|_V`} />. This is the output-side quotient already used by the main accumulation count: stored output representatives in <Latex math={notationLatex('output_orbit_space')} /> share one entry of the output tensor.
           </div>
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
@@ -628,7 +530,7 @@ function AppendixRoadmap() {
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
           <div className="font-mono text-[15px] font-semibold text-gray-900">
-            <Latex math={String.raw`G_{\text{f}} = G_{\mathrm{out}} \times \prod_d S(W_d)`} />
+            <Latex math={String.raw`G_{\text{f}} = H \times \prod_d S(W_d)`} />
           </div>
           <div className="mt-2 text-[12.5px] leading-6 text-gray-700">
             The label-renaming symmetry of the completed expression. This explains expression symmetry, but it is not the accumulation-cost group.
@@ -830,10 +732,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
     () => buildFormalOrbitExampleData({ example, labelOrder: analysis?.symmetry?.allLabels ?? [], witness: alphaComparison.witness }),
     [analysis?.symmetry?.allLabels, alphaComparison.witness, example],
   );
-  const savingsTableRows = useMemo(
-    () => buildStorageSavingsRows(EXAMPLES, 3),
-    [],
-  );
   const showBilinearFormalOrbitExample =
     example?.id === 'bilinear-trace' &&
     alphaComparison.state === 'mismatch' &&
@@ -892,7 +790,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 lineHeight: 1.05,
               }}
             >
-              Why expression symmetry is not the cost symmetry
+              Appendix to the symmetry-aware count
               <span style={{ color: 'var(--coral)' }}>.</span>
             </h2>
 
@@ -905,7 +803,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
               }}
             >
               <SectionReferenceLink href="#cost-savings" beforeNavigate={onClose}>Section 5</SectionReferenceLink>
-              <span>{' on the main page computed a symmetry-aware accumulation count. That count is deliberately based on pointwise equality of summands: two assignments may be identified only when they produce the same indexed product before summation. The completed einsum can have additional label-renaming symmetry after the summed labels have disappeared. This appendix separates those ideas: pointwise symmetry for accumulation, formal symmetry for the completed expression, and output symmetry for storage.'}</span>
+              <span>{' on the main page computed a symmetry-aware accumulation count. That count is deliberately based on pointwise equality of summands: two assignments may be identified only when they produce the same indexed product before summation. The completed einsum can have additional label-renaming symmetry after the summed labels have disappeared. This appendix separates those ideas: product-side symmetry for representative products, output-side action for stored output representatives, and formal dummy symmetry after summation.'}</span>
             </p>
           </div>
           <button
@@ -932,13 +830,18 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
         <div className={`pb-10 ${appendixRailClass}`}>
           <AppendixRoadmap />
 
+          <AppendixGroup
+            letter="A"
+            title="Product-side certification"
+            anchorId="appendix-letter-a"
+          >
           <AppendixSection
             n={1}
-            label="Pointwise group"
+            label="A.1 — Pointwise group"
+            subEyebrow
             anchorId="appendix-section-1"
             title={appendixSection1.title}
             deck={appendixSection1.deck}
-            className="pt-10"
           >
             <AppendixSupportSplit
               strict={true}
@@ -1057,92 +960,17 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
 
           <AppendixSection
             n={2}
-            label="Post-summation symmetry"
-            anchorId="appendix-section-2"
-            title={appendixSection2.title}
+            label="A.2 — Output action"
+            subEyebrow
+            anchorId="appendix-section-3"
+            title={appendixSection3.title}
             deck={
               <InlineMathText>
-                {normalizeAppendixDisplayText(appendixSection2.deck)}
+                {normalizeAppendixDisplayText(appendixSection3.deck)}
               </InlineMathText>
             }
           >
-            <AppendixSupportSplit
-              strict={true}
-              className="lg:grid-cols-[0.95fr_1.25fr]"
-              articleClassName="space-y-4"
-              supportClassName="space-y-4 xl:pt-1"
-              article={(
-                <>
-                  {renderAppendixSlot(appendixSection2.slots.intro).map((content, index) => (
-                    <p key={`appendix-2-intro-${index}`} className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
-                      {content}
-                    </p>
-                  ))}
-                  <AppendixTakeaway>
-                    {renderAppendixSingleBlock(appendixSection2.slots.takeaway, 0)}
-                  </AppendixTakeaway>
-                </>
-              )}
-              support={(
-                <div className="space-y-4">
-                  <p className="text-[15px] font-semibold leading-7 text-gray-900">
-                    {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLabelPrefix, 0)}{' '}
-                    <AppendixPresetHoverLabel
-                      preset={runningExamplePreset}
-                      groupLabel={runningExamplePreset?.expectedGroup}
-                      className="font-semibold cursor-help border-b border-dotted border-gray-300 text-left"
-                    >
-                      {renderAppendixSingleBlock(appendixSection2.slots.runningExamplePresetLabel, 0)}
-                    </AppendixPresetHoverLabel>
-                  </p>
-                  <p className={APPENDIX_APP_TEXT_STRONG_CLASS}>
-                    <span className="font-mono text-[13px] leading-6 text-stone-900">
-                      <FormulaHighlighted example={runningExamplePreset} hoveredLabels={null} />
-                    </span>
-                  </p>
-                  <div className="space-y-4">
-                    <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
-                      {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 0)}
-                    </p>
-                    {runningExampleExpressionParts ? (
-                      <WorkedExampleDisplayEquation
-                        outputCoords={runningExampleExpressionParts.outputLabels}
-                        outputRoles={runningExampleExpressionParts.outputLabels.map(() => 'v')}
-                        sumCoords={runningExampleExpressionParts.summedLabels}
-                        sumRoles={runningExampleExpressionParts.summedLabels.map(() => 'w')}
-                        factors={runningExampleFactors}
-                      />
-                    ) : null}
-                    <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
-                      {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 1)}
-                    </p>
-                    <WorkedExampleDisplayEquation
-                      outputCoords={['i', 'j']}
-                      outputRoles={['v', 'v']}
-                      sumCoords={['k', 'l']}
-                      sumRoles={['w', 'w']}
-                      factors={[
-                        { name: 'A', coords: ['i', 'l'], roles: ['v', 'w'] },
-                        { name: 'A', coords: ['j', 'k'], roles: ['v', 'w'] },
-                      ]}
-                    />
-                    <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
-                      {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 2)}
-                    </p>
-                  </div>
-                </div>
-              )}
-            />
-          </AppendixSection>
-
-          <AppendixSection
-            n={3}
-            label="Output action"
-            anchorId="appendix-section-3"
-            title={appendixSection3.title}
-            deck={appendixSection3.deck}
-          >
-            {/* Source-contract marker: G_out is defined via the restriction pi|_V of G_pt to output labels. */}
+            {/* Source-contract marker: H = Stab_{G_pt}(V)|_V is the restriction of G_pt to V-preserving elements. */}
             <AppendixSupportSplit
               articleClassName={APPENDIX_ARTICLE_LANE_CLASS}
               supportClassName="space-y-4 xl:pt-5"
@@ -1234,10 +1062,268 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
               )}
             />
           </AppendixSection>
+          </AppendixGroup>
+
+          <AppendixGroup
+            letter="B"
+            title="Classification-tree cases"
+            anchorId="appendix-letter-b"
+          >
+          <AppendixSection
+            n={1}
+            label="B"
+            subEyebrow
+            anchorId="appendix-section-7"
+            title={appendixSection7.title}
+            deckClassName="max-w-none"
+            deck={
+              <InlineMathText>
+                {normalizeAppendixDisplayText(appendixSection7.deck)}
+              </InlineMathText>
+            }
+          >
+            <div className={APPENDIX_ARTICLE_LANE_CLASS}>
+              {renderAppendixSlot(appendixSection7.slots.intro).map((content, index) => (
+                <p key={`appendix-7-intro-${index}`} className={APPENDIX_PROSE_CLASS}>
+                  {content}
+                </p>
+              ))}
+              <ol className="mt-6 space-y-6 list-none pl-0">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((caseIdx) => {
+                  const labelSlot = appendixSection7.slots[`case${caseIdx}Label`];
+                  const bodySlot = appendixSection7.slots[`case${caseIdx}`];
+                  // V3.1 §46 demo migration: B.1 uses the new 4-field
+                  // AppendixTheoremBlock template (Condition / Claim /
+                  // Reason / Main-page shortcut) with anchor link + copy
+                  // button. Other cases stay on the legacy paragraph layout
+                  // for incremental migration; B.1 proves the new template
+                  // composes cleanly with the existing kicker eyebrow.
+                  if (caseIdx === 1) {
+                    const conditionText = bodySlot[0].text.replace(/^Condition\.\s*/, '');
+                    const claimText = bodySlot[1].text.replace(/^Claim\.\s*/, '');
+                    const reasonText = bodySlot[2].text.replace(/^Intuition\.\s*/, '');
+                    return (
+                      <li key={`appendix-7-case-${caseIdx}`} className="space-y-2">
+                        <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                          {renderAppendixSingleBlock(labelSlot, 0, {
+                            slotKey: `appendix-section7-case${caseIdx}-label`,
+                          })}
+                        </div>
+                        <AppendixTheoremBlock
+                          anchorId="appendix-b-1"
+                          condition={conditionText}
+                          claim={claimText}
+                          reason={reasonText}
+                          mainPageShortcut="Trivial group: $\alpha_a = |X_a|$, the raw assignment count."
+                        />
+                      </li>
+                    );
+                  }
+                  return (
+                    <li key={`appendix-7-case-${caseIdx}`} className="space-y-2">
+                      <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                        {renderAppendixSingleBlock(labelSlot, 0, {
+                          slotKey: `appendix-section7-case${caseIdx}-label`,
+                        })}
+                      </div>
+                      {bodySlot.map((_, blockIdx) => (
+                        <p key={`appendix-7-case-${caseIdx}-${blockIdx}`} className={APPENDIX_PROSE_CLASS}>
+                          {renderAppendixSingleBlock(bodySlot, blockIdx, {
+                            slotKey: `appendix-section7-case${caseIdx}`,
+                          })}
+                        </p>
+                      ))}
+                    </li>
+                  );
+                })}
+              </ol>
+              <p className={`${APPENDIX_PROSE_CLASS} mt-6 italic text-gray-700`}>
+                {renderAppendixSingleBlock(appendixSection7.slots.closingNote, 0, {
+                  slotKey: 'appendix-section7-closingNote',
+                })}
+              </p>
+            </div>
+          </AppendixSection>
+          </AppendixGroup>
+
+          <AppendixGroup
+            letter="C"
+            title="Typed partition-counting theorem"
+            anchorId="appendix-letter-c"
+          >
+          <AppendixSection
+            n={1}
+            label="C"
+            subEyebrow
+            anchorId="appendix-section-6"
+            title={appendixSection6.title}
+            deckClassName="max-w-none"
+            deck={
+              <InlineMathText>
+                {normalizeAppendixDisplayText(appendixSection6.deck)}
+              </InlineMathText>
+            }
+          >
+            {/* Source-contract marker: Accumulation is governed by G_pt. */}
+            <AppendixSupportSplit
+              articleClassName={APPENDIX_ARTICLE_LANE_CLASS}
+              supportClassName="space-y-4 xl:pt-1"
+              article={(
+                <>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.intro, 0, {
+                      slotKey: 'appendix-section6-intro',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
+                    })}
+                  </p>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.intro, 1, {
+                      slotKey: 'appendix-section6-intro',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
+                    })}
+                  </p>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.intro, 2, {
+                      slotKey: 'appendix-section6-intro',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
+                    })}
+                  </p>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.footer, 0, {
+                      slotKey: 'appendix-section6-footer',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
+                    })}
+                  </p>
+                </>
+              )}
+              support={(() => {
+                const equationLatex = `${normalizeAppendixDisplayText(appendixSection6.slots.intro[3].text).replace(/^\$|\$$/g, '')}\\tag{6.1}`;
+                return (
+                  <div className="space-y-2 text-center">
+                    <div className="text-[1.3em]">
+                      <Latex math={equationLatex} display themeOverride={APPENDIX_SECTION_SIX_THEME_OVERRIDE} />
+                    </div>
+                    <div className="pt-3 font-serif text-[14px] italic text-gray-500">where</div>
+                    <div className="space-y-1.5">
+                      {[4, 5, 6, 7, 8, 9].map((idx) => (
+                        <p
+                          key={`appendix-6-glossary-${idx}`}
+                          className="font-serif text-[15px] leading-[1.7] text-gray-700"
+                        >
+                          {renderAppendixSingleBlock(appendixSection6.slots.intro, idx, {
+                            slotKey: 'appendix-section6-glossary',
+                            themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
+                          })}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            />
+
+            <div className="-mx-6 -mb-10 mt-8 border-t border-stone-200/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10">
+              <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>Notes</div>
+              <p className="mt-2 text-[12.5px] leading-6 text-stone-700">
+                {renderAppendixSingleBlock(appendixSection6.slots.footer, 1, {
+                  slotKey: 'appendix-section6-footer',
+                  themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
+                })}
+              </p>
+            </div>
+          </AppendixSection>
+          </AppendixGroup>
+
+          <AppendixGroup
+            letter="D"
+            title="Formal symmetry after summation"
+            anchorId="appendix-letter-d"
+          >
+          <AppendixSection
+            n={1}
+            label="D.1 — Post-summation symmetry"
+            subEyebrow
+            anchorId="appendix-section-2"
+            title={appendixSection2.title}
+            deck={
+              <InlineMathText>
+                {normalizeAppendixDisplayText(appendixSection2.deck)}
+              </InlineMathText>
+            }
+          >
+            <AppendixSupportSplit
+              strict={true}
+              className="lg:grid-cols-[0.95fr_1.25fr]"
+              articleClassName="space-y-4"
+              supportClassName="space-y-4 xl:pt-1"
+              article={(
+                <>
+                  {renderAppendixSlot(appendixSection2.slots.intro).map((content, index) => (
+                    <p key={`appendix-2-intro-${index}`} className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
+                      {content}
+                    </p>
+                  ))}
+                  <AppendixTakeaway>
+                    {renderAppendixSingleBlock(appendixSection2.slots.takeaway, 0)}
+                  </AppendixTakeaway>
+                </>
+              )}
+              support={(
+                <div className="space-y-4">
+                  <p className="text-[15px] font-semibold leading-7 text-gray-900">
+                    {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLabelPrefix, 0)}{' '}
+                    <AppendixPresetHoverLabel
+                      preset={runningExamplePreset}
+                      groupLabel={runningExamplePreset?.expectedGroup}
+                      className="font-semibold cursor-help border-b border-dotted border-gray-300 text-left"
+                    >
+                      {renderAppendixSingleBlock(appendixSection2.slots.runningExamplePresetLabel, 0)}
+                    </AppendixPresetHoverLabel>
+                  </p>
+                  <p className={APPENDIX_APP_TEXT_STRONG_CLASS}>
+                    <span className="font-mono text-[13px] leading-6 text-stone-900">
+                      <FormulaHighlighted example={runningExamplePreset} hoveredLabels={null} />
+                    </span>
+                  </p>
+                  <div className="space-y-4">
+                    <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
+                      {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 0)}
+                    </p>
+                    {runningExampleExpressionParts ? (
+                      <WorkedExampleDisplayEquation
+                        outputCoords={runningExampleExpressionParts.outputLabels}
+                        outputRoles={runningExampleExpressionParts.outputLabels.map(() => 'v')}
+                        sumCoords={runningExampleExpressionParts.summedLabels}
+                        sumRoles={runningExampleExpressionParts.summedLabels.map(() => 'w')}
+                        factors={runningExampleFactors}
+                      />
+                    ) : null}
+                    <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
+                      {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 1)}
+                    </p>
+                    <WorkedExampleDisplayEquation
+                      outputCoords={['i', 'j']}
+                      outputRoles={['v', 'v']}
+                      sumCoords={['k', 'l']}
+                      sumRoles={['w', 'w']}
+                      factors={[
+                        { name: 'A', coords: ['i', 'l'], roles: ['v', 'w'] },
+                        { name: 'A', coords: ['j', 'k'], roles: ['v', 'w'] },
+                      ]}
+                    />
+                    <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
+                      {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 2)}
+                    </p>
+                  </div>
+                </div>
+              )}
+            />
+          </AppendixSection>
 
           <AppendixSection
-            n={4}
-            label="Formal group"
+            n={2}
+            label="D.2 — Formal group"
+            subEyebrow
             anchorId="appendix-section-4"
             title={appendixSection4.title}
             deck={appendixSection4.deck}
@@ -1253,7 +1339,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     </p>
                   ))}
                   <div className="py-1 text-center">
-                    <Latex math={String.raw`G_{\text{f}} = G_{\mathrm{out}} \times \prod_d S(W_d)`} />
+                    <Latex math={String.raw`G_{\text{f}} = H \times \prod_d S(W_d)`} />
                   </div>
                   {renderAppendixSlot(appendixSection4.slots.intro.slice(1)).map((content, index) => (
                     <p key={`appendix-4-outro-${index}`} className={APPENDIX_PROSE_CLASS}>
@@ -1304,8 +1390,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
           </AppendixSection>
 
           <AppendixSection
-            n={5}
-            label="Accumulation boundary"
+            n={3}
+            label="D.3 — Accumulation boundary"
+            subEyebrow
             anchorId="appendix-section-5"
             title={appendixSection5.title}
             deck={
@@ -1325,6 +1412,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                       {content}
                     </p>
                   ))}
+
+                  <p className={`${APPENDIX_PROSE_CLASS} font-semibold italic text-gray-800`}>
+                    {renderAppendixSingleBlock(appendixSection5.slots.summaryCaption, 0)}
+                  </p>
 
                   <EditorialCallout bodyClassName="mt-2 font-serif text-[17px] leading-[1.75] text-gray-900">
                     <div>
@@ -1459,6 +1550,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                                   }
                                 />
                               </WorkedExampleEquationLedger>
+                              <p className={APPENDIX_PROSE_CLASS}>
+                                {renderAppendixSingleBlock(appendixSection5.slots.bilinearInequality, 0)}
+                              </p>
                               <WorkedExampleNote>
                                 {renderAppendixSingleBlock(appendixSection5.slots.bilinearNote, 0)}
                               </WorkedExampleNote>
@@ -1535,6 +1629,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                                   )}
                                 />
                               </WorkedExampleEquationLedger>
+                              <p className={APPENDIX_PROSE_CLASS}>
+                                {renderAppendixSingleBlock(appendixSection5.slots.directInequality, 0)}
+                              </p>
                               <WorkedExampleNote>
                                 {renderAppendixSingleBlock(appendixSection5.slots.directNote, 0)}
                               </WorkedExampleNote>
@@ -1625,6 +1722,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                                   )}
                                 />
                               </WorkedExampleEquationLedger>
+                              <p className={APPENDIX_PROSE_CLASS}>
+                                {renderAppendixSingleBlock(appendixSection5.slots.mixedInequality, 0)}
+                              </p>
                               <WorkedExampleNote>
                                 {renderAppendixSingleBlock(appendixSection5.slots.mixedNote, 0)}
                               </WorkedExampleNote>
@@ -1741,138 +1841,58 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
               )}
             />
           </AppendixSection>
+          </AppendixGroup>
 
-          <AppendixSection
-            n={6}
-            label="Output symmetry and storage"
-            anchorId="appendix-section-6"
-            title={appendixSection6.title}
-            deckClassName="max-w-none"
-            deck={
-              <InlineMathText>
-                {normalizeAppendixDisplayText(appendixSection6.deck)}
-              </InlineMathText>
-            }
+          <AppendixGroup
+            letter="E"
+            title="Scope, assumptions, and non-goals"
+            anchorId="appendix-letter-e"
           >
-            {/* Source-contract marker: Accumulation is governed by G_pt. */}
-            <div className="space-y-4">
-              {renderAppendixSlot(appendixSection6.slots.intro).map((content, index) => (
-                (() => {
-                  const isModelBlock = index >= 1 && index <= 3;
-                  return (
-                    <p
-                      key={`appendix-6-intro-${index}`}
-                      className={
-                        isModelBlock
-                          ? 'rounded-lg border border-stone-200/70 bg-stone-50/60 px-4 py-3 font-serif text-[16px] leading-[1.8] text-stone-800'
-                          : APPENDIX_PROSE_CLASS
-                      }
-                    >
-                      {renderAppendixSingleBlock(appendixSection6.slots.intro, index, {
-                        slotKey: 'appendix-section6-intro',
-                        strongClassName: isModelBlock ? 'font-semibold text-[var(--primary)]' : null,
-                      })}
-                    </p>
-                  );
-                })()
-              ))}
-            </div>
-
-            <div className="mt-6 overflow-x-auto">
-              <table className="w-full border-collapse text-[12px]">
-                <thead className="border-b border-gray-200">
-                  <tr className="text-left text-[12px] text-muted-foreground">
-                    <th className="px-2 py-2 font-semibold">Preset</th>
-                    <th className="px-2 py-2 font-semibold">Einsum</th>
-                    <th className="px-2 py-2 font-semibold">Operand sym.</th>
-                    <th className="px-2 py-2 font-semibold"><Latex math={APPENDIX_SHORT_V_LATEX()} /></th>
-                    <th className="px-2 py-2 font-semibold"><Latex math={notationLatex('g_output')} /></th>
-                    <th className="px-2 py-2 font-semibold text-right">
-                      <div className="text-[13px] font-semibold text-gray-900">
-                        <Latex math="\alpha_{\text{engine}}" />
-                      </div>
-                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Accumulation representatives</div>
-                    </th>
-                    <th className="px-2 py-2 font-semibold text-right">
-                      <div className="text-[13px] font-semibold text-gray-900">
-                        <Latex math="\alpha_{\text{storage}}" />
-                      </div>
-                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Output-orbit representatives</div>
-                    </th>
-                    <th className="px-2 py-2 font-semibold text-right">
-                      <div>Storage-only saving</div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="[&_tr]:border-b [&_tr]:border-gray-100">
-                  {savingsTableRows.map((r) => {
-                    const hasSaving = r.saving > 0;
-                    const preset = EXAMPLES_BY_ID.get(r.id);
-                    const subs = preset?.expression?.subscripts ?? '';
-                    const output = preset?.expression?.output ?? '';
-                    const operands = describeOperands(preset);
-                    const operandChips = operands.map((operand) => ({
-                      ...operand,
-                      chipName: operand.count > 1 ? `${operand.name}×${operand.count}` : operand.name,
-                    }));
-                    const groupLabel = preset?.expectedGroup ?? appendixGroupLabel(r.vSubLatex);
-                    return (
-                      <tr key={r.id} className={hasSaving ? '' : 'text-muted-foreground'}>
-                        <td className="px-2 py-2 whitespace-nowrap">
-                          <AppendixPresetHoverLabel preset={preset} groupLabel={groupLabel} />
-                        </td>
-                        <td className="px-2 py-2 font-mono whitespace-nowrap">
-                          <AppendixEinsumHoverCell
-                            subs={subs}
-                            output={output}
-                            preset={preset}
-                            groupLabel={groupLabel}
-                          />
-                        </td>
-                        <td className="px-2 py-2">
-                          <div className="flex flex-wrap gap-1.5">
-                            {operandChips.map((operand) => (
-                              <SymmetryChip key={`${operand.name}-${operand.sym}`} name={operand.chipName} symmetry={operand.sym} />
-                            ))}
-                          </div>
-                        </td>
-                        <td className="px-2 py-2 whitespace-nowrap">
-                          <Latex math={r.vLatex === '\\varnothing' ? '\\varnothing' : `\\{${r.vLatex}\\}`} />
-                        </td>
-                        <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSubLatex} /></td>
-                        <td className="px-2 py-2 text-right font-mono">{r.alphaEngine}</td>
-                        <td className="px-2 py-2 text-right font-mono">{r.alphaStorage}</td>
-                        <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-[var(--status-success)]' : ''}`}>
-                          {hasSaving ? `${r.saving} (${r.savingPct}%)` : '—'}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <p className={`mt-2 ${APPENDIX_FOOTNOTE_CLASS}`}>
-                {renderAppendixSingleBlock(appendixSection6.slots.footnote, 0)}
+          {/* Appendix E renders as a passing-disclaimer tier. The deck is
+              omitted (it would duplicate the AppendixGroup heading + the
+              first body paragraph), and all body content uses a single
+              fine-print serif size with run-in headings — closer to a
+              footnote than to a full sub-section. */}
+          <AppendixSection
+            n={1}
+            label="E"
+            subEyebrow
+            hideChrome
+            anchorId="appendix-section-8"
+            title={appendixSection8.title}
+          >
+            {/* Continuous-prose passing disclaimer — one paragraph, four
+                sentences, one per V3.1 E.1–E.4 slot. Body uses fine-print
+                serif (13px / leading-1.65 / stone-600). The intro slot
+                lives in section8.ts (and is referenced here via an
+                `sr-only` span so screen readers still hear the orienting
+                line) but is not rendered visually. */}
+            <div className="max-w-[78ch] [&_p]:text-justify">
+              <span className="sr-only">
+                {renderAppendixSingleBlock(appendixSection8.slots.intro, 0, {
+                  slotKey: 'appendix-section8-intro',
+                })}
+              </span>
+              <p className={APPENDIX_DISCLAIMER_PROSE_CLASS}>
+                {renderAppendixSingleBlock(appendixSection8.slots.costModel, 0, {
+                  slotKey: 'appendix-section8-costModel',
+                })}
+                {' '}
+                {renderAppendixSingleBlock(appendixSection8.slots.includedAssumptions, 0, {
+                  slotKey: 'appendix-section8-includedAssumptions',
+                })}
+                {' '}
+                {renderAppendixSingleBlock(appendixSection8.slots.excludedPhenomena, 0, {
+                  slotKey: 'appendix-section8-excludedPhenomena',
+                })}
+                {' '}
+                {renderAppendixSingleBlock(appendixSection8.slots.exactnessContract, 0, {
+                  slotKey: 'appendix-section8-exactnessContract',
+                })}
               </p>
             </div>
-
-            <p className="mt-4 text-[12.5px] leading-6 text-stone-700">
-              {renderAppendixSingleBlock(appendixSection6.slots.tableNote, 0)}
-            </p>
-
-            <div className="-mx-6 -mb-10 mt-8 border-t border-stone-200/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10">
-              <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
-                {renderAppendixSingleBlock(appendixSection6.slots.scopeLabel, 0)}
-              </div>
-              {renderAppendixSlot(appendixSection6.slots.footer).map((content, index) => (
-                <p
-                  key={`appendix-6-footer-${index}`}
-                  className={`${index === 0 ? 'mt-1.5' : 'mt-2'} text-[12.5px] leading-6 text-stone-700`}
-                >
-                  {content}
-                </p>
-              ))}
-            </div>
           </AppendixSection>
+          </AppendixGroup>
         </div>
       </div>
     </div>

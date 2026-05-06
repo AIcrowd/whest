@@ -13,6 +13,7 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(appSource, /selectedPresetIdx=\{selectedPresetIdx\}/);
   assert.match(appSource, /getPresetControlSelection\(exampleIdx, isDirty\)/);
   assert.match(appSource, /mx-auto mt-8 w-full max-w-\[1460px\] px-6 md:px-8 lg:px-10/);
+  assert.match(appSource, /className="flex flex-col items-stretch gap-6 lg:flex-row lg:items-start lg:gap-8"/);
   assert.match(appSource, /<PresetSidebar[\s\S]*<main className="min-w-0 flex-1">/);
   assert.match(sidebarSource, /aria-label="Preset examples"/);
   assert.match(sidebarSource, /ExplorerSidebarItem/);
@@ -24,7 +25,8 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(chooserSource, /text-\[10px\] font-semibold uppercase tracking-\[0\.2em\] text-gray-400/);
   assert.match(chooserSource, /glyph=\{summary\.glyph\}/);
   assert.match(chooserSource, /formula=\{summary\.formula\}/);
-  assert.match(chooserSource, /activePresetIdx === idx \? 'bg-coral-light\/50' : 'hover:bg-gray-50'/);
+  assert.match(chooserSource, /activePresetIdx === idx \|\| \(isPreparing && pendingPresetIdx === idx\)/);
+  assert.match(chooserSource, /aria-busy=\{isPreparing && pendingPresetIdx === idx \? 'true' : undefined\}/);
   // 10px is legitimate for design-system kickers (.w-kicker is 10/0.2em/
   // gray-400 in colors_and_type.css). The builder's 'VARIABLES' /
   // 'subscripts' / 'output' / 'operands' labels are kickers at spec size.
@@ -138,8 +140,9 @@ test('PresetSidebar matches the design-system preset-list spec (flat container, 
   assert.match(presetSelectionSource, /allSummed: '●'/);
   assert.match(presetSelectionSource, /mixed: '⟡'/);
   assert.match(presetSelectionSource, /singleton: '①'/);
-  assert.match(presetSelectionSource, /directProduct: '⊗'/);
+  assert.match(presetSelectionSource, /functionalProjection: '⊙'/);
   assert.match(presetSelectionSource, /young: 'Y'/);
+  assert.match(presetSelectionSource, /partitionCount: '⊕'/);
   assert.match(presetSelectionSource, /bruteForceOrbit: '◎'/);
   assert.doesNotMatch(presetSelectionSource, /expectedGroup.*includes/);
 });
