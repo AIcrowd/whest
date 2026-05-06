@@ -88,7 +88,7 @@ test('section5 bilinearInequality renders the explicit 4 ≠ 6 witness in LaTeX'
 test('ExpressionLevelModal renders the new section5 slots in section §5', () => {
   // The summary caption renders once near the top of section 5 — i.e. before
   // the alphaComparison.state branches but after the intro slot.
-  const section5Start = modal.indexOf('n={5}');
+  const section5Start = modal.indexOf('anchorId="appendix-section-5"');
   assert.notEqual(section5Start, -1, 'section §5 marker missing');
   const section6Start = modal.indexOf('n={6}', section5Start + 1);
   const section5Block = modal.slice(

@@ -68,14 +68,21 @@ test('section7 declares slots for nine classification-tree cases (B.1-B.9)', () 
   assert.match(section7Source, /closingNote:\s*\[/);
 });
 
-// ─── 3. Modal imports section7 and mounts AppendixSection n={7} ──────────────
-test('ExpressionLevelModal imports section7 and mounts AppendixSection n={7}', () => {
+// ─── 3. Modal imports section7 and mounts the Appendix B section ─────────────
+test('ExpressionLevelModal imports section7 and mounts the Appendix B section', () => {
   assert.match(modalSource, /import appendixSection7 from '\.\.\/content\/appendix\/section7\.ts'/);
-  // The mount uses n={7}, label="Appendix B", anchorId="appendix-section-7",
-  // and pulls its title from appendixSection7.title.
+  // V3.1 letter-strip restructure: the Appendix B mount now uses the new
+  // sub-eyebrow label ("B") and is wrapped in <AppendixGroup letter="B" …>.
+  // `n` is the sub-position WITHIN the group (n=1, since B has only one
+  // section). The unique-per-section anchor is `appendix-section-7`.
   assert.match(
     modalSource,
-    /<AppendixSection[\s\S]{0,400}n=\{7\}[\s\S]{0,400}label="Appendix B"[\s\S]{0,400}anchorId="appendix-section-7"[\s\S]{0,400}title=\{appendixSection7\.title\}/,
+    /<AppendixSection[\s\S]{0,400}n=\{1\}[\s\S]{0,400}label="B"[\s\S]{0,400}subEyebrow[\s\S]{0,400}anchorId="appendix-section-7"[\s\S]{0,400}title=\{appendixSection7\.title\}/,
+  );
+  // The new AppendixGroup wrapper provides the letter framing.
+  assert.match(
+    modalSource,
+    /<AppendixGroup[\s\S]{0,200}letter="B"[\s\S]{0,200}title="Classification-tree cases"[\s\S]{0,200}anchorId="appendix-letter-b"/,
   );
   // The body must render at least one of the case slots — proves the
   // classification cases actually appear under the section.

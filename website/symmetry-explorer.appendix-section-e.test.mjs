@@ -126,14 +126,21 @@ test('section8.ts exactnessContract paragraph includes "exact direct cost"', () 
   );
 });
 
-// ─── 7. Modal imports section8 and mounts AppendixSection n={8} ──────────────
-test('ExpressionLevelModal imports section8 and mounts AppendixSection n={8}', () => {
+// ─── 7. Modal imports section8 and mounts the Appendix E section ─────────────
+test('ExpressionLevelModal imports section8 and mounts the Appendix E section', () => {
   assert.match(modalSource, /import appendixSection8 from '\.\.\/content\/appendix\/section8\.ts'/);
-  // The mount uses n={8}, label="Appendix E", anchorId="appendix-section-8",
-  // and pulls its title from appendixSection8.title.
+  // V3.1 letter-strip restructure: the Appendix E mount now uses the new
+  // sub-eyebrow label ("E") and is wrapped in <AppendixGroup letter="E" …>.
+  // `n` is the sub-position WITHIN the group (n=1, since E has only one
+  // section). The unique-per-section anchor is `appendix-section-8`.
   assert.match(
     modalSource,
-    /<AppendixSection[\s\S]{0,400}n=\{8\}[\s\S]{0,400}label="Appendix E"[\s\S]{0,400}anchorId="appendix-section-8"[\s\S]{0,400}title=\{appendixSection8\.title\}/,
+    /<AppendixSection[\s\S]{0,400}n=\{1\}[\s\S]{0,400}label="E"[\s\S]{0,400}subEyebrow[\s\S]{0,400}anchorId="appendix-section-8"[\s\S]{0,400}title=\{appendixSection8\.title\}/,
+  );
+  // The new AppendixGroup wrapper provides the letter framing.
+  assert.match(
+    modalSource,
+    /<AppendixGroup[\s\S]{0,200}letter="E"[\s\S]{0,200}title="Scope, assumptions, and non-goals"[\s\S]{0,200}anchorId="appendix-letter-e"/,
   );
   // The body must reference the four E.x slots — proves the four
   // sub-sections actually appear under the section in render order.
