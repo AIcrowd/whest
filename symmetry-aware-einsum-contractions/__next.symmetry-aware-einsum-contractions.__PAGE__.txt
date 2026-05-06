@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[720922,["/flopscope/_next/static/chunks/09d47qa~haix0.js","/flopscope/_next/static/chunks/0fy18md2ieo2q.js","/flopscope/_next/static/chunks/161~py8-pk359.js","/flopscope/_next/static/chunks/0c1gj8ki2g_4r.js","/flopscope/_next/static/chunks/0zx~ewmzjgdd8.js","/flopscope/_next/static/chunks/15d6-xb764nwq.js","/flopscope/_next/static/chunks/07to70f9kqyg~.js"],"default"]
+3:I[897367,["/flopscope/_next/static/chunks/09d47qa~haix0.js","/flopscope/_next/static/chunks/0fy18md2ieo2q.js","/flopscope/_next/static/chunks/161~py8-pk359.js","/flopscope/_next/static/chunks/0c1gj8ki2g_4r.js","/flopscope/_next/static/chunks/0zx~ewmzjgdd8.js","/flopscope/_next/static/chunks/15d6-xb764nwq.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"symmetry-aware-einsum-contractions-page min-h-screen bg-background","children":["$","div",null,{"className":"symmetry-aware-einsum-contractions-page-shell w-full","children":["$","$L2",null,{}]}]}],[["$","script","script-0",{"src":"/flopscope/_next/static/chunks/07to70f9kqyg~.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"-2XvmBMVKI3E9dtPU1moI"}
+5:null
