@@ -340,3 +340,36 @@ def compute_accumulation_cost(
         num_terms=num_ops,
         dense_baseline=dense_baseline,
     )
+
+
+# ── Reduction-cost API hook (designed for, not implemented) ──────────
+
+
+def aggregate_reduction(
+    component_costs: Sequence[ComponentCost],
+    *,
+    op_factor: int = 1,
+    dense_baseline: int,
+    output_dense: int,
+    extra_ops: int = 0,
+) -> AccumulationCost:
+    """Aggregate per-component costs into a ufunc.reduce cost: total = α · op_factor.
+
+    For sum-axis: op_factor=1, extra_ops=0 (just additions).
+    For mean = sum / shape[axis]: op_factor=1, extra_ops=output_dense.
+    For sum-of-squares: op_factor=2 (multiply + add per accumulation event).
+
+    Fallback (any component unavailable):
+      total = output_dense · (input_axis_size - 1) · op_factor + extra_ops
+    where input_axis_size is implicit in dense_baseline / output_dense.
+
+    SIGNATURE LOCKED in 2026-05-07-symmetry-aware-einsum-cost-design.md;
+    BODY IS A FUTURE SPRINT (separate spec + plan).
+    """
+    raise NotImplementedError(
+        'aggregate_reduction is a future sprint. Signature locked in '
+        '.aicrowd/superpowers/specs/2026-05-07-symmetry-aware-einsum-cost-design.md '
+        'Section "Reduction-cost API hooks (designed for, not implemented)". '
+        'Implement via a follow-up brainstorm + plan covering ufunc.reduce '
+        'cost calculation for sum, prod, etc.'
+    )
