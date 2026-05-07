@@ -22,7 +22,7 @@ def test_matmul_flop_cost():
     B = numpy.ones((4, 5))
     with BudgetContext(flop_budget=10**6) as budget:
         einsum("ij,jk->ik", A, B)
-        assert budget.flops_used == 60  # 3*4*5 * op_factor(1), FMA=1
+        assert budget.flops_used == 120  # new direct-event model: (k-1)*prod(M) + prod(alpha)
 
 
 def test_trace():
@@ -39,7 +39,7 @@ def test_outer_product():
     with BudgetContext(flop_budget=10**6) as budget:
         result = einsum("i,j->ij", a, b)
         assert result.shape == (3, 4)
-        assert budget.flops_used == 12
+        assert budget.flops_used == 24  # new direct-event model: (k-1)*prod(M) + prod(alpha)
 
 
 def test_batch_matmul():
@@ -47,7 +47,7 @@ def test_batch_matmul():
     B = numpy.ones((2, 4, 5))
     with BudgetContext(flop_budget=10**6) as budget:
         einsum("bij,bjk->bik", A, B)
-        assert budget.flops_used == 120  # 2*3*4*5 * op_factor(1), FMA=1
+        assert budget.flops_used == 240  # new direct-event model: (k-1)*prod(M) + prod(alpha)
 
 
 def test_symmetry_valid():
