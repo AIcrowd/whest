@@ -48,6 +48,13 @@ class FlopscopePathInfo:
     def __getattr__(self, name: str) -> Any:
         return getattr(self._inner, name)
 
+    def __str__(self) -> str:
+        """Return the full formatted table (delegates to inner PathInfo's format_table)."""
+        fmt = getattr(self._inner, 'format_table', None)
+        if fmt is not None:
+            return fmt()
+        return self.__repr__()
+
     def __repr__(self) -> str:
         return (
             f"FlopscopePathInfo(optimized_cost={self.optimized_cost}, "

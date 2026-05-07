@@ -50,12 +50,23 @@ def enumerate_h(sym: Any, rank: int) -> Iterator[Permutation]:
         return
 
     if isinstance(sym, SymmetryGroup):
+        axes = getattr(sym, 'axes', None)
         for el in sym.elements():
-            # SymmetryGroup elements may have lower degree; embed at zero offset.
             arr = list(range(rank))
-            for i, j in enumerate(el.array_form):
-                if i < rank:
-                    arr[i] = j if j < rank else i
+            if axes is not None:
+                # elements() yields permutations on positions 0..len(axes)-1;
+                # map them to the actual tensor axis positions via sym.axes.
+                for local_i, local_j in enumerate(el.array_form):
+                    if local_i < len(axes) and local_j < len(axes):
+                        from_axis = axes[local_i]
+                        to_axis = axes[local_j]
+                        if from_axis < rank and to_axis < rank:
+                            arr[from_axis] = to_axis
+            else:
+                # No axes annotation; embed at zero offset (legacy path).
+                for i, j in enumerate(el.array_form):
+                    if i < rank:
+                        arr[i] = j if j < rank else i
             yield Permutation(arr)
         return
 
