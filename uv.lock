@@ -342,6 +342,7 @@ version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
+    { name = "rich" },
 ]
 
 [package.optional-dependencies]
@@ -378,6 +379,7 @@ requires-dist = [
     { name = "pyright", marker = "extra == 'dev'", specifier = ">=1.1.408,<1.2.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
     { name = "pytest-cov", marker = "extra == 'dev'" },
+    { name = "rich", specifier = ">=14.3.3" },
     { name = "rich", marker = "extra == 'dev'", specifier = ">=13.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.4" },
     { name = "scipy", marker = "extra == 'dev'", specifier = ">=1.10" },

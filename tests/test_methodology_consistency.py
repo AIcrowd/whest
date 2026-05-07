@@ -75,16 +75,16 @@ class TestSortingConsistency:
 
 
 class TestContractionConsistency:
-    """matmul: cost = M*N*K for 2D matrix multiply (FMA=1 op)."""
+    """matmul: cost uses the whole-expression direct-event accumulation model.
+    For 2D matrix multiply with no symmetry: total = (k-1)*M + alpha = M*N*K + M*N*K = 2*M*N*K."""
 
     def test_matmul(self):
         m, n, k = 32, 32, 32
         a = np.random.rand(m, k)
         b = np.random.rand(k, n)
         runtime_cost = _run_and_get_cost(fnp.matmul, a, b)
-        # flopscope uses einsum_cost("ij,jk->ik", [(32,32),(32,32)])
-        # FMA=1 op, so cost = 32*32*32 = 32768
-        expected = m * n * k
+        # new direct-event model: (k-1)*prod(M) + prod(alpha) = M*N*K + M*N*K = 2*M*N*K
+        expected = 2 * m * n * k
         assert runtime_cost == expected, (
             f"matmul({m},{k})x({k},{n}): runtime={runtime_cost}, expected={expected}"
         )

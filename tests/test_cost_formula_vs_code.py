@@ -313,15 +313,17 @@ def test_cumulative_numel(name, we):
 
 
 def test_matmul_mnk(we):
+    # new direct-event model: (k-1)*prod(M) + prod(alpha) = 1000 + 1000 = 2000
     assert (
         _cost_of(we.matmul, numpy.random.rand(10, 10), numpy.random.rand(10, 10))
-        == 1000
+        == 2000
     )
 
 
 def test_dot_mnk(we):
+    # new direct-event model: (k-1)*prod(M) + prod(alpha) = 1000 + 1000 = 2000
     assert (
-        _cost_of(we.dot, numpy.random.rand(10, 10), numpy.random.rand(10, 10)) == 1000
+        _cost_of(we.dot, numpy.random.rand(10, 10), numpy.random.rand(10, 10)) == 2000
     )
 
 
@@ -338,6 +340,8 @@ def test_outer_mn(we):
 
 
 def test_tensordot_contracted(we):
+    # tensordot uses the old dense formula: a.size*b.size/contracted = 5*4*4*3/4 = 60
+    # (tensordot has its own cost model, separate from the accumulation-based einsum model)
     assert (
         _cost_of(
             we.tensordot,
@@ -359,11 +363,12 @@ def test_cross_6n(we):
 
 
 def test_einsum_mnk(we):
+    # new direct-event model: (k-1)*prod(M) + prod(alpha) = 1000 + 1000 = 2000
     assert (
         _cost_of(
             we.einsum, "ij,jk->ik", numpy.random.rand(10, 10), numpy.random.rand(10, 10)
         )
-        == 1000
+        == 2000
     )
 
 
@@ -477,11 +482,12 @@ class TestLinalgProperties:
 
 class TestLinalgDelegates:
     def test_matmul_mnk(self, we):
+        # new direct-event model: (k-1)*prod(M) + prod(alpha) = 1000 + 1000 = 2000
         assert (
             _cost_of(
                 we.linalg.matmul, numpy.random.rand(10, 10), numpy.random.rand(10, 10)
             )
-            == 1000
+            == 2000
         )
 
     def test_outer_mn(self, we):

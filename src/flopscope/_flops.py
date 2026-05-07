@@ -46,8 +46,10 @@ def einsum_cost(
 ) -> int:
     """FLOP cost of an einsum operation.
 
-    Delegates to ``contract_path`` from opt_einsum, which uses ``flop_count``
-    with ``op_factor`` (FMA = 1 FLOP; see ``_cost_model.FMA_COST``).
+    Uses the whole-expression direct-event accumulation model:
+    total = (k-1) * prod(M) + prod(alpha), where M is the number of
+    unique output elements and alpha is the number of unique output+
+    reduction-axis combinations. FMA = 1 operation (see _cost_model.FMA_COST).
 
     Parameters
     ----------
@@ -63,47 +65,30 @@ def einsum_cost(
     int
         Estimated FLOP count.
     """
-    from flopscope._opt_einsum import contract_path
+    from flopscope._opt_einsum._parser import parse_einsum_input
+    from flopscope._accumulation._cost import compute_accumulation_cost
 
-    oracle = None
-    if operand_symmetries and any(s is not None for s in operand_symmetries):
-        input_parts = subscripts.replace(" ", "").split("->")[0].split(",")
-        output_str = subscripts.split("->")[1] if "->" in subscripts else ""
-        perm_groups = []
-        for symmetry, chars, shape in zip(
-            operand_symmetries, input_parts, shapes, strict=False
-        ):
-            if symmetry is None:
-                perm_groups.append(None)
-                continue
-            validate_symmetry_group(symmetry, ndim=len(shape), shape=shape)
-            axes = (
-                symmetry.axes
-                if symmetry.axes is not None
-                else tuple(range(symmetry.degree))
-            )
-            if len(axes) < 2 or symmetry.order() <= 1:
-                perm_groups.append(None)
-                continue
-            labeled_group = SymmetryGroup(*symmetry.generators, axes=axes)
-            labeled_group._labels = tuple(chars[axis] for axis in axes)
-            perm_groups.append([labeled_group])
+    # Build dummy arrays of the right shape for the parser
+    import numpy as _np
+    dummy_operands = [_np.empty(s) for s in shapes]
+    input_subscripts, output_subscript, _ = parse_einsum_input((subscripts, *dummy_operands))
+    canonical_subscripts = f'{input_subscripts}->{output_subscript}'
+    input_parts = tuple(input_subscripts.split(','))
 
-        from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
-
-        # Use sentinel objects as operands (identity-based detection not needed here)
-        sentinel_operands = [object() for _ in range(len(input_parts))]
-        oracle = SubgraphSymmetryOracle(
-            operands=sentinel_operands,
-            subscript_parts=input_parts,
-            per_op_groups=perm_groups,
-            output_chars=output_str,
-        )
-
-    _, path_info = contract_path(
-        subscripts, *shapes, shapes=True, symmetry_oracle=oracle
+    per_op_syms: tuple[SymmetryGroup | None, ...] = (
+        tuple(operand_symmetries) if operand_symmetries is not None
+        else (None,) * len(shapes)
     )
-    return path_info.optimized_cost
+
+    cost = compute_accumulation_cost(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=input_parts,
+        output_subscript=output_subscript,
+        shapes=shapes,
+        per_op_symmetries=per_op_syms,
+        identity_pattern=None,
+    )
+    return cost.total
 
 
 def analytical_pointwise_cost(
