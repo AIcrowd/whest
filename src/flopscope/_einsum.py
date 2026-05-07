@@ -17,25 +17,6 @@ from flopscope._symmetry_utils import normalize_symmetry_input, validate_symmetr
 from flopscope._validation import maybe_check_nan_inf, require_budget
 
 
-def _symmetry_fingerprint(operands, input_parts):
-    """Build a hashable symmetry fingerprint for cache keying.
-
-    For each operand, captures None (no symmetry) or a tuple of
-    (axes, generator_array_forms) per SymmetryGroup. This fully
-    determines the symmetry structure without referencing tensor values.
-    """
-    parts = []
-    for op, _chars in zip(operands, input_parts, strict=False):
-        if not isinstance(op, SymmetricTensor) or op.symmetry is None:
-            parts.append(None)
-            continue
-        group = op.symmetry
-        axes = group.axes
-        gens = tuple(tuple(gen.array_form) for gen in group.generators)
-        parts.append(((axes, gens),))
-    return tuple(parts)
-
-
 def _identity_pattern(operands):
     """Build a hashable pattern of which operands are the same Python object.
 
@@ -60,51 +41,7 @@ def _make_path_cache(maxsize):
     """Create a new lru_cache-wrapped path computation function."""
 
     @functools.lru_cache(maxsize=maxsize)
-    def _compute(
-        subscripts,
-        shapes,
-        optimize,
-        symmetry_fingerprint,
-        identity_pattern,
-        use_inner_symmetry=True,
-    ):
-        from flopscope._perm_group import _PermutationCompat as Permutation
-
-        input_parts = subscripts.split("->")[0].split(",")
-        output_str = subscripts.split("->")[1] if "->" in subscripts else ""
-
-        perm_groups = []
-        for fp_entry, chars in zip(symmetry_fingerprint, input_parts, strict=False):
-            if fp_entry is None:
-                perm_groups.append(None)
-                continue
-            groups = []
-            for axes, gen_arrays in fp_entry:
-                gens = [Permutation(list(g)) for g in gen_arrays]
-                group = SymmetryGroup(*gens, axes=axes)
-                labels = tuple(chars[ax] for ax in axes)
-                group._labels = labels
-                groups.append(group)
-            perm_groups.append(groups if groups else None)
-
-        # Build dummy operands for oracle (only shapes + identity matter)
-        dummy_ops = [_np.empty(s) for s in shapes]
-        # Re-alias dummies to match the identity_pattern
-        if identity_pattern is not None:
-            for group in identity_pattern:
-                canonical = dummy_ops[group[0]]
-                for pos in group[1:]:
-                    dummy_ops[pos] = canonical
-
-        from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
-
-        oracle = SubgraphSymmetryOracle(
-            operands=dummy_ops,
-            subscript_parts=input_parts,
-            per_op_groups=perm_groups,
-            output_chars=output_str,
-        )
-
+    def _compute(subscripts, shapes, optimize):
         from flopscope._opt_einsum import contract_path as _contract_path
 
         _path, path_info = _contract_path(
@@ -112,7 +49,6 @@ def _make_path_cache(maxsize):
             *shapes,
             shapes=True,
             optimize=optimize if not isinstance(optimize, tuple) else list(optimize),
-            symmetry_oracle=oracle,
         )
         return path_info
 
@@ -212,16 +148,10 @@ def _get_path_info(subscripts: str, operands, optimize):
         operands,
     )
     shapes = tuple(tuple(op.shape) for op in operands)
-    sym_fp = _symmetry_fingerprint(operands, input_parts)
-    id_pat = _identity_pattern(operands)
-    inner_sym = bool(get_setting("use_inner_symmetry"))
     path_info = _path_cache(
         canonical_subscripts,
         shapes,
         _normalize_optimize(optimize),
-        sym_fp,
-        id_pat,
-        inner_sym,
     )
     return canonical_subscripts, input_parts, output_subscript, shapes, path_info
 
