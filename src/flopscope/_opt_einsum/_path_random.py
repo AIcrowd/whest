@@ -13,7 +13,6 @@ from typing import Any
 
 from . import _paths as paths
 from ._helpers import compute_size_by_dict
-from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._typing import ArrayIndexType, ArrayType, PathType
 
 __all__ = ["RandomGreedy", "random_greedy", "random_greedy_128"]
@@ -168,7 +167,7 @@ class RandomOptimizer(paths.PathOptimizer):
         output: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
-        symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
+        symmetry_oracle: None = None,
         **kwargs: Any,
     ) -> PathType:
         self._check_args_against_first_call(inputs, output, size_dict)
@@ -297,7 +296,7 @@ def ssa_path_compute_cost(
     inputs: list[ArrayIndexType],
     output: ArrayIndexType,
     size_dict: dict[str, int],
-    symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
+    symmetry_oracle: None = None,
 ) -> tuple[int, int]:
     """Compute the flops and max size of an ssa path, using the symmetry oracle
     if provided."""
@@ -343,7 +342,7 @@ def _trial_greedy_ssa_path_and_cost(
     size_dict: dict[str, int],
     choose_fn: Any,
     cost_fn: Any,
-    symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
+    symmetry_oracle: None = None,
 ) -> tuple[PathType, int, int]:
     """A single, repeatable, greedy trial run. **Returns:** ``ssa_path`` and cost."""
     if r == 0:
@@ -425,7 +424,7 @@ class RandomGreedy(RandomOptimizer):
         inputs: list[ArrayIndexType],
         output: ArrayIndexType,
         size_dict: dict[str, int],
-        symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
+        symmetry_oracle: None = None,
         **kwargs: Any,
     ) -> tuple[Any, Any]:
         fn = _trial_greedy_ssa_path_and_cost
@@ -445,7 +444,7 @@ def random_greedy(
     output: ArrayIndexType,
     idx_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: "SubgraphSymmetryOracle | None" = None,
+    symmetry_oracle: None = None,
     **optimizer_kwargs: Any,
 ) -> ArrayType:
     """A simple wrapper around the RandomGreedy optimizer."""

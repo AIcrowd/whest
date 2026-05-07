@@ -17,7 +17,6 @@ from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
 from ._hsluv import rgb_distance_hex, rich_label_palette
-from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._symmetry import SymmetryGroup, symmetric_flop_count
 from ._typing import (
     ArrayType,
@@ -866,7 +865,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -879,7 +878,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -890,7 +889,7 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> tuple[PathType, PathInfo]:
     """Find a contraction order `path`, without performing the contraction.
 

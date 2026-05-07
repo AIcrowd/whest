@@ -13,7 +13,6 @@ from collections.abc import Callable, Generator, Sequence
 from typing import Any
 
 from ._helpers import compute_size_by_dict, flop_count
-from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._symmetry import (
     SymmetryGroup,
     symmetric_flop_count,
@@ -140,7 +139,7 @@ def calc_k12_flops(
     i: int,
     j: int,
     size_dict: dict[str, int],
-    oracle: SubgraphSymmetryOracle | None = None,
+    oracle: None = None,
     ssa_to_subset: dict[int, frozenset[int]] | None = None,
 ) -> tuple[frozenset[str], int, SymmetryGroup | None]:
     """Calculate the resulting indices and flops for a potential pairwise
@@ -148,11 +147,8 @@ def calc_k12_flops(
 
     Parameters
     ----------
-    oracle : SubgraphSymmetryOracle | None
-        Subset-keyed symmetry oracle. When provided together with
-        ``ssa_to_subset``, the symmetry of the output tensor is looked
-        up via ``oracle.sym(ssa_to_subset[i] | ssa_to_subset[j])`` and
-        used to reduce the FLOP count.
+    oracle : None
+        Reserved; always pass ``None``. Oracle-based symmetry has been removed.
     ssa_to_subset : dict[int, frozenset[int]] | None
         Mapping from SSA tensor id to the subset of original operand
         positions that tensor represents.
@@ -218,7 +214,7 @@ def optimal(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> PathType:
     """Computes all possible pair contractions in a depth-first recursive manner."""
     inputs_set = tuple(map(frozenset, inputs))
@@ -407,7 +403,7 @@ class BranchBound(PathOptimizer):
         output_: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
-        symmetry_oracle: SubgraphSymmetryOracle | None = None,
+        symmetry_oracle: None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -580,7 +576,7 @@ def branch(
     cutoff_flops_factor: int = 4,
     minimize: str = "flops",
     cost_fn: str = "memory-removed",
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> PathType:
     optimizer = BranchBound(
         nbranch=nbranch,
@@ -703,7 +699,7 @@ def ssa_greedy_optimize(
     sizes: dict[str, int],
     choose_fn: Any = None,
     cost_fn: Any = "memory-removed",
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
     ssa_to_subset: dict[int, frozenset[int]] | None = None,
 ) -> PathType:
     """This is the core function for :func:`greedy` but produces a path with
@@ -864,7 +860,7 @@ def greedy(
     memory_limit: int | None = None,
     choose_fn: Any = None,
     cost_fn: str = "memory-removed",
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> PathType:
     """Finds the path by a three stage algorithm:
 
@@ -1322,7 +1318,7 @@ class DynamicProgramming(PathOptimizer):
         output_: ArrayIndexType,
         size_dict_: dict[str, int],
         memory_limit_: int | None = None,
-        symmetry_oracle: SubgraphSymmetryOracle | None = None,
+        symmetry_oracle: None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -1552,7 +1548,7 @@ def dynamic_programming(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
     **kwargs: Any,
 ) -> PathType:
     optimizer = DynamicProgramming(**kwargs)
@@ -1577,7 +1573,7 @@ def auto(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> PathType:
     """Auto-select based on number of inputs. All routed optimizers
     accept ``symmetry_oracle``; no silent fallback."""
@@ -1603,7 +1599,7 @@ def auto_hq(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: SubgraphSymmetryOracle | None = None,
+    symmetry_oracle: None = None,
 ) -> PathType:
     """Auto-HQ selection based on number of inputs. All routed
     optimizers accept ``symmetry_oracle``; no silent fallback."""
