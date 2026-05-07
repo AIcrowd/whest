@@ -120,3 +120,79 @@ def test_singleton_compute_for_s3_to_s2_reduction():
     )
     verdict = SINGLETON_REGIME.recognize(ctx)
     assert verdict.fired is False
+
+
+# ── young ──────────────────────────────────────────────────────────────
+
+
+from flopscope._accumulation._regimes import YOUNG_REGIME
+
+
+def test_young_recognizes_full_sym_with_uniform_sizes():
+    """G = S_3 on (i, j, k); both V and W nonempty; |V| ≥ 2; sizes uniform."""
+    s01 = Permutation([1, 0, 2])
+    s12 = Permutation([0, 2, 1])
+    elements = _dimino((s01, s12))
+    ctx = _ctx(
+        labels=('i', 'j', 'k'), va=('i', 'j'), wa=('k',),
+        elements=elements, generators=(s01, s12),
+        sizes=(4, 4, 4), visible_positions=(0, 1),
+    )
+    verdict = YOUNG_REGIME.recognize(ctx)
+    assert verdict.fired is True
+
+
+def test_young_refuses_when_v_size_below_2():
+    s01 = Permutation([1, 0, 2])
+    s12 = Permutation([0, 2, 1])
+    elements = _dimino((s01, s12))
+    ctx = _ctx(
+        labels=('i', 'j', 'k'), va=('i',), wa=('j', 'k'),
+        elements=elements, generators=(s01, s12),
+        sizes=(4, 4, 4), visible_positions=(0,),
+    )
+    verdict = YOUNG_REGIME.recognize(ctx)
+    assert verdict.fired is False
+    assert '|V|' in verdict.reason
+
+
+def test_young_refuses_when_g_not_full_symmetric():
+    """C_3 has 3 elements but |L|! = 6, so young refuses."""
+    cyclic = Permutation([1, 2, 0])
+    elements = _dimino((cyclic,))
+    ctx = _ctx(
+        labels=('i', 'j', 'k'), va=('i', 'j'), wa=('k',),
+        elements=elements, generators=(cyclic,),
+        sizes=(4, 4, 4), visible_positions=(0, 1),
+    )
+    verdict = YOUNG_REGIME.recognize(ctx)
+    assert verdict.fired is False
+
+
+def test_young_refuses_with_mixed_sizes():
+    s01 = Permutation([1, 0, 2])
+    s12 = Permutation([0, 2, 1])
+    elements = _dimino((s01, s12))
+    ctx = _ctx(
+        labels=('i', 'j', 'k'), va=('i', 'j'), wa=('k',),
+        elements=elements, generators=(s01, s12),
+        sizes=(4, 4, 5), visible_positions=(0, 1),
+    )
+    verdict = YOUNG_REGIME.recognize(ctx)
+    assert verdict.fired is False
+    assert 'mixed' in verdict.reason.lower()
+
+
+def test_young_compute_multiset_formula():
+    """For S_3 on (i,j,k) with V=(i,j), W=(k), n=4:
+       α = C(4+2-1, 2) · C(4+1-1, 1) = C(5, 2) · 4 = 10 · 4 = 40"""
+    s01 = Permutation([1, 0, 2])
+    s12 = Permutation([0, 2, 1])
+    elements = _dimino((s01, s12))
+    ctx = _ctx(
+        labels=('i', 'j', 'k'), va=('i', 'j'), wa=('k',),
+        elements=elements, generators=(s01, s12),
+        sizes=(4, 4, 4), visible_positions=(0, 1),
+    )
+    out = YOUNG_REGIME.compute(ctx)
+    assert out.count == 40

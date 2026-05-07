@@ -145,6 +145,85 @@ SINGLETON_REGIME: Regime = Regime(
 )
 
 
+# ── young (B.6: G = Sym(L), uniform sizes, |V| ≥ 2) ──────────────────
+
+
+import math
+
+
+def _multiset_count(n: int, k: int) -> int:
+    """Number of size-k multisets from [n]. C(n + k - 1, k)."""
+    if k == 0:
+        return 1
+    num = 1
+    den = 1
+    for i in range(k):
+        num *= n + k - 1 - i
+        den *= i + 1
+    return num // den
+
+
+def _young_recognize(ctx: RegimeContext) -> Verdict:
+    if not ctx.elements or len(ctx.elements) <= 1:
+        return Verdict(fired=False, reason='|G| <= 1')
+    if len(ctx.va) < 2:
+        return Verdict(fired=False, reason='|V| < 2; singleton handles this')
+
+    expected_full_sym = math.factorial(len(ctx.labels))
+    if len(ctx.elements) != expected_full_sym:
+        return Verdict(
+            fired=False,
+            reason=f'|G|={len(ctx.elements)} != |L|!={expected_full_sym}',
+        )
+
+    label_to_idx = {lbl: i for i, lbl in enumerate(ctx.labels)}
+    v_idx_set = {label_to_idx[lbl] for lbl in ctx.va}
+    has_cross = any(
+        any(g.array_form[label_to_idx[lbl]] not in v_idx_set for lbl in ctx.va)
+        for g in ctx.elements
+    )
+    if not has_cross:
+        return Verdict(fired=False, reason='no cross-V/W element')
+
+    if not ctx.sizes:
+        return Verdict(fired=False, reason='no sizes provided')
+
+    n_l = ctx.sizes[0]
+    if any(s != n_l for s in ctx.sizes):
+        return Verdict(fired=False, reason='mixed label sizes')
+
+    return Verdict(fired=True, reason='G = Sym(L); Young equation applies')
+
+
+def _young_compute(ctx: RegimeContext) -> RegimeOutput:
+    n_l = ctx.sizes[0]
+    visible_multisets = _multiset_count(n_l, len(ctx.va))
+    summed_multisets = _multiset_count(n_l, len(ctx.wa))
+    count = visible_multisets * summed_multisets
+    return RegimeOutput(
+        count=count,
+        sub_steps=(
+            {
+                'step': 'full-symmetric-output-orbit-formula',
+                'n': n_l,
+                'v_count': len(ctx.va),
+                'w_count': len(ctx.wa),
+                'visible_multisets': visible_multisets,
+                'summed_multisets': summed_multisets,
+                'count': count,
+            },
+        ),
+    )
+
+
+YOUNG_REGIME: Regime = Regime(
+    id='young',
+    recognize=_young_recognize,
+    compute=_young_compute,
+)
+
+
 MIXED_REGIMES: tuple[Regime, ...] = (
     SINGLETON_REGIME,
+    YOUNG_REGIME,
 )
