@@ -70,6 +70,14 @@ from flopscope._symmetric import (  # noqa: F401,E402
     symmetrize,
 )
 
+# --- Symmetry-aware einsum accumulation cost ---
+from flopscope._accumulation import (  # noqa: F401,E402
+    AccumulationCost,
+    ComponentCost,
+    RegimeStep,
+    einsum_accumulation_cost,
+)
+
 # --- Errors ---
 from flopscope.errors import (  # noqa: F401,E402
     BudgetExhaustedError,
@@ -85,14 +93,17 @@ from flopscope.errors import (  # noqa: F401,E402
 _LAZY_SUBMODULES = frozenset({"numpy", "accounting", "stats"})
 
 __all__ = [
+    "AccumulationCost",
     "BudgetContext",
     "BudgetExhaustedError",
+    "ComponentCost",
     "FlopscopeArray",
     "FlopscopeError",
     "FlopscopeWarning",
     "NoBudgetContextError",
     "OpRecord",
     "PathInfo",
+    "RegimeStep",
     "StepInfo",
     "SymmetricTensor",
     "SymmetryError",
@@ -112,6 +123,7 @@ __all__ = [
     "budget_summary",
     "budget_summary_dict",
     "configure",
+    "einsum_accumulation_cost",
     "is_symmetric",
     "namespace",
     "numpy",
