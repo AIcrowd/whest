@@ -13,7 +13,6 @@ from collections.abc import Callable, Generator, Sequence
 from typing import Any
 
 from ._helpers import compute_size_by_dict, flop_count
-from flopscope._perm_group import SymmetryGroup
 from ._typing import ArrayIndexType, PathSearchFunctionType, PathType, TensorShapeType
 
 __all__ = [
@@ -135,19 +134,8 @@ def calc_k12_flops(
     i: int,
     j: int,
     size_dict: dict[str, int],
-    oracle: None = None,
-    ssa_to_subset: dict[int, frozenset[int]] | None = None,
-) -> tuple[frozenset[str], int, SymmetryGroup | None]:
-    """Calculate the resulting indices and flops for a potential pairwise
-    contraction.
-
-    Parameters
-    ----------
-    oracle : None
-        Reserved; always pass ``None``. Oracle-based symmetry has been removed.
-    ssa_to_subset : dict[int, frozenset[int]] | None
-        Mapping from SSA tensor id to the subset of original operand
-        positions that tensor represents.
+) -> tuple[frozenset[str], int, None]:
+    """Calculate the resulting indices and flops for a potential pairwise contraction.
 
     Returns
     -------
@@ -155,19 +143,17 @@ def calc_k12_flops(
         The resulting indices of the potential tensor.
     cost : int
         Estimated flop count of the operation.
-    sym12 : SymmetryGroup | None
-        Symmetry of the result tensor (None when no oracle or no symmetry).
+    sym12 : None
+        Always None; oracle-based symmetry has been removed.
     """
     k1, k2 = inputs[i], inputs[j]
     either = k1 | k2
     keep = frozenset.union(output, *map(inputs.__getitem__, remaining - {i, j}))
     k12 = either & keep
     inner = bool(either - k12)
-
-    sym12: SymmetryGroup | None = None
     cost = flop_count(either, inner, 2, size_dict)
 
-    return k12, cost, sym12
+    return k12, cost, None
 
 
 def _compute_oversize_flops(
@@ -190,7 +176,6 @@ def optimal(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: None = None,
 ) -> PathType:
     """Computes all possible pair contractions in a depth-first recursive manner."""
     inputs_set = tuple(map(frozenset, inputs))
@@ -206,12 +191,9 @@ def optimal(
         k: frozenset({k}) for k in range(num_operands)
     }
 
-    # Result cache is valid because calc_k12_flops is now pure in
-    # (merged_subset,) — the oracle guarantees that two subsets with the
-    # same frozenset key produce the same symmetry.
     result_cache: dict[
         tuple[ArrayIndexType, ArrayIndexType, frozenset[int]],
-        tuple[frozenset[str], int, SymmetryGroup | None],
+        tuple[frozenset[str], int, None],
     ] = {}
 
     def _optimal_iterate(path, remaining, inputs, flops, ssa_to_subset):
@@ -236,8 +218,6 @@ def optimal(
                     i,
                     j,
                     size_dict,
-                    oracle=symmetry_oracle,
-                    ssa_to_subset=ssa_to_subset,
                 )
 
             new_flops = flops + flops12
@@ -379,14 +359,12 @@ class BranchBound(PathOptimizer):
         output_: ArrayIndexType,
         size_dict: dict[str, int],
         memory_limit: int | None = None,
-        symmetry_oracle: None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
             output_: Set that represents the rhs side of the overall einsum subscript
             size_dict: Dictionary of index sizes
             memory_limit: The maximum number of elements in a temporary array.
-            symmetry_oracle: Optional subgraph symmetry oracle.
 
         Returns:
             path: The contraction order within the memory limit constraint.
@@ -411,10 +389,9 @@ class BranchBound(PathOptimizer):
             k: frozenset({k}) for k in range(num_operands)
         }
 
-        # Result cache is valid with the oracle — key by (k1, k2, merged_subset)
         result_cache: dict[
             tuple[frozenset[str], frozenset[str], frozenset[int]],
-            tuple[frozenset[str], int, SymmetryGroup | None],
+            tuple[frozenset[str], int, None],
         ] = {}
 
         def _branch_iterate(path, inputs, remaining, flops, size, ssa_to_subset):
@@ -441,8 +418,6 @@ class BranchBound(PathOptimizer):
                         i,
                         j,
                         size_dict,
-                        oracle=symmetry_oracle,
-                        ssa_to_subset=ssa_to_subset,
                     )
 
                 try:
@@ -552,7 +527,6 @@ def branch(
     cutoff_flops_factor: int = 4,
     minimize: str = "flops",
     cost_fn: str = "memory-removed",
-    symmetry_oracle: None = None,
 ) -> PathType:
     optimizer = BranchBound(
         nbranch=nbranch,
@@ -565,7 +539,6 @@ def branch(
         output,
         size_dict,
         memory_limit,
-        symmetry_oracle=symmetry_oracle,
     )
 
 
@@ -675,7 +648,6 @@ def ssa_greedy_optimize(
     sizes: dict[str, int],
     choose_fn: Any = None,
     cost_fn: Any = "memory-removed",
-    symmetry_oracle: None = None,
     ssa_to_subset: dict[int, frozenset[int]] | None = None,
 ) -> PathType:
     """This is the core function for :func:`greedy` but produces a path with
@@ -836,7 +808,6 @@ def greedy(
     memory_limit: int | None = None,
     choose_fn: Any = None,
     cost_fn: str = "memory-removed",
-    symmetry_oracle: None = None,
 ) -> PathType:
     """Finds the path by a three stage algorithm:
 
@@ -854,7 +825,6 @@ def greedy(
         memory_limit: The maximum number of elements in a temporary array
         choose_fn: A function that chooses which contraction to perform from the queue
         cost_fn: A function that assigns a potential contraction a cost.
-        symmetry_oracle: Optional subgraph symmetry oracle.
 
     Returns:
         path: The contraction order (a list of tuples of ints).
@@ -876,7 +846,6 @@ def greedy(
             memory_limit,
             nbranch=1,
             cost_fn=cost_fn,
-            symmetry_oracle=symmetry_oracle,
         )  # type: ignore
 
     ssa_path = ssa_greedy_optimize(
@@ -885,7 +854,6 @@ def greedy(
         size_dict,
         cost_fn=cost_fn,
         choose_fn=choose_fn,
-        symmetry_oracle=symmetry_oracle,
     )
     return ssa_to_linear(ssa_path)
 
@@ -1294,7 +1262,6 @@ class DynamicProgramming(PathOptimizer):
         output_: ArrayIndexType,
         size_dict_: dict[str, int],
         memory_limit_: int | None = None,
-        symmetry_oracle: None = None,
     ) -> PathType:
         """Parameters:
             inputs_: List of sets that represent the lhs side of the einsum subscript
@@ -1464,13 +1431,10 @@ def dynamic_programming(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: None = None,
     **kwargs: Any,
 ) -> PathType:
     optimizer = DynamicProgramming(**kwargs)
-    return optimizer(
-        inputs, output, size_dict, memory_limit, symmetry_oracle=symmetry_oracle
-    )
+    return optimizer(inputs, output, size_dict, memory_limit)
 
 
 _AUTO_CHOICES = {}
@@ -1489,17 +1453,14 @@ def auto(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: None = None,
 ) -> PathType:
-    """Auto-select based on number of inputs. All routed optimizers
-    accept ``symmetry_oracle``; no silent fallback."""
+    """Auto-select based on number of inputs."""
     fn = _AUTO_CHOICES.get(len(inputs), greedy)
     return fn(
         inputs,
         output,
         size_dict,
         memory_limit,
-        symmetry_oracle=symmetry_oracle,
     )
 
 
@@ -1515,10 +1476,8 @@ def auto_hq(
     output: ArrayIndexType,
     size_dict: dict[str, int],
     memory_limit: int | None = None,
-    symmetry_oracle: None = None,
 ) -> PathType:
-    """Auto-HQ selection based on number of inputs. All routed
-    optimizers accept ``symmetry_oracle``; no silent fallback."""
+    """Auto-HQ selection based on number of inputs."""
     from ._path_random import random_greedy_128
 
     fn = _AUTO_HQ_CHOICES.get(len(inputs), random_greedy_128)
@@ -1527,7 +1486,6 @@ def auto_hq(
         output,
         size_dict,
         memory_limit,
-        symmetry_oracle=symmetry_oracle,
     )
 
 

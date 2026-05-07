@@ -831,7 +831,6 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    symmetry_oracle: None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -844,7 +843,6 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    symmetry_oracle: None = None,
 ) -> tuple[PathType, PathInfo]: ...
 
 
@@ -855,7 +853,6 @@ def contract_path(
     optimize: OptimizeKind = True,
     memory_limit: _MemoryLimit = None,
     shapes: bool = False,
-    symmetry_oracle: None = None,
 ) -> tuple[PathType, PathInfo]:
     """Find a contraction order `path`, without performing the contraction.
 
