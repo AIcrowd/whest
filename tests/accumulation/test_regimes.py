@@ -60,3 +60,63 @@ def test_functional_projection_compute_returns_burnside_count():
     assert len(out.sub_steps) == 1
     assert out.sub_steps[0]['step'] == 'projection-functional'
     assert out.sub_steps[0]['count'] == 10
+
+
+# ── singleton ─────────────────────────────────────────────────────────
+
+
+from flopscope._accumulation._regimes import SINGLETON_REGIME
+
+
+def test_singleton_recognizes_when_v_size_is_one():
+    swap = Permutation([1, 0])
+    elements = _dimino((swap,))
+    ctx = _ctx(
+        labels=('i', 'j'), va=('i',), wa=('j',),
+        elements=elements, generators=(swap,),
+        sizes=(4, 4), visible_positions=(0,),
+    )
+    verdict = SINGLETON_REGIME.recognize(ctx)
+    assert verdict.fired is True
+
+
+def test_singleton_refuses_when_v_size_not_one():
+    swap = Permutation([1, 0])
+    elements = _dimino((swap,))
+    ctx = _ctx(
+        labels=('i', 'j'), va=('i', 'j'), wa=(),
+        elements=elements, generators=(swap,),
+        sizes=(4, 4), visible_positions=(0, 1),
+    )
+    verdict = SINGLETON_REGIME.recognize(ctx)
+    assert verdict.fired is False
+    assert '|V| = 2' in verdict.reason
+
+
+def test_singleton_compute_for_d2_r1_s2_example():
+    """JS reference test: partition_count test #1 — S_2 on (i, j) with V=(i), W=(j),
+    sizes (6, 6). Expected α = 36 (n²)."""
+    swap = Permutation([1, 0])
+    elements = _dimino((swap,))
+    ctx = _ctx(
+        labels=('i', 'j'), va=('i',), wa=('j',),
+        elements=elements, generators=(swap,),
+        sizes=(6, 6), visible_positions=(0,),
+    )
+    out = SINGLETON_REGIME.compute(ctx)
+    assert out.count == 36
+
+
+def test_singleton_compute_for_s3_to_s2_reduction():
+    """JS reference test: partition_count test #2 — S_3 on (i,j,k) with V=(i,j), W=(k)
+    is OUTSIDE singleton (|V|=2). This test verifies refusal, not computation."""
+    s01 = Permutation([1, 0, 2])
+    s12 = Permutation([0, 2, 1])
+    elements = _dimino((s01, s12))
+    ctx = _ctx(
+        labels=('i', 'j', 'k'), va=('i', 'j'), wa=('k',),
+        elements=elements, generators=(s01, s12),
+        sizes=(4, 4, 4), visible_positions=(0, 1),
+    )
+    verdict = SINGLETON_REGIME.recognize(ctx)
+    assert verdict.fired is False
