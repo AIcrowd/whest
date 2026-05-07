@@ -88,3 +88,92 @@ class AccumulationResult:
     regime_id: RegimeId
     shape: Shape
     trace: tuple[RegimeStep, ...]
+
+
+# ── Dispatcher ───────────────────────────────────────────────────────
+
+
+import math
+
+from flopscope._config import get_setting
+
+from ._regimes import FUNCTIONAL_PROJECTION_REGIME, MIXED_REGIMES
+from ._shape import detect_shape
+
+
+def compute_accumulation(
+    *,
+    labels: Sequence[str],
+    va: Sequence[str],
+    wa: Sequence[str],
+    elements: Sequence[Permutation],
+    generators: Sequence[Permutation],
+    sizes: Sequence[int],
+    visible_positions: Sequence[int],
+    partition_budget: int | None = None,
+) -> AccumulationResult:
+    """Run the regime ladder for a single component.
+
+    Stages mirror accumulationCount.js:
+      1. trivial short-circuit for |G| <= 1
+      2a. functionalProjection priority check (covers shape allVisible/allSummed
+          and mixed-but-functional)
+      2b. mixed-shape ladder: singleton, young, partitionCount
+
+    Returns AccumulationResult with count=None when no regime fires within
+    the partition budget (brute-force orbit B.8 is excluded by policy).
+    """
+    if partition_budget is None:
+        partition_budget = int(get_setting('partition_budget'))
+
+    shape = detect_shape(va=va, wa=wa, elements=elements)
+
+    # Stage 1: trivial short-circuit
+    if not elements or len(elements) <= 1:
+        return AccumulationResult(
+            count=math.prod(sizes) if sizes else 1,
+            regime_id='trivial',
+            shape=shape,
+            trace=(RegimeStep('trivial', 'fired', '|G| = 1'),),
+        )
+
+    ctx = RegimeContext(
+        labels=tuple(labels),
+        va=tuple(va),
+        wa=tuple(wa),
+        elements=tuple(elements),
+        generators=tuple(generators),
+        sizes=tuple(sizes),
+        visible_positions=tuple(visible_positions),
+        partition_budget=partition_budget,
+    )
+
+    trace: list[RegimeStep] = []
+
+    # Stage 2a: functionalProjection priority
+    verdict = FUNCTIONAL_PROJECTION_REGIME.recognize(ctx)
+    if verdict.fired:
+        out = FUNCTIONAL_PROJECTION_REGIME.compute(ctx)
+        trace.append(RegimeStep(
+            'functionalProjection', 'fired', verdict.reason, out.sub_steps,
+        ))
+        return AccumulationResult(out.count, 'functionalProjection', shape, tuple(trace))
+    trace.append(RegimeStep('functionalProjection', 'refused', verdict.reason))
+
+    # Stage 2b: mixed-shape ladder
+    for regime in MIXED_REGIMES:
+        verdict = regime.recognize(ctx)
+        if not verdict.fired:
+            trace.append(RegimeStep(regime.id, 'refused', verdict.reason))
+            continue
+        out = regime.compute(ctx)
+        trace.append(RegimeStep(regime.id, 'fired', verdict.reason, out.sub_steps))
+        return AccumulationResult(out.count, regime.id, shape, tuple(trace))
+
+    # Fallthrough: brute-force is excluded by policy → unavailable
+    trace.append(RegimeStep(
+        'unavailable',
+        'fired',
+        'no exact regime fired within partition budget; brute-force disabled by policy',
+    ))
+    return AccumulationResult(None, 'unavailable', shape, tuple(trace))
