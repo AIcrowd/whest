@@ -223,7 +223,82 @@ YOUNG_REGIME: Regime = Regime(
 )
 
 
+# ── partitionCount (B.7: typed equality-pattern enumeration) ─────────
+
+
+from ._output_orbit import restrict_stabilizer_to_positions
+from ._partition import (
+    count_map_orbits_under_h,
+    generate_typed_set_partitions,
+    induced_block_action_size,
+    induced_prefix_maps,
+    num_blocks,
+    partition_key,
+    partition_orbit_reps,
+    typed_labeling_count,
+)
+
+
+def _partition_count_recognize(ctx: RegimeContext) -> Verdict:
+    partitions = generate_typed_set_partitions(ctx.sizes)
+    if len(partitions) > ctx.partition_budget:
+        return Verdict(
+            fired=False,
+            reason=(
+                f'typed partition count {len(partitions)} exceeds '
+                f'budget {ctx.partition_budget}'
+            ),
+        )
+    return Verdict(
+        fired=True,
+        reason=f'typed partition count over {len(partitions)} equality patterns',
+    )
+
+
+def _partition_count_compute(ctx: RegimeContext) -> RegimeOutput:
+    h_elements = restrict_stabilizer_to_positions(ctx.elements, ctx.visible_positions)
+    partitions = generate_typed_set_partitions(ctx.sizes)
+    reps = partition_orbit_reps(partitions, ctx.elements)
+
+    total = 0
+    sub_steps: list[dict] = []
+    for partition in reps:
+        labelings = typed_labeling_count(partition, ctx.sizes)
+        block_action = induced_block_action_size(partition, ctx.elements)
+        if labelings % block_action != 0:
+            raise ValueError(
+                f'partition {partition_key(partition)} has labelings={labelings} '
+                f'not divisible by block action size={block_action} — '
+                f'invariant violation in G'
+            )
+        input_orbits = labelings // block_action
+        maps = induced_prefix_maps(partition, ctx.elements, ctx.visible_positions)
+        output_orbits = count_map_orbits_under_h(maps, h_elements)
+        term = input_orbits * output_orbits
+        total += term
+        sub_steps.append({
+            'partition_key': partition_key(partition),
+            'blocks': num_blocks(partition),
+            'typed_labelings': labelings,
+            'block_action_size': block_action,
+            'input_orbit_count': input_orbits,
+            'induced_map_count': len(maps),
+            'output_orbit_count': output_orbits,
+            'contribution': term,
+        })
+
+    return RegimeOutput(count=total, sub_steps=tuple(sub_steps))
+
+
+PARTITION_COUNT_REGIME: Regime = Regime(
+    id='partitionCount',
+    recognize=_partition_count_recognize,
+    compute=_partition_count_compute,
+)
+
+
 MIXED_REGIMES: tuple[Regime, ...] = (
     SINGLETON_REGIME,
     YOUNG_REGIME,
+    PARTITION_COUNT_REGIME,
 )

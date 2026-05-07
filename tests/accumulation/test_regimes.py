@@ -196,3 +196,101 @@ def test_young_compute_multiset_formula():
     )
     out = YOUNG_REGIME.compute(ctx)
     assert out.count == 40
+
+
+# ── partitionCount ────────────────────────────────────────────────────
+
+
+from flopscope._accumulation._regimes import PARTITION_COUNT_REGIME
+
+
+def test_partition_count_recognizes_when_under_budget():
+    swap = Permutation([1, 0])
+    elements = _dimino((swap,))
+    ctx = _ctx(
+        labels=('i', 'j'), va=('i',), wa=('j',),
+        elements=elements, generators=(swap,),
+        sizes=(6, 6), visible_positions=(0,),
+        partition_budget=100,
+    )
+    verdict = PARTITION_COUNT_REGIME.recognize(ctx)
+    assert verdict.fired is True
+
+
+def test_partition_count_refuses_when_over_budget():
+    swap = Permutation([1, 0])
+    elements = _dimino((swap,))
+    ctx = _ctx(
+        labels=('i', 'j'), va=('i',), wa=('j',),
+        elements=elements, generators=(swap,),
+        sizes=(6, 6), visible_positions=(0,),
+        partition_budget=0,
+    )
+    verdict = PARTITION_COUNT_REGIME.recognize(ctx)
+    assert verdict.fired is False
+    assert 'budget' in verdict.reason
+
+
+def test_partition_count_d2_r1_s2_matches_singleton():
+    """JS partition-count test #1: S_2 on (i,j), V=(i), W=(j), sizes (6,6).
+    Expected α = 36 (matches singleton regime)."""
+    swap = Permutation([1, 0])
+    elements = _dimino((swap,))
+    ctx = _ctx(
+        labels=('i', 'j'), va=('i',), wa=('j',),
+        elements=elements, generators=(swap,),
+        sizes=(6, 6), visible_positions=(0,),
+    )
+    out = PARTITION_COUNT_REGIME.compute(ctx)
+    assert out.count == 36
+
+
+def test_partition_count_s3_reduction_alpha_40():
+    """JS partition-count test #2: S_3 on (i,j,k) with V=(i,j), W=(k), sizes (4,4,4).
+    Expected α = 40 (matches young regime)."""
+    s01 = Permutation([1, 0, 2])
+    s12 = Permutation([0, 2, 1])
+    elements = _dimino((s01, s12))
+    ctx = _ctx(
+        labels=('i', 'j', 'k'), va=('i', 'j'), wa=('k',),
+        elements=elements, generators=(s01, s12),
+        sizes=(4, 4, 4), visible_positions=(0, 1),
+    )
+    out = PARTITION_COUNT_REGIME.compute(ctx)
+    assert out.count == 40
+
+
+def test_partition_count_heterogeneous_partitions_alpha_90():
+    """JS partition-count test #3: S_2 × S_2 on (i,j,k,l), V=(i,j), W=(k,l), sizes (3,3,5,5).
+    Expected α = 90."""
+    vis_swap = Permutation([1, 0, 2, 3])
+    sum_swap = Permutation([0, 1, 3, 2])
+    elements = _dimino((vis_swap, sum_swap))
+    ctx = _ctx(
+        labels=('i', 'j', 'k', 'l'), va=('i', 'j'), wa=('k', 'l'),
+        elements=elements, generators=(vis_swap, sum_swap),
+        sizes=(3, 3, 5, 5), visible_positions=(0, 1),
+    )
+    out = PARTITION_COUNT_REGIME.compute(ctx)
+    assert out.count == 90
+
+
+def test_partition_count_emits_subtrace_per_partition():
+    swap = Permutation([1, 0])
+    elements = _dimino((swap,))
+    ctx = _ctx(
+        labels=('i', 'j'), va=('i',), wa=('j',),
+        elements=elements, generators=(swap,),
+        sizes=(6, 6), visible_positions=(0,),
+    )
+    out = PARTITION_COUNT_REGIME.compute(ctx)
+    assert len(out.sub_steps) >= 1
+    for step in out.sub_steps:
+        # Schema check — each substep names its pattern + counts.
+        assert 'partition_key' in step
+        assert 'blocks' in step
+        assert 'typed_labelings' in step
+        assert 'block_action_size' in step
+        assert 'input_orbit_count' in step
+        assert 'output_orbit_count' in step
+        assert 'contribution' in step
