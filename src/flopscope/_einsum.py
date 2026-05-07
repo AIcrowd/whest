@@ -302,6 +302,20 @@ def einsum(
             optimize,
         )
     )
+
+    accumulation_cost = _get_accumulation_cost(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=tuple(input_parts),
+        output_subscript=output_subscript,
+        shapes=shapes,
+        operands=tuple(operands),
+    )
+
+    from flopscope._accumulation._path_info import FlopscopePathInfo
+    path_info = FlopscopePathInfo.from_inner(
+        inner=path_info, accumulation=accumulation_cost,
+    )
+
     target_symmetry = _resolve_output_symmetry(
         symmetry=symmetry,
         operands=operands,
@@ -316,7 +330,7 @@ def einsum(
 
     with budget.deduct(
         "einsum",
-        flop_cost=path_info.optimized_cost,
+        flop_cost=accumulation_cost.total,
         subscripts=canonical_subscripts,
         shapes=tuple(shapes),
     ):
@@ -376,13 +390,27 @@ def einsum_path(
     budget = require_budget()
     with budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=()):
         pass
-    _canonical_subscripts, _input_parts, _output_subscript, _shapes, path_info = (
+    canonical_subscripts, input_parts, output_subscript, shapes, path_info = (
         _get_path_info(
             subscripts,
             operands,
             optimize,
         )
     )
+
+    accumulation_cost = _get_accumulation_cost(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=tuple(input_parts),
+        output_subscript=output_subscript,
+        shapes=shapes,
+        operands=tuple(operands),
+    )
+
+    from flopscope._accumulation._path_info import FlopscopePathInfo
+    path_info = FlopscopePathInfo.from_inner(
+        inner=path_info, accumulation=accumulation_cost,
+    )
+
     return list(path_info.path), path_info
 
 
