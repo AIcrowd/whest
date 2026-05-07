@@ -2,6 +2,43 @@
 
 ## Unreleased
 
+### Changed (BREAKING)
+
+- **Einsum cost model rewritten** to mirror the JS Symmetry-Aware Einsum
+  Contractions explorer's α/M direct-event model. The charged FLOP cost is
+  now path-independent: `(k - 1) · ∏ M_a + ∏ α_a` summed across components.
+  - `path_info.optimized_cost` returns the new whole-expression cost. For
+    expressions with declared symmetry, this number differs from the old
+    per-step `cost · unique/total` formula. See migration notes below.
+  - Path optimization no longer uses symmetry; `opt_einsum.contract_path`
+    behaves like upstream stock opt_einsum.
+  - Per-step `path_info.steps[i].flop_count` reverts to dense (no symmetry
+    adjustment per step).
+
+### Added
+
+- `flopscope.einsum_accumulation_cost(subscripts, *operands, partition_budget=None)`
+  — public inspection function returning the new `AccumulationCost` decomposition
+  (path-independent, per-component breakdown, regime trace).
+- `flopscope.AccumulationCost`, `flopscope.ComponentCost`, `flopscope.RegimeStep`
+  — public dataclasses.
+- New settings:
+  - `partition_budget` (default 100 000): per-component typed-partition cap.
+  - `dimino_budget` (default 500 000): whole-expression `G_pt` closure cap.
+- `CostFallbackWarning` now also fires when a partition counter exceeds its
+  budget; total falls back to `k · dense_baseline` (the no-symmetry direct-
+  event count).
+
+### Removed
+
+- `flopscope._opt_einsum._subgraph_symmetry` — internal module deleted.
+- `flopscope._opt_einsum._symmetry` — internal module deleted (was mostly
+  `symmetric_flop_count`, `unique_elements`, `SubsetSymmetry` — all only used
+  by the deleted oracle).
+- `use_inner_symmetry` setting — was a knob on the deleted oracle.
+
+---
+
 ### BREAKING
 
 - `BudgetContext.untracked_time` and `summary_dict()["untracked_time_s"]` now
