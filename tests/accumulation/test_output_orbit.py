@@ -53,11 +53,16 @@ def test_restrict_to_positions_returns_none_when_set_not_preserved():
 
 
 def test_restrict_stabilizer_to_positions_dedupes_kernel():
-    # Two distinct global perms that restrict to the same local perm should dedupe.
-    p1 = Permutation([0, 1, 2])  # identity
-    p2 = Permutation([0, 1, 2])  # also identity
-    result = restrict_stabilizer_to_positions((p1, p2), (0, 1))
+    # Two GLOBALLY distinct permutations that both restrict to the local identity
+    # on V = {0, 1} should dedupe to a single local element.
+    # p_identity is the global identity.
+    # p_outside swaps positions 2 and 3 (outside V), so it preserves V pointwise
+    # and its restriction to V is the local identity.
+    p_identity = Permutation([0, 1, 2, 3])
+    p_outside = Permutation([0, 1, 3, 2])  # swaps indices 2 and 3
+    result = restrict_stabilizer_to_positions((p_identity, p_outside), (0, 1))
     assert len(result) == 1
+    assert result[0].is_identity
 
 
 def test_restrict_stabilizer_empty_positions_returns_identity():
