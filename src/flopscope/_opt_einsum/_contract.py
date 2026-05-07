@@ -17,7 +17,7 @@ from . import _helpers as helpers
 from . import _parser as parser
 from . import _paths as paths
 from ._hsluv import rgb_distance_hex, rich_label_palette
-from ._symmetry import SymmetryGroup, symmetric_flop_count
+from flopscope._perm_group import SymmetryGroup
 from ._typing import (
     ArrayType,
     ContractionListType,
@@ -528,42 +528,8 @@ class PathInfo:
         return "(" + ",".join(str(p) for p in step.path_indices) + ")"
 
     def _fmt_unique_dense(self, step: StepInfo) -> str:
-        """Show output and inner unique/dense element counts."""
-        from math import prod
-
-        from flopscope._opt_einsum._symmetry import unique_elements
-
-        if step.flop_cost == step.dense_flop_cost:
-            return "-"
-
-        parts: list[str] = []
-
-        if step.output_group is not None and step.output_shape:
-            out_str = step.subscript.split("->")[1] if "->" in step.subscript else ""
-            out_total = prod(step.output_shape)
-            out_unique = unique_elements(
-                frozenset(out_str), self.size_dict, perm_group=step.output_group
-            )
-            if out_unique != out_total:
-                parts.append(f"V:{out_unique:,}/{out_total:,}")
-
-        if step.inner_applied and step.inner_group is not None:
-            lhs = (
-                step.subscript.split("->")[0]
-                if "->" in step.subscript
-                else step.subscript
-            )
-            out_str = step.subscript.split("->")[1] if "->" in step.subscript else ""
-            contracted = frozenset(lhs.replace(",", "")) - frozenset(out_str)
-            if contracted:
-                inner_total = prod(self.size_dict[c] for c in contracted)
-                inner_unique = unique_elements(
-                    contracted, self.size_dict, perm_group=step.inner_group
-                )
-                if inner_unique != inner_total:
-                    parts.append(f"W:{inner_unique:,}/{inner_total:,}")
-
-        return " ".join(parts) if parts else "-"
+        """Show output and inner unique/dense element counts (oracle removed; always '-')."""
+        return "-"
 
     @staticmethod
     def _fmt_subset(s: frozenset[int] | None) -> str:
@@ -1029,32 +995,11 @@ def contract_path(
         optimizer_used = "trivial"
     elif isinstance(optimize, paths.PathOptimizer):
         # Custom path optimizer instance supplied
-        if symmetry_oracle is not None:
-            try:
-                path_tuple = optimize(
-                    input_sets,
-                    output_set,
-                    size_dict,
-                    memory_arg,
-                    symmetry_oracle=symmetry_oracle,
-                )
-            except TypeError:
-                path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
-        else:
-            path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
+        path_tuple = optimize(input_sets, output_set, size_dict, memory_arg)
         optimizer_used = type(optimize).__name__
     else:
         path_optimizer = paths.get_path_fn(optimize)
-        if symmetry_oracle is not None:
-            path_tuple = path_optimizer(
-                input_sets,
-                output_set,
-                size_dict,
-                memory_arg,
-                symmetry_oracle=symmetry_oracle,  # type: ignore[call-arg]
-            )
-        else:
-            path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
+        path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
         # Resolve auto/auto-hq to the inner choice the routing made.
         if optimize == "auto":
             inner_fn = paths._AUTO_CHOICES.get(num_ops, paths.greedy)
@@ -1101,59 +1046,12 @@ def contract_path(
         contract_tuple = helpers.find_contraction(contract_inds, input_sets, output_set)
         out_inds, input_sets, idx_removed, idx_contract = contract_tuple
 
-        # Compute cost using oracle if available
-        subset_sym = None  # assigned below when symmetry_oracle is not None
-        _step_inner_applied = False  # assigned below when symmetry_oracle is not None
-        if symmetry_oracle is not None:
-            # Look up each input's symmetry from the oracle before merging.
-            # This is used both for cost computation (via merged_subset →
-            # result_sym) and for BLAS classification (input_groups
-            # enables SYMM/SYMV/SYDT labelling in can_blas).
-            step_syms: list = [None] * len(contract_inds)
-            merged_subset: frozenset[int] = frozenset()
-            for pos_in_step, ci in enumerate(contract_inds):
-                ssa_id = ssa_ids[ci]
-                subset_i = ssa_to_subset[ssa_id]
-                step_syms[pos_in_step] = symmetry_oracle.sym(subset_i).output
-                merged_subset = merged_subset | subset_i
-
-            subset_sym = symmetry_oracle.sym(merged_subset)
-            result_sym = subset_sym.output
-
-            # Per-operand free index counts for Φ cost model.
-            _free_counts = tuple(len(s - idx_removed) for s in _pre_input_sets)
-
-            from flopscope._config import get_setting
-
-            _use_inner = bool(get_setting("use_inner_symmetry"))
-
-            cost = symmetric_flop_count(
-                idx_contract,
-                bool(idx_removed),
-                len(contract_inds),
-                size_dict,
-                output_group=subset_sym.output,
-                output_indices=out_inds,
-                inner_group=subset_sym.inner,
-                inner_indices=idx_removed if idx_removed else None,
-                use_inner_symmetry=_use_inner,
-                per_operand_free_counts=_free_counts,
-            )
-
-            # Determine whether inner symmetry was actually applied at
-            # this step (for display: W✓ vs W).
-            _step_inner_applied = False
-            if _use_inner and subset_sym.inner is not None and idx_removed:
-                _gl = (
-                    set(subset_sym.inner._labels) if subset_sym.inner._labels else set()
-                )
-                _step_inner_applied = bool(_gl and _gl <= set(idx_removed))
-        else:
-            step_syms = [None] * len(contract_inds)
-            result_sym = None
-            cost = helpers.flop_count(
-                idx_contract, bool(idx_removed), len(contract_inds), size_dict
-            )
+        # Compute step cost using dense flop count (oracle path removed).
+        step_syms = [None] * len(contract_inds)
+        result_sym = None
+        cost = helpers.flop_count(
+            idx_contract, bool(idx_removed), len(contract_inds), size_dict
+        )
 
         # Dense cost is always the opt_einsum flop_count (no symmetry)
         dense_cost = helpers.flop_count(
@@ -1186,7 +1084,7 @@ def contract_path(
                 "".join(out_inds),
                 idx_removed,
                 tmp_shapes,  # type: ignore[arg-type]
-                input_groups=step_syms if symmetry_oracle is not None else None,
+                input_groups=None,
             )
         else:
             do_blas = False
@@ -1219,13 +1117,11 @@ def contract_path(
                 output_shape=shp_result,
                 input_groups=list(step_syms),
                 output_group=result_sym,
-                inner_group=(subset_sym.inner if symmetry_oracle is not None else None),  # type: ignore[union-attr]
+                inner_group=None,
                 dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,
-                inner_applied=(
-                    _step_inner_applied if symmetry_oracle is not None else False
-                ),
+                inner_applied=False,
                 path_indices=original_path_tuple,
                 merged_subset=new_merged_subset,
             )

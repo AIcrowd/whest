@@ -13,11 +13,7 @@ from collections.abc import Callable, Generator, Sequence
 from typing import Any
 
 from ._helpers import compute_size_by_dict, flop_count
-from ._symmetry import (
-    SymmetryGroup,
-    symmetric_flop_count,
-    unique_elements,
-)
+from flopscope._perm_group import SymmetryGroup
 from ._typing import ArrayIndexType, PathSearchFunctionType, PathType, TensorShapeType
 
 __all__ = [
@@ -169,27 +165,7 @@ def calc_k12_flops(
     inner = bool(either - k12)
 
     sym12: SymmetryGroup | None = None
-    if oracle is not None and ssa_to_subset is not None:
-        merged_subset = ssa_to_subset[i] | ssa_to_subset[j]
-        subset_sym = oracle.sym(merged_subset)
-        sym12 = subset_sym.output
-
-        from flopscope._config import get_setting
-
-        idx_removed = either - k12
-        cost = symmetric_flop_count(
-            either,
-            inner,
-            2,
-            size_dict,
-            output_group=subset_sym.output,
-            output_indices=k12,
-            inner_group=subset_sym.inner,
-            inner_indices=idx_removed if idx_removed else None,
-            use_inner_symmetry=bool(get_setting("use_inner_symmetry")),
-        )
-    else:
-        cost = flop_count(either, inner, 2, size_dict)
+    cost = flop_count(either, inner, 2, size_dict)
 
     return k12, cost, sym12
 
@@ -1391,67 +1367,7 @@ class DynamicProgramming(PathOptimizer):
         # s1 & (all_tensors ^ s2)
         all_tensors = (1 << len(inputs)) - 1
 
-        # Build a per-call bitmap->frozenset[int] converter for the oracle.
-        # Maps DP bitmap `s` (bit j set iff tensor j is in the subset) to the
-        # original operand-position frozenset that the oracle was built with.
-        if symmetry_oracle is not None:
-            _bts_cache: dict[int, frozenset[int]] = {}
-
-            def bitmap_to_subset(
-                s: int, _cache: dict[int, frozenset[int]] = _bts_cache
-            ) -> frozenset[int]:
-                if s not in _cache:
-                    result: set[int] = set()
-                    for k in range(len(inputs)):
-                        if s >> k & 1:
-                            orig = inputs_contractions[k]
-                            result.add(orig if isinstance(orig, int) else orig[0])
-                    _cache[s] = frozenset(result)
-                return _cache[s]
-
-            _ratio_cache: dict[int, float] = {}
-
-            def get_ratio(
-                s: int,
-                int_output_legs: frozenset[int],
-                _cache: dict[int, float] = _ratio_cache,
-            ) -> float:
-                """Exact unique/dense ratio for the intermediate at DP bitmap s.
-
-                Lazily computed on first access and cached per subset. Returns
-                1.0 when the oracle reports no symmetry, or when the
-                intermediate has no elements. The int<->str label translation
-                happens once per cache miss and is amortized across all
-                _dp_compare_* helper calls that subsequently reuse this
-                subset's ratio.
-
-                all_inds[ix] is the inverse of symbol2int: the string label
-                for int label ix. Only the labels in this intermediate need
-                translation, keeping the per-miss work bounded.
-                """
-                cached = _cache.get(s, -1.0)
-                if cached >= 0.0:
-                    return cached
-                subset = bitmap_to_subset(s)
-                subset_sym = symmetry_oracle.sym(subset)
-                sym = subset_sym.output
-                if sym is None:
-                    _cache[s] = 1.0
-                    return 1.0
-                str_legs = frozenset(all_inds[ix] for ix in int_output_legs)
-                str_size_dict = {all_inds[ix]: size_dict[ix] for ix in int_output_legs}
-                dense = compute_size_by_dict(str_legs, str_size_dict)
-                if dense <= 0:
-                    _cache[s] = 1.0
-                    return 1.0
-                unique = unique_elements(str_legs, str_size_dict, perm_group=sym)
-                ratio = unique / dense
-                _cache[s] = ratio
-                return ratio
-
-        else:
-            bitmap_to_subset = None  # type: ignore[assignment]
-            get_ratio = None  # type: ignore[assignment]
+        get_ratio = None
 
         for g in subgraphs:
             # dynamic programming approach to compute x[n] for subgraph g;
