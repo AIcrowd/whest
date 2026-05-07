@@ -8,7 +8,6 @@ _SETTINGS: dict[str, object] = {
     "einsum_path_cache_size": 4096,
     "partition_budget": 100_000,
     "symmetry_warnings": True,
-    "use_inner_symmetry": True,
 }
 
 # Validators for settings that require range/type checks.
@@ -60,10 +59,6 @@ def configure(**kwargs: object) -> None:
     symmetry_warnings : bool
         If ``False``, suppress :class:`~flopscope.errors.SymmetryLossWarning`
         warnings.  Default ``True``.
-    use_inner_symmetry : bool
-        If ``True``, exploit inner (W-side) symmetry to reduce FLOP costs
-        when all W-group labels are contracted at the same step.
-        Default ``True``.
 
     Returns
     -------

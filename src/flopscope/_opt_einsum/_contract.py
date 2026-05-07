@@ -85,18 +85,13 @@ class StepInfo:
     the raw path field."""
 
     inner_applied: bool = False
-    """Whether inner (W-side) symmetry was actually applied to reduce
-    the FLOP cost at this step.  True only when ``use_inner_symmetry``
-    is enabled and all W-group labels are contracted at this step."""
+    """Whether inner (W-side) symmetry was applied at this step (always False; oracle removed)."""
 
     merged_subset: frozenset[int] | None = None
     """Subset of *original* operand positions that this step's output
     intermediate covers. For step 0 contracting two original operands i
     and j, this is ``frozenset({i, j})``. For later steps it's the union
-    of the subsets of all SSA inputs being contracted. This is the exact
-    key the symmetry oracle uses for ``oracle.sym(...)`` lookups, so it
-    makes the symmetry column directly attributable. ``None`` when no
-    oracle was provided."""
+    of the subsets of all SSA inputs being contracted."""
 
 
 @dataclass

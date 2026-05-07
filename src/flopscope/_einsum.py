@@ -191,12 +191,6 @@ def _relabel_group_to_output(
     return validate_symmetry_group(remapped, ndim=len(output_subscript))
 
 
-def _remap_inferred_group(group, output_subscript: str):
-    labels = getattr(group, "_labels", None)
-    if group is None or labels is None:
-        return None
-    return _relabel_group_to_output(group, tuple(labels), output_subscript)
-
 
 def _infer_pathless_output_symmetry(operands, input_parts, output_subscript: str):
     if len(operands) != 1:
@@ -216,19 +210,9 @@ def _resolve_output_symmetry(
     operands,
     input_parts,
     output_subscript: str,
-    path_info,
 ):
     if symmetry is not None:
         return normalize_symmetry_input(symmetry, ndim=len(output_subscript))
-    inferred = _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
-    if inferred is not None:
-        return inferred
-    if path_info.steps:
-        inferred = _remap_inferred_group(
-            path_info.steps[-1].output_group, output_subscript
-        )
-        if inferred is not None:
-            return inferred
     return _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
 
 
@@ -321,7 +305,6 @@ def einsum(
         operands=operands,
         input_parts=input_parts,
         output_subscript=output_subscript,
-        path_info=path_info,
     )
     effective_out_symmetry = target_symmetry
     if effective_out_symmetry is None and isinstance(out, SymmetricTensor):
