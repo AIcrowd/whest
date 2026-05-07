@@ -85,3 +85,55 @@ def test_component_cost_dense_count_is_product_of_sizes():
     )
     [cost] = run_ladder_per_component((component,), partition_budget=100_000)
     assert cost.dense_count == 77
+
+
+# ── aggregate_einsum + AccumulationCost ──────────────────────────────
+
+
+from flopscope._accumulation._cost import AccumulationCost, aggregate_einsum
+
+
+def test_aggregate_einsum_total_for_two_trivial_components():
+    """Two trivial components: M_total = ∏ sizes; α = ∏ sizes; total = (k-1)·M + α."""
+    c1 = run_ladder_per_component((_trivial_component(labels=('i',), sizes=(3,)),),
+                                    partition_budget=100_000)[0]
+    c2 = run_ladder_per_component((_trivial_component(labels=('j',), sizes=(4,)),),
+                                    partition_budget=100_000)[0]
+    cost = aggregate_einsum(
+        component_costs=(c1, c2),
+        num_terms=2,           # k = 2 operands
+        dense_baseline=3 * 4,  # ∏ n_ℓ
+    )
+    assert isinstance(cost, AccumulationCost)
+    assert cost.m_total == 12
+    assert cost.alpha == 12
+    assert cost.mu == 12  # (k-1) · m_total = 1 · 12
+    assert cost.total == 24  # mu + alpha = 12 + 12
+    assert cost.fallback_used is False
+    assert cost.unavailable_components == ()
+
+
+def test_aggregate_einsum_with_symmetry_savings():
+    """A single S_2 component with V=L: M = α = 10 (S_2 on (4,4))."""
+    c = ComponentCost(
+        labels=('i', 'j'), va=('i', 'j'), wa=(), sizes=(4, 4),
+        m=10, alpha=10, dense_count=16,
+        regime_id='functionalProjection', shape='allVisible',
+        group_name='S2{i,j}', group_order=2,
+        regime_trace=(),
+    )
+    cost = aggregate_einsum(component_costs=(c,), num_terms=2, dense_baseline=16)
+    assert cost.total == 1 * 10 + 10  # (k-1) * M + α
+
+
+def test_aggregate_einsum_records_num_terms_and_dense_baseline():
+    c = ComponentCost(
+        labels=('i',), va=('i',), wa=(), sizes=(5,),
+        m=5, alpha=5, dense_count=5,
+        regime_id='trivial', shape='trivial',
+        group_name='trivial', group_order=1,
+        regime_trace=(),
+    )
+    cost = aggregate_einsum(component_costs=(c,), num_terms=3, dense_baseline=5)
+    assert cost.num_terms == 3
+    assert cost.dense_baseline == 5

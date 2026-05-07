@@ -104,3 +104,104 @@ def run_ladder_per_component(
             unavailable_reason=unavailable_reason,
         ))
     return tuple(out)
+
+
+# ── AccumulationCost + aggregate_einsum ──────────────────────────────
+
+
+import warnings
+
+from flopscope.errors import CostFallbackWarning
+
+
+@dataclass(frozen=True)
+class AccumulationCost:
+    """Whole-einsum cost. When any component is unavailable, total falls back to
+    the dense baseline (k · dense_baseline) and a CostFallbackWarning fires."""
+    total: int
+    mu: int | None
+    alpha: int | None
+    m_total: int
+    dense_baseline: int
+    num_terms: int
+
+    per_component: tuple[ComponentCost, ...]
+
+    fallback_used: bool
+    unavailable_components: tuple[int, ...] = ()
+    unavailable_reason: str | None = None
+
+    def describe(self) -> dict:
+        """Human-readable + LaTeX summary, built on demand."""
+        from ._cost_descriptions import describe_total
+        return describe_total(self)
+
+    @property
+    def savings_ratio(self) -> float:
+        """total / (k · dense_baseline). 1.0 means no savings; lower is better."""
+        denom = self.num_terms * self.dense_baseline
+        return self.total / denom if denom > 0 else 1.0
+
+
+def aggregate_einsum(
+    component_costs: Sequence[ComponentCost],
+    *,
+    num_terms: int,
+    dense_baseline: int,
+) -> AccumulationCost:
+    """Aggregate per-component costs into the einsum cost: total = (k-1)·∏M + ∏α.
+
+    Fallback policy: if any component has alpha=None, total = k · dense_baseline
+    (the no-symmetry direct-event count) and a CostFallbackWarning fires.
+    """
+    failing = [i for i, c in enumerate(component_costs) if c.alpha is None]
+
+    m_total = 1
+    for c in component_costs:
+        m_total *= c.m
+
+    if not failing:
+        alpha_product = 1
+        for c in component_costs:
+            assert c.alpha is not None  # for type narrowing
+            alpha_product *= c.alpha
+        mu = (num_terms - 1) * m_total
+        total = mu + alpha_product
+        return AccumulationCost(
+            total=total,
+            mu=mu,
+            alpha=alpha_product,
+            m_total=m_total,
+            dense_baseline=dense_baseline,
+            num_terms=num_terms,
+            per_component=tuple(component_costs),
+            fallback_used=False,
+        )
+
+    # Fallback: charge dense.
+    fallback_total = num_terms * dense_baseline
+    first_failing = component_costs[failing[0]]
+    reason = first_failing.unavailable_reason or 'partition_budget exceeded'
+    failing_labels = ', '.join(first_failing.labels)
+    warnings.warn(
+        CostFallbackWarning(
+            f'einsum: component {list(failing)} ({failing_labels}) returned '
+            f'unavailable — charging dense cost {fallback_total} = '
+            f'{num_terms} × {dense_baseline}. Failing reason: {reason}. '
+            f'Raise via flopscope.configure(partition_budget=...) to attempt '
+            f'exact counting.'
+        ),
+        stacklevel=4,
+    )
+    return AccumulationCost(
+        total=fallback_total,
+        mu=None,
+        alpha=None,
+        m_total=m_total,
+        dense_baseline=dense_baseline,
+        num_terms=num_terms,
+        per_component=tuple(component_costs),
+        fallback_used=True,
+        unavailable_components=tuple(failing),
+        unavailable_reason=reason,
+    )
