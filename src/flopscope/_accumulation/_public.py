@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 import numpy as _np
 
 from flopscope._opt_einsum._parser import parse_einsum_input
 from flopscope._symmetric import SymmetricTensor
 
-from ._cost import AccumulationCost, compute_accumulation_cost
+from ._cache import get_accumulation_cost_cached
+from ._cost import AccumulationCost
 
 
 def _per_op_symmetries(operands):
@@ -34,6 +33,19 @@ def _identity_pattern(operands):
         if len(positions) >= 2
     )
     return groups if groups else None
+
+
+def _accumulation_fingerprint(operands):
+    """Hashable per-operand symmetry fingerprint for the accumulation cache key."""
+    parts = []
+    for sym in _per_op_symmetries(operands):
+        if sym is None:
+            parts.append(None)
+            continue
+        axes = sym.axes
+        gens = tuple(tuple(gen.array_form) for gen in sym.generators)
+        parts.append((axes, gens))
+    return tuple(parts)
 
 
 def einsum_accumulation_cost(
@@ -72,12 +84,12 @@ def einsum_accumulation_cost(
     input_parts = tuple(input_subscripts.split(','))
     shapes = tuple(tuple(_np.asarray(op).shape) for op in operands)
 
-    return compute_accumulation_cost(
+    return get_accumulation_cost_cached(
         canonical_subscripts=canonical_subscripts,
         input_parts=input_parts,
         output_subscript=output_subscript,
         shapes=shapes,
-        per_op_symmetries=_per_op_symmetries(operands),
+        sym_fingerprint=_accumulation_fingerprint(operands),
         identity_pattern=_identity_pattern(operands),
         partition_budget=partition_budget,
     )

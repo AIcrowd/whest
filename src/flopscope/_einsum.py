@@ -400,56 +400,12 @@ def einsum_path(
 # ── Accumulation cost helper + cache ─────────────────────────────────
 
 
-from flopscope._accumulation._cost import compute_accumulation_cost  # noqa: E402
-from flopscope._accumulation._public import _per_op_symmetries, _identity_pattern  # noqa: E402
-
-
-def _make_accumulation_cache(maxsize):
-    """Create a new lru_cache-wrapped accumulation computation function."""
-
-    @functools.lru_cache(maxsize=maxsize)
-    def _compute(canonical_subscripts, input_parts, output_subscript, shapes,
-                 sym_fingerprint, identity_pattern):
-        # Reconstruct per-op symmetries from the fingerprint.
-        from flopscope._perm_group import _PermutationCompat as Permutation
-        from flopscope._perm_group import SymmetryGroup
-
-        per_op_symmetries = []
-        for fp_entry in sym_fingerprint:
-            if fp_entry is None:
-                per_op_symmetries.append(None)
-                continue
-            axes, gen_arrays = fp_entry
-            gens = [Permutation(list(g)) for g in gen_arrays]
-            group = SymmetryGroup(*gens, axes=axes) if gens else None
-            per_op_symmetries.append(group)
-
-        return compute_accumulation_cost(
-            canonical_subscripts=canonical_subscripts,
-            input_parts=input_parts,
-            output_subscript=output_subscript,
-            shapes=shapes,
-            per_op_symmetries=tuple(per_op_symmetries),
-            identity_pattern=identity_pattern,
-        )
-
-    return _compute
-
-
-_accumulation_cache = _make_accumulation_cache(4096)
-
-
-def _accumulation_fingerprint(operands):
-    """Hashable per-operand symmetry fingerprint for the accumulation cache key."""
-    parts = []
-    for sym in _per_op_symmetries(operands):
-        if sym is None:
-            parts.append(None)
-            continue
-        axes = sym.axes
-        gens = tuple(tuple(gen.array_form) for gen in sym.generators)
-        parts.append((axes, gens))
-    return tuple(parts)
+from flopscope._accumulation._cache import (  # noqa: E402
+    _accumulation_cache,
+    get_accumulation_cost_cached,
+    rebuild_accumulation_cache as _rebuild_accumulation_cache_fn,
+)
+from flopscope._accumulation._public import _identity_pattern, _accumulation_fingerprint  # noqa: E402
 
 
 def _get_accumulation_cost(
@@ -460,25 +416,21 @@ def _get_accumulation_cost(
     shapes: tuple,
     operands: tuple,
 ):
-    """Cached accumulation-cost lookup."""
-    sym_fp = _accumulation_fingerprint(operands)
-    id_pat = _identity_pattern(operands)
-    return _accumulation_cache(
-        canonical_subscripts,
-        tuple(input_parts),
-        output_subscript,
-        shapes,
-        sym_fp,
-        id_pat,
+    """Cached accumulation-cost lookup for einsum() / einsum_path()."""
+    return get_accumulation_cost_cached(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=tuple(input_parts),
+        output_subscript=output_subscript,
+        shapes=shapes,
+        sym_fingerprint=_accumulation_fingerprint(operands),
+        identity_pattern=_identity_pattern(operands),
+        partition_budget=None,  # einsum() always uses the global setting
     )
 
 
 def _rebuild_accumulation_cache():
     """Rebuild the accumulation cache with the current configured maxsize."""
-    global _accumulation_cache
-    _accumulation_cache = _make_accumulation_cache(
-        int(get_setting('einsum_path_cache_size'))
-    )
+    _rebuild_accumulation_cache_fn(int(get_setting('einsum_path_cache_size')))
 
 
 import sys as _sys  # noqa: E402
