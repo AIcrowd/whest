@@ -99,3 +99,68 @@ def test_run_sigma_loop_on_aa_yields_identity_wreath_action():
     # Either valid or invalid depending on the structure; both are acceptable.
     for r in swap_results:
         assert isinstance(r, SigmaResult)
+
+
+# ── build_full_group ─────────────────────────────────────────────────
+
+
+from flopscope._accumulation._detection import DetectedGroup, build_full_group
+
+
+def test_build_full_group_trivial_when_no_valid_non_identity_pi():
+    """Sigma-loop with only identity sigma → no generators → trivial group."""
+    sigma_results = (
+        SigmaResult(
+            is_valid=True, is_identity=True, skipped=True,
+            pi={'i': 'i', 'j': 'j'}, pi_kind='identity',
+        ),
+    )
+    detected = build_full_group(sigma_results, all_labels=('i', 'j'))
+    assert isinstance(detected, DetectedGroup)
+    assert detected.all_labels == ('i', 'j')
+    assert len(detected.elements) == 1
+    assert detected.elements[0].is_identity
+    assert detected.group_name == 'trivial'
+
+
+def test_build_full_group_with_one_v_only_pi():
+    """One non-identity v-only pi → a generator → 2-element group."""
+    sigma_results = (
+        SigmaResult(is_valid=True, is_identity=True, skipped=True,
+                    pi={'i': 'i', 'j': 'j'}, pi_kind='identity'),
+        SigmaResult(is_valid=True, is_identity=False, skipped=False,
+                    pi={'i': 'j', 'j': 'i'}, pi_kind='v-only'),
+    )
+    detected = build_full_group(sigma_results, all_labels=('i', 'j'))
+    assert len(detected.elements) == 2
+    assert 'S2' in detected.group_name
+
+
+def test_build_full_group_classifies_s3_correctly():
+    """Three labels with full S_3 should classify as S3{...}."""
+    # Generators: (i j) and (j k)
+    sigma_results = (
+        SigmaResult(is_valid=True, is_identity=True, skipped=True,
+                    pi={'i': 'i', 'j': 'j', 'k': 'k'}, pi_kind='identity'),
+        SigmaResult(is_valid=True, is_identity=False, skipped=False,
+                    pi={'i': 'j', 'j': 'i', 'k': 'k'}, pi_kind='v-only'),
+        SigmaResult(is_valid=True, is_identity=False, skipped=False,
+                    pi={'i': 'i', 'j': 'k', 'k': 'j'}, pi_kind='v-only'),
+    )
+    detected = build_full_group(sigma_results, all_labels=('i', 'j', 'k'))
+    assert len(detected.elements) == 6
+    assert 'S3' in detected.group_name
+
+
+def test_build_full_group_dedupes_repeated_pis():
+    """Multiple sigma rows yielding the same pi → only one generator."""
+    sigma_results = (
+        SigmaResult(is_valid=True, is_identity=True, skipped=True,
+                    pi={'i': 'i', 'j': 'j'}, pi_kind='identity'),
+        SigmaResult(is_valid=True, is_identity=False, skipped=False,
+                    pi={'i': 'j', 'j': 'i'}, pi_kind='v-only'),
+        SigmaResult(is_valid=True, is_identity=False, skipped=False,
+                    pi={'i': 'j', 'j': 'i'}, pi_kind='v-only'),  # duplicate
+    )
+    detected = build_full_group(sigma_results, all_labels=('i', 'j'))
+    assert len(detected.elements) == 2  # not 4 — dedup applied

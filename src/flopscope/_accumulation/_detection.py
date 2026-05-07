@@ -155,3 +155,156 @@ def run_sigma_loop(
         ))
 
     return tuple(results)
+
+
+# ── build_full_group ─────────────────────────────────────────────────
+
+
+import math
+
+from flopscope._perm_group import _dimino
+
+
+@dataclass(frozen=True)
+class DetectedGroup:
+    """The whole-expression G_pt."""
+    all_labels: tuple[str, ...]
+    generators: tuple[Permutation, ...]
+    elements: tuple[Permutation, ...]
+    group_name: str
+    action_summary: str
+    valid_pi_results: tuple[SigmaResult, ...]
+
+
+def _minimal_generators(
+    candidates: Sequence[Permutation],
+) -> list[Permutation]:
+    """Greedy minimal generating set: keep only generators that grow the closure."""
+    if len(candidates) <= 1:
+        return list(candidates)
+    selected: list[Permutation] = []
+    current_size = 1
+    for candidate in candidates:
+        trial = (*selected, candidate)
+        elements = _dimino(trial)
+        if len(elements) > current_size:
+            selected.append(candidate)
+            current_size = len(elements)
+    return selected
+
+
+def _classify_group_name(
+    labels: Sequence[str],
+    generators: Sequence[Permutation],
+    elements: Sequence[Permutation],
+) -> str:
+    """Mirror of fullGroup.js + algorithm.js#classifyGroupName.
+
+    Recognizes S_n, C_n, D_n, Z_2, S_2, and falls back to PermGroup⟨...⟩."""
+    order = len(elements)
+    degree = len(labels)
+    if degree < 2 or order <= 1:
+        return 'trivial'
+
+    moved_set: set[int] = set()
+    for el in elements:
+        for i, v in enumerate(el.array_form):
+            if v != i:
+                moved_set.add(i)
+    moved_indices = sorted(moved_set)
+    moved_labels = [labels[i] for i in moved_indices] if moved_indices else list(labels)
+    effective_degree = len(moved_labels) or degree
+    label_set = '{' + ','.join(moved_labels) + '}'
+
+    if order == math.factorial(effective_degree):
+        return f'S{effective_degree}{label_set}'
+    if order == effective_degree and effective_degree >= 3:
+        # Cyclic check
+        for el in elements:
+            cycles = el.cyclic_form
+            if len(cycles) == 1 and len(cycles[0]) == effective_degree:
+                return f'C{effective_degree}{label_set}'
+    if order == 2 * effective_degree and effective_degree >= 3:
+        return f'D{effective_degree}{label_set}'  # heuristic — matches JS classification
+    if order == 2 and degree == 2:
+        return f'S2{label_set}'
+    if order == 2 and effective_degree > 2:
+        return f'Z2{label_set}'
+    # Fallback: build cycle notation inline using cyclic_form + label substitution
+    def _gen_cycle_str(gen: Permutation, lbl_list: Sequence[str]) -> str:
+        cycles = gen.cyclic_form
+        if not cycles:
+            return '()'
+        return ''.join(
+            '(' + ' '.join(lbl_list[idx] for idx in cycle) + ')'
+            for cycle in cycles
+        )
+    gen_str = ', '.join(_gen_cycle_str(g, labels) for g in generators)
+    return f'PermGroup⟨{gen_str}⟩'
+
+
+def _action_summary(
+    pi_kinds_seen: set[str],
+) -> str:
+    """Summarize the action of G as 'V-only' / 'W-only' / 'cross-V/W' / 'trivial'."""
+    if not pi_kinds_seen or pi_kinds_seen <= {'identity'}:
+        return 'trivial'
+    if 'cross-v-w' in pi_kinds_seen:
+        return 'cross-V/W'
+    if 'v-only' in pi_kinds_seen and 'w-only' in pi_kinds_seen:
+        return 'V-only × W-only'
+    if 'v-only' in pi_kinds_seen:
+        return 'V-only'
+    if 'w-only' in pi_kinds_seen:
+        return 'W-only'
+    return 'trivial'
+
+
+def build_full_group(
+    sigma_results: Sequence[SigmaResult],
+    *,
+    all_labels: Sequence[str],
+) -> DetectedGroup:
+    """Collect valid πs as full-degree permutations on `all_labels`, dedupe, find
+    a minimal generating set via greedy growth, run dimino. Mirrors fullGroup.js#buildFullGroup."""
+    label_idx = {l: i for i, l in enumerate(all_labels)}
+    candidates: list[Permutation] = []
+    seen_keys: set[tuple[int, ...]] = set()
+    pi_kinds_seen: set[str] = set()
+    valid: list[SigmaResult] = []
+
+    for r in sigma_results:
+        if not r.is_valid:
+            continue
+        if r.pi is not None:
+            valid.append(r)
+        if r.skipped or r.pi_kind == 'identity':
+            if r.pi_kind is not None:
+                pi_kinds_seen.add(r.pi_kind)
+            continue
+        if r.pi is None:
+            continue
+        if r.pi_kind is not None:
+            pi_kinds_seen.add(r.pi_kind)
+        arr = tuple(label_idx[r.pi[lbl]] for lbl in all_labels)
+        if arr in seen_keys:
+            continue
+        seen_keys.add(arr)
+        candidates.append(Permutation(list(arr)))
+
+    minimal = _minimal_generators(candidates)
+    if minimal:
+        elements = _dimino(tuple(minimal))
+    else:
+        elements = [Permutation.identity(len(all_labels))] if all_labels else []
+
+    group_name = _classify_group_name(all_labels, minimal, elements)
+
+    return DetectedGroup(
+        all_labels=tuple(all_labels),
+        generators=tuple(minimal),
+        elements=tuple(elements),
+        group_name=group_name,
+        action_summary=_action_summary(pi_kinds_seen),
+        valid_pi_results=tuple(valid),
+    )
