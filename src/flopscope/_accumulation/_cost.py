@@ -205,3 +205,138 @@ def aggregate_einsum(
         unavailable_components=tuple(failing),
         unavailable_reason=reason,
     )
+
+
+# ── End-to-end orchestrator ──────────────────────────────────────────
+
+
+from collections.abc import Sequence as _Seq
+from typing import Any as _Any
+
+from flopscope._perm_group import SymmetryGroup as _SymGroup
+
+from ._bipartite import build_bipartite, build_incidence_matrix
+from ._components import decompose_into_components
+from ._detection import build_full_group, run_sigma_loop
+from ._wreath import enumerate_wreath
+
+
+def _build_size_map(
+    input_parts: _Seq[str],
+    shapes: _Seq[_Seq[int]],
+) -> dict[str, int]:
+    """Build label → size from operand shapes. Validates that each label
+    appears with consistent sizes across operands."""
+    size_map: dict[str, int] = {}
+    for part, shape in zip(input_parts, shapes, strict=True):
+        for label, dim in zip(part, shape, strict=True):
+            existing = size_map.get(label)
+            if existing is not None and existing != dim:
+                raise ValueError(
+                    f"label '{label}' has inconsistent sizes {existing} and {dim} "
+                    f"across operands"
+                )
+            size_map[label] = dim
+    return size_map
+
+
+def _operand_names_from_identity_pattern(
+    num_ops: int,
+    identity_pattern: tuple[tuple[int, ...], ...] | None,
+) -> tuple[str, ...]:
+    """Generate operand names that respect the identity pattern.
+    Operands sharing the same id (per identity_pattern) get the same name."""
+    if identity_pattern is None:
+        return tuple(f'op_{i}' for i in range(num_ops))
+    name_of: dict[int, str] = {}
+    for group in identity_pattern:
+        shared_name = f'op_grp_{group[0]}'
+        for pos in group:
+            name_of[pos] = shared_name
+    return tuple(name_of.get(i, f'op_{i}') for i in range(num_ops))
+
+
+def _per_op_symmetry_for_wreath(sym: _Any) -> _Any:
+    """Pass declared symmetry through to enumerate_h. SymmetryGroup objects
+    pass through unchanged; strings (like 'symmetric') also pass through."""
+    return sym
+
+
+def compute_accumulation_cost(
+    *,
+    canonical_subscripts: str,
+    input_parts: _Seq[str],
+    output_subscript: str,
+    shapes: _Seq[_Seq[int]],
+    per_op_symmetries: _Seq[_Any] | None,
+    identity_pattern: tuple[tuple[int, ...], ...] | None,
+    partition_budget: int | None = None,
+) -> AccumulationCost:
+    """End-to-end whole-expression cost.
+
+    Inputs:
+      canonical_subscripts: the einsum string after canonicalization
+        (e.g. 'ij,jk->ik').
+      input_parts: per-operand subscript strings.
+      output_subscript: output labels (may be empty).
+      shapes: per-operand shape tuples.
+      per_op_symmetries: parallel to operands; SymmetryGroup objects, strings
+        ('symmetric', 'cyclic', 'dihedral'), or None.
+      identity_pattern: tuple of operand-position tuples that share id.
+      partition_budget: per-component partition cap; defaults to global setting.
+    """
+    from flopscope._config import get_setting
+
+    num_ops = len(input_parts)
+    if per_op_symmetries is None:
+        per_op_symmetries = (None,) * num_ops
+    if partition_budget is None:
+        partition_budget = int(get_setting('partition_budget'))
+
+    operand_names = _operand_names_from_identity_pattern(num_ops, identity_pattern)
+
+    graph = build_bipartite(
+        subscripts=tuple(input_parts),
+        output=output_subscript,
+        operand_names=operand_names,
+    )
+    matrix_data = build_incidence_matrix(graph)
+
+    # Build per-operand wreath inputs.
+    axis_ranks = tuple(len(part) for part in input_parts)
+    u_offsets = tuple(sum(axis_ranks[:i]) for i in range(num_ops))
+    grouped_ops: set[int] = set()
+    for grp in graph.identical_groups:
+        grouped_ops.update(grp)
+    singleton_groups = [(i,) for i in range(num_ops) if i not in grouped_ops]
+    identical_groups_all = (*graph.identical_groups, *singleton_groups)
+
+    wreath_elements = list(enumerate_wreath(
+        identical_groups=identical_groups_all,
+        per_op_symmetry=tuple(_per_op_symmetry_for_wreath(s) for s in per_op_symmetries),
+        axis_ranks=axis_ranks,
+        u_offsets=u_offsets,
+    ))
+
+    sigma_results = run_sigma_loop(graph, matrix_data, tuple(wreath_elements))
+    detected = build_full_group(sigma_results, all_labels=graph.all_labels)
+
+    # Decompose into components.
+    size_map = _build_size_map(input_parts, shapes)
+    sizes = tuple(size_map[lbl] for lbl in graph.all_labels)
+    components = decompose_into_components(
+        detected_group=detected,
+        v_labels=graph.free_labels,
+        w_labels=graph.summed_labels,
+        sizes=sizes,
+    )
+
+    component_costs = run_ladder_per_component(
+        components, partition_budget=partition_budget,
+    )
+    dense_baseline = math.prod(sizes) if sizes else 1
+    return aggregate_einsum(
+        component_costs=component_costs,
+        num_terms=num_ops,
+        dense_baseline=dense_baseline,
+    )

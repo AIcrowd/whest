@@ -137,3 +137,67 @@ def test_aggregate_einsum_records_num_terms_and_dense_baseline():
     cost = aggregate_einsum(component_costs=(c,), num_terms=3, dense_baseline=5)
     assert cost.num_terms == 3
     assert cost.dense_baseline == 5
+
+
+# ── compute_accumulation_cost end-to-end ─────────────────────────────
+
+
+from flopscope._accumulation._cost import compute_accumulation_cost
+
+
+def test_compute_cost_matmul_no_symmetry():
+    """ij,jk -> ik on (3,3,3): no symmetry → trivial component per label.
+    M_total = 27, α = 27, total = (2-1)·27 + 27 = 54."""
+    cost = compute_accumulation_cost(
+        canonical_subscripts='ij,jk->ik',
+        input_parts=('ij', 'jk'),
+        output_subscript='ik',
+        shapes=((3, 3), (3, 3)),
+        per_op_symmetries=(None, None),
+        identity_pattern=None,
+    )
+    assert cost.dense_baseline == 27  # ∏ over {i, j, k} = 27 (each has size 3)
+    assert cost.m_total == 27
+    assert cost.alpha == 27
+    assert cost.total == 54
+
+
+def test_compute_cost_with_one_symmetric_input():
+    """ij,jk -> ik with A symmetric in (i,j). Detected G_pt acts on {i,j}."""
+    from flopscope._perm_group import SymmetryGroup
+    s2 = SymmetryGroup.symmetric(axes=(0, 1))
+    cost = compute_accumulation_cost(
+        canonical_subscripts='ij,jk->ik',
+        input_parts=('ij', 'jk'),
+        output_subscript='ik',
+        shapes=((4, 4), (4, 4)),
+        per_op_symmetries=(s2, None),
+        identity_pattern=None,
+    )
+    # The detected G_pt's action depends on the bipartite structure.
+    # We assert positively that cost is computed (no exception, no fallback).
+    assert cost.fallback_used is False
+    assert cost.total > 0
+
+
+def test_compute_cost_identity_pattern_is_used_for_repeated_operands():
+    """A·A: same operand object passed twice → identity_pattern triggers wreath swaps."""
+    cost_distinct = compute_accumulation_cost(
+        canonical_subscripts='ij,jk->ik',
+        input_parts=('ij', 'jk'),
+        output_subscript='ik',
+        shapes=((3, 3), (3, 3)),
+        per_op_symmetries=(None, None),
+        identity_pattern=None,
+    )
+    cost_aliased = compute_accumulation_cost(
+        canonical_subscripts='ij,jk->ik',
+        input_parts=('ij', 'jk'),
+        output_subscript='ik',
+        shapes=((3, 3), (3, 3)),
+        per_op_symmetries=(None, None),
+        identity_pattern=((0, 1),),  # same object at positions 0 and 1
+    )
+    # The aliased version may detect additional G_pt (if the wreath swap
+    # produces a valid pi). For ij,jk it doesn't, so both should agree.
+    assert cost_distinct.total == cost_aliased.total
