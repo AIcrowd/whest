@@ -36,20 +36,50 @@ def test_unique_elements_for_shape_in_symmetry_utils_is_kept():
 
 def test_symmetry_oracle_param_gone_from_contract_path():
     import inspect
-    from flopscope._opt_einsum._contract import contract_path
+    from flopscope._opt_einsum import contract_path
     sig = inspect.signature(contract_path)
     assert 'symmetry_oracle' not in sig.parameters
 
 
 def test_symmetry_oracle_param_gone_from_paths_module():
+    # _paths.py was deleted in Task 7; upstream opt_einsum.paths is used directly.
     import inspect
-    import flopscope._opt_einsum._paths as paths
+    import opt_einsum.paths as paths
     src = inspect.getsource(paths)
     assert 'symmetry_oracle' not in src
 
 
 def test_symmetry_oracle_param_gone_from_path_random():
+    # _path_random.py was deleted in Task 7; upstream opt_einsum.path_random is used directly.
     import inspect
-    import flopscope._opt_einsum._path_random as pr
+    import opt_einsum.path_random as pr
     src = inspect.getsource(pr)
     assert 'symmetry_oracle' not in src
+
+
+# ── Devendor task 7+8 deletions ─────────────────────────────────────────
+
+
+def test_opt_einsum_paths_module_is_gone():
+    with pytest.raises(ImportError):
+        from flopscope._opt_einsum import _paths  # noqa: F401
+
+
+def test_opt_einsum_path_random_module_is_gone():
+    with pytest.raises(ImportError):
+        from flopscope._opt_einsum import _path_random  # noqa: F401
+
+
+def test_opt_einsum_blas_module_is_gone():
+    with pytest.raises(ImportError):
+        from flopscope._opt_einsum import _blas  # noqa: F401
+
+
+def test_opt_einsum_testing_module_is_gone():
+    with pytest.raises(ImportError):
+        from flopscope._opt_einsum import _testing  # noqa: F401
+
+
+def test_opt_einsum_typing_module_is_gone():
+    with pytest.raises(ImportError):
+        from flopscope._opt_einsum import _typing  # noqa: F401

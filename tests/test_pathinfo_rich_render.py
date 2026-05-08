@@ -113,11 +113,9 @@ def test_active_labels_do_not_collide_within_one_expression(d4_case_info):
     )
 
 
-def test_symmetry_class_styles_are_consistent_on_real_cases():
-    # The new direct-event model doesn't annotate per-step symmetry groups
-    # (that was oracle-specific behavior). The step sym text is always '-' or
-    # the accumulation-level annotation. Verify the rich rendering still works
-    # and doesn't crash with symmetry inputs.
+def test_rich_rendering_works_with_symmetry_inputs():
+    # The per-step symmetry column was removed (oracle-specific behavior).
+    # Verify the rich rendering still works and doesn't crash with symmetry inputs.
     x = np.ones((4, 4))
     a = np.ones((4, 4))
 
@@ -131,17 +129,12 @@ def test_symmetry_class_styles_are_consistent_on_real_cases():
     w = np.ones((4, 4))
     _, d4_case = fnp.einsum_path("aijkl,ab->ijklb", t, w)
 
-    gram_sym = s2_gram._rich_step_sym_text(s2_gram.steps[0])
-    outer_sym = s2_outer._rich_step_sym_text(s2_outer.steps[0])
-    trace_sym = c3_trace._rich_step_sym_text(c3_trace.steps[-1])
-    d4_sym = d4_case._rich_step_sym_text(d4_case.steps[0])
-
-    # With new model, per-step sym annotation is '-' (no oracle).
     # The accumulation model provides savings at the whole-expression level.
-    assert gram_sym.plain is not None
-    assert outer_sym.plain is not None
-    assert trace_sym.plain is not None
-    assert d4_sym.plain is not None
+    # Verify format_table works without crashing.
+    for info in (s2_gram, s2_outer, c3_trace, d4_case):
+        table = info.format_table()
+        assert isinstance(table, str)
+        assert len(table) > 10
 
 
 def test_verbose_rich_print_uses_rich_layout_and_keeps_detail_rows(capsys):

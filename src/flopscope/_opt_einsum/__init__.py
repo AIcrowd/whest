@@ -8,19 +8,23 @@ recomputed using flopscope's FMA convention (default 1, configurable via the
 See LICENSE and NOTICE in this directory for attribution to opt_einsum.
 """
 
+import opt_einsum.path_random as _path_random_upstream
+import opt_einsum.paths as _paths_upstream
 from opt_einsum import contract_path as _upstream_contract_path
-from opt_einsum.paths import _PATH_OPTIONS as _upstream_path_options
+from opt_einsum.paths import (
+    BranchBound,
+    DynamicProgramming,
+    PathOptimizer,
+    _AUTO_CHOICES,
+    _AUTO_HQ_CHOICES,
+    _PATH_OPTIONS as _upstream_path_options,
+    get_path_fn,
+    greedy,
+    register_path_fn,
+)
 
-from . import _path_random, _paths
 from ._contract import PathInfo, StepInfo, build_path_info
 from ._helpers import flop_count
-from ._paths import BranchBound, DynamicProgramming
-
-# Register random path functions into the local registry (needed for tests
-# that pass 'random-greedy' as a string to contract_path via local _paths).
-# After Task 7 these registrations will be removed along with _paths/_path_random.
-_paths.register_path_fn("random-greedy", _path_random.random_greedy)
-_paths.register_path_fn("random-greedy-128", _path_random.random_greedy_128)
 
 
 def _resolve_optimizer_name(optimize, num_ops: int) -> str:
@@ -34,18 +38,18 @@ def _resolve_optimizer_name(optimize, num_ops: int) -> str:
     """
     if num_ops <= 2:
         return 'trivial'
-    if isinstance(optimize, _paths.PathOptimizer):
+    if isinstance(optimize, PathOptimizer):
         return type(optimize).__name__
     if not isinstance(optimize, str):
         return ''
     if optimize in (True, 'auto', None):
-        inner_fn = _paths._AUTO_CHOICES.get(num_ops, _paths.greedy)
+        inner_fn = _AUTO_CHOICES.get(num_ops, greedy)
         return getattr(inner_fn, '__name__', None) or getattr(
             getattr(inner_fn, 'func', None), '__name__', str(inner_fn)
         )
     if optimize == 'auto-hq':
-        inner_fn = _paths._AUTO_HQ_CHOICES.get(
-            num_ops, _path_random.random_greedy_128
+        inner_fn = _AUTO_HQ_CHOICES.get(
+            num_ops, _path_random_upstream.random_greedy_128
         )
         return getattr(inner_fn, '__name__', None) or getattr(
             getattr(inner_fn, 'func', None), '__name__', str(inner_fn)
@@ -57,8 +61,8 @@ def _resolve_local_path(optimize, args, kwargs):
     """Resolve a path locally for optimizers not known to upstream opt_einsum.
 
     Used when ``optimize`` is a local PathOptimizer instance or a string key
-    registered only in flopscope's local _paths registry (e.g. a custom key
-    added via ``_paths.register_path_fn``).
+    registered only in flopscope's local registry (e.g. a custom key
+    added via ``register_path_fn``).
 
     Returns ``(resolved_path_list, optimizer_name_str)``.
     """
@@ -99,12 +103,12 @@ def _resolve_local_path(optimize, args, kwargs):
         memory_arg = memory_limit
 
     num_ops = len(input_list)
-    if isinstance(optimize, _paths.PathOptimizer):
+    if isinstance(optimize, PathOptimizer):
         resolved_path = optimize(input_sets, output_set, size_dict, memory_arg)
         optimizer_name = _resolve_optimizer_name(optimize, num_ops)
     else:
-        # String key in local registry
-        path_fn = _paths.get_path_fn(optimize)
+        # String key in registry
+        path_fn = get_path_fn(optimize)
         resolved_path = path_fn(input_sets, output_set, size_dict, memory_arg)
         optimizer_name = _resolve_optimizer_name(optimize, num_ops)
 
@@ -127,22 +131,22 @@ def contract_path(*args, **kwargs):
     All arguments are forwarded to upstream. The return value's PathInfo is
     flopscope's dataclass form; the path itself is unchanged.
 
-    If ``optimize`` is a local flopscope PathOptimizer instance (e.g.
-    BranchBound, DynamicProgramming, RandomGreedy), or a string key registered
-    only in flopscope's local _paths registry, the path is resolved locally
+    If ``optimize`` is a PathOptimizer instance, or a string key registered
+    only in flopscope's local registry, the path is resolved locally
     first and then forwarded to upstream as an explicit path list so that
     upstream produces the contraction_list we need for build_path_info.
     """
     optimize = kwargs.get('optimize', True)
 
     needs_local_resolve = False
-    if isinstance(optimize, _paths.PathOptimizer):
+    if isinstance(optimize, PathOptimizer):
         needs_local_resolve = True
     elif (
         isinstance(optimize, str)
-        and optimize in _paths._PATH_OPTIONS
+        and optimize in _upstream_path_options
         and optimize not in _upstream_path_options
     ):
+        # This branch is structurally unreachable but kept for symmetry.
         needs_local_resolve = True
 
     if needs_local_resolve:
@@ -173,4 +177,5 @@ __all__ = [
     'build_path_info',
     'BranchBound',
     'DynamicProgramming',
+    'register_path_fn',
 ]

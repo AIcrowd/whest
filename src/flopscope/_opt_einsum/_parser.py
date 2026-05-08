@@ -4,7 +4,9 @@ import itertools
 from collections.abc import Iterator, Sequence
 from typing import Any
 
-from ._typing import ArrayType, TensorShapeType
+# Inline type aliases (formerly from ._typing, deleted in Task 7+8).
+ArrayType = object  # Any
+TensorShapeType = tuple  # tuple[int, ...]
 
 __all__ = [
     "is_valid_einsum_char",

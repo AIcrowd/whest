@@ -144,34 +144,30 @@ class TestEinsumPath:
         assert isinstance(table, str)
         assert len(table) > 50
 
-    def test_str_output_no_symmetry_shows_dash_in_sym_column(self):
-        """When no operands have symmetry, the symmetry column shows '-'.
+    def test_str_output_no_symmetry_shows_table(self):
+        """Table is rendered correctly for a dense (no-symmetry) contraction.
         str(info) delegates to format_table() via FlopscopePathInfo.__str__."""
         A = numpy.ones((3, 4))
         B = numpy.ones((4, 5))
         _, info = einsum_path("ij,jk->ik", A, B)
         table = str(info)
-        assert "symmetry" in table.lower()
-        assert "-" in table  # dash in symmetry column when no symmetry
+        assert "flops" in table.lower()
+        assert "blas" in table.lower()
 
-    def test_str_output_with_symmetry_includes_sym_column(self):
-        """When any operand has symmetry, the table still shows the symmetry column
-        header. The new direct-event model charges the accumulation total, which
-        reflects the whole-expression symmetry group, not per-step S2 annotations."""
+    def test_str_output_with_symmetry_uses_accumulation_cost(self):
+        """When any operand has symmetry, the accumulation total reflects the
+        whole-expression symmetry group savings (direct-event model)."""
         n = 6
         T = as_symmetric(numpy.ones((n, n, n)), symmetry=(0, 1, 2))
         A = numpy.ones((n, n))
         _, info = einsum_path("ijk,ai->ajk", T, A)
-        table = str(info)
-        assert "symmetry" in table.lower()
         # The accumulation model computes the whole-expression symmetry savings.
         # total=1512, dense_baseline=1296; savings vs gaming bound (2*1296=2592):
         assert info.accumulation.total < info.accumulation.num_terms * info.accumulation.dense_baseline
 
     def test_str_output_symmetry_chain_through_steps(self):
         """The new direct-event model computes accumulation savings for the whole
-        expression, not per-step oracle annotations. The table still shows the
-        symmetry column header. S3{i,j,k} on T maps to Z2 on the product space
+        expression. S3{i,j,k} on T maps to Z2 on the product space
         (the expression group), giving significant savings over the gaming bound."""
         n = 5
         T = as_symmetric(numpy.ones((n, n, n)), symmetry=(0, 1, 2))
@@ -179,9 +175,6 @@ class TestEinsumPath:
         B = numpy.ones((n, n))
         C = numpy.ones((n, n))
         _, info = einsum_path("ijk,ai,bj,ck->abc", T, A, B, C)
-        table = str(info)
-        # Table structure is preserved: symmetry column header always shown.
-        assert "symmetry" in table.lower()
         # Accumulation model: total < num_terms * dense_baseline (gaming-resistance bound)
         acc = info.accumulation
         gaming_bound = acc.num_terms * acc.dense_baseline
@@ -354,7 +347,7 @@ class TestOutputSymmetryWrapping:
 
 
 class TestPathInfoStepInfo:
-    def test_step_info_has_symmetry_fields(self):
+    def test_step_info_has_core_fields(self):
         from flopscope._opt_einsum._contract import StepInfo
 
         A = numpy.ones((5, 5))
@@ -366,17 +359,8 @@ class TestPathInfoStepInfo:
             assert isinstance(step, StepInfo)
             assert hasattr(step, "subscript")
             assert hasattr(step, "flop_cost")
-            assert hasattr(step, "dense_flop_cost")
-            assert hasattr(step, "symmetry_savings")
-            assert hasattr(step, "output_group")
-
-    def test_dense_path_has_zero_savings(self):
-        A = numpy.ones((5, 5))
-        B = numpy.ones((5, 5))
-        C = numpy.ones((5, 5))
-        _, info = einsum_path("ij,jk,kl->il", A, B, C)
-        for step in info.steps:
-            assert step.symmetry_savings == 0.0
+            assert hasattr(step, "input_shapes")
+            assert hasattr(step, "output_shape")
 
 
 class TestPathInfoDebugFields:

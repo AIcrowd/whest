@@ -4,7 +4,10 @@ from collections.abc import Collection, Iterable
 from typing import Any, overload
 
 from flopscope._cost_model import fma_cost
-from ._typing import ArrayIndexType, ArrayType
+
+# Inline type aliases (formerly from ._typing, deleted in Task 7+8).
+ArrayIndexType = frozenset  # frozenset[str]
+ArrayType = object  # Any
 
 __all__ = ["compute_size_by_dict", "find_contraction", "flop_count"]
 
