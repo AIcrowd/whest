@@ -1164,7 +1164,7 @@ def contract_path(
 # ── build_path_info adapter (Task 5) ───────────────────────────────
 
 
-def build_path_info(upstream_path, upstream_info, *, size_dict):
+def build_path_info(upstream_path, upstream_info, *, size_dict, optimizer_used: str = ''):
     """Adapt upstream opt_einsum's PathInfo to flopscope's PathInfo.
 
     Per-step ``flop_cost`` is recomputed using flopscope's
@@ -1180,6 +1180,9 @@ def build_path_info(upstream_path, upstream_info, *, size_dict):
         Upstream's PathInfo with contraction_list, naive_cost, etc.
     size_dict : dict[str, int]
         Label -> dimension size mapping.
+    optimizer_used : str, optional
+        Name of the optimizer that produced ``upstream_path``. Propagated
+        into the returned PathInfo for display. Defaults to ``''``.
 
     Returns
     -------
@@ -1194,11 +1197,33 @@ def build_path_info(upstream_path, upstream_info, *, size_dict):
     steps_out: list[StepInfo] = []
     largest_intermediate = 0
 
-    for entry in upstream_info.contraction_list:
-        idx_contract = entry[0]   # tuple of input position indices (int)
+    # Reconstruct merged_subset tracking from the path itself.
+    # upstream_path[i] gives the original (pre-sort) indices for step i.
+    num_ops = len(list(upstream_path)) + 1 if upstream_info.contraction_list else 1
+    # Actually: num_ops is the number of original operands = contraction steps + 1
+    # for a linear chain; for a parallel contraction it differs. Compute from
+    # the first contraction_list entry's remaining field if available.
+    _first_remaining = (
+        upstream_info.contraction_list[0][3]
+        if upstream_info.contraction_list and upstream_info.contraction_list[0][3] is not None
+        else None
+    )
+    num_ops = (len(_first_remaining) + 1) if _first_remaining is not None else (
+        len(list(upstream_path)) + 1
+    )
+
+    # ssa_to_subset mirrors the SSA tracking in the local contract_path.
+    ssa_to_subset: dict[int, frozenset[int]] = {k: frozenset({k}) for k in range(num_ops)}
+    ssa_ids: list[int] = list(range(num_ops))
+    next_ssa = num_ops
+
+    for step_idx, entry in enumerate(upstream_info.contraction_list):
         idx_removed = entry[1]    # frozenset of label chars removed (inner product)
         einsum_str = entry[2]     # e.g. "jk,ij->ik"
         do_blas = entry[4]        # BLAS classification string or False
+
+        # The original path indices for this step (pre-sort, from upstream_path).
+        original_path_tuple: tuple[int, ...] = tuple(upstream_path[step_idx])
 
         if '->' in einsum_str:
             lhs, rhs = einsum_str.split('->', 1)
@@ -1228,6 +1253,21 @@ def build_path_info(upstream_path, upstream_info, *, size_dict):
         if output_shape_for_step:
             largest_intermediate = max(largest_intermediate, prod(output_shape_for_step))
 
+        # Reconstruct merged_subset by tracking which original operands each
+        # SSA id covers. The path gives us the positions to contract.
+        # Positions in original_path_tuple reference the *current* ssa_ids list.
+        contract_positions = tuple(sorted(original_path_tuple, reverse=True))
+        new_merged_subset: frozenset[int] = frozenset()
+        for ci in contract_positions:
+            if ci < len(ssa_ids):
+                new_merged_subset = new_merged_subset | ssa_to_subset[ssa_ids[ci]]
+        for ci in contract_positions:
+            if ci < len(ssa_ids):
+                ssa_ids.pop(ci)
+        ssa_to_subset[next_ssa] = new_merged_subset
+        ssa_ids.append(next_ssa)
+        next_ssa += 1
+
         savings = 0.0  # no symmetry oracle in this adapter path
         steps_out.append(
             StepInfo(
@@ -1242,8 +1282,8 @@ def build_path_info(upstream_path, upstream_info, *, size_dict):
                 symmetry_savings=savings,
                 blas_type=do_blas,
                 inner_applied=False,
-                path_indices=(),
-                merged_subset=None,
+                path_indices=original_path_tuple,
+                merged_subset=new_merged_subset,
             )
         )
 
@@ -1271,13 +1311,13 @@ def build_path_info(upstream_path, upstream_info, *, size_dict):
         optimized_cost=optimized_cost,
         largest_intermediate=largest_intermediate,
         speedup=speedup,
-        input_subscripts='',
-        output_subscript='',
+        input_subscripts=getattr(upstream_info, 'input_subscripts', ''),
+        output_subscript=getattr(upstream_info, 'output_subscript', ''),
         size_dict=dict(size_dict),
-        optimizer_used='',
+        optimizer_used=optimizer_used,
         contraction_list=list(upstream_info.contraction_list),
-        scale_list=[],
-        size_list=[],
+        scale_list=list(getattr(upstream_info, 'scale_list', [])),
+        size_list=list(getattr(upstream_info, 'size_list', [])),
         _oe_naive_cost=naive_cost,
         _oe_opt_cost=optimized_cost,
     )
