@@ -4,6 +4,20 @@
 
 ### Changed (BREAKING)
 
+- **Vendored opt_einsum replaced with runtime dependency.** flopscope now
+  depends on `opt_einsum>=3.3.0,<4.0.0` instead of vendoring its source.
+  The remaining `flopscope._opt_einsum` is a slim ~830-line shim that
+  adapts upstream's `PathInfo` to flopscope's expected shape and recomputes
+  per-step FLOP costs using flopscope's FMA convention.
+  - `flopscope._opt_einsum.contract_path` still returns a flopscope
+    `PathInfo` with the same essential fields (`path`, `steps`,
+    `optimized_cost`, etc.).
+  - `StepInfo` no longer carries the dead symmetry-related fields
+    (`input_groups`, `output_group`, `inner_group`, `inner_applied`,
+    `dense_flop_cost`, `symmetry_savings`). It now has 4-5 fields:
+    `subscript`, `flop_count`, `input_shapes`, `output_shape` (plus
+    `merged_subset` if still used by display).
+
 - **Einsum cost model rewritten** to mirror the JS Symmetry-Aware Einsum
   Contractions explorer's α/M direct-event model. The charged FLOP cost is
   now path-independent: `(k - 1) · ∏ M_a + ∏ α_a` summed across components.
@@ -28,9 +42,21 @@
 - `CostFallbackWarning` now also fires when a partition counter exceeds its
   budget; total falls back to `k · dense_baseline` (the no-symmetry direct-
   event count).
+- New configurable setting `fma_cost` (default 1). Counts a fused
+  multiply-add as 1 op (hardware convention). Set to 2 to get the
+  textbook / opt_einsum convention.
+- `flopscope._cost_model.fma_cost()` function replaces the
+  `FMA_COST` constant. The constant is removed.
 
 ### Removed
 
+- `flopscope._opt_einsum._paths` — now upstream
+- `flopscope._opt_einsum._path_random` — now upstream
+- `flopscope._opt_einsum._parser` — now upstream (re-exported via shim)
+- `flopscope._opt_einsum._blas` — was unused dead code
+- `flopscope._opt_einsum._testing` — was unused dead code
+- `flopscope._opt_einsum._typing` — now upstream
+- `flopscope._cost_model.FMA_COST` constant — replaced by `fma_cost()`
 - `flopscope._opt_einsum._subgraph_symmetry` — internal module deleted.
 - `flopscope._opt_einsum._symmetry` — internal module deleted (was mostly
   `symmetric_flop_count`, `unique_elements`, `SubsetSymmetry` — all only used
