@@ -1,15 +1,18 @@
-"""FLOP cost model constants.
+"""FLOP cost model.
 
-This codebase counts a fused multiply-add (FMA) as **1 operation**.
-Hardware FMA units compute  a × b + c  in a single instruction;
-counting it as 2 (one multiply + one add) is a common but arbitrary
-convention we intentionally do not follow.
+Counts a fused multiply-add (FMA) as 1 operation by default. The convention
+is configurable via ``flopscope.configure(fma_cost=N)`` where N is 1 or 2.
 """
 
-FMA_COST: int = 1
-"""Cost of one fused multiply-add operation.
+from flopscope._config import get_setting
 
-Set to 1 because FMA is a single hardware instruction.
-The opt_einsum / textbook convention of 2 counts the multiply
-and add separately; we reject that convention.
-"""
+
+def fma_cost() -> int:
+    """Return the configured FMA cost (1 by default).
+
+    A fused multiply-add (FMA) computes ``a × b + c`` in a single hardware
+    instruction. We count this as 1 operation by default, mirroring hardware
+    semantics. The textbook / opt_einsum convention of 2 (one multiply +
+    one add) is also available via ``flopscope.configure(fma_cost=2)``.
+    """
+    return int(get_setting('fma_cost'))
