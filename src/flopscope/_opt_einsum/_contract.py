@@ -27,6 +27,7 @@ from ._typing import (
 
 __all__ = [
     "contract_path",
+    "build_path_info",
     "PathInfo",
     "StepInfo",
 ]
@@ -92,6 +93,11 @@ class StepInfo:
     intermediate covers. For step 0 contracting two original operands i
     and j, this is ``frozenset({i, j})``. For later steps it's the union
     of the subsets of all SSA inputs being contracted."""
+
+    @property
+    def flop_count(self) -> int:
+        """Alias for ``flop_cost`` (adapter compatibility)."""
+        return self.flop_cost
 
 
 @dataclass
@@ -1153,3 +1159,125 @@ def contract_path(
     )
 
     return path_tuple, path_print
+
+
+# ── build_path_info adapter (Task 5) ───────────────────────────────
+
+
+def build_path_info(upstream_path, upstream_info, *, size_dict):
+    """Adapt upstream opt_einsum's PathInfo to flopscope's PathInfo.
+
+    Per-step ``flop_cost`` is recomputed using flopscope's
+    ``_helpers.flop_count`` (FMA = 1 by default; configurable via the
+    ``fma_cost`` setting). ``naive_cost`` and ``optimized_cost`` are also
+    recomputed from the per-step costs.
+
+    Parameters
+    ----------
+    upstream_path : list[tuple[int, ...]]
+        The contraction path returned by opt_einsum.contract_path.
+    upstream_info : opt_einsum.contract.PathInfo
+        Upstream's PathInfo with contraction_list, naive_cost, etc.
+    size_dict : dict[str, int]
+        Label -> dimension size mapping.
+
+    Returns
+    -------
+    PathInfo
+        flopscope's PathInfo with FMA-aware per-step costs.
+    """
+    from math import prod
+
+    # Walk the contraction list. Each entry has the shape:
+    #   (idx_contract: tuple[int,...], idx_removed: frozenset[str],
+    #    einsum_str: str, remaining: tuple[str,...] | None, do_blas: bool|str)
+    steps_out: list[StepInfo] = []
+    largest_intermediate = 0
+
+    for entry in upstream_info.contraction_list:
+        idx_contract = entry[0]   # tuple of input position indices (int)
+        idx_removed = entry[1]    # frozenset of label chars removed (inner product)
+        einsum_str = entry[2]     # e.g. "jk,ij->ik"
+        do_blas = entry[4]        # BLAS classification string or False
+
+        if '->' in einsum_str:
+            lhs, rhs = einsum_str.split('->', 1)
+        else:
+            lhs, rhs = einsum_str, ''
+
+        lhs_parts = lhs.split(',')
+        num_terms = len(lhs_parts)
+
+        # Reconstruct idx_contraction (set of all labels touched) from lhs
+        idx_contraction: frozenset[str] = frozenset(c for part in lhs_parts for c in part)
+
+        inner = bool(idx_removed)
+
+        cost = helpers.flop_count(
+            idx_contraction=idx_contraction,
+            inner=inner,
+            num_terms=num_terms,
+            size_dictionary=size_dict,
+        )
+
+        input_shapes_for_step: list[tuple[int, ...]] = [
+            tuple(size_dict[c] for c in part) for part in lhs_parts
+        ]
+        output_shape_for_step: tuple[int, ...] = tuple(size_dict[c] for c in rhs)
+
+        if output_shape_for_step:
+            largest_intermediate = max(largest_intermediate, prod(output_shape_for_step))
+
+        savings = 0.0  # no symmetry oracle in this adapter path
+        steps_out.append(
+            StepInfo(
+                subscript=einsum_str,
+                flop_cost=cost,
+                input_shapes=input_shapes_for_step,
+                output_shape=output_shape_for_step,
+                input_groups=[None] * num_terms,
+                output_group=None,
+                inner_group=None,
+                dense_flop_cost=cost,
+                symmetry_savings=savings,
+                blas_type=do_blas,
+                inner_applied=False,
+                path_indices=(),
+                merged_subset=None,
+            )
+        )
+
+    optimized_cost = sum(s.flop_cost for s in steps_out)
+
+    # Recompute naive_cost: single-step contraction over all labels.
+    all_labels: frozenset[str] = frozenset(size_dict.keys())
+    n_ops = len(upstream_info.contraction_list[0][3]) + 1 if upstream_info.contraction_list and upstream_info.contraction_list[0][3] is not None else 2
+    try:
+        naive_cost = helpers.flop_count(
+            idx_contraction=all_labels,
+            inner=True,
+            num_terms=n_ops,
+            size_dictionary=size_dict,
+        )
+    except Exception:
+        naive_cost = int(upstream_info.naive_cost)
+
+    speedup = (naive_cost / optimized_cost) if optimized_cost > 0 else 1.0
+
+    return PathInfo(
+        path=list(upstream_path),
+        steps=steps_out,
+        naive_cost=naive_cost,
+        optimized_cost=optimized_cost,
+        largest_intermediate=largest_intermediate,
+        speedup=speedup,
+        input_subscripts='',
+        output_subscript='',
+        size_dict=dict(size_dict),
+        optimizer_used='',
+        contraction_list=list(upstream_info.contraction_list),
+        scale_list=[],
+        size_list=[],
+        _oe_naive_cost=naive_cost,
+        _oe_opt_cost=optimized_cost,
+    )
