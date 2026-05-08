@@ -83,3 +83,15 @@ def test_opt_einsum_testing_module_is_gone():
 def test_opt_einsum_typing_module_is_gone():
     with pytest.raises(ImportError):
         from flopscope._opt_einsum import _typing  # noqa: F401
+
+
+def test_opt_einsum_parser_module_is_gone():
+    with pytest.raises(ImportError):
+        from flopscope._opt_einsum import _parser  # noqa: F401
+
+
+def test_parse_einsum_input_reexported_from_init():
+    """After Task 9: parse_einsum_input is importable from
+    flopscope._opt_einsum (re-exported from upstream)."""
+    from flopscope._opt_einsum import parse_einsum_input
+    assert callable(parse_einsum_input)

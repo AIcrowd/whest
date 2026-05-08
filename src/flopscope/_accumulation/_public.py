@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as _np
 
-from flopscope._opt_einsum._parser import parse_einsum_input
+from flopscope._opt_einsum import parse_einsum_input
 from flopscope._symmetric import SymmetricTensor
 
 from ._cache import get_accumulation_cost_cached

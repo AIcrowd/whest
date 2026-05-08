@@ -23,6 +23,9 @@ from opt_einsum.paths import (
     register_path_fn,
 )
 
+from opt_einsum.parser import parse_einsum_input
+from opt_einsum.parser import get_shape as _get_shape
+
 from ._contract import PathInfo, StepInfo, build_path_info
 from ._helpers import flop_count
 
@@ -67,19 +70,18 @@ def _resolve_local_path(optimize, args, kwargs):
     Returns ``(resolved_path_list, optimizer_name_str)``.
     """
     from . import _helpers as helpers
-    from . import _parser as parser
 
     operands_ = [args[0]] + list(args[1:])
     shapes = kwargs.get('shapes', False)
     input_subscripts, output_subscript, operands_prepped = (
-        parser.parse_einsum_input(operands_, shapes=shapes)
+        parse_einsum_input(operands_, shapes=shapes)
     )
     input_list = input_subscripts.split(',')
     input_sets = [frozenset(x) for x in input_list]
     if shapes:
         input_shapes = list(operands_prepped)
     else:
-        input_shapes = [parser.get_shape(x) for x in operands_prepped]
+        input_shapes = [_get_shape(x) for x in operands_prepped]
     output_set = frozenset(output_subscript)
     size_dict: dict[str, int] = {}
     for tnum, term in enumerate(input_list):
@@ -117,10 +119,9 @@ def _resolve_local_path(optimize, args, kwargs):
 
 def _count_num_ops(args, kwargs):
     """Count the number of operands from args/kwargs without full parse."""
-    from . import _parser as parser
     operands_ = [args[0]] + list(args[1:])
     shapes = kwargs.get('shapes', False)
-    input_subscripts, _, _ = parser.parse_einsum_input(operands_, shapes=shapes)
+    input_subscripts, _, _ = parse_einsum_input(operands_, shapes=shapes)
     return len(input_subscripts.split(','))
 
 
@@ -175,6 +176,7 @@ __all__ = [
     'contract_path',
     'flop_count',
     'build_path_info',
+    'parse_einsum_input',
     'BranchBound',
     'DynamicProgramming',
     'register_path_fn',

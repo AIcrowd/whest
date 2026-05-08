@@ -65,7 +65,7 @@ def einsum_cost(
     int
         Estimated FLOP count.
     """
-    from flopscope._opt_einsum._parser import parse_einsum_input
+    from flopscope._opt_einsum import parse_einsum_input
     from flopscope._accumulation._cost import compute_accumulation_cost
 
     # Build dummy arrays of the right shape for the parser

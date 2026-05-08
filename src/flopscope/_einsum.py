@@ -135,7 +135,7 @@ def _normalize_optimize(optimize):
 
 
 def _parse_einsum_parts(subscripts: str, operands):
-    from flopscope._opt_einsum._parser import parse_einsum_input
+    from flopscope._opt_einsum import parse_einsum_input
 
     input_subscripts, output_subscript, _ = parse_einsum_input((subscripts, *operands))
     canonical_subscripts = f"{input_subscripts}->{output_subscript}"
