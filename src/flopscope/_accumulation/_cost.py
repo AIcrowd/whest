@@ -387,18 +387,22 @@ def aggregate_reduction(
         m_total *= c.m
 
     if failing:
+        # Floor-division is safe: the orchestrator passes
+        # dense_baseline = prod(input_shape) and output_dense = num_output_orbits,
+        # which evenly divides for symmetry=None and represents the orbit-discounted
+        # input-axis size for symmetric inputs.
         input_axis_size = dense_baseline // output_dense if output_dense else 0
         fallback_total = (
             output_dense * max(0, input_axis_size - 1) * op_factor + extra_ops
         )
         first = component_costs[failing[0]]
-        reason = first.unavailable_reason or 'partition_budget exceeded'
-        labels = ', '.join(first.labels)
+        reason = first.unavailable_reason or "partition_budget exceeded"
+        labels = ", ".join(first.labels)
         warnings.warn(
             CostFallbackWarning(
-                f'reduction: component {list(failing)} ({labels}) returned '
-                f'unavailable — charging dense cost {fallback_total}. '
-                f'Failing reason: {reason}.'
+                f"reduction: component {list(failing)} ({labels}) returned "
+                f"unavailable — charging dense cost {fallback_total}. "
+                f"Failing reason: {reason}."
             ),
             stacklevel=4,
         )
@@ -417,13 +421,16 @@ def aggregate_reduction(
 
     alpha_product = 1
     for c in component_costs:
-        assert c.alpha is not None
+        assert c.alpha is not None  # for type narrowing
         alpha_product *= c.alpha
 
+    # Invariant: output_dense (num_output_orbits) <= alpha_product. The
+    # orchestrator computes both consistently. If you ever see a negative
+    # total here, the orchestrator passed an inconsistent output_dense.
     total = op_factor * (alpha_product - output_dense) + extra_ops
     return AccumulationCost(
         total=total,
-        mu=0,                       # k=1 single-operand reduction
+        mu=0,  # k=1 single-operand reduction
         alpha=alpha_product,
         m_total=m_total,
         dense_baseline=dense_baseline,

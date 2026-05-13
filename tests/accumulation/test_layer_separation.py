@@ -1,8 +1,6 @@
 """Tests verifying the layered API: shared primitives, einsum aggregator,
 and the reduction aggregator stub."""
 
-import pytest
-
 
 def test_decompose_into_components_callable_without_einsum_context():
     from flopscope._accumulation._components import decompose_into_components
