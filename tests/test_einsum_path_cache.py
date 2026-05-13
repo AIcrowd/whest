@@ -193,3 +193,38 @@ def test_public_api_cache_info():
     assert hasattr(info, "misses")
     assert hasattr(info, "maxsize")
     assert hasattr(info, "currsize")
+
+
+def test_fma_cost_in_path_cache_key():
+    """Toggling fma_cost must yield distinct PathInfos (not return a stale cached one).
+
+    Regression test: previously the path cache keyed on (subscripts, shapes,
+    optimize) only. After setting fma_cost=2, the cached PathInfo with stale
+    FMA=1 per-step flop_counts was returned instead of being recomputed.
+    """
+    A = numpy.zeros((2, 2))
+    B = numpy.zeros((2, 2))
+
+    original = get_setting("fma_cost")
+    try:
+        fnp.clear_einsum_cache()
+
+        configure(fma_cost=1)
+        with BudgetContext(flop_budget=10**12):
+            _, info1 = fnp.einsum_path("ij,jk->ik", A, B)
+        fma1_flop = info1.steps[0].flop_count
+
+        configure(fma_cost=2)
+        with BudgetContext(flop_budget=10**12):
+            _, info2 = fnp.einsum_path("ij,jk->ik", A, B)
+        fma2_flop = info2.steps[0].flop_count
+
+        # FMA=2 doubles op_factor on the inner step.
+        assert fma1_flop == 8, f"expected fma_cost=1 per-step flop_count=8, got {fma1_flop}"
+        assert fma2_flop == 16, f"expected fma_cost=2 per-step flop_count=16, got {fma2_flop}"
+        assert fma1_flop != fma2_flop, (
+            "fma_cost should partition the cache; got identical per-step "
+            f"flop_count={fma1_flop} for both fma_cost values"
+        )
+    finally:
+        configure(fma_cost=original)

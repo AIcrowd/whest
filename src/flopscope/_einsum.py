@@ -38,10 +38,18 @@ def _identity_pattern(operands):
 
 
 def _make_path_cache(maxsize):
-    """Create a new lru_cache-wrapped path computation function."""
+    """Create a new lru_cache-wrapped path computation function.
+
+    The cache key includes ``fma_cost`` because per-step ``flop_count`` values
+    on the returned ``PathInfo`` are computed under the active FMA convention
+    at build time. Without this, toggling ``flopscope.configure(fma_cost=...)``
+    would not invalidate cached PathInfos and would return stale per-step
+    counts. The arg itself is unused inside the body — the path builder reads
+    the setting transparently via ``_helpers.flop_count``.
+    """
 
     @functools.lru_cache(maxsize=maxsize)
-    def _compute(subscripts, shapes, optimize):
+    def _compute(subscripts, shapes, optimize, fma_cost):  # noqa: ARG001
         from flopscope._opt_einsum import contract_path as _contract_path
 
         _path, path_info = _contract_path(
@@ -143,6 +151,8 @@ def _parse_einsum_parts(subscripts: str, operands):
 
 
 def _get_path_info(subscripts: str, operands, optimize):
+    from flopscope._cost_model import fma_cost
+
     canonical_subscripts, input_parts, output_subscript = _parse_einsum_parts(
         subscripts,
         operands,
@@ -152,6 +162,7 @@ def _get_path_info(subscripts: str, operands, optimize):
         canonical_subscripts,
         shapes,
         _normalize_optimize(optimize),
+        fma_cost(),
     )
     return canonical_subscripts, input_parts, output_subscript, shapes, path_info
 
@@ -232,13 +243,17 @@ def einsum(
     the cost is automatically reduced. If ``symmetry`` is provided and the output passes validation, a ``SymmetricTensor`` is returned.
 
     All contractions go through opt_einsum's ``contract_path`` to find an
-    optimal pairwise decomposition. The FLOP cost uses opt_einsum's cost
-    model where FMA = 1 operation (see ``_cost_model.FMA_COST``).
+    optimal pairwise decomposition. The charged FLOP cost comes from the
+    path-independent symmetry-aware accumulation total
+    (``path_info.accumulation.total``); per-step ``flop_count`` values on
+    each ``StepInfo`` use flopscope's FMA convention via ``fma_cost()``
+    (default 1 op per FMA, configurable to 2 via
+    ``flopscope.configure(fma_cost=2)``).
 
     Contraction paths are cached in a module-level LRU cache keyed on
-    (subscripts, shapes, optimizer, symmetry structure, operand identity).
-    Repeated calls with the same inputs skip path recomputation entirely.
-    See ``clear_einsum_cache()`` and ``einsum_cache_info()``.
+    (subscripts, shapes, optimizer, fma_cost). Repeated calls with the same
+    inputs skip path recomputation entirely. See ``clear_einsum_cache()``
+    and ``einsum_cache_info()``.
 
     Parameters
     ----------

@@ -29,6 +29,14 @@
   - Per-step `path_info.steps[i].flop_count` reverts to dense (no symmetry
     adjustment per step).
 
+### Fixed
+
+- `flopscope.numpy.einsum_path` cache now keys on `fma_cost()` in addition
+  to `(subscripts, shapes, optimize)`. Previously, toggling
+  `flopscope.configure(fma_cost=2)` after a path was cached would return a
+  stale `PathInfo` whose per-step `flop_count` values were computed under
+  the old FMA convention.
+
 ### Added
 
 - `flopscope.einsum_accumulation_cost(subscripts, *operands, partition_budget=None)`
