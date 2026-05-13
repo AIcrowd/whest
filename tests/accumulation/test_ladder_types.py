@@ -94,7 +94,7 @@ def test_shape_literal_includes_four_shapes():
         result = AccumulationResult(
             count=1,
             regime_id="trivial",
-            shape=shape,
-            trace=(),  # type: ignore[arg-type]
+            shape=shape,  # type: ignore[arg-type]
+            trace=(),
         )
         assert result.shape == shape
