@@ -364,23 +364,70 @@ def aggregate_reduction(
     output_dense: int,
     extra_ops: int = 0,
 ) -> AccumulationCost:
-    """Aggregate per-component costs into a ufunc.reduce cost: total = α · op_factor.
+    """Aggregate per-component costs into a ufunc.reduce cost.
 
-    For sum-axis: op_factor=1, extra_ops=0 (just additions).
-    For mean = sum / shape[axis]: op_factor=1, extra_ops=output_dense.
-    For sum-of-squares: op_factor=2 (multiply + add per accumulation event).
+    Formula:
+        total = op_factor × (∏α_c - output_dense) + extra_ops
+
+    ``output_dense`` is the **orbit-aware** output count: the orchestrator
+    passes ``_num_output_orbits(input_shape, axes_summed, symmetry)`` through
+    this slot. For dense inputs this equals ``prod(output_shape)`` so the
+    name is consistent with the locked-stub docstring.
 
     Fallback (any component unavailable):
-      total = output_dense · (input_axis_size - 1) · op_factor + extra_ops
-    where input_axis_size is implicit in dense_baseline / output_dense.
+        total = output_dense × (input_axis_size - 1) × op_factor + extra_ops
+    where input_axis_size = dense_baseline / output_dense.
 
-    SIGNATURE LOCKED in 2026-05-07-symmetry-aware-einsum-cost-design.md;
-    BODY IS A FUTURE SPRINT (separate spec + plan).
+    See .aicrowd/superpowers/specs/2026-05-13-symmetry-aware-reduction-cost-design.md.
     """
-    raise NotImplementedError(
-        "aggregate_reduction is a future sprint. Signature locked in "
-        ".aicrowd/superpowers/specs/2026-05-07-symmetry-aware-einsum-cost-design.md "
-        'Section "Reduction-cost API hooks (designed for, not implemented)". '
-        "Implement via a follow-up brainstorm + plan covering ufunc.reduce "
-        "cost calculation for sum, prod, etc."
+    failing = [i for i, c in enumerate(component_costs) if c.alpha is None]
+
+    m_total = 1
+    for c in component_costs:
+        m_total *= c.m
+
+    if failing:
+        input_axis_size = dense_baseline // output_dense if output_dense else 0
+        fallback_total = (
+            output_dense * max(0, input_axis_size - 1) * op_factor + extra_ops
+        )
+        first = component_costs[failing[0]]
+        reason = first.unavailable_reason or 'partition_budget exceeded'
+        labels = ', '.join(first.labels)
+        warnings.warn(
+            CostFallbackWarning(
+                f'reduction: component {list(failing)} ({labels}) returned '
+                f'unavailable — charging dense cost {fallback_total}. '
+                f'Failing reason: {reason}.'
+            ),
+            stacklevel=4,
+        )
+        return AccumulationCost(
+            total=fallback_total,
+            mu=None,
+            alpha=None,
+            m_total=m_total,
+            dense_baseline=dense_baseline,
+            num_terms=1,
+            per_component=tuple(component_costs),
+            fallback_used=True,
+            unavailable_components=tuple(failing),
+            unavailable_reason=reason,
+        )
+
+    alpha_product = 1
+    for c in component_costs:
+        assert c.alpha is not None
+        alpha_product *= c.alpha
+
+    total = op_factor * (alpha_product - output_dense) + extra_ops
+    return AccumulationCost(
+        total=total,
+        mu=0,                       # k=1 single-operand reduction
+        alpha=alpha_product,
+        m_total=m_total,
+        dense_baseline=dense_baseline,
+        num_terms=1,
+        per_component=tuple(component_costs),
+        fallback_used=False,
     )

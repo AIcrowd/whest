@@ -58,14 +58,17 @@ def test_aggregate_reduction_signature_locked_for_future_sprint():
     assert "extra_ops" in params
 
 
-def test_aggregate_reduction_raises_not_implemented():
-    from flopscope._accumulation._cost import aggregate_reduction
+def test_aggregate_reduction_is_implemented():
+    # Now that the body is implemented, calling with an empty component list
+    # should return an AccumulationCost with total=0 (α_product=1, output_dense=1 → 0).
+    from flopscope._accumulation._cost import AccumulationCost, aggregate_reduction
 
-    with pytest.raises(NotImplementedError, match="future sprint"):
-        aggregate_reduction(
-            component_costs=(),
-            op_factor=1,
-            dense_baseline=1,
-            output_dense=1,
-            extra_ops=0,
-        )
+    cost = aggregate_reduction(
+        component_costs=(),
+        op_factor=1,
+        dense_baseline=1,
+        output_dense=1,
+        extra_ops=0,
+    )
+    assert isinstance(cost, AccumulationCost)
+    assert cost.fallback_used is False
