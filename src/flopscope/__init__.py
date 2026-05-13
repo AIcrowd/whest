@@ -48,6 +48,7 @@ from flopscope._accumulation import (  # noqa: F401,E402
     ComponentCost,
     RegimeStep,
     einsum_accumulation_cost,
+    reduction_accumulation_cost,
 )
 from flopscope._budget import (  # noqa: F401,E402
     BudgetContext,
@@ -126,6 +127,7 @@ __all__ = [
     "is_symmetric",
     "namespace",
     "numpy",
+    "reduction_accumulation_cost",
     "stats",
     "symmetrize",
 ]

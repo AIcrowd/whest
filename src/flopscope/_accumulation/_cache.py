@@ -91,7 +91,7 @@ def _make_reduction_cache(maxsize: int):
         op_factor: int,
         extra_ops: int,
         partition_budget: int | None,
-    ):
+    ) -> AccumulationCost:
         from flopscope._perm_group import SymmetryGroup
         from flopscope._perm_group import _PermutationCompat as Permutation
 
@@ -128,7 +128,7 @@ def get_reduction_cost_cached(
     op_factor: int,
     extra_ops: int,
     partition_budget: int | None,
-):
+) -> AccumulationCost:
     """Cached entry point for reduction-cost lookups."""
     return _reduction_cache(
         input_shape,
@@ -141,5 +141,6 @@ def get_reduction_cost_cached(
 
 
 def rebuild_reduction_cache(maxsize: int) -> None:
+    """Rebuild the cache with a new maxsize."""
     global _reduction_cache
     _reduction_cache = _make_reduction_cache(maxsize)

@@ -102,3 +102,61 @@ def einsum_accumulation_cost(
         identity_pattern=_identity_pattern(operands),
         partition_budget=partition_budget,
     )
+
+
+def _per_op_sym_fingerprint(sym) -> tuple:
+    """Single-symmetry fingerprint for the reduction cache key."""
+    axes = sym.axes if sym.axes is not None else tuple(range(sym.degree))
+    gens = tuple(tuple(g.array_form) for g in sym.generators)
+    return (axes, gens)
+
+
+def reduction_accumulation_cost(
+    a,
+    axis=None,
+    *,
+    op_factor: int = 1,
+    extra_ops: int = 0,
+    partition_budget: int | None = None,
+) -> AccumulationCost:
+    """Public inspection function for reduction cost.
+
+    Extracts symmetry from `a`, normalizes axis, routes to the cached
+    compute_reduction_accumulation_cost.
+
+    Parameters
+    ----------
+    a : numpy.ndarray or SymmetricTensor
+        Input array. SymmetricTensor inputs contribute their declared symmetry.
+    axis : int, tuple of int, or None
+        Axes to reduce along. None reduces all axes.
+    op_factor : int, default 1
+        FLOPs per binary accumulation event.
+    extra_ops : int, default 0
+        Output-side dense additions (e.g. num_output_orbits for mean's divide).
+    partition_budget : int, optional
+        Override the partition counter budget. Defaults to global setting.
+
+    Returns
+    -------
+    AccumulationCost
+        Whole-reduction cost decomposition.
+    """
+    from ._cache import get_reduction_cost_cached
+    from ._reduction import _normalize_axis
+
+    arr = _np.asarray(a) if not isinstance(a, SymmetricTensor) else a
+    sym = arr.symmetry if isinstance(arr, SymmetricTensor) else None
+    shape = tuple(arr.shape)
+    ndim = len(shape)
+    axes_summed = _normalize_axis(axis, ndim)
+
+    sym_fp = _per_op_sym_fingerprint(sym) if sym is not None else (None,)
+    return get_reduction_cost_cached(
+        input_shape=shape,
+        axes_summed=axes_summed,
+        sym_fingerprint=sym_fp,
+        op_factor=op_factor,
+        extra_ops=extra_ops,
+        partition_budget=partition_budget,
+    )
