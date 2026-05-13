@@ -70,3 +70,22 @@ def _num_output_orbits(
 
     elements = output_group.elements()
     return size_aware_burnside(elements, output_shape)
+
+
+def output_discounted_reduction_cost(
+    input_shape: tuple[int, ...],
+    axes_summed: tuple[int, ...],
+    symmetry: SymmetryGroup | None,
+    dense_per_output_cost: int,
+) -> int:
+    """Tier-2 reduction cost: num_output_orbits × dense_per_output_cost.
+
+    For non-ufunc reductions (median, percentile, quantile) where we can't
+    decompose the operation internally. The discount uses only the output
+    stabilizer; input symmetry doesn't help unless the operation is
+    decomposable.
+
+    Equivalent to: dense_total × (num_output_orbits / num_output_elems).
+    """
+    num_orbits = _num_output_orbits(input_shape, axes_summed, symmetry)
+    return num_orbits * dense_per_output_cost
