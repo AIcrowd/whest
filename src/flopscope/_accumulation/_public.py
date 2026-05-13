@@ -152,6 +152,13 @@ def reduction_accumulation_cost(
     axes_summed = _normalize_axis(axis, ndim)
 
     sym_fp = _per_op_sym_fingerprint(sym) if sym is not None else (None,)
+
+    # Resolve partition_budget to the active setting BEFORE cache lookup. If we
+    # pass None, the cache key collapses across all settings values and stale
+    # entries computed under a different budget can leak across tests/configs.
+    if partition_budget is None:
+        partition_budget = cast(int, get_setting("partition_budget"))
+
     return get_reduction_cost_cached(
         input_shape=shape,
         axes_summed=axes_summed,
