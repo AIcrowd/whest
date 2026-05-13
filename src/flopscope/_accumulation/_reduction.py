@@ -89,3 +89,141 @@ def output_discounted_reduction_cost(
     """
     num_orbits = _num_output_orbits(input_shape, axes_summed, symmetry)
     return num_orbits * dense_per_output_cost
+
+
+def compute_reduction_accumulation_cost(
+    input_shape: tuple[int, ...],
+    axes_summed: tuple[int, ...],
+    symmetry: "SymmetryGroup | None" = None,
+    *,
+    op_factor: int = 1,
+    extra_ops: int = 0,
+    partition_budget: int | None = None,
+):
+    """Tier-1 reduction cost: orbit-mapping α via the existing ladder.
+
+    Constructs a single-operand 'fake einsum' (input subscripts = full label
+    set, output subscripts = labels not in axes_summed), runs the existing
+    component decomposition + ladder, then aggregates via aggregate_reduction.
+
+    Off-by-one fix (#56): cost = op_factor × (α - num_output_orbits) + extra_ops.
+
+    Parameters
+    ----------
+    input_shape : tuple of int
+        Shape of the input array.
+    axes_summed : tuple of int
+        Axes to reduce. Must be non-negative, sorted, unique.
+        Use _normalize_axis to prepare.
+    symmetry : SymmetryGroup, optional
+        Pointwise symmetry of the input. None for dense inputs.
+    op_factor : int, default 1
+        FLOPs per binary accumulation event.
+    extra_ops : int, default 0
+        Output-side dense additions (e.g. num_output_orbits for mean's divide).
+    partition_budget : int, optional
+        Override the partition counter budget. Defaults to global setting.
+
+    Returns
+    -------
+    AccumulationCost
+        Same shape as einsum_accumulation_cost — fields total/mu/alpha/m_total/...
+    """
+    from ._cost import AccumulationCost, aggregate_reduction, compute_accumulation_cost
+
+    ndim = len(input_shape)
+    if not axes_summed:
+        # No reduction at all — cost is 0 (just identity).
+        return _trivial_zero_cost(input_shape, op_factor, extra_ops)
+
+    # Build a fake einsum: 'abc...' input, output is labels of kept axes.
+    if ndim > 26:
+        # Fall back to dense — labelers can't go beyond a-z cleanly. Unusual.
+        return _dense_fallback_cost(
+            input_shape, axes_summed, symmetry, op_factor, extra_ops,
+        )
+
+    axes_set = frozenset(axes_summed)
+    labels = [chr(ord('a') + i) for i in range(ndim)]
+    input_subs = ''.join(labels)
+    output_subs = ''.join(labels[i] for i in range(ndim) if i not in axes_set)
+    canonical_subscripts = f'{input_subs}->{output_subs}'
+
+    # Single operand, per-op symmetry = the input symmetry.
+    per_op_symmetries = (symmetry,)
+
+    einsum_cost = compute_accumulation_cost(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=(input_subs,),
+        output_subscript=output_subs,
+        shapes=(input_shape,),
+        per_op_symmetries=per_op_symmetries,
+        identity_pattern=None,  # single operand, no identity grouping
+        partition_budget=partition_budget,
+    )
+
+    # Re-aggregate the per-component costs under the reduction formula.
+    # `output_dense` carries num_output_orbits — orbit-aware, computed
+    # directly via _num_output_orbits. For dense inputs this equals
+    # prod(output_shape) so the locked-stub docstring's intent is preserved.
+    num_output_orbits = _num_output_orbits(
+        input_shape=input_shape,
+        axes_summed=axes_summed,
+        symmetry=symmetry,
+    )
+    dense_baseline = math.prod(input_shape) if input_shape else 1
+
+    return aggregate_reduction(
+        einsum_cost.per_component,
+        op_factor=op_factor,
+        dense_baseline=dense_baseline,
+        output_dense=num_output_orbits,
+        extra_ops=extra_ops,
+    )
+
+
+def _trivial_zero_cost(
+    input_shape: tuple[int, ...],
+    op_factor: int,
+    extra_ops: int,
+):
+    """Cost of a 'no axes reduced' degenerate case."""
+    from ._cost import AccumulationCost
+    return AccumulationCost(
+        total=extra_ops,
+        mu=0,
+        alpha=0,
+        m_total=1,
+        dense_baseline=math.prod(input_shape) if input_shape else 1,
+        num_terms=1,
+        per_component=(),
+        fallback_used=False,
+    )
+
+
+def _dense_fallback_cost(
+    input_shape: tuple[int, ...],
+    axes_summed: tuple[int, ...],
+    symmetry: "SymmetryGroup | None",
+    op_factor: int,
+    extra_ops: int,
+):
+    """ndim > 26 fallback: charge dense without symmetry."""
+    from ._cost import AccumulationCost
+    axes_set = frozenset(axes_summed)
+    dense = math.prod(input_shape) if input_shape else 1
+    output_dense = math.prod(
+        input_shape[i] for i in range(len(input_shape)) if i not in axes_set
+    ) if any(i not in axes_set for i in range(len(input_shape))) else 1
+    input_axis_size = dense // output_dense if output_dense else 0
+    total = output_dense * max(0, input_axis_size - 1) * op_factor + extra_ops
+    return AccumulationCost(
+        total=total,
+        mu=None,
+        alpha=None,
+        m_total=1,
+        dense_baseline=dense,
+        num_terms=1,
+        per_component=(),
+        fallback_used=True,
+    )
