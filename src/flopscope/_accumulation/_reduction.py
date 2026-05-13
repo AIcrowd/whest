@@ -94,7 +94,7 @@ def output_discounted_reduction_cost(
 def compute_reduction_accumulation_cost(
     input_shape: tuple[int, ...],
     axes_summed: tuple[int, ...],
-    symmetry: "SymmetryGroup | None" = None,
+    symmetry: SymmetryGroup | None = None,
     *,
     op_factor: int = 1,
     extra_ops: int = 0,
@@ -129,7 +129,7 @@ def compute_reduction_accumulation_cost(
     AccumulationCost
         Same shape as einsum_accumulation_cost — fields total/mu/alpha/m_total/...
     """
-    from ._cost import AccumulationCost, aggregate_reduction, compute_accumulation_cost
+    from ._cost import aggregate_reduction, compute_accumulation_cost
 
     ndim = len(input_shape)
     if not axes_summed:
@@ -140,14 +140,18 @@ def compute_reduction_accumulation_cost(
     if ndim > 26:
         # Fall back to dense — labelers can't go beyond a-z cleanly. Unusual.
         return _dense_fallback_cost(
-            input_shape, axes_summed, symmetry, op_factor, extra_ops,
+            input_shape,
+            axes_summed,
+            symmetry,
+            op_factor,
+            extra_ops,
         )
 
     axes_set = frozenset(axes_summed)
-    labels = [chr(ord('a') + i) for i in range(ndim)]
-    input_subs = ''.join(labels)
-    output_subs = ''.join(labels[i] for i in range(ndim) if i not in axes_set)
-    canonical_subscripts = f'{input_subs}->{output_subs}'
+    labels = [chr(ord("a") + i) for i in range(ndim)]
+    input_subs = "".join(labels)
+    output_subs = "".join(labels[i] for i in range(ndim) if i not in axes_set)
+    canonical_subscripts = f"{input_subs}->{output_subs}"
 
     # Single operand, per-op symmetry = the input symmetry.
     per_op_symmetries = (symmetry,)
@@ -189,6 +193,7 @@ def _trivial_zero_cost(
 ):
     """Cost of a 'no axes reduced' degenerate case."""
     from ._cost import AccumulationCost
+
     return AccumulationCost(
         total=extra_ops,
         mu=0,
@@ -204,17 +209,20 @@ def _trivial_zero_cost(
 def _dense_fallback_cost(
     input_shape: tuple[int, ...],
     axes_summed: tuple[int, ...],
-    symmetry: "SymmetryGroup | None",
+    symmetry: SymmetryGroup | None,
     op_factor: int,
     extra_ops: int,
 ):
     """ndim > 26 fallback: charge dense without symmetry."""
     from ._cost import AccumulationCost
+
     axes_set = frozenset(axes_summed)
     dense = math.prod(input_shape) if input_shape else 1
-    output_dense = math.prod(
-        input_shape[i] for i in range(len(input_shape)) if i not in axes_set
-    ) if any(i not in axes_set for i in range(len(input_shape))) else 1
+    output_dense = (
+        math.prod(input_shape[i] for i in range(len(input_shape)) if i not in axes_set)
+        if any(i not in axes_set for i in range(len(input_shape)))
+        else 1
+    )
     input_axis_size = dense // output_dense if output_dense else 0
     total = output_dense * max(0, input_axis_size - 1) * op_factor + extra_ops
     return AccumulationCost(
