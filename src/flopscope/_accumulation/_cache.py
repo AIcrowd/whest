@@ -80,3 +80,66 @@ def rebuild_accumulation_cache(maxsize: int) -> None:
     """Rebuild the cache with a new maxsize."""
     global _accumulation_cache
     _accumulation_cache = _make_accumulation_cache(maxsize)
+
+
+def _make_reduction_cache(maxsize: int):
+    @functools.lru_cache(maxsize=maxsize)
+    def _compute(
+        input_shape: tuple,
+        axes_summed: tuple,
+        sym_fingerprint: tuple,
+        op_factor: int,
+        extra_ops: int,
+        partition_budget: int | None,
+    ):
+        from flopscope._perm_group import SymmetryGroup
+        from flopscope._perm_group import _PermutationCompat as Permutation
+
+        # Reconstruct symmetry from fingerprint.
+        if sym_fingerprint == (None,) or sym_fingerprint == ():
+            symmetry = None
+        else:
+            axes, gen_arrays = sym_fingerprint
+            gens = [Permutation(list(g)) for g in gen_arrays]
+            symmetry = SymmetryGroup(*gens, axes=axes) if gens else None
+
+        from ._reduction import compute_reduction_accumulation_cost
+
+        return compute_reduction_accumulation_cost(
+            input_shape=input_shape,
+            axes_summed=axes_summed,
+            symmetry=symmetry,
+            op_factor=op_factor,
+            extra_ops=extra_ops,
+            partition_budget=partition_budget,
+        )
+
+    return _compute
+
+
+_reduction_cache = _make_reduction_cache(4096)
+
+
+def get_reduction_cost_cached(
+    *,
+    input_shape: tuple,
+    axes_summed: tuple,
+    sym_fingerprint: tuple,
+    op_factor: int,
+    extra_ops: int,
+    partition_budget: int | None,
+):
+    """Cached entry point for reduction-cost lookups."""
+    return _reduction_cache(
+        input_shape,
+        axes_summed,
+        sym_fingerprint,
+        op_factor,
+        extra_ops,
+        partition_budget,
+    )
+
+
+def rebuild_reduction_cache(maxsize: int) -> None:
+    global _reduction_cache
+    _reduction_cache = _make_reduction_cache(maxsize)
