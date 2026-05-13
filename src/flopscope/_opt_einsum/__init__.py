@@ -9,22 +9,22 @@ See LICENSE and NOTICE in this directory for attribution to opt_einsum.
 """
 
 import opt_einsum.path_random as _path_random_upstream
-import opt_einsum.paths as _paths_upstream
 from opt_einsum import contract_path as _upstream_contract_path
+from opt_einsum.parser import get_shape as _get_shape
+from opt_einsum.parser import parse_einsum_input
 from opt_einsum.paths import (
+    _AUTO_CHOICES,
+    _AUTO_HQ_CHOICES,
     BranchBound,
     DynamicProgramming,
     PathOptimizer,
-    _AUTO_CHOICES,
-    _AUTO_HQ_CHOICES,
-    _PATH_OPTIONS as _upstream_path_options,
     get_path_fn,
     greedy,
     register_path_fn,
 )
-
-from opt_einsum.parser import parse_einsum_input
-from opt_einsum.parser import get_shape as _get_shape
+from opt_einsum.paths import (
+    _PATH_OPTIONS as _upstream_path_options,
+)
 
 from ._contract import PathInfo, StepInfo, build_path_info
 from ._helpers import flop_count
@@ -40,22 +40,22 @@ def _resolve_optimizer_name(optimize, num_ops: int) -> str:
     - PathOptimizer instances return their class name
     """
     if num_ops <= 2:
-        return 'trivial'
+        return "trivial"
     if isinstance(optimize, PathOptimizer):
         return type(optimize).__name__
     if not isinstance(optimize, str):
-        return ''
-    if optimize in (True, 'auto', None):
+        return ""
+    if optimize in (True, "auto", None):
         inner_fn = _AUTO_CHOICES.get(num_ops, greedy)
-        return getattr(inner_fn, '__name__', None) or getattr(
-            getattr(inner_fn, 'func', None), '__name__', str(inner_fn)
+        return getattr(inner_fn, "__name__", None) or getattr(
+            getattr(inner_fn, "func", None), "__name__", str(inner_fn)
         )
-    if optimize == 'auto-hq':
+    if optimize == "auto-hq":
         inner_fn = _AUTO_HQ_CHOICES.get(
             num_ops, _path_random_upstream.random_greedy_128
         )
-        return getattr(inner_fn, '__name__', None) or getattr(
-            getattr(inner_fn, 'func', None), '__name__', str(inner_fn)
+        return getattr(inner_fn, "__name__", None) or getattr(
+            getattr(inner_fn, "func", None), "__name__", str(inner_fn)
         )
     return optimize
 
@@ -72,11 +72,11 @@ def _resolve_local_path(optimize, args, kwargs):
     from . import _helpers as helpers
 
     operands_ = [args[0]] + list(args[1:])
-    shapes = kwargs.get('shapes', False)
-    input_subscripts, output_subscript, operands_prepped = (
-        parse_einsum_input(operands_, shapes=shapes)
+    shapes = kwargs.get("shapes", False)
+    input_subscripts, output_subscript, operands_prepped = parse_einsum_input(
+        operands_, shapes=shapes
     )
-    input_list = input_subscripts.split(',')
+    input_list = input_subscripts.split(",")
     input_sets = [frozenset(x) for x in input_list]
     if shapes:
         input_shapes = list(operands_prepped)
@@ -93,13 +93,13 @@ def _resolve_local_path(optimize, args, kwargs):
             elif size_dict[char] == 1:
                 size_dict[char] = dim
 
-    memory_limit = kwargs.get('memory_limit', None)
+    memory_limit = kwargs.get("memory_limit", None)
     size_list_mem = [
         helpers.compute_size_by_dict(t, size_dict)
         for t in input_list + [output_subscript]
     ]
     memory_arg = None
-    if memory_limit == 'max_input':
+    if memory_limit == "max_input":
         memory_arg = max(size_list_mem)
     elif isinstance(memory_limit, int) and memory_limit > 0:
         memory_arg = memory_limit
@@ -120,9 +120,9 @@ def _resolve_local_path(optimize, args, kwargs):
 def _count_num_ops(args, kwargs):
     """Count the number of operands from args/kwargs without full parse."""
     operands_ = [args[0]] + list(args[1:])
-    shapes = kwargs.get('shapes', False)
+    shapes = kwargs.get("shapes", False)
     input_subscripts, _, _ = parse_einsum_input(operands_, shapes=shapes)
-    return len(input_subscripts.split(','))
+    return len(input_subscripts.split(","))
 
 
 def contract_path(*args, **kwargs):
@@ -137,7 +137,7 @@ def contract_path(*args, **kwargs):
     first and then forwarded to upstream as an explicit path list so that
     upstream produces the contraction_list we need for build_path_info.
     """
-    optimize = kwargs.get('optimize', True)
+    optimize = kwargs.get("optimize", True)
 
     needs_local_resolve = False
     if isinstance(optimize, PathOptimizer):
@@ -153,31 +153,36 @@ def contract_path(*args, **kwargs):
     if needs_local_resolve:
         resolved_path, optimizer_name = _resolve_local_path(optimize, args, kwargs)
         # Re-issue upstream call with the resolved path so contraction_list is built.
-        new_kwargs = {k: v for k, v in kwargs.items() if k != 'optimize'}
-        new_kwargs['optimize'] = resolved_path
+        new_kwargs = {k: v for k, v in kwargs.items() if k != "optimize"}
+        new_kwargs["optimize"] = resolved_path
         upstream_path, upstream_info = _upstream_contract_path(*args, **new_kwargs)
     else:
         upstream_path, upstream_info = _upstream_contract_path(*args, **kwargs)
-        num_ops = len(upstream_info.input_subscripts.split(',')) if upstream_info.input_subscripts else 2
+        num_ops = (
+            len(upstream_info.input_subscripts.split(","))
+            if upstream_info.input_subscripts
+            else 2
+        )
         if optimize is True or optimize is None:
-            optimize = 'auto'
+            optimize = "auto"
         optimizer_name = _resolve_optimizer_name(optimize, num_ops)
 
     return list(upstream_path), build_path_info(
-        upstream_path, upstream_info,
+        upstream_path,
+        upstream_info,
         size_dict=upstream_info.size_dict,
         optimizer_used=optimizer_name,
     )
 
 
 __all__ = [
-    'PathInfo',
-    'StepInfo',
-    'contract_path',
-    'flop_count',
-    'build_path_info',
-    'parse_einsum_input',
-    'BranchBound',
-    'DynamicProgramming',
-    'register_path_fn',
+    "PathInfo",
+    "StepInfo",
+    "contract_path",
+    "flop_count",
+    "build_path_info",
+    "parse_einsum_input",
+    "BranchBound",
+    "DynamicProgramming",
+    "register_path_fn",
 ]

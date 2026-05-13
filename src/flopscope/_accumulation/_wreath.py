@@ -14,19 +14,18 @@ for diagnostic display.
 from __future__ import annotations
 
 import itertools
-import math
 from collections.abc import Iterator, Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from flopscope._perm_group import SymmetryGroup
-from flopscope._perm_group import _dimino
+from flopscope._perm_group import SymmetryGroup, _dimino
 from flopscope._perm_group import _Permutation as Permutation
 
 
 @dataclass(frozen=True)
 class WreathElement:
     """One element of ∏_i (H_i ≀ S_{m_i}). Carries the row permutation and provenance."""
+
     row_perm: Permutation
     factorization: dict[str, Any]
 
@@ -45,12 +44,12 @@ def enumerate_h(sym: Any, rank: int) -> Iterator[Permutation]:
     Returns rank-`rank` permutations (operate on positions 0..rank-1).
     """
     identity = Permutation.identity(rank)
-    if sym is None or sym == 'none':
+    if sym is None or sym == "none":
         yield identity
         return
 
     if isinstance(sym, SymmetryGroup):
-        axes = getattr(sym, 'axes', None)
+        axes = getattr(sym, "axes", None)
         for el in sym.elements():
             arr = list(range(rank))
             if axes is not None:
@@ -70,7 +69,7 @@ def enumerate_h(sym: Any, rank: int) -> Iterator[Permutation]:
             yield Permutation(arr)
         return
 
-    if sym == 'symmetric' or (isinstance(sym, dict) and sym.get('type') == 'symmetric'):
+    if sym == "symmetric" or (isinstance(sym, dict) and sym.get("type") == "symmetric"):
         gens = []
         for k in range(rank - 1):
             arr = list(range(rank))
@@ -83,7 +82,7 @@ def enumerate_h(sym: Any, rank: int) -> Iterator[Permutation]:
             yield el
         return
 
-    if sym == 'cyclic' or (isinstance(sym, dict) and sym.get('type') == 'cyclic'):
+    if sym == "cyclic" or (isinstance(sym, dict) and sym.get("type") == "cyclic"):
         if rank <= 1:
             yield identity
             return
@@ -92,9 +91,9 @@ def enumerate_h(sym: Any, rank: int) -> Iterator[Permutation]:
             yield el
         return
 
-    if sym == 'dihedral' or (isinstance(sym, dict) and sym.get('type') == 'dihedral'):
+    if sym == "dihedral" or (isinstance(sym, dict) and sym.get("type") == "dihedral"):
         if rank <= 2:
-            for el in enumerate_h('symmetric', rank):
+            for el in enumerate_h("symmetric", rank):
                 yield el
             return
         rot = list(range(1, rank)) + [0]
@@ -105,7 +104,7 @@ def enumerate_h(sym: Any, rank: int) -> Iterator[Permutation]:
             yield el
         return
 
-    raise ValueError(f'unsupported symmetry declaration: {sym!r}')
+    raise ValueError(f"unsupported symmetry declaration: {sym!r}")
 
 
 def _outer_permutations(m: int) -> Iterator[list[int]]:
@@ -175,21 +174,23 @@ def enumerate_wreath(
                 arr = _flatten_factor_to_row_perm(
                     grp, base_tuple, top_perm, u_offsets, axis_ranks, total_u
                 )
-                group_options.append((
-                    arr,
-                    {
-                        'group': tuple(grp),
-                        'outer': tuple(top_perm),
-                        'base_arrs': tuple(tuple(h.array_form) for h in base_tuple),
-                    },
-                ))
+                group_options.append(
+                    (
+                        arr,
+                        {
+                            "group": tuple(grp),
+                            "outer": tuple(top_perm),
+                            "base_arrs": tuple(tuple(h.array_form) for h in base_tuple),
+                        },
+                    )
+                )
         per_group_options.append(group_options)
 
     if not per_group_options:
         # No operands: just identity.
         yield WreathElement(
             row_perm=Permutation.identity(total_u),
-            factorization={'groups': ()},
+            factorization={"groups": ()},
         )
         return
 
@@ -202,7 +203,7 @@ def enumerate_wreath(
                 if arr[i] != i:
                     row_perm_arr[i] = arr[i]
         factorization = {
-            'groups': tuple(factor for _, factor in combo),
+            "groups": tuple(factor for _, factor in combo),
         }
         yield WreathElement(
             row_perm=Permutation(row_perm_arr),

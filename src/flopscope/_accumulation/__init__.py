@@ -5,8 +5,8 @@ from ._ladder import RegimeStep
 from ._public import einsum_accumulation_cost
 
 __all__ = [
-    'AccumulationCost',
-    'ComponentCost',
-    'RegimeStep',
-    'einsum_accumulation_cost',
+    "AccumulationCost",
+    "ComponentCost",
+    "RegimeStep",
+    "einsum_accumulation_cost",
 ]

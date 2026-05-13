@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Any
+from typing import Any, cast
 
 import numpy as _np
 
@@ -202,7 +202,6 @@ def _relabel_group_to_output(
     return validate_symmetry_group(remapped, ndim=len(output_subscript))
 
 
-
 def _infer_pathless_output_symmetry(operands, input_parts, output_subscript: str):
     if len(operands) != 1:
         return None
@@ -311,8 +310,10 @@ def einsum(
     )
 
     from flopscope._accumulation._path_info import FlopscopePathInfo
+
     path_info = FlopscopePathInfo.from_inner(
-        inner=path_info, accumulation=accumulation_cost,
+        inner=path_info,
+        accumulation=accumulation_cost,
     )
 
     target_symmetry = _resolve_output_symmetry(
@@ -405,8 +406,10 @@ def einsum_path(
     )
 
     from flopscope._accumulation._path_info import FlopscopePathInfo
+
     path_info = FlopscopePathInfo.from_inner(
-        inner=path_info, accumulation=accumulation_cost,
+        inner=path_info,
+        accumulation=accumulation_cost,
     )
 
     return list(path_info.path), path_info
@@ -415,12 +418,17 @@ def einsum_path(
 # ── Accumulation cost helper + cache ─────────────────────────────────
 
 
-from flopscope._accumulation._cache import (  # noqa: E402
+from flopscope._accumulation._cache import (  # noqa: E402, F401
     _accumulation_cache,
     get_accumulation_cost_cached,
+)
+from flopscope._accumulation._cache import (  # noqa: E402
     rebuild_accumulation_cache as _rebuild_accumulation_cache_fn,
 )
-from flopscope._accumulation._public import _identity_pattern, _accumulation_fingerprint  # noqa: E402
+from flopscope._accumulation._public import (  # noqa: E402
+    _accumulation_fingerprint,
+    _identity_pattern,
+)
 
 
 def _get_accumulation_cost(
@@ -432,6 +440,10 @@ def _get_accumulation_cost(
     operands: tuple,
 ):
     """Cached accumulation-cost lookup for einsum() / einsum_path()."""
+    # Resolve partition_budget to the active setting BEFORE cache lookup so
+    # the cache key reflects the budget used; otherwise stale entries from a
+    # prior setting value can leak across calls.
+    partition_budget = cast(int, get_setting("partition_budget"))
     return get_accumulation_cost_cached(
         canonical_subscripts=canonical_subscripts,
         input_parts=tuple(input_parts),
@@ -439,13 +451,13 @@ def _get_accumulation_cost(
         shapes=shapes,
         sym_fingerprint=_accumulation_fingerprint(operands),
         identity_pattern=_identity_pattern(operands),
-        partition_budget=None,  # einsum() always uses the global setting
+        partition_budget=partition_budget,
     )
 
 
 def _rebuild_accumulation_cache():
     """Rebuild the accumulation cache with the current configured maxsize."""
-    _rebuild_accumulation_cache_fn(int(get_setting('einsum_path_cache_size')))
+    _rebuild_accumulation_cache_fn(cast(int, get_setting("einsum_path_cache_size")))
 
 
 import sys as _sys  # noqa: E402

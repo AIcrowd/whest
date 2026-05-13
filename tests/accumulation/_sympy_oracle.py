@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import itertools
-from collections.abc import Sequence
 
 MAX_PAIR_TOUCHES = 100_000  # |X| · |G| budget
 
@@ -48,8 +47,8 @@ def sympy_brute_force_alpha(*, elements, sizes, visible_positions):
     pair_touches = x_size * len(elements)
     if pair_touches > MAX_PAIR_TOUCHES:
         raise ValueError(
-            f'sympy_brute_force_alpha: input too large '
-            f'(|X|·|G| = {pair_touches} > budget {MAX_PAIR_TOUCHES})'
+            f"sympy_brute_force_alpha: input too large "
+            f"(|X|·|G| = {pair_touches} > budget {MAX_PAIR_TOUCHES})"
         )
 
     h_local = _restrict_stabilizer(elements, tuple(visible_positions))

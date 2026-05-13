@@ -27,10 +27,10 @@ def test_preserves_position_set_returns_true_when_set_invariant():
 def test_apply_permutation_to_tuple_array_uses_source_to_target():
     # Convention: out[perm.arr[source]] = tuple[source]
     perm = Permutation([1, 2, 0])  # 0→1, 1→2, 2→0
-    tup = ('a', 'b', 'c')
+    tup = ("a", "b", "c")
     result = apply_permutation_to_tuple_array(tup, perm)
     # tup[0]='a' goes to position 1; tup[1]='b' goes to position 2; tup[2]='c' goes to position 0
-    assert result == ['c', 'a', 'b']
+    assert result == ["c", "a", "b"]
 
 
 def test_visible_tuple_extracts_visible_positions():

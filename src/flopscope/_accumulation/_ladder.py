@@ -14,28 +14,29 @@ The ladder runs per-component:
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass, field
-from typing import Literal
+from dataclasses import dataclass
+from typing import Literal, cast
 
 from flopscope._perm_group import _Permutation as Permutation
 
 from ._shape import Shape
 
 RegimeId = Literal[
-    'trivial',
-    'functionalProjection',
-    'singleton',
-    'young',
-    'partitionCount',
-    'unavailable',
+    "trivial",
+    "functionalProjection",
+    "singleton",
+    "young",
+    "partitionCount",
+    "unavailable",
 ]
 
-Decision = Literal['fired', 'refused']
+Decision = Literal["fired", "refused"]
 
 
 @dataclass(frozen=True)
 class RegimeContext:
     """Input to a regime's recognize() and compute()."""
+
     labels: tuple[str, ...]
     va: tuple[str, ...]
     wa: tuple[str, ...]
@@ -49,6 +50,7 @@ class RegimeContext:
 @dataclass(frozen=True)
 class Verdict:
     """Output of regime.recognize()."""
+
     fired: bool
     reason: str
 
@@ -56,6 +58,7 @@ class Verdict:
 @dataclass(frozen=True)
 class RegimeOutput:
     """Output of regime.compute()."""
+
     count: int
     sub_steps: tuple[dict, ...] = ()
 
@@ -63,6 +66,7 @@ class RegimeOutput:
 @dataclass(frozen=True)
 class Regime:
     """A regime is identified by id and consists of recognize + compute callables."""
+
     id: RegimeId
     recognize: Callable[[RegimeContext], Verdict]
     compute: Callable[[RegimeContext], RegimeOutput]
@@ -71,6 +75,7 @@ class Regime:
 @dataclass(frozen=True)
 class RegimeStep:
     """One entry in the regime-dispatch trace."""
+
     regime_id: RegimeId
     decision: Decision
     reason: str
@@ -84,6 +89,7 @@ class AccumulationResult:
 
     `count` is None when regime_id == 'unavailable' (partition budget exceeded
     with brute-force disabled by policy)."""
+
     count: int | None
     regime_id: RegimeId
     shape: Shape
@@ -124,7 +130,7 @@ def compute_accumulation(
     the partition budget (brute-force orbit B.8 is excluded by policy).
     """
     if partition_budget is None:
-        partition_budget = int(get_setting('partition_budget'))
+        partition_budget = cast(int, get_setting("partition_budget"))
 
     shape = detect_shape(va=va, wa=wa, elements=elements)
 
@@ -132,9 +138,9 @@ def compute_accumulation(
     if not elements or len(elements) <= 1:
         return AccumulationResult(
             count=math.prod(sizes) if sizes else 1,
-            regime_id='trivial',
+            regime_id="trivial",
             shape=shape,
-            trace=(RegimeStep('trivial', 'fired', '|G| = 1'),),
+            trace=(RegimeStep("trivial", "fired", "|G| = 1"),),
         )
 
     ctx = RegimeContext(
@@ -154,26 +160,35 @@ def compute_accumulation(
     verdict = FUNCTIONAL_PROJECTION_REGIME.recognize(ctx)
     if verdict.fired:
         out = FUNCTIONAL_PROJECTION_REGIME.compute(ctx)
-        trace.append(RegimeStep(
-            'functionalProjection', 'fired', verdict.reason, out.sub_steps,
-        ))
-        return AccumulationResult(out.count, 'functionalProjection', shape, tuple(trace))
-    trace.append(RegimeStep('functionalProjection', 'refused', verdict.reason))
+        trace.append(
+            RegimeStep(
+                "functionalProjection",
+                "fired",
+                verdict.reason,
+                out.sub_steps,
+            )
+        )
+        return AccumulationResult(
+            out.count, "functionalProjection", shape, tuple(trace)
+        )
+    trace.append(RegimeStep("functionalProjection", "refused", verdict.reason))
 
     # Stage 2b: mixed-shape ladder
     for regime in MIXED_REGIMES:
         verdict = regime.recognize(ctx)
         if not verdict.fired:
-            trace.append(RegimeStep(regime.id, 'refused', verdict.reason))
+            trace.append(RegimeStep(regime.id, "refused", verdict.reason))
             continue
         out = regime.compute(ctx)
-        trace.append(RegimeStep(regime.id, 'fired', verdict.reason, out.sub_steps))
+        trace.append(RegimeStep(regime.id, "fired", verdict.reason, out.sub_steps))
         return AccumulationResult(out.count, regime.id, shape, tuple(trace))
 
     # Fallthrough: brute-force is excluded by policy → unavailable
-    trace.append(RegimeStep(
-        'unavailable',
-        'fired',
-        'no exact regime fired within partition budget; brute-force disabled by policy',
-    ))
-    return AccumulationResult(None, 'unavailable', shape, tuple(trace))
+    trace.append(
+        RegimeStep(
+            "unavailable",
+            "fired",
+            "no exact regime fired within partition budget; brute-force disabled by policy",
+        )
+    )
+    return AccumulationResult(None, "unavailable", shape, tuple(trace))

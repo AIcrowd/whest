@@ -541,7 +541,9 @@ class PathInfo:
 # ── build_path_info adapter (Task 5) ───────────────────────────────
 
 
-def build_path_info(upstream_path, upstream_info, *, size_dict, optimizer_used: str = ''):
+def build_path_info(
+    upstream_path, upstream_info, *, size_dict, optimizer_used: str = ""
+):
     """Adapt upstream opt_einsum's PathInfo to flopscope's PathInfo.
 
     Per-step ``flop_cost`` is recomputed using flopscope's
@@ -578,36 +580,43 @@ def build_path_info(upstream_path, upstream_info, *, size_dict, optimizer_used: 
     # upstream_path[i] gives the original (pre-sort) indices for step i.
     _first_remaining = (
         upstream_info.contraction_list[0][3]
-        if upstream_info.contraction_list and upstream_info.contraction_list[0][3] is not None
+        if upstream_info.contraction_list
+        and upstream_info.contraction_list[0][3] is not None
         else None
     )
-    num_ops = (len(_first_remaining) + 1) if _first_remaining is not None else (
-        len(list(upstream_path)) + 1
+    num_ops = (
+        (len(_first_remaining) + 1)
+        if _first_remaining is not None
+        else (len(list(upstream_path)) + 1)
     )
 
     # ssa_to_subset tracks which original operands each SSA id covers.
-    ssa_to_subset: dict[int, frozenset[int]] = {k: frozenset({k}) for k in range(num_ops)}
+    ssa_to_subset: dict[int, frozenset[int]] = {
+        k: frozenset({k}) for k in range(num_ops)
+    }
     ssa_ids: list[int] = list(range(num_ops))
     next_ssa = num_ops
 
     for step_idx, entry in enumerate(upstream_info.contraction_list):
-        idx_removed = entry[1]    # frozenset of label chars removed (inner product)
-        einsum_str = entry[2]     # e.g. "jk,ij->ik"
-        do_blas = entry[4]        # BLAS classification string or False
+        idx_removed = entry[1]  # frozenset of label chars removed (inner product)
+        einsum_str = entry[2]  # e.g. "jk,ij->ik"
+        do_blas = entry[4]  # BLAS classification string or False
 
         # The original path indices for this step (pre-sort, from upstream_path).
         original_path_tuple: tuple[int, ...] = tuple(upstream_path[step_idx])
 
-        if '->' in einsum_str:
-            lhs, rhs = einsum_str.split('->', 1)
+        if "->" in einsum_str:
+            lhs, rhs = einsum_str.split("->", 1)
         else:
-            lhs, rhs = einsum_str, ''
+            lhs, rhs = einsum_str, ""
 
-        lhs_parts = lhs.split(',')
+        lhs_parts = lhs.split(",")
         num_terms = len(lhs_parts)
 
         # Reconstruct idx_contraction (set of all labels touched) from lhs
-        idx_contraction: frozenset[str] = frozenset(c for part in lhs_parts for c in part)
+        idx_contraction: frozenset[str] = frozenset(
+            c for part in lhs_parts for c in part
+        )
 
         inner = bool(idx_removed)
 
@@ -624,7 +633,9 @@ def build_path_info(upstream_path, upstream_info, *, size_dict, optimizer_used: 
         output_shape_for_step: tuple[int, ...] = tuple(size_dict[c] for c in rhs)
 
         if output_shape_for_step:
-            largest_intermediate = max(largest_intermediate, prod(output_shape_for_step))
+            largest_intermediate = max(
+                largest_intermediate, prod(output_shape_for_step)
+            )
 
         # Reconstruct merged_subset by tracking which original operands each
         # SSA id covers. The path gives us the positions to contract.
@@ -656,7 +667,12 @@ def build_path_info(upstream_path, upstream_info, *, size_dict, optimizer_used: 
 
     # Recompute naive_cost: single-step contraction over all labels.
     all_labels: frozenset[str] = frozenset(size_dict.keys())
-    n_ops = len(upstream_info.contraction_list[0][3]) + 1 if upstream_info.contraction_list and upstream_info.contraction_list[0][3] is not None else 2
+    n_ops = (
+        len(upstream_info.contraction_list[0][3]) + 1
+        if upstream_info.contraction_list
+        and upstream_info.contraction_list[0][3] is not None
+        else 2
+    )
     try:
         naive_cost = helpers.flop_count(
             idx_contraction=all_labels,
@@ -676,13 +692,13 @@ def build_path_info(upstream_path, upstream_info, *, size_dict, optimizer_used: 
         optimized_cost=optimized_cost,
         largest_intermediate=largest_intermediate,
         speedup=speedup,
-        input_subscripts=getattr(upstream_info, 'input_subscripts', ''),
-        output_subscript=getattr(upstream_info, 'output_subscript', ''),
+        input_subscripts=getattr(upstream_info, "input_subscripts", ""),
+        output_subscript=getattr(upstream_info, "output_subscript", ""),
         size_dict=dict(size_dict),
         optimizer_used=optimizer_used,
         contraction_list=list(upstream_info.contraction_list),
-        scale_list=list(getattr(upstream_info, 'scale_list', [])),
-        size_list=list(getattr(upstream_info, 'size_list', [])),
+        scale_list=list(getattr(upstream_info, "scale_list", [])),
+        size_list=list(getattr(upstream_info, "size_list", [])),
         _oe_naive_cost=naive_cost,
         _oe_opt_cost=optimized_cost,
     )

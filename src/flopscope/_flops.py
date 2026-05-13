@@ -6,7 +6,7 @@ import math
 from collections import Counter
 
 from flopscope._perm_group import SymmetryGroup
-from flopscope._symmetry_utils import unique_elements_for_shape, validate_symmetry_group
+from flopscope._symmetry_utils import unique_elements_for_shape
 
 
 def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]]:
@@ -65,18 +65,22 @@ def einsum_cost(
     int
         Estimated FLOP count.
     """
-    from flopscope._opt_einsum import parse_einsum_input
-    from flopscope._accumulation._cost import compute_accumulation_cost
-
     # Build dummy arrays of the right shape for the parser
     import numpy as _np
+
+    from flopscope._accumulation._cost import compute_accumulation_cost
+    from flopscope._opt_einsum import parse_einsum_input
+
     dummy_operands = [_np.empty(s) for s in shapes]
-    input_subscripts, output_subscript, _ = parse_einsum_input((subscripts, *dummy_operands))
-    canonical_subscripts = f'{input_subscripts}->{output_subscript}'
-    input_parts = tuple(input_subscripts.split(','))
+    input_subscripts, output_subscript, _ = parse_einsum_input(
+        (subscripts, *dummy_operands)
+    )
+    canonical_subscripts = f"{input_subscripts}->{output_subscript}"
+    input_parts = tuple(input_subscripts.split(","))
 
     per_op_syms: tuple[SymmetryGroup | None, ...] = (
-        tuple(operand_symmetries) if operand_symmetries is not None
+        tuple(operand_symmetries)
+        if operand_symmetries is not None
         else (None,) * len(shapes)
     )
 

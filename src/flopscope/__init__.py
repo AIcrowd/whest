@@ -42,6 +42,13 @@ from flopscope._version_check import check_numpy_version as _check_numpy_version
 _check_numpy_version(__numpy_supported__)
 
 # --- Budget and diagnostics ---
+# --- Symmetry-aware einsum accumulation cost ---
+from flopscope._accumulation import (  # noqa: F401,E402
+    AccumulationCost,
+    ComponentCost,
+    RegimeStep,
+    einsum_accumulation_cost,
+)
 from flopscope._budget import (  # noqa: F401,E402
     BudgetContext,
     OpRecord,
@@ -68,14 +75,6 @@ from flopscope._symmetric import (  # noqa: F401,E402
     as_symmetric,
     is_symmetric,
     symmetrize,
-)
-
-# --- Symmetry-aware einsum accumulation cost ---
-from flopscope._accumulation import (  # noqa: F401,E402
-    AccumulationCost,
-    ComponentCost,
-    RegimeStep,
-    einsum_accumulation_cost,
 )
 
 # --- Errors ---

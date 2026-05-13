@@ -20,11 +20,12 @@ from ._wreath import WreathElement
 class SigmaResult:
     """One row of the σ-loop. Either σ is identity (skipped, π=identity), or σ is
     non-identity and we either accepted a π or rejected (no fingerprint match)."""
+
     is_valid: bool
     is_identity: bool
     skipped: bool
     pi: dict[str, str] | None
-    pi_kind: Literal['identity', 'v-only', 'w-only', 'cross-v-w'] | None
+    pi_kind: Literal["identity", "v-only", "w-only", "cross-v-w"] | None
     reason: str | None = None
     sigma_row_perm: tuple[int, ...] | None = None
 
@@ -75,22 +76,22 @@ def classify_pi(
     )
 
     if pi_is_identity:
-        kind = 'identity'
+        kind = "identity"
     elif crosses_vw:
-        kind = 'cross-v-w'
+        kind = "cross-v-w"
     elif moves_v and not moves_w:
-        kind = 'v-only'
+        kind = "v-only"
     elif moves_w and not moves_v:
-        kind = 'w-only'
+        kind = "w-only"
     else:
-        kind = 'cross-v-w'  # both V and W move, but no V↔W swap — still classified as cross
+        kind = "cross-v-w"  # both V and W move, but no V↔W swap — still classified as cross
 
     return {
-        'piIsIdentity': pi_is_identity,
-        'piKind': kind,
-        'crosses': crosses_vw,
-        'movesV': moves_v,
-        'movesW': moves_w,
+        "piIsIdentity": pi_is_identity,
+        "piKind": kind,
+        "crosses": crosses_vw,
+        "movesV": moves_v,
+        "movesW": moves_w,
     }
 
 
@@ -112,14 +113,16 @@ def run_sigma_loop(
 
         if is_identity:
             identity_pi = {lbl: lbl for lbl in all_labels}
-            results.append(SigmaResult(
-                is_valid=True,
-                is_identity=True,
-                skipped=True,
-                pi=identity_pi,
-                pi_kind='identity',
-                sigma_row_perm=sigma_row_perm,
-            ))
+            results.append(
+                SigmaResult(
+                    is_valid=True,
+                    is_identity=True,
+                    skipped=True,
+                    pi=identity_pi,
+                    pi_kind="identity",
+                    sigma_row_perm=sigma_row_perm,
+                )
+            )
             continue
 
         # Compute σ(M) column fingerprints.
@@ -130,29 +133,34 @@ def run_sigma_loop(
                 for k in range(len(sigma_row_perm))
             )
 
-        pi = derive_pi_canonical(sigma_col_of, matrix_data.fp_to_labels,
-                                  v_labels, w_labels)
+        pi = derive_pi_canonical(
+            sigma_col_of, matrix_data.fp_to_labels, v_labels, w_labels
+        )
         if pi is None:
-            results.append(SigmaResult(
-                is_valid=False,
-                is_identity=False,
-                skipped=False,
-                pi=None,
-                pi_kind=None,
-                reason='No matching π (fingerprint mismatch)',
-                sigma_row_perm=sigma_row_perm,
-            ))
+            results.append(
+                SigmaResult(
+                    is_valid=False,
+                    is_identity=False,
+                    skipped=False,
+                    pi=None,
+                    pi_kind=None,
+                    reason="No matching π (fingerprint mismatch)",
+                    sigma_row_perm=sigma_row_perm,
+                )
+            )
             continue
 
         classification = classify_pi(pi, v_labels, w_labels)
-        results.append(SigmaResult(
-            is_valid=True,
-            is_identity=False,
-            skipped=False,
-            pi=pi,
-            pi_kind=classification['piKind'],  # type: ignore[arg-type]
-            sigma_row_perm=sigma_row_perm,
-        ))
+        results.append(
+            SigmaResult(
+                is_valid=True,
+                is_identity=False,
+                skipped=False,
+                pi=pi,
+                pi_kind=classification["piKind"],  # type: ignore[arg-type]
+                sigma_row_perm=sigma_row_perm,
+            )
+        )
 
     return tuple(results)
 
@@ -168,6 +176,7 @@ from flopscope._perm_group import _dimino
 @dataclass(frozen=True)
 class DetectedGroup:
     """The whole-expression G_pt."""
+
     all_labels: tuple[str, ...]
     generators: tuple[Permutation, ...]
     elements: tuple[Permutation, ...]
@@ -204,7 +213,7 @@ def _classify_group_name(
     order = len(elements)
     degree = len(labels)
     if degree < 2 or order <= 1:
-        return 'trivial'
+        return "trivial"
 
     moved_set: set[int] = set()
     for el in elements:
@@ -214,50 +223,53 @@ def _classify_group_name(
     moved_indices = sorted(moved_set)
     moved_labels = [labels[i] for i in moved_indices] if moved_indices else list(labels)
     effective_degree = len(moved_labels) or degree
-    label_set = '{' + ','.join(moved_labels) + '}'
+    label_set = "{" + ",".join(moved_labels) + "}"
 
     if order == math.factorial(effective_degree):
-        return f'S{effective_degree}{label_set}'
+        return f"S{effective_degree}{label_set}"
     if order == effective_degree and effective_degree >= 3:
         # Cyclic check
         for el in elements:
             cycles = el.cyclic_form
             if len(cycles) == 1 and len(cycles[0]) == effective_degree:
-                return f'C{effective_degree}{label_set}'
+                return f"C{effective_degree}{label_set}"
     if order == 2 * effective_degree and effective_degree >= 3:
-        return f'D{effective_degree}{label_set}'  # heuristic — matches JS classification
+        return (
+            f"D{effective_degree}{label_set}"  # heuristic — matches JS classification
+        )
     if order == 2 and degree == 2:
-        return f'S2{label_set}'
+        return f"S2{label_set}"
     if order == 2 and effective_degree > 2:
-        return f'Z2{label_set}'
+        return f"Z2{label_set}"
+
     # Fallback: build cycle notation inline using cyclic_form + label substitution
     def _gen_cycle_str(gen: Permutation, lbl_list: Sequence[str]) -> str:
         cycles = gen.cyclic_form
         if not cycles:
-            return '()'
-        return ''.join(
-            '(' + ' '.join(lbl_list[idx] for idx in cycle) + ')'
-            for cycle in cycles
+            return "()"
+        return "".join(
+            "(" + " ".join(lbl_list[idx] for idx in cycle) + ")" for cycle in cycles
         )
-    gen_str = ', '.join(_gen_cycle_str(g, labels) for g in generators)
-    return f'PermGroup⟨{gen_str}⟩'
+
+    gen_str = ", ".join(_gen_cycle_str(g, labels) for g in generators)
+    return f"PermGroup⟨{gen_str}⟩"
 
 
 def _action_summary(
     pi_kinds_seen: set[str],
 ) -> str:
     """Summarize the action of G as 'V-only' / 'W-only' / 'cross-V/W' / 'trivial'."""
-    if not pi_kinds_seen or pi_kinds_seen <= {'identity'}:
-        return 'trivial'
-    if 'cross-v-w' in pi_kinds_seen:
-        return 'cross-V/W'
-    if 'v-only' in pi_kinds_seen and 'w-only' in pi_kinds_seen:
-        return 'V-only × W-only'
-    if 'v-only' in pi_kinds_seen:
-        return 'V-only'
-    if 'w-only' in pi_kinds_seen:
-        return 'W-only'
-    return 'trivial'
+    if not pi_kinds_seen or pi_kinds_seen <= {"identity"}:
+        return "trivial"
+    if "cross-v-w" in pi_kinds_seen:
+        return "cross-V/W"
+    if "v-only" in pi_kinds_seen and "w-only" in pi_kinds_seen:
+        return "V-only × W-only"
+    if "v-only" in pi_kinds_seen:
+        return "V-only"
+    if "w-only" in pi_kinds_seen:
+        return "W-only"
+    return "trivial"
 
 
 def build_full_group(
@@ -267,7 +279,7 @@ def build_full_group(
 ) -> DetectedGroup:
     """Collect valid πs as full-degree permutations on `all_labels`, dedupe, find
     a minimal generating set via greedy growth, run dimino. Mirrors fullGroup.js#buildFullGroup."""
-    label_idx = {l: i for i, l in enumerate(all_labels)}
+    label_idx = {lbl: i for i, lbl in enumerate(all_labels)}
     candidates: list[Permutation] = []
     seen_keys: set[tuple[int, ...]] = set()
     pi_kinds_seen: set[str] = set()
@@ -278,7 +290,7 @@ def build_full_group(
             continue
         if r.pi is not None:
             valid.append(r)
-        if r.skipped or r.pi_kind == 'identity':
+        if r.skipped or r.pi_kind == "identity":
             if r.pi_kind is not None:
                 pi_kinds_seen.add(r.pi_kind)
             continue

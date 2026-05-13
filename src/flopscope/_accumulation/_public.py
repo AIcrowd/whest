@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import numpy as _np
 
+from flopscope._config import get_setting
 from flopscope._opt_einsum import parse_einsum_input
 from flopscope._symmetric import SymmetricTensor
 
@@ -80,9 +83,15 @@ def einsum_accumulation_cost(
         Whole-einsum cost decomposition.
     """
     input_subscripts, output_subscript, _ = parse_einsum_input((subscripts, *operands))
-    canonical_subscripts = f'{input_subscripts}->{output_subscript}'
-    input_parts = tuple(input_subscripts.split(','))
+    canonical_subscripts = f"{input_subscripts}->{output_subscript}"
+    input_parts = tuple(input_subscripts.split(","))
     shapes = tuple(tuple(_np.asarray(op).shape) for op in operands)
+
+    # Resolve partition_budget to the active setting BEFORE cache lookup. If we
+    # pass None, the cache key collapses across all settings values and stale
+    # entries computed under a different budget can leak across tests/configs.
+    if partition_budget is None:
+        partition_budget = cast(int, get_setting("partition_budget"))
 
     return get_accumulation_cost_cached(
         canonical_subscripts=canonical_subscripts,

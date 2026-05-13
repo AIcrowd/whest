@@ -35,7 +35,9 @@ def restrict_to_positions(
     """
     if not preserves_position_set(perm, positions):
         return None
-    local_index = {global_pos: local_pos for local_pos, global_pos in enumerate(positions)}
+    local_index = {
+        global_pos: local_pos for local_pos, global_pos in enumerate(positions)
+    }
     arr = [local_index[perm.array_form[global_source]] for global_source in positions]
     return Permutation(arr)
 
@@ -73,9 +75,7 @@ def apply_permutation_to_tuple_array(tup: Sequence, perm: Permutation) -> list:
     return next_tuple
 
 
-def canonical_tuple_under_group(
-    tup: Sequence, elements: Iterable[Permutation]
-) -> str:
+def canonical_tuple_under_group(tup: Sequence, elements: Iterable[Permutation]) -> str:
     """Return the lex-smallest tuple key over the orbit of `tup` under `elements`."""
     elements_tuple = tuple(elements)
     if not elements_tuple:

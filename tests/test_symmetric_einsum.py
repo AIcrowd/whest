@@ -68,10 +68,11 @@ class TestEinsumSymmetryParam:
 def test_total_never_exceeds_k_times_dense_baseline():
     """Even with declared symmetries, total <= k * dense_baseline always (gaming-resistance)."""
     import numpy as np
+
     import flopscope as fps
 
     A = np.zeros((4, 4, 4))
     A_sym = fps.as_symmetric(A, symmetry=(0, 1, 2))
-    cost = fps.einsum_accumulation_cost('ijk,abc->ic', A_sym, A_sym)
+    cost = fps.einsum_accumulation_cost("ijk,abc->ic", A_sym, A_sym)
     upper_bound = cost.num_terms * cost.dense_baseline
     assert cost.total <= upper_bound

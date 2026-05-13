@@ -202,7 +202,13 @@ class TestDeclaredPlusIdentical:
         """
         S = _symmetrize((N, N), SymmetryGroup.symmetric(axes=(0, 1)))
         assert _has_savings("ij,jk,kl,li->ijkl", S, S, S, S)
-        acc_directed = _accumulation("ij,jk,kl,li->ijkl", fnp.random.randn(N, N), fnp.random.randn(N, N), fnp.random.randn(N, N), fnp.random.randn(N, N))
+        acc_directed = _accumulation(
+            "ij,jk,kl,li->ijkl",
+            fnp.random.randn(N, N),
+            fnp.random.randn(N, N),
+            fnp.random.randn(N, N),
+            fnp.random.randn(N, N),
+        )
         acc_undirected = _accumulation("ij,jk,kl,li->ijkl", S, S, S, S)
         # D4 (undirected with S symmetric) gives more savings than C4 (directed)
         assert acc_undirected.m_total <= acc_directed.m_total

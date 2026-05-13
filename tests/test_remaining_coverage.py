@@ -1413,9 +1413,7 @@ class TestContractPathMemoryLimit:
         from flopscope._opt_einsum import contract_path
 
         with pytest.raises((ValueError, TypeError)):
-            contract_path(
-                "ij,jk->ik", (3, 4), (4, 5), shapes=True, memory_limit=-2
-            )
+            contract_path("ij,jk->ik", (3, 4), (4, 5), shapes=True, memory_limit=-2)
 
 
 class TestPathInfoFormatTable:

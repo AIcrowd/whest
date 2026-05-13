@@ -26,6 +26,7 @@ from ._ladder import (
 class ComponentCost:
     """Per-component cost. alpha is None when this component's regime returned
     unavailable (partition budget exceeded with brute-force disabled by policy)."""
+
     labels: tuple[str, ...]
     va: tuple[str, ...]
     wa: tuple[str, ...]
@@ -47,6 +48,7 @@ class ComponentCost:
     def describe(self) -> dict[str, str]:
         """LaTeX strings built on demand (Task 23 fills in the body)."""
         from ._cost_descriptions import describe_component
+
         return describe_component(self)
 
 
@@ -80,29 +82,32 @@ def run_ladder_per_component(
         dense_count = math.prod(c.sizes) if c.sizes else 1
 
         unavailable_reason: str | None = None
-        if result.regime_id == 'unavailable':
+        if result.regime_id == "unavailable":
             # The "unavailable" trace step's reason is the ladder's last word.
             unavailable_step = next(
-                (s for s in result.trace if s.regime_id == 'unavailable'), None,
+                (s for s in result.trace if s.regime_id == "unavailable"),
+                None,
             )
             if unavailable_step is not None:
                 unavailable_reason = unavailable_step.reason
 
-        out.append(ComponentCost(
-            labels=c.labels,
-            va=c.va,
-            wa=c.wa,
-            sizes=c.sizes,
-            m=m,
-            alpha=result.count,
-            dense_count=dense_count,
-            regime_id=result.regime_id,
-            shape=result.shape,
-            group_name=c.group_name,
-            group_order=c.order,
-            regime_trace=result.trace,
-            unavailable_reason=unavailable_reason,
-        ))
+        out.append(
+            ComponentCost(
+                labels=c.labels,
+                va=c.va,
+                wa=c.wa,
+                sizes=c.sizes,
+                m=m,
+                alpha=result.count,
+                dense_count=dense_count,
+                regime_id=result.regime_id,
+                shape=result.shape,
+                group_name=c.group_name,
+                group_order=c.order,
+                regime_trace=result.trace,
+                unavailable_reason=unavailable_reason,
+            )
+        )
     return tuple(out)
 
 
@@ -118,6 +123,7 @@ from flopscope.errors import CostFallbackWarning
 class AccumulationCost:
     """Whole-einsum cost. When any component is unavailable, total falls back to
     the dense baseline (k · dense_baseline) and a CostFallbackWarning fires."""
+
     total: int
     mu: int | None
     alpha: int | None
@@ -134,6 +140,7 @@ class AccumulationCost:
     def describe(self) -> dict:
         """Human-readable + LaTeX summary, built on demand."""
         from ._cost_descriptions import describe_total
+
         return describe_total(self)
 
     @property
@@ -181,15 +188,15 @@ def aggregate_einsum(
     # Fallback: charge dense.
     fallback_total = num_terms * dense_baseline
     first_failing = component_costs[failing[0]]
-    reason = first_failing.unavailable_reason or 'partition_budget exceeded'
-    failing_labels = ', '.join(first_failing.labels)
+    reason = first_failing.unavailable_reason or "partition_budget exceeded"
+    failing_labels = ", ".join(first_failing.labels)
     warnings.warn(
         CostFallbackWarning(
-            f'einsum: component {list(failing)} ({failing_labels}) returned '
-            f'unavailable — charging dense cost {fallback_total} = '
-            f'{num_terms} × {dense_baseline}. Failing reason: {reason}. '
-            f'Raise via flopscope.configure(partition_budget=...) to attempt '
-            f'exact counting.'
+            f"einsum: component {list(failing)} ({failing_labels}) returned "
+            f"unavailable — charging dense cost {fallback_total} = "
+            f"{num_terms} × {dense_baseline}. Failing reason: {reason}. "
+            f"Raise via flopscope.configure(partition_budget=...) to attempt "
+            f"exact counting."
         ),
         stacklevel=4,
     )
@@ -212,8 +219,7 @@ def aggregate_einsum(
 
 from collections.abc import Sequence as _Seq
 from typing import Any as _Any
-
-from flopscope._perm_group import SymmetryGroup as _SymGroup
+from typing import cast as _cast
 
 from ._bipartite import build_bipartite, build_incidence_matrix
 from ._components import decompose_into_components
@@ -247,13 +253,13 @@ def _operand_names_from_identity_pattern(
     """Generate operand names that respect the identity pattern.
     Operands sharing the same id (per identity_pattern) get the same name."""
     if identity_pattern is None:
-        return tuple(f'op_{i}' for i in range(num_ops))
+        return tuple(f"op_{i}" for i in range(num_ops))
     name_of: dict[int, str] = {}
     for group in identity_pattern:
-        shared_name = f'op_grp_{group[0]}'
+        shared_name = f"op_grp_{group[0]}"
         for pos in group:
             name_of[pos] = shared_name
-    return tuple(name_of.get(i, f'op_{i}') for i in range(num_ops))
+    return tuple(name_of.get(i, f"op_{i}") for i in range(num_ops))
 
 
 def _per_op_symmetry_for_wreath(sym: _Any) -> _Any:
@@ -291,7 +297,7 @@ def compute_accumulation_cost(
     if per_op_symmetries is None:
         per_op_symmetries = (None,) * num_ops
     if partition_budget is None:
-        partition_budget = int(get_setting('partition_budget'))
+        partition_budget = _cast(int, get_setting("partition_budget"))
 
     operand_names = _operand_names_from_identity_pattern(num_ops, identity_pattern)
 
@@ -311,12 +317,16 @@ def compute_accumulation_cost(
     singleton_groups = [(i,) for i in range(num_ops) if i not in grouped_ops]
     identical_groups_all = (*graph.identical_groups, *singleton_groups)
 
-    wreath_elements = list(enumerate_wreath(
-        identical_groups=identical_groups_all,
-        per_op_symmetry=tuple(_per_op_symmetry_for_wreath(s) for s in per_op_symmetries),
-        axis_ranks=axis_ranks,
-        u_offsets=u_offsets,
-    ))
+    wreath_elements = list(
+        enumerate_wreath(
+            identical_groups=identical_groups_all,
+            per_op_symmetry=tuple(
+                _per_op_symmetry_for_wreath(s) for s in per_op_symmetries
+            ),
+            axis_ranks=axis_ranks,
+            u_offsets=u_offsets,
+        )
+    )
 
     sigma_results = run_sigma_loop(graph, matrix_data, tuple(wreath_elements))
     detected = build_full_group(sigma_results, all_labels=graph.all_labels)
@@ -332,7 +342,8 @@ def compute_accumulation_cost(
     )
 
     component_costs = run_ladder_per_component(
-        components, partition_budget=partition_budget,
+        components,
+        partition_budget=partition_budget,
     )
     dense_baseline = math.prod(sizes) if sizes else 1
     return aggregate_einsum(
@@ -367,9 +378,9 @@ def aggregate_reduction(
     BODY IS A FUTURE SPRINT (separate spec + plan).
     """
     raise NotImplementedError(
-        'aggregate_reduction is a future sprint. Signature locked in '
-        '.aicrowd/superpowers/specs/2026-05-07-symmetry-aware-einsum-cost-design.md '
+        "aggregate_reduction is a future sprint. Signature locked in "
+        ".aicrowd/superpowers/specs/2026-05-07-symmetry-aware-einsum-cost-design.md "
         'Section "Reduction-cost API hooks (designed for, not implemented)". '
-        'Implement via a follow-up brainstorm + plan covering ufunc.reduce '
-        'cost calculation for sum, prod, etc.'
+        "Implement via a follow-up brainstorm + plan covering ufunc.reduce "
+        "cost calculation for sum, prod, etc."
     )

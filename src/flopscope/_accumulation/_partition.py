@@ -52,9 +52,7 @@ def num_blocks(partition: Sequence[int]) -> int:
     return len(set(partition))
 
 
-def block_domains(
-    partition: Sequence[int], sizes: Sequence[int]
-) -> dict[int, int]:
+def block_domains(partition: Sequence[int], sizes: Sequence[int]) -> dict[int, int]:
     """Map block ID → common domain size of all positions in that block.
     Raises ValueError if any block contains positions of unequal size.
     """
@@ -70,9 +68,7 @@ def block_domains(
     return domains
 
 
-def typed_labeling_count(
-    partition: Sequence[int], sizes: Sequence[int]
-) -> int:
+def typed_labeling_count(partition: Sequence[int], sizes: Sequence[int]) -> int:
     """Number of injective concrete labelings of a typed partition.
 
     For each domain class with ``b_s`` blocks, contributes ``falling(n_s, b_s)``;
@@ -169,7 +165,7 @@ def apply_permutation_to_partition(
     for source in range(len(partition)):
         moved[perm.array_form[source]] = partition[source]
     # All slots filled by construction (perm is a bijection); cast tightens type.
-    return normalize_partition([m for m in moved])  # type: ignore[arg-type]
+    return normalize_partition(list(moved))  # type: ignore[arg-type]
 
 
 def partition_orbit_reps(
@@ -179,9 +175,7 @@ def partition_orbit_reps(
     Mirrors JS partitionOrbitReps using a dict-by-key dedup pattern.
     """
     elements_tuple = tuple(elements)
-    remaining: dict[str, list[int]] = {
-        partition_key(p): list(p) for p in partitions
-    }
+    remaining: dict[str, list[int]] = {partition_key(p): list(p) for p in partitions}
     reps: list[list[int]] = []
     for key, partition in list(remaining.items()):
         if key not in remaining:

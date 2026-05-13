@@ -2,7 +2,6 @@
 
 import numpy
 import pytest
-
 from opt_einsum.parser import (
     alpha_canonicalize,
     convert_interleaved_input,

@@ -8,42 +8,44 @@ are skipped. Runs in default CI (no Node required).
 from __future__ import annotations
 
 import math
+from typing import cast
 
 import pytest
 
 from tests.accumulation._corpus import CORPUS
 from tests.accumulation._sympy_oracle import MAX_PAIR_TOUCHES, sympy_brute_force_alpha
 
-
 # ---------------------------------------------------------------------------
 # Helper: build operands (mirrors test_js_parity._build_operand)
 # ---------------------------------------------------------------------------
 
+
 def _build_operand(shape, sym_spec):
+
     import numpy as np
+
     import flopscope as fps
-    from flopscope._perm_group import SymmetryGroup, _Permutation
-    import re
+    from flopscope._perm_group import SymmetryGroup
 
     op = np.zeros(shape) if shape else np.zeros(1)
     if sym_spec is None:
         return op
 
-    if sym_spec == 'symmetric':
+    if sym_spec == "symmetric":
         return fps.as_symmetric(op, symmetry=tuple(range(len(shape))))
 
     if isinstance(sym_spec, dict):
-        sym_type = sym_spec.get('type')
-        axes = tuple(sym_spec.get('axes', range(len(shape))))
+        sym_type = sym_spec.get("type")
+        axes = tuple(sym_spec.get("axes", range(len(shape))))
 
-        if sym_type == 'symmetric':
+        if sym_type == "symmetric":
             return fps.as_symmetric(op, symmetry=axes)
 
-        if sym_type == 'cyclic':
+        if sym_type == "cyclic":
             return fps.as_symmetric(op, symmetry=SymmetryGroup.cyclic(axes=axes))
 
-        if sym_type == 'custom':
-            generators_str = sym_spec.get('generators', '')
+        if sym_type == "custom":
+            generators_str = sym_spec.get("generators", "")
             gen_perms = _parse_generators(generators_str, degree=len(axes))
             group = SymmetryGroup(*gen_perms, axes=axes)
             return fps.as_symmetric(op, symmetry=group)
@@ -53,17 +55,18 @@ def _build_operand(shape, sym_spec):
 
 def _parse_generators(generators_str: str, *, degree: int):
     import re
+
     from flopscope._perm_group import _Permutation
 
     segments: list[str] = []
     depth = 0
     start = 0
     for i, ch in enumerate(generators_str):
-        if ch == '(':
+        if ch == "(":
             depth += 1
-        elif ch == ')':
+        elif ch == ")":
             depth -= 1
-        elif ch == ',' and depth == 0:
+        elif ch == "," and depth == 0:
             segments.append(generators_str[start:i].strip())
             start = i + 1
     last = generators_str[start:].strip()
@@ -73,7 +76,7 @@ def _parse_generators(generators_str: str, *, degree: int):
     result = []
     for seg in segments:
         arr = list(range(degree))
-        for m in re.finditer(r'\(([^)]*)\)', seg):
+        for m in re.finditer(r"\(([^)]*)\)", seg):
             cycle = list(map(int, m.group(1).split()))
             for i in range(len(cycle)):
                 arr[cycle[i]] = cycle[(i + 1) % len(cycle)]
@@ -85,9 +88,13 @@ def _parse_generators(generators_str: str, *, degree: int):
 # Helper: run the internal pipeline and return Component + ComponentCost pairs
 # ---------------------------------------------------------------------------
 
+
 def _get_component_pairs(case):
     """Run the full decomposition pipeline, returning (Component, ComponentCost) pairs."""
-    from flopscope._accumulation._bipartite import build_bipartite, build_incidence_matrix
+    from flopscope._accumulation._bipartite import (
+        build_bipartite,
+        build_incidence_matrix,
+    )
     from flopscope._accumulation._components import decompose_into_components
     from flopscope._accumulation._cost import run_ladder_per_component
     from flopscope._accumulation._detection import build_full_group, run_sigma_loop
@@ -95,7 +102,7 @@ def _get_component_pairs(case):
     from flopscope._config import get_setting
     from flopscope._symmetric import SymmetricTensor
 
-    parts = case.subscripts.split(',')
+    parts = case.subscripts.split(",")
     num_ops = len(parts)
 
     # Build operands (same shared-object logic as JS parity test)
@@ -122,32 +129,32 @@ def _get_component_pairs(case):
     for idx, op in enumerate(operands):
         id_to_positions.setdefault(id(op), []).append(idx)
     identity_groups = tuple(
-        tuple(pos)
-        for pos in id_to_positions.values()
-        if len(pos) >= 2
+        tuple(pos) for pos in id_to_positions.values() if len(pos) >= 2
     )
 
     # Operand names respecting identity
     name_of: dict[int, str] = {}
     for grp in identity_groups:
-        shared = f'op_grp_{grp[0]}'
+        shared = f"op_grp_{grp[0]}"
         for pos in grp:
             name_of[pos] = shared
     singleton_groups = tuple(
         (i,) for i in range(num_ops) if i not in {p for g in identity_groups for p in g}
     )
     all_identical_groups = identity_groups + singleton_groups
-    operand_names = tuple(name_of.get(i, f'op_{i}') for i in range(num_ops))
+    operand_names = tuple(name_of.get(i, f"op_{i}") for i in range(num_ops))
 
     axis_ranks = tuple(len(p) for p in parts)
     u_offsets = tuple(sum(axis_ranks[:i]) for i in range(num_ops))
 
-    wreath_elements = list(enumerate_wreath(
-        identical_groups=all_identical_groups,
-        per_op_symmetry=tuple(per_op_syms),
-        axis_ranks=axis_ranks,
-        u_offsets=u_offsets,
-    ))
+    wreath_elements = list(
+        enumerate_wreath(
+            identical_groups=all_identical_groups,
+            per_op_symmetry=tuple(per_op_syms),
+            axis_ranks=axis_ranks,
+            u_offsets=u_offsets,
+        )
+    )
 
     graph = build_bipartite(
         subscripts=tuple(parts),
@@ -167,25 +174,30 @@ def _get_component_pairs(case):
         sizes=sizes,
     )
 
-    partition_budget = int(get_setting('partition_budget'))
-    component_costs = run_ladder_per_component(components, partition_budget=partition_budget)
+    partition_budget = cast(int, get_setting("partition_budget"))
+    component_costs = run_ladder_per_component(
+        components, partition_budget=partition_budget
+    )
 
-    return list(zip(components, component_costs))
+    return list(zip(components, component_costs, strict=True))
 
 
 # ---------------------------------------------------------------------------
 # Parametrized test
 # ---------------------------------------------------------------------------
 
-@pytest.mark.parametrize('case', CORPUS, ids=lambda c: c.case_id)
+
+@pytest.mark.parametrize("case", CORPUS, ids=lambda c: c.case_id)
 def test_python_ladder_matches_sympy_oracle(case):
     if not case.subscripts:
-        pytest.skip('empty einsum')
+        pytest.skip("empty einsum")
 
     # Skip if the total X space is too large for the oracle budget
     sizes_product = math.prod(case.sizes_by_label.values())
     if sizes_product > MAX_PAIR_TOUCHES // 10:
-        pytest.skip(f'{case.case_id}: sizes product {sizes_product} too large for oracle')
+        pytest.skip(
+            f"{case.case_id}: sizes product {sizes_product} too large for oracle"
+        )
 
     pairs = _get_component_pairs(case)
 
@@ -208,8 +220,8 @@ def test_python_ladder_matches_sympy_oracle(case):
             visible_positions=comp.visible_positions,
         )
         assert cost.alpha == oracle_alpha, (
-            f'{case.case_id}/{list(comp.labels)}: '
-            f'ladder={cost.alpha}, oracle={oracle_alpha}'
+            f"{case.case_id}/{list(comp.labels)}: "
+            f"ladder={cost.alpha}, oracle={oracle_alpha}"
         )
         checked += 1
 

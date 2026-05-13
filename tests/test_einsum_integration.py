@@ -163,7 +163,10 @@ class TestEinsumPath:
         _, info = einsum_path("ijk,ai->ajk", T, A)
         # The accumulation model computes the whole-expression symmetry savings.
         # total=1512, dense_baseline=1296; savings vs gaming bound (2*1296=2592):
-        assert info.accumulation.total < info.accumulation.num_terms * info.accumulation.dense_baseline
+        assert (
+            info.accumulation.total
+            < info.accumulation.num_terms * info.accumulation.dense_baseline
+        )
 
     def test_str_output_symmetry_chain_through_steps(self):
         """The new direct-event model computes accumulation savings for the whole
@@ -229,7 +232,10 @@ class TestOutputSymmetryWrapping:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result_sym = einsum(
                 "ijk,ai,bj,ck->abc",
-                tensor, weight, weight, weight,
+                tensor,
+                weight,
+                weight,
+                weight,
                 symmetry=SymmetryGroup.symmetric(axes=(0, 1, 2)),
             )
         assert isinstance(result_sym, SymmetricTensor)
@@ -267,7 +273,8 @@ class TestOutputSymmetryWrapping:
         # With explicit symmetry kwarg, the output IS wrapped and validated:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result_sym = einsum(
-                "ijk->ij", tensor,
+                "ijk->ij",
+                tensor,
                 symmetry=SymmetryGroup.symmetric(axes=(0, 1)),
             )
         assert isinstance(result_sym, SymmetricTensor)
@@ -459,7 +466,7 @@ class TestPathInfoDebugFields:
         # Final cumulative in the table equals the inner path-level optimized_cost
         # (the step-by-step sum), not the accumulation total which uses the
         # whole-expression direct-event model.
-        inner_cost = getattr(info._inner, 'optimized_cost', info.optimized_cost)
+        inner_cost = getattr(info._inner, "optimized_cost", info.optimized_cost)
         assert f"cumulative={inner_cost:,}" in table
 
     def test_format_table_verbose_subset_grows(self):
@@ -548,7 +555,9 @@ class TestBackwardCompatibility:
         B = numpy.ones((4, 5))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             result = einsum("ij,jk->ik", A, B)
-            assert budget.flops_used == 120  # new direct-event model: (k-1)*prod(M) + prod(alpha)
+            assert (
+                budget.flops_used == 120
+            )  # new direct-event model: (k-1)*prod(M) + prod(alpha)
             assert result.shape == (3, 5)
 
     def test_symmetry_output_kwarg_still_works(self):

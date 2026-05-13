@@ -20,7 +20,7 @@ class FlopscopePathInfo:
     accumulation total when attached.
     """
 
-    __slots__ = ('_inner', 'accumulation')
+    __slots__ = ("_inner", "accumulation")
 
     def __init__(
         self,
@@ -33,8 +33,11 @@ class FlopscopePathInfo:
 
     @classmethod
     def from_inner(
-        cls, *, inner: Any, accumulation: AccumulationCost | None,
-    ) -> 'FlopscopePathInfo':
+        cls,
+        *,
+        inner: Any,
+        accumulation: AccumulationCost | None,
+    ) -> FlopscopePathInfo:
         return cls(inner=inner, accumulation=accumulation)
 
     @property
@@ -43,14 +46,14 @@ class FlopscopePathInfo:
         otherwise falls back to the inner PathInfo's optimized_cost."""
         if self.accumulation is not None:
             return self.accumulation.total
-        return getattr(self._inner, 'optimized_cost', 0)
+        return getattr(self._inner, "optimized_cost", 0)
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._inner, name)
 
     def __str__(self) -> str:
         """Return the full formatted table (delegates to inner PathInfo's format_table)."""
-        fmt = getattr(self._inner, 'format_table', None)
+        fmt = getattr(self._inner, "format_table", None)
         if fmt is not None:
             return fmt()
         return self.__repr__()

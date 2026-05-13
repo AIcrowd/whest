@@ -25,8 +25,8 @@ def _make_accumulation_cache(maxsize: int):
         partition_budget: int | None,
     ) -> AccumulationCost:
         # Reconstruct per-op symmetries from the fingerprint.
-        from flopscope._perm_group import _PermutationCompat as Permutation
         from flopscope._perm_group import SymmetryGroup
+        from flopscope._perm_group import _PermutationCompat as Permutation
 
         per_op_symmetries: list[Any] = []
         for fp_entry in sym_fingerprint:

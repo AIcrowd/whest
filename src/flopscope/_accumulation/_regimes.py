@@ -14,7 +14,6 @@ from ._burnside import size_aware_burnside
 from ._ladder import Regime, RegimeContext, RegimeOutput, Verdict
 from ._output_orbit import projection_is_functional
 
-
 # ── functionalProjection ─────────────────────────────────────────────
 
 
@@ -22,11 +21,11 @@ def _functional_projection_recognize(ctx: RegimeContext) -> Verdict:
     if projection_is_functional(ctx.elements, ctx.visible_positions):
         return Verdict(
             fired=True,
-            reason='each product orbit reaches exactly one stored output representative',
+            reason="each product orbit reaches exactly one stored output representative",
         )
     return Verdict(
         fired=False,
-        reason='some pointwise symmetry moves an output label into a summed label',
+        reason="some pointwise symmetry moves an output label into a summed label",
     )
 
 
@@ -36,16 +35,16 @@ def _functional_projection_compute(ctx: RegimeContext) -> RegimeOutput:
         count=count,
         sub_steps=(
             {
-                'step': 'projection-functional',
-                'reason': 'G preserves V setwise; projection descends to output reps',
-                'count': count,
+                "step": "projection-functional",
+                "reason": "G preserves V setwise; projection descends to output reps",
+                "count": count,
             },
         ),
     )
 
 
 FUNCTIONAL_PROJECTION_REGIME: Regime = Regime(
-    id='functionalProjection',
+    id="functionalProjection",
     recognize=_functional_projection_recognize,
     compute=_functional_projection_compute,
 )
@@ -81,7 +80,7 @@ def _cycles_on_subset(perm, subset: list[int]) -> int:
         cur = start
         while cur not in seen:
             if cur not in subset_set:
-                raise ValueError('subset not invariant under perm')
+                raise ValueError("subset not invariant under perm")
             seen.add(cur)
             cur = perm.array_form[cur]
     return cycles
@@ -99,22 +98,22 @@ def _subset_cycle_product(perm, subset: list[int], sizes) -> int:
         cur = start
         while cur not in seen:
             if cur not in subset_set:
-                raise ValueError('subset not invariant under perm')
+                raise ValueError("subset not invariant under perm")
             seen.add(cur)
             cycle.append(cur)
             cur = perm.array_form[cur]
         n0 = sizes[cycle[0]]
         for i in cycle:
             if sizes[i] != n0:
-                raise ValueError('singleton: cycle in R has mixed sizes')
+                raise ValueError("singleton: cycle in R has mixed sizes")
         product *= n0
     return product
 
 
 def _singleton_recognize(ctx: RegimeContext) -> Verdict:
     if len(ctx.va) == 1:
-        return Verdict(fired=True, reason='|V| = 1')
-    return Verdict(fired=False, reason=f'|V| = {len(ctx.va)}, not 1')
+        return Verdict(fired=True, reason="|V| = 1")
+    return Verdict(fired=False, reason=f"|V| = {len(ctx.va)}, not 1")
 
 
 def _singleton_compute(ctx: RegimeContext) -> RegimeOutput:
@@ -124,7 +123,7 @@ def _singleton_compute(ctx: RegimeContext) -> RegimeOutput:
     for idx in omega:
         if ctx.sizes[idx] != n_omega:
             raise ValueError(
-                f'singleton: orbit of label has mixed sizes at {ctx.labels[idx]}'
+                f"singleton: orbit of label has mixed sizes at {ctx.labels[idx]}"
             )
     omega_set = set(omega)
     rest = [i for i in range(len(ctx.labels)) if i not in omega_set]
@@ -133,13 +132,13 @@ def _singleton_compute(ctx: RegimeContext) -> RegimeOutput:
     for g in ctx.elements:
         rest_factor = _subset_cycle_product(g, rest, ctx.sizes)
         c_omega = _cycles_on_subset(g, omega)
-        total += rest_factor * (n_omega ** c_omega - (n_omega - 1) ** c_omega)
+        total += rest_factor * (n_omega**c_omega - (n_omega - 1) ** c_omega)
     count = (n_omega * total) // len(ctx.elements)
     return RegimeOutput(count=count, sub_steps=())
 
 
 SINGLETON_REGIME: Regime = Regime(
-    id='singleton',
+    id="singleton",
     recognize=_singleton_recognize,
     compute=_singleton_compute,
 )
@@ -165,15 +164,15 @@ def _multiset_count(n: int, k: int) -> int:
 
 def _young_recognize(ctx: RegimeContext) -> Verdict:
     if not ctx.elements or len(ctx.elements) <= 1:
-        return Verdict(fired=False, reason='|G| <= 1')
+        return Verdict(fired=False, reason="|G| <= 1")
     if len(ctx.va) < 2:
-        return Verdict(fired=False, reason='|V| < 2; singleton handles this')
+        return Verdict(fired=False, reason="|V| < 2; singleton handles this")
 
     expected_full_sym = math.factorial(len(ctx.labels))
     if len(ctx.elements) != expected_full_sym:
         return Verdict(
             fired=False,
-            reason=f'|G|={len(ctx.elements)} != |L|!={expected_full_sym}',
+            reason=f"|G|={len(ctx.elements)} != |L|!={expected_full_sym}",
         )
 
     label_to_idx = {lbl: i for i, lbl in enumerate(ctx.labels)}
@@ -183,16 +182,16 @@ def _young_recognize(ctx: RegimeContext) -> Verdict:
         for g in ctx.elements
     )
     if not has_cross:
-        return Verdict(fired=False, reason='no cross-V/W element')
+        return Verdict(fired=False, reason="no cross-V/W element")
 
     if not ctx.sizes:
-        return Verdict(fired=False, reason='no sizes provided')
+        return Verdict(fired=False, reason="no sizes provided")
 
     n_l = ctx.sizes[0]
     if any(s != n_l for s in ctx.sizes):
-        return Verdict(fired=False, reason='mixed label sizes')
+        return Verdict(fired=False, reason="mixed label sizes")
 
-    return Verdict(fired=True, reason='G = Sym(L); Young equation applies')
+    return Verdict(fired=True, reason="G = Sym(L); Young equation applies")
 
 
 def _young_compute(ctx: RegimeContext) -> RegimeOutput:
@@ -204,20 +203,20 @@ def _young_compute(ctx: RegimeContext) -> RegimeOutput:
         count=count,
         sub_steps=(
             {
-                'step': 'full-symmetric-output-orbit-formula',
-                'n': n_l,
-                'v_count': len(ctx.va),
-                'w_count': len(ctx.wa),
-                'visible_multisets': visible_multisets,
-                'summed_multisets': summed_multisets,
-                'count': count,
+                "step": "full-symmetric-output-orbit-formula",
+                "n": n_l,
+                "v_count": len(ctx.va),
+                "w_count": len(ctx.wa),
+                "visible_multisets": visible_multisets,
+                "summed_multisets": summed_multisets,
+                "count": count,
             },
         ),
     )
 
 
 YOUNG_REGIME: Regime = Regime(
-    id='young',
+    id="young",
     recognize=_young_recognize,
     compute=_young_compute,
 )
@@ -245,13 +244,13 @@ def _partition_count_recognize(ctx: RegimeContext) -> Verdict:
         return Verdict(
             fired=False,
             reason=(
-                f'typed partition count {len(partitions)} exceeds '
-                f'budget {ctx.partition_budget}'
+                f"typed partition count {len(partitions)} exceeds "
+                f"budget {ctx.partition_budget}"
             ),
         )
     return Verdict(
         fired=True,
-        reason=f'typed partition count over {len(partitions)} equality patterns',
+        reason=f"typed partition count over {len(partitions)} equality patterns",
     )
 
 
@@ -267,31 +266,33 @@ def _partition_count_compute(ctx: RegimeContext) -> RegimeOutput:
         block_action = induced_block_action_size(partition, ctx.elements)
         if labelings % block_action != 0:
             raise ValueError(
-                f'partition {partition_key(partition)} has labelings={labelings} '
-                f'not divisible by block action size={block_action} — '
-                f'invariant violation in G'
+                f"partition {partition_key(partition)} has labelings={labelings} "
+                f"not divisible by block action size={block_action} — "
+                f"invariant violation in G"
             )
         input_orbits = labelings // block_action
         maps = induced_prefix_maps(partition, ctx.elements, ctx.visible_positions)
         output_orbits = count_map_orbits_under_h(maps, h_elements)
         term = input_orbits * output_orbits
         total += term
-        sub_steps.append({
-            'partition_key': partition_key(partition),
-            'blocks': num_blocks(partition),
-            'typed_labelings': labelings,
-            'block_action_size': block_action,
-            'input_orbit_count': input_orbits,
-            'induced_map_count': len(maps),
-            'output_orbit_count': output_orbits,
-            'contribution': term,
-        })
+        sub_steps.append(
+            {
+                "partition_key": partition_key(partition),
+                "blocks": num_blocks(partition),
+                "typed_labelings": labelings,
+                "block_action_size": block_action,
+                "input_orbit_count": input_orbits,
+                "induced_map_count": len(maps),
+                "output_orbit_count": output_orbits,
+                "contribution": term,
+            }
+        )
 
     return RegimeOutput(count=total, sub_steps=tuple(sub_steps))
 
 
 PARTITION_COUNT_REGIME: Regime = Regime(
-    id='partitionCount',
+    id="partitionCount",
     recognize=_partition_count_recognize,
     compute=_partition_count_compute,
 )

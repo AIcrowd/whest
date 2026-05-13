@@ -14,9 +14,9 @@ from typing import Literal
 
 from flopscope._perm_group import _Permutation as Permutation
 
-Shape = Literal['trivial', 'allVisible', 'allSummed', 'mixed']
+Shape = Literal["trivial", "allVisible", "allSummed", "mixed"]
 
-SHAPES: tuple[Shape, ...] = ('trivial', 'allVisible', 'allSummed', 'mixed')
+SHAPES: tuple[Shape, ...] = ("trivial", "allVisible", "allSummed", "mixed")
 
 
 def detect_shape(
@@ -27,9 +27,9 @@ def detect_shape(
 ) -> Shape:
     """Classify a component's structural shape from its V/W partition and group size."""
     if not elements or len(elements) <= 1:
-        return 'trivial'
+        return "trivial"
     if len(wa) == 0:
-        return 'allVisible'
+        return "allVisible"
     if len(va) == 0:
-        return 'allSummed'
-    return 'mixed'
+        return "allSummed"
+    return "mixed"

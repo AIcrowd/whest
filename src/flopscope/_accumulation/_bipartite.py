@@ -20,10 +20,10 @@ class UVertex:
 @dataclass(frozen=True)
 class BipartiteGraph:
     u_vertices: tuple[UVertex, ...]
-    incidence: tuple[dict[str, int], ...]       # one per u-vertex
+    incidence: tuple[dict[str, int], ...]  # one per u-vertex
     u_operand: tuple[int, ...]
     operand_labels: tuple[frozenset[str], ...]
-    all_labels: tuple[str, ...]                 # sorted union
+    all_labels: tuple[str, ...]  # sorted union
     free_labels: frozenset[str]
     summed_labels: frozenset[str]
     identical_groups: tuple[tuple[int, ...], ...]
@@ -58,8 +58,9 @@ def build_bipartite(
     for op_idx, sub in enumerate(subscripts):
         operand_labels.append(frozenset(sub))
         for axis_idx, ch in enumerate(sub):
-            u_vertices.append(UVertex(op_idx=op_idx, class_id=axis_idx,
-                                       labels=frozenset({ch})))
+            u_vertices.append(
+                UVertex(op_idx=op_idx, class_id=axis_idx, labels=frozenset({ch}))
+            )
             incidence.append({ch: 1})
             u_operand.append(op_idx)
 
@@ -68,8 +69,8 @@ def build_bipartite(
         all_labels_set.update(sub)
     all_labels = tuple(sorted(all_labels_set))
     output_set = set(output)
-    free_labels = frozenset(l for l in all_labels if l in output_set)
-    summed_labels = frozenset(l for l in all_labels if l not in output_set)
+    free_labels = frozenset(lbl for lbl in all_labels if lbl in output_set)
+    summed_labels = frozenset(lbl for lbl in all_labels if lbl not in output_set)
 
     # Group operand positions by name (Python id() equivalent at the einsum-level
     # is "same operand_name").

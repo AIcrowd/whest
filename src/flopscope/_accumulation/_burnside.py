@@ -29,9 +29,7 @@ def _common_size_or_throw(cycle: Sequence[int], sizes: Sequence[int]) -> int:
     return n0
 
 
-def size_aware_burnside(
-    elements: Iterable[Permutation], sizes: Sequence[int]
-) -> int:
+def size_aware_burnside(elements: Iterable[Permutation], sizes: Sequence[int]) -> int:
     """Count orbits of `elements` acting on the assignment grid ∏ [sizes].
 
     Returns ``M = |X / G|`` where ``X = ∏_ℓ [sizes[ℓ]]``.

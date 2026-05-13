@@ -28,6 +28,7 @@ def test_burnside_s3_uniform_size():
     s01 = Permutation([1, 0, 2])
     s12 = Permutation([0, 2, 1])
     from flopscope._perm_group import _dimino
+
     elements = _dimino((s01, s12))
     # n=4: 4·5·6/6 = 20
     assert size_aware_burnside(elements, (4, 4, 4)) == 20
@@ -38,6 +39,7 @@ def test_burnside_heterogeneous_disjoint():
     swap_first = Permutation([1, 0, 2, 3])
     swap_last = Permutation([0, 1, 3, 2])
     from flopscope._perm_group import _dimino
+
     elements = _dimino((swap_first, swap_last))
     # Expected: (3·4/2) * (5·6/2) = 6 · 15 = 90
     assert size_aware_burnside(elements, (3, 3, 5, 5)) == 90

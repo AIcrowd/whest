@@ -34,9 +34,7 @@ def _require_non_negative_int(name: str, value: object) -> None:
             f"Setting {name!r} requires a non-negative int; got {type(value).__name__!r}"
         )
     if value < 0:
-        raise ValueError(
-            f"Setting {name!r} requires a non-negative int; got {value!r}"
-        )
+        raise ValueError(f"Setting {name!r} requires a non-negative int; got {value!r}")
 
 
 def configure(**kwargs: object) -> None:

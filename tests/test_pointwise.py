@@ -120,7 +120,9 @@ def test_dot_result():
     with BudgetContext(flop_budget=10**6) as budget:
         result = dot(a, b)
         assert numpy.allclose(result, numpy.dot(a, b))
-        assert budget.flops_used == 120  # new direct-event model: (k-1)*prod(M) + prod(alpha)
+        assert (
+            budget.flops_used == 120
+        )  # new direct-event model: (k-1)*prod(M) + prod(alpha)
 
 
 def test_matmul_result():

@@ -20,7 +20,8 @@ from ._detection import DetectedGroup, _classify_group_name
 @dataclass(frozen=True)
 class Component:
     """One independent block of G_pt's action on labels."""
-    indices: tuple[int, ...]                     # positions in all_labels
+
+    indices: tuple[int, ...]  # positions in all_labels
     labels: tuple[str, ...]
     va: tuple[str, ...]
     wa: tuple[str, ...]
@@ -102,7 +103,9 @@ def decompose_into_components(
 ) -> tuple[Component, ...]:
     """Pure: G_pt + V/W → independent components. Used by einsum and (future) reduction code paths."""
     all_labels = detected_group.all_labels
-    raw_components = _build_label_interaction_components(all_labels, detected_group.generators)
+    raw_components = _build_label_interaction_components(
+        all_labels, detected_group.generators
+    )
 
     components: list[Component] = []
     for indices in raw_components:
@@ -134,17 +137,19 @@ def decompose_into_components(
         order = len(elements)
         group_name = _classify_group_name(labels, restricted_gens, elements)
 
-        components.append(Component(
-            indices=tuple(indices),
-            labels=labels,
-            va=va,
-            wa=wa,
-            sizes=comp_sizes,
-            visible_positions=visible_positions,
-            generators=tuple(restricted_gens),
-            elements=tuple(elements),
-            order=order,
-            group_name=group_name,
-        ))
+        components.append(
+            Component(
+                indices=tuple(indices),
+                labels=labels,
+                va=va,
+                wa=wa,
+                sizes=comp_sizes,
+                visible_positions=visible_positions,
+                generators=tuple(restricted_gens),
+                elements=tuple(elements),
+                order=order,
+                group_name=group_name,
+            )
+        )
 
     return tuple(components)

@@ -220,8 +220,12 @@ def test_fma_cost_in_path_cache_key():
         fma2_flop = info2.steps[0].flop_count
 
         # FMA=2 doubles op_factor on the inner step.
-        assert fma1_flop == 8, f"expected fma_cost=1 per-step flop_count=8, got {fma1_flop}"
-        assert fma2_flop == 16, f"expected fma_cost=2 per-step flop_count=16, got {fma2_flop}"
+        assert fma1_flop == 8, (
+            f"expected fma_cost=1 per-step flop_count=8, got {fma1_flop}"
+        )
+        assert fma2_flop == 16, (
+            f"expected fma_cost=2 per-step flop_count=16, got {fma2_flop}"
+        )
         assert fma1_flop != fma2_flop, (
             "fma_cost should partition the cache; got identical per-step "
             f"flop_count={fma1_flop} for both fma_cost values"
