@@ -1,7 +1,6 @@
 """Unit tests for _accumulation/_reduction.py axis + orbit helpers."""
 
 import flopscope as fps
-import flopscope.numpy as fnp
 from flopscope._accumulation._reduction import _normalize_axis, _num_output_orbits
 
 

@@ -45,9 +45,8 @@ def _num_output_orbits(
     Returns the size-aware Burnside orbit count on the output shape.
     """
     ndim = len(input_shape)
-    output_shape = tuple(
-        input_shape[i] for i in range(ndim) if i not in axes_summed
-    )
+    axes_set = frozenset(axes_summed)
+    output_shape = tuple(input_shape[i] for i in range(ndim) if i not in axes_set)
 
     if not output_shape:
         return 1
@@ -56,10 +55,14 @@ def _num_output_orbits(
         return math.prod(output_shape)
 
     from flopscope._symmetry_utils import reduce_group
+
     from ._burnside import size_aware_burnside
 
     output_group = reduce_group(
-        symmetry, ndim=ndim, axis=axes_summed, keepdims=False,
+        symmetry,
+        ndim=ndim,
+        axis=axes_summed,
+        keepdims=False,
     )
 
     if output_group is None:
