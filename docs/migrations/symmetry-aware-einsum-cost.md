@@ -5,8 +5,9 @@ involving SymmetricTensor inputs.
 
 ## What changed
 
-The einsum cost model was rewritten to match the canonical specification at
-`website/components/symmetry-aware-einsum-contractions/`. The new model:
+The einsum cost model was rewritten to match the canonical specification
+described in the [Symmetry Detection Deep Dive](/docs/understanding/symmetry-detection/).
+The new model:
 
 - Computes a path-independent direct-event count: `(k-1)·∏ M_a + ∏ α_a`
   per independent component.
