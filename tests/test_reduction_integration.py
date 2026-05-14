@@ -69,3 +69,21 @@ def test_median_on_symmetric_tensor_uses_tier2_discount():
     expected_min = (n * (n + 1) // 2) * n  # lower bound
     assert _flops_used(bc) >= expected_min
     assert _flops_used(bc) < n * n * n  # cheaper than dense
+
+
+def test_percentile_uses_tier2_discount():
+    n = 4
+    T = fps.as_symmetric(fnp.zeros((n, n, n)), symmetry=(0, 1, 2))
+    with fps.BudgetContext(flop_budget=10**12, quiet=True) as bc:
+        fnp.percentile(T, 50, axis=2)
+    expected_min = (n * (n + 1) // 2) * n
+    assert _flops_used(bc) >= expected_min
+
+
+def test_quantile_uses_tier2_discount():
+    n = 4
+    T = fps.as_symmetric(fnp.zeros((n, n, n)), symmetry=(0, 1, 2))
+    with fps.BudgetContext(flop_budget=10**12, quiet=True) as bc:
+        fnp.quantile(T, 0.5, axis=2)
+    expected_min = (n * (n + 1) // 2) * n
+    assert _flops_used(bc) >= expected_min

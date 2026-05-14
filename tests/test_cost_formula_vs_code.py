@@ -305,18 +305,36 @@ def test_median_tier2_cost(we):
     assert cost == 100, f"median: expected Tier-2 cost=100, got {cost}"
 
 
-@pytest.mark.parametrize("name", ["percentile", "nanpercentile"])
-def test_percentile_numel(name, we):
-    # Updated for orbit-mapping cost model (PR #91 Task 7).
+def test_percentile_tier2_cost(we):
+    # Task 11: percentile uses Tier-2 model: num_output_orbits × axis_dim.
+    # Full reduction of (10,10) dense: axis_dim = prod(shape) = 100,
+    # scalar output → 1 orbit. Cost = 1 * 100 = 100.
+    a = numpy.random.rand(10, 10)
+    cost = _cost_of(we.percentile, a, q=50)
+    assert cost == 100, f"percentile: expected Tier-2 cost=100, got {cost}"
+
+
+@pytest.mark.parametrize("name", ["nanpercentile"])
+def test_nanpercentile_numel(name, we):
+    # nanpercentile still uses the old orbit-mapping model.
     # Full reduction of (10,10): prod(shape) - 1 = 100 - 1 = 99 additions.
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, q=50)
     assert cost == 99, f"{name}: expected orbit-mapping cost=99, got {cost}"
 
 
-@pytest.mark.parametrize("name", ["quantile", "nanquantile"])
-def test_quantile_numel(name, we):
-    # Updated for orbit-mapping cost model (PR #91 Task 7).
+def test_quantile_tier2_cost(we):
+    # Task 11: quantile uses Tier-2 model: num_output_orbits × axis_dim.
+    # Full reduction of (10,10) dense: axis_dim = prod(shape) = 100,
+    # scalar output → 1 orbit. Cost = 1 * 100 = 100.
+    a = numpy.random.rand(10, 10)
+    cost = _cost_of(we.quantile, a, q=0.5)
+    assert cost == 100, f"quantile: expected Tier-2 cost=100, got {cost}"
+
+
+@pytest.mark.parametrize("name", ["nanquantile"])
+def test_nanquantile_numel(name, we):
+    # nanquantile still uses the old orbit-mapping model.
     # Full reduction of (10,10): prod(shape) - 1 = 100 - 1 = 99 additions.
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, q=0.5)

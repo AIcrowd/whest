@@ -1643,8 +1643,118 @@ nanquantile = _counted_reduction(_np.nanquantile, "nanquantile")
 nanstd = _counted_reduction(_np.nanstd, "nanstd")
 nansum = _counted_reduction(_np.nansum, "nansum")
 nanvar = _counted_reduction(_np.nanvar, "nanvar")
-percentile = _counted_reduction(_np.percentile, "percentile")
-quantile = _counted_reduction(_np.quantile, "quantile")
+
+
+@_counted_wrapper
+def percentile(
+    a: ArrayLike,
+    q: float | ArrayLike,
+    axis: int | tuple[int, ...] | None = None,
+    out: FlopscopeArray | None = None,
+    keepdims: bool = False,
+    **kwargs: Any,
+) -> FlopscopeArray:
+    """Counted version of np.percentile.
+
+    Cost = num_output_orbits × axis_dim (Tier-2 partition-based model).
+    """
+    import math as _math
+
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    sym = _symmetry_of(a)
+
+    # Dense per-output cost for partition-based percentile: axis_dim (one pass).
+    if axis is None:
+        axis_dim = _math.prod(a.shape) if a.shape else 1
+    elif isinstance(axis, int):
+        axis_dim = a.shape[axis]
+    else:
+        axis_dim = _math.prod(a.shape[ax] for ax in axis)
+
+    cost = _tier2_reduction_cost(a, axis, dense_per_output_cost=axis_dim)
+
+    out_sym = (
+        reduce_group(sym, ndim=a.ndim, axis=axis, keepdims=keepdims)
+        if sym is not None
+        else None
+    )
+    out_stripped = _to_base_ndarray(out) if out is not None else None
+    with budget.deduct(
+        "percentile",
+        flop_cost=cost,
+        subscripts=None,
+        shapes=(a.shape,),
+    ):
+        result = _np.percentile(
+            _to_base_ndarray(a),
+            q,
+            axis=axis,
+            out=out_stripped,
+            keepdims=keepdims,
+            **kwargs,
+        )
+    return _wrap_result(result, out=out, symmetry=out_sym)
+
+
+percentile.__signature__ = _inspect.signature(_np.percentile)  # pyright: ignore[reportFunctionMemberAccess]
+
+
+@_counted_wrapper
+def quantile(
+    a: ArrayLike,
+    q: float | ArrayLike,
+    axis: int | tuple[int, ...] | None = None,
+    out: FlopscopeArray | None = None,
+    keepdims: bool = False,
+    **kwargs: Any,
+) -> FlopscopeArray:
+    """Counted version of np.quantile.
+
+    Cost = num_output_orbits × axis_dim (Tier-2 partition-based model).
+    """
+    import math as _math
+
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    sym = _symmetry_of(a)
+
+    # Dense per-output cost for partition-based quantile: axis_dim (one pass).
+    if axis is None:
+        axis_dim = _math.prod(a.shape) if a.shape else 1
+    elif isinstance(axis, int):
+        axis_dim = a.shape[axis]
+    else:
+        axis_dim = _math.prod(a.shape[ax] for ax in axis)
+
+    cost = _tier2_reduction_cost(a, axis, dense_per_output_cost=axis_dim)
+
+    out_sym = (
+        reduce_group(sym, ndim=a.ndim, axis=axis, keepdims=keepdims)
+        if sym is not None
+        else None
+    )
+    out_stripped = _to_base_ndarray(out) if out is not None else None
+    with budget.deduct(
+        "quantile",
+        flop_cost=cost,
+        subscripts=None,
+        shapes=(a.shape,),
+    ):
+        result = _np.quantile(
+            _to_base_ndarray(a),
+            q,
+            axis=axis,
+            out=out_stripped,
+            keepdims=keepdims,
+            **kwargs,
+        )
+    return _wrap_result(result, out=out, symmetry=out_sym)
+
+
+quantile.__signature__ = _inspect.signature(_np.quantile)  # pyright: ignore[reportFunctionMemberAccess]
 
 # ptp: numpy 2.0 removed it from ndarray but np.ptp still exists
 if hasattr(_np, "ptp"):
