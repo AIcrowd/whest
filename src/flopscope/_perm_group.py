@@ -615,7 +615,7 @@ def _dimino(generators: tuple[_Permutation, ...]) -> list[_Permutation]:
     """
     from flopscope._config import get_setting
 
-    budget = int(get_setting("dimino_budget"))
+    budget = int(get_setting("dimino_budget"))  # type: ignore[arg-type]
     n = generators[0].size
     identity = _Permutation.identity(n)
     elements = [identity]
