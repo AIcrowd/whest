@@ -280,31 +280,39 @@ _REDUCTION_NUMEL = [
 
 @pytest.mark.parametrize("name", _REDUCTION_NUMEL)
 def test_reduction_numel(name, we):
+    # Updated for orbit-mapping cost model (PR #91 Task 7).
+    # Full reduction of (10,10): prod(shape) - 1 = 100 - 1 = 99 additions.
     a = numpy.random.rand(10, 10)
     fn = getattr(we, name)
     cost = _cost_of(fn, a)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 99, f"{name}: expected orbit-mapping cost=99, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["percentile", "nanpercentile"])
 def test_percentile_numel(name, we):
+    # Updated for orbit-mapping cost model (PR #91 Task 7).
+    # Full reduction of (10,10): prod(shape) - 1 = 100 - 1 = 99 additions.
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, q=50)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 99, f"{name}: expected orbit-mapping cost=99, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["quantile", "nanquantile"])
 def test_quantile_numel(name, we):
+    # Updated for orbit-mapping cost model (PR #91 Task 7).
+    # Full reduction of (10,10): prod(shape) - 1 = 100 - 1 = 99 additions.
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, q=0.5)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 99, f"{name}: expected orbit-mapping cost=99, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["cumulative_sum", "cumulative_prod"])
 def test_cumulative_numel(name, we):
+    # Updated for orbit-mapping cost model (PR #91 Task 7).
+    # axis=0 reduction of (10,10): 10 cols * (10-1) additions = 90.
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, axis=0)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 90, f"{name}: expected orbit-mapping cost=90, got {cost}"
 
 
 # ---------------------------------------------------------------------------

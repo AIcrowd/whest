@@ -124,20 +124,23 @@ class TestPointwiseConsistency:
 
 
 class TestReductionConsistency:
-    """Reductions: cost = numel(input)."""
+    """Reductions: cost = numel(input) - 1 (orbit-mapping model)."""
 
     def test_sum(self):
+        # Updated to orbit-mapping count (was n(n+1)/2 unique-element count).
+        # Full reduction of (n,): n - 1 additions.
         n = 1000
         a = np.random.rand(n)
         runtime_cost = _run_and_get_cost(fnp.sum, a)
-        assert runtime_cost == n
+        assert runtime_cost == n - 1
 
     def test_mean(self):
+        # Updated to orbit-mapping count (was n(n+1)/2 unique-element count).
+        # Full reduction of (n,): n - 1 additions (mean includes that reduction).
         n = 1000
         a = np.random.rand(n)
         runtime_cost = _run_and_get_cost(fnp.mean, a)
-        # mean charges n+1 (sum + divide) or just n depending on impl
-        assert runtime_cost >= n
+        assert runtime_cost >= n - 1
 
 
 # ---------------------------------------------------------------------------

@@ -98,7 +98,9 @@ def test_analytical_pointwise_cost_scalar():
 
 
 def test_analytical_reduction_cost():
-    assert analytical_reduction_cost(input_shape=(256, 256), axis=None) == 256 * 256
+    # Updated to orbit-mapping count (was n(n+1)/2 unique-element count).
+    # Full reduction of (256,256): prod(shape) - 1 = 65536 - 1 = 65535.
+    assert analytical_reduction_cost(input_shape=(256, 256), axis=None) == 256 * 256 - 1
 
 
 def test_analytical_svd_cost():
@@ -127,15 +129,19 @@ def test_analytical_pointwise_cost_no_symmetry_unchanged():
 
 
 def test_analytical_reduction_cost_symmetric():
+    # Updated to orbit-mapping count (was n(n+1)/2 unique-element count).
+    # Symmetric (5,5) has 15 orbits; full reduction needs 15-1=14 additions.
     symmetry = flops.SymmetryGroup.symmetric(axes=(0, 1))
     assert (
         analytical_reduction_cost(input_shape=(5, 5), axis=None, symmetry=symmetry)
-        == 15
+        == 14
     )
 
 
 def test_analytical_reduction_cost_no_symmetry_unchanged():
-    assert analytical_reduction_cost(input_shape=(5, 5), axis=None) == 25
+    # Updated to orbit-mapping count (was n(n+1)/2 unique-element count).
+    # Full reduction of (5,5): prod(shape) - 1 = 25 - 1 = 24 additions.
+    assert analytical_reduction_cost(input_shape=(5, 5), axis=None) == 24
 
 
 def test_analytical_einsum_cost_symmetric_input():
@@ -193,8 +199,10 @@ def test_public_pointwise_cost_uses_symmetry_keyword_and_weight(tmp_path):
 
 
 def test_public_reduction_cost_is_weighted(tmp_path):
+    # Updated to orbit-mapping count (was n(n+1)/2 unique-element count).
+    # Base: (4*5) - 1 = 19 additions; 19 * 3.25 = 61.75 → int = 61.
     load_weights(_write_weights(tmp_path, {"sum": 3.25}), use_packaged_default=False)
-    assert public_flops.reduction_cost("sum", input_shape=(4, 5), axis=None) == 65
+    assert public_flops.reduction_cost("sum", input_shape=(4, 5), axis=None) == 61
 
 
 def test_public_einsum_cost_is_weighted(tmp_path):

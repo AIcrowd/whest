@@ -76,7 +76,9 @@ def test_sum_full():
     x = numpy.ones((5, 3))
     with BudgetContext(flop_budget=10**6) as budget:
         result = sum(x)
-        assert budget.flops_used == 15
+        # Updated for orbit-mapping cost model (PR #91 Task 7).
+        # prod(shape) - 1 = 15 - 1 = 14 additions for a full reduction.
+        assert budget.flops_used == 14
     assert float(result) == 15.0
 
 
@@ -85,21 +87,27 @@ def test_sum_axis():
     with BudgetContext(flop_budget=10**6) as budget:
         result = sum(x, axis=0)
         assert result.shape == (3,)
-        assert budget.flops_used == 15
+        # Updated for orbit-mapping cost model (PR #91 Task 7).
+        # Reduces 5->1 for each of 3 cols: 3 * (5-1) = 12 additions.
+        assert budget.flops_used == 12
 
 
 def test_mean_cost():
     x = numpy.ones((10, 20))
     with BudgetContext(flop_budget=10**6) as budget:
         mean(x, axis=0)
-        assert budget.flops_used == 200  # numel(input) = 200
+        # Updated for orbit-mapping cost model (PR #91 Task 7).
+        # Reduces 10->1 for each of 20 cols: 20 * (10-1) = 180 additions.
+        assert budget.flops_used == 180
 
 
 def test_std_cost():
     x = numpy.ones((10, 20))
     with BudgetContext(flop_budget=10**6) as budget:
         std(x, axis=0)
-        assert budget.flops_used == 200  # numel(input) = 200
+        # Updated for orbit-mapping cost model (PR #91 Task 7).
+        # Reduces 10->1 for each of 20 cols: 20 * (10-1) = 180 additions.
+        assert budget.flops_used == 180
 
 
 def test_argmax_result():

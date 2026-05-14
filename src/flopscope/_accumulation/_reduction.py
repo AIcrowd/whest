@@ -68,8 +68,25 @@ def _num_output_orbits(
     if output_group is None:
         return math.prod(output_shape)
 
+    # The group's permutation indices are LOCAL (0..degree-1).
+    # Map them to the axes the group actually operates on in output_shape,
+    # then extract only those sizes so Burnside sees the right array shape.
+    group_output_axes = (
+        output_group.axes
+        if output_group.axes is not None
+        else tuple(range(output_group.degree))
+    )
+    group_sizes = tuple(output_shape[ax] for ax in group_output_axes)
+
     elements = output_group.elements()
-    return size_aware_burnside(elements, output_shape)
+    orbits_on_group_dims = size_aware_burnside(elements, group_sizes)
+
+    # Remaining output dims (not in the group) contribute independently.
+    group_axes_set = frozenset(group_output_axes)
+    remaining = math.prod(
+        output_shape[i] for i in range(len(output_shape)) if i not in group_axes_set
+    )
+    return orbits_on_group_dims * max(remaining, 1)
 
 
 def output_discounted_reduction_cost(

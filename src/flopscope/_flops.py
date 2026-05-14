@@ -122,37 +122,45 @@ def analytical_pointwise_cost(
 
 def analytical_reduction_cost(
     input_shape: tuple[int, ...],
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     symmetry: SymmetryGroup | None = None,
 ) -> int:
-    """FLOP cost of a reduction operation.
+    """FLOP cost of a reduction operation (orbit-mapping model).
+
+    Delegates to compute_reduction_accumulation_cost from the
+    _accumulation subpackage. The legacy `unique_elements_for_shape`-based
+    formula is removed in favor of the path-independent orbit-mapping count
+    (with #56's off-by-one corrected).
 
     Parameters
     ----------
     input_shape : tuple of int
         Shape of the input array.
-    axis : int or None, optional
-        Axis along which to reduce. If None, reduce over all elements.
-    symmetry : SymmetryGroup or None, optional
-        If provided, only unique elements are counted.
+    axis : int, tuple of int, or None, optional
+        Axis or axes to reduce. None means full reduction.
+    symmetry : SymmetryGroup, optional
+        Pointwise symmetry of the input.
 
     Returns
     -------
     int
-        Estimated FLOP count (one per element).
-
-    Notes
-    -----
-    The ``axis`` parameter is accepted for API consistency but does not
-    affect the result: a reduction always touches every element regardless
-    of which axis is reduced, so the cost is always ``prod(input_shape)``.
+        FLOP count via the Tier-1 orbit-mapping model.
     """
-    if symmetry is not None:
-        return max(unique_elements_for_shape(symmetry, input_shape), 1)
-    result = 1
-    for dim in input_shape:
-        result *= dim
-    return max(result, 1)
+    from flopscope._accumulation._reduction import (
+        _normalize_axis,
+        compute_reduction_accumulation_cost,
+    )
+
+    ndim = len(input_shape)
+    axes_summed = _normalize_axis(axis, ndim)
+    cost = compute_reduction_accumulation_cost(
+        input_shape=tuple(input_shape),
+        axes_summed=axes_summed,
+        symmetry=symmetry,
+        op_factor=1,
+        extra_ops=0,
+    )
+    return max(cost.total, 1)
 
 
 # Backward-compatible internal aliases. The public weighted API lives in
