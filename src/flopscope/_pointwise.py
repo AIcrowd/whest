@@ -1617,7 +1617,8 @@ def median(
         subscripts=None,
         shapes=(a.shape,),
     ):
-        result = _np.median(
+        result = _call_numpy(
+            _np.median,
             _to_base_ndarray(a),
             axis=axis,
             out=out_stripped,
@@ -1687,7 +1688,8 @@ def percentile(
         subscripts=None,
         shapes=(a.shape,),
     ):
-        result = _np.percentile(
+        result = _call_numpy(
+            _np.percentile,
             _to_base_ndarray(a),
             q,
             axis=axis,
@@ -1743,7 +1745,8 @@ def quantile(
         subscripts=None,
         shapes=(a.shape,),
     ):
-        result = _np.quantile(
+        result = _call_numpy(
+            _np.quantile,
             _to_base_ndarray(a),
             q,
             axis=axis,
