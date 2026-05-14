@@ -117,19 +117,17 @@ path, info = fnp.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
 
 print(f"Path: {path}")
 print(info)
-print(f"Naive cost:     {info.naive_cost:,}")
 print(f"Optimized cost: {info.optimized_cost:,}")
-print(f"Speedup:        {info.speedup:.1f}x")
 print(f"Optimizer used: {info.optimizer_used}")
 ```
 
 ```text
 Path: [(0, 1), (0, 2), (0, 1)]
   Complete contraction:  ijk,ai,bj,ck->abc
-      Naive cost (flopscope):  3,000,000
-  Optimized cost (flopscope):  30,000
-                     Speedup:  100.000x
-                     Savings:  99.0%
+      Naive cost (flopscope):  4,000,000
+  Optimized cost (flopscope):  4,000,000
+                     Speedup:  1.000x
+                     Savings:  0.0%
        Largest intermediate:  1,000 elements
                 Index sizes:  a=b=c=i=j=k=10
                   Optimizer:  optimal
@@ -139,15 +137,15 @@ step  contract  subscript                                flops  blas
    0  (0, 1)    ai,ijk->ajk                             10,000  GEMM
    1  (0, 2)    ajk,bj->akb                             10,000  TDOT
    2  (0, 1)    akb,ck->abc                             10,000  TDOT
-Naive cost:     3,000,000
 Optimized cost: 4,000,000
-Speedup:        100.0x
 Optimizer used: optimal
 ```
 
-The printed table gives you the contraction order, naive-vs-optimized FLOP counts, savings, largest intermediate, grouped index sizes, and one row per pairwise contraction step. Each step shows the chosen contract tuple, subscript, per-step FLOPs, and BLAS tag.
+The printed table shows the contraction order, the α/M cost (path-independent — naive and optimized are equal by construction), largest intermediate, grouped index sizes, and one row per pairwise contraction step. Each step shows the chosen contract tuple, subscript, per-step FLOPs, and BLAS tag.
 
 For per-step debugging, call `print(info.format_table(verbose=True))`. The verbose view adds indented rows with the merged operand subset, the intermediate output shape, and the running cumulative cost.
+
+For the symmetric-vs-dense FLOP breakdown that the path-independent total doesn't expose, use `flops.einsum_accumulation_cost(...).describe()` — see the inspection section below.
 
 ### Inspecting what gets charged
 

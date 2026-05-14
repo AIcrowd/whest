@@ -68,12 +68,14 @@ class FlopscopePathInfo:
         flopscope_cost = self.optimized_cost
         original_naive = getattr(self._inner, "naive_cost", None)
         original_opt = getattr(self._inner, "optimized_cost", None)
+        original_speedup = getattr(self._inner, "speedup", None)
         try:
             # Best-effort override — if the inner uses __slots__ or is frozen,
             # fall back to returning the un-overridden table.
             try:
                 self._inner.naive_cost = flopscope_cost
                 self._inner.optimized_cost = flopscope_cost
+                self._inner.speedup = 1.0
             except (AttributeError, TypeError):
                 return fmt()
             return fmt()
@@ -86,6 +88,11 @@ class FlopscopePathInfo:
             if original_opt is not None:
                 try:
                     self._inner.optimized_cost = original_opt
+                except (AttributeError, TypeError):
+                    pass
+            if original_speedup is not None:
+                try:
+                    self._inner.speedup = original_speedup
                 except (AttributeError, TypeError):
                     pass
 
