@@ -1432,7 +1432,71 @@ sum = _counted_reduction(_np.sum, "sum")
 max = _counted_reduction(_np.max, "max")
 min = _counted_reduction(_np.min, "min")
 prod = _counted_reduction(_np.prod, "prod")
-mean = _counted_reduction(_np.mean, "mean")
+
+
+@_counted_wrapper
+def mean(
+    a: ArrayLike,
+    axis: int | None = None,
+    dtype=None,
+    out: FlopscopeArray | None = None,
+    keepdims: bool = False,
+    **kwargs: Any,
+) -> FlopscopeArray:
+    """Counted version of np.mean.
+
+    Cost = sum_cost (orbit-mapping FLOPs via Tier-1 model)
+           + num_output_orbits (one divide per output orbit).
+    """
+    from flopscope._accumulation._reduction import (
+        _normalize_axis,
+        _num_output_orbits,
+        compute_reduction_accumulation_cost,
+    )
+
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    symmetry = _symmetry_of(a)
+    keepdims = bool(keepdims)
+
+    axes_summed = _normalize_axis(axis, a.ndim)
+    num_orbits = _num_output_orbits(tuple(a.shape), axes_summed, symmetry)
+    cost = compute_reduction_accumulation_cost(
+        input_shape=tuple(a.shape),
+        axes_summed=axes_summed,
+        symmetry=symmetry,
+        op_factor=1,
+        extra_ops=num_orbits,  # one divide per output orbit
+    ).total
+
+    new_symmetry = (
+        reduce_group(symmetry, ndim=a.ndim, axis=axis, keepdims=keepdims)
+        if symmetry is not None
+        else None
+    )
+    _prepare_symmetric_out(out, new_symmetry)
+    out_for_np = None if isinstance(out, SymmetricTensor) else out
+
+    with budget.deduct("mean", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
+        result = _call_with_optional_out(
+            _np.mean,
+            a,
+            axis=axis,
+            out=out_for_np,
+            keepdims=keepdims,
+            dtype=dtype,
+            supports_out=True,
+            **kwargs,
+        )
+
+    if out is not None:
+        return _wrap_result(result, out=out, symmetry=new_symmetry)  # type: ignore[return-value]
+    return _wrap_result(result, symmetry=new_symmetry)  # type: ignore[return-value]
+
+
+mean.__signature__ = _inspect.signature(_np.mean)  # pyright: ignore[reportFunctionMemberAccess]
+
 std = _counted_reduction(_np.std, "std")
 var = _counted_reduction(_np.var, "var")
 argmax = _counted_reduction(_np.argmax, "argmax")

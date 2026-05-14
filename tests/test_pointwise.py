@@ -96,9 +96,10 @@ def test_mean_cost():
     x = numpy.ones((10, 20))
     with BudgetContext(flop_budget=10**6) as budget:
         mean(x, axis=0)
-        # Updated for orbit-mapping cost model (PR #91 Task 7).
+        # Task 9: mean charges sum_cost + num_output_orbits divides.
         # Reduces 10->1 for each of 20 cols: 20 * (10-1) = 180 additions.
-        assert budget.flops_used == 180
+        # Output shape is (20,) dense → 20 divides.  Total = 200.
+        assert budget.flops_used == 200
 
 
 def test_std_cost():

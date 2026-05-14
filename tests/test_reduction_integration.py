@@ -38,3 +38,22 @@ def test_max_uses_tier1_model():
         fnp.max(a)
     # 5 - 1 = 4 comparisons
     assert _flops_used(bc) == 4
+
+
+def test_mean_charges_sum_plus_num_output_orbits():
+    a = fnp.zeros(10)
+    with fps.BudgetContext(flop_budget=10**12, quiet=True) as bc:
+        fnp.mean(a)
+    # sum cost = 9 (10 - 1); + 1 divide = 10
+    assert _flops_used(bc) == 10
+
+
+def test_mean_on_symmetric_tensor_uses_orbit_count_for_divides():
+    n = 4
+    T = fps.as_symmetric(fnp.zeros((n, n, n)), symmetry=(0, 1, 2))
+    with fps.BudgetContext(flop_budget=10**12, quiet=True) as bc:
+        fnp.mean(T, axis=2)
+    sum_cost = fps.reduction_accumulation_cost(T, axis=2).total
+    # num_output_orbits = n(n+1)/2 = 10 for the (n,n) S_2 output
+    expected = sum_cost + 4 * 5 // 2
+    assert _flops_used(bc) == expected

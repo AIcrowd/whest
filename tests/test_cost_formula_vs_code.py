@@ -267,8 +267,8 @@ _REDUCTION_NUMEL = [
     "nansum",
     "median",
     "nanmedian",
-    # mean/std/var also cost numel(input) per sheet
-    "mean",
+    # std/var also cost numel(input) per sheet
+    # (mean is excluded: it charges +1 divide for the scalar output orbit)
     "average",
     "nanmean",
     "std",
@@ -286,6 +286,15 @@ def test_reduction_numel(name, we):
     fn = getattr(we, name)
     cost = _cost_of(fn, a)
     assert cost == 99, f"{name}: expected orbit-mapping cost=99, got {cost}"
+
+
+def test_mean_charges_sum_plus_one_divide(we):
+    # Task 9: mean charges sum-cost + num_output_orbits divides.
+    # Full reduction of (10,10) dense: sum cost = 99, scalar output → 1 divide.
+    # Total = 100.
+    a = numpy.random.rand(10, 10)
+    cost = _cost_of(we.mean, a)
+    assert cost == 100, f"mean: expected sum_cost(99) + 1 divide = 100, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["percentile", "nanpercentile"])
