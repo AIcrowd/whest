@@ -112,3 +112,5 @@ If your symmetry savings aren't materializing, check whether the operation's *ou
 ## What's actually happening
 
 For curious contributor-level readers: the model is the α/M direct-event count, where α counts orbits of input entries projected onto the output and M counts orbits of inputs. The orbit calculation uses the *pointwise symmetry group* — the combination of declared symmetry on operands and the symmetries induced by repeated operand objects. The full classifier ladder (which picks between closed-form formulas like Young tableaux, singleton-cycle counts, and typed partition enumeration) lives in `flopscope/_accumulation/_ladder.py` and `flopscope/_accumulation/_regimes.py`.
+
+An interactive companion that visualizes the same model on a curated set of einsum expressions is available at the standalone route [/symmetry-aware-einsum-contractions/](/symmetry-aware-einsum-contractions/) — useful for building intuition before predicting your own costs.
