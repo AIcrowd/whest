@@ -72,7 +72,9 @@ def test_str_shows_flopscope_optimized_cost():
     with flops.BudgetContext(flop_budget=10**12):
         _, info = fnp.einsum_path("ij,jk->ik", A, B)
 
-    assert info.optimized_cost == 128, f"setup precondition violated: optimized_cost={info.optimized_cost}"
+    assert info.optimized_cost == 128, (
+        f"setup precondition violated: optimized_cost={info.optimized_cost}"
+    )
 
     rendered = str(info)
     # The (flopscope) cost rows must show 128, NOT 64 (the upstream value).
