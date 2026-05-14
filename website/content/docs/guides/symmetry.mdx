@@ -12,6 +12,8 @@ title: "Symmetry Savings"
 - How slicing, reductions, and binary pointwise ops preserve, weaken, or drop symmetry metadata
 - When to re-tag results with `flops.as_symmetric()` after conservative propagation
 
+> For the underlying mental model — orbits, unique work items, why these savings exist — see [Symmetry-aware FLOP counting](/docs/understanding/symmetry-detection/).
+
 ## Why symmetry matters
 
 Many tensors contain repeated structure. A symmetric matrix has only
@@ -25,6 +27,7 @@ instead of dense ones.
 | `fnp.exp(s2_matrix)` | `n^2` | `n * (n + 1) / 2` | only unique matrix entries matter |
 | `fnp.einsum('ki,kj->ij', x, x, symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1)))` | `m * n^2` | `m * n * (n + 1) / 2` | the repeated `x` operand lets flopscope detect symmetric output and reduce the cost |
 | `fnp.einsum('i,j,k->ijk', v, v, v)` | `n^3` | symmetry-reduced | repeated operands induce output symmetry |
+| `fnp.sum(s3_tensor)` on a fully-symmetric `(4, 4, 4)` | 63 | 19 | the same orbit logic applies to reductions, not just einsum |
 
 By contrast, declaring `symmetry=` on an `einsum` output tags the result for downstream
 operations; it does not reduce that `einsum`'s own cost by itself.
@@ -38,7 +41,7 @@ import flopscope.numpy as fnp
 with flops.BudgetContext(flop_budget=10**6) as budget:
     s2_matrix = flops.as_symmetric(
         fnp.array([[2.0, 1.0], [1.0, 3.0]]),
-        symmetric_axes=(0, 1),
+        symmetry=(0, 1),
     )
 
     exp_s2_matrix = fnp.exp(s2_matrix)
@@ -64,7 +67,7 @@ import flopscope as flops
 import flopscope.numpy as fnp
 
 matrix_data = fnp.array([[2.0, 1.0], [1.0, 3.0]])
-s2_matrix = flops.as_symmetric(matrix_data, symmetric_axes=(0, 1))
+s2_matrix = flops.as_symmetric(matrix_data, symmetry=(0, 1))
 ```
 
 This is the most common declaration: full `S_2` symmetry on matrix axes
