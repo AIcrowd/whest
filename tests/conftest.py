@@ -32,6 +32,8 @@ _SESSION_STATE = {
     "errored_count": 0,
     "report_count": 0,
     "last_report_ts": 0.0,
+    "failed_nodeids": [],
+    "errored_nodeids": [],
 }
 
 
@@ -50,8 +52,10 @@ def pytest_runtest_logreport(report):
     if report.when == "call":
         if report.failed:
             _SESSION_STATE["failed_count"] += 1
+            _SESSION_STATE["failed_nodeids"].append(report.nodeid)
     elif report.failed:  # setup or teardown error
         _SESSION_STATE["errored_count"] += 1
+        _SESSION_STATE["errored_nodeids"].append(report.nodeid)
 
 
 def pytest_sessionstart(session):
@@ -118,13 +122,18 @@ def pytest_sessionstart(session):
                     f"(only {_SESSION_STATE['report_count']} reports)"
                 )
             if should_exit:
-                sys.stderr.write(
+                lines = [
                     f"\n[xdist-watchdog] {reason}; assuming xdist "
                     f"worker-pipe-close deadlock and force-exiting. "
                     f"Failures during the run: "
                     f"{_SESSION_STATE['failed_count']} failed, "
-                    f"{_SESSION_STATE['errored_count']} errored.\n"
-                )
+                    f"{_SESSION_STATE['errored_count']} errored.",
+                ]
+                for nodeid in _SESSION_STATE["failed_nodeids"]:
+                    lines.append(f"  FAILED  {nodeid}")
+                for nodeid in _SESSION_STATE["errored_nodeids"]:
+                    lines.append(f"  ERRORED {nodeid}")
+                sys.stderr.write("\n".join(lines) + "\n")
                 sys.stderr.flush()
                 rc = (
                     1
