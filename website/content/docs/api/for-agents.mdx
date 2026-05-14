@@ -191,9 +191,9 @@ configured limit for diagnostics.
 
 **6. Exploit symmetry for cost savings.**
 
-- Use `symmetric_axes` for symmetric outputs:
-  `fnp.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])`
-- Wrap known-symmetric matrices with `flops.as_symmetric(data, symmetric_axes=(0, 1))`
+- Use `symmetry=` to declare a symmetric output:
+  `fnp.einsum('ki,kj->ij', X, X, symmetry=(0, 1))`
+- Wrap known-symmetric matrices with `flops.as_symmetric(data, symmetry=(0, 1))`
   for automatic savings in downstream ops
 
 ## Common mistakes agents make

@@ -236,7 +236,7 @@ flops.configure(einsum_path_cache_size=8192)
 
 **Symptom:** Unexpectedly high FLOP cost
 
-**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `flops.einsum_cost()` or `fnp.einsum_path()` to preview costs before executing.
+**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `flops.accounting.einsum_cost()` or `fnp.einsum_path()` to preview costs before executing.
 
 ## Related pages
 
