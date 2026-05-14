@@ -173,27 +173,79 @@ def compute_reduction_accumulation_cost(
     # Single operand, per-op symmetry = the input symmetry.
     per_op_symmetries = (symmetry,)
 
-    einsum_cost = compute_accumulation_cost(
-        canonical_subscripts=canonical_subscripts,
-        input_parts=(input_subs,),
-        output_subscript=output_subs,
-        shapes=(input_shape,),
-        per_op_symmetries=per_op_symmetries,
-        identity_pattern=None,  # single operand, no identity grouping
-        partition_budget=partition_budget,
-    )
+    from flopscope._perm_group import _DiminoBudgetExceeded
 
-    # Re-aggregate the per-component costs under the reduction formula.
-    # `output_dense` carries num_output_orbits — orbit-aware, computed
-    # directly via _num_output_orbits. For dense inputs this equals
-    # prod(output_shape) so the locked-stub docstring's intent is preserved.
-    num_output_orbits = _num_output_orbits(
-        input_shape=input_shape,
-        axes_summed=axes_summed,
-        symmetry=symmetry,
-    )
+    try:
+        einsum_cost = compute_accumulation_cost(
+            canonical_subscripts=canonical_subscripts,
+            input_parts=(input_subs,),
+            output_subscript=output_subs,
+            shapes=(input_shape,),
+            per_op_symmetries=per_op_symmetries,
+            identity_pattern=None,  # single operand, no identity grouping
+            partition_budget=partition_budget,
+        )
+
+        # `output_dense` carries num_output_orbits — orbit-aware, computed
+        # directly via _num_output_orbits. For dense inputs this equals
+        # prod(output_shape) so the locked-stub docstring's intent is preserved.
+        num_output_orbits = _num_output_orbits(
+            input_shape=input_shape,
+            axes_summed=axes_summed,
+            symmetry=symmetry,
+        )
+    except _DiminoBudgetExceeded as exc:
+        # _num_output_orbits' element enumeration can also exceed the budget
+        # on an oversized output stabilizer. Charge dense and warn.
+        # (compute_accumulation_cost emits its own CostFallbackWarning when it
+        # bails before this; if it succeeded but _num_output_orbits bailed,
+        # this is the only warning the caller sees.)
+        import warnings as _warnings
+
+        from flopscope.errors import CostFallbackWarning
+
+        _warnings.warn(
+            CostFallbackWarning(
+                f"reduction: dimino_budget exceeded ({exc.seen_count} > {exc.budget}) "
+                f"while computing output orbit count — charging dense cost. "
+                f"Raise via flopscope.configure(dimino_budget=...) to attempt "
+                f"exact counting."
+            ),
+            stacklevel=3,
+        )
+        return _dense_fallback_cost(
+            input_shape, axes_summed, symmetry, op_factor, extra_ops
+        )
     dense_baseline = math.prod(input_shape) if input_shape else 1
 
+    # If compute_accumulation_cost already bailed (e.g. dimino_budget exceeded
+    # on an auto-inferred S_n), it returns an AccumulationCost with
+    # fallback_used=True and an empty per_component tuple. aggregate_reduction
+    # would then mis-interpret the empty tuple as "no failures"; re-shape the
+    # cost under the reduction-fallback formula instead.
+    if einsum_cost.fallback_used and not einsum_cost.per_component:
+        from ._cost import AccumulationCost
+
+        input_axis_size = (
+            dense_baseline // num_output_orbits if num_output_orbits else 0
+        )
+        fallback_total = (
+            num_output_orbits * max(0, input_axis_size - 1) * op_factor + extra_ops
+        )
+        return AccumulationCost(
+            total=fallback_total,
+            mu=None,
+            alpha=None,
+            m_total=1,
+            dense_baseline=dense_baseline,
+            num_terms=1,
+            per_component=(),
+            fallback_used=True,
+            unavailable_components=(),
+            unavailable_reason=einsum_cost.unavailable_reason,
+        )
+
+    # Re-aggregate the per-component costs under the reduction formula.
     return aggregate_reduction(
         einsum_cost.per_component,
         op_factor=op_factor,

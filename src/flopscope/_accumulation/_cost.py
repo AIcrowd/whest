@@ -290,8 +290,17 @@ def compute_accumulation_cost(
         ('symmetric', 'cyclic', 'dihedral'), or None.
       identity_pattern: tuple of operand-position tuples that share id.
       partition_budget: per-component partition cap; defaults to global setting.
+
+    Dimino-budget fallback: any internal call to ``_dimino`` that exceeds the
+    configured ``dimino_budget`` (default 500_000) raises
+    :class:`_DiminoBudgetExceeded`. This function catches the exception,
+    emits a :class:`CostFallbackWarning`, and returns an
+    :class:`AccumulationCost` with ``fallback_used=True`` and
+    ``total = k * dense_baseline`` (the no-symmetry direct-event count) —
+    the same shape the partition-budget fallback uses.
     """
     from flopscope._config import get_setting
+    from flopscope._perm_group import _DiminoBudgetExceeded
 
     num_ops = len(input_parts)
     if per_op_symmetries is None:
@@ -317,35 +326,66 @@ def compute_accumulation_cost(
     singleton_groups = [(i,) for i in range(num_ops) if i not in grouped_ops]
     identical_groups_all = (*graph.identical_groups, *singleton_groups)
 
-    wreath_elements = list(
-        enumerate_wreath(
-            identical_groups=identical_groups_all,
-            per_op_symmetry=tuple(
-                _per_op_symmetry_for_wreath(s) for s in per_op_symmetries
-            ),
-            axis_ranks=axis_ranks,
-            u_offsets=u_offsets,
-        )
-    )
-
-    sigma_results = run_sigma_loop(graph, matrix_data, tuple(wreath_elements))
-    detected = build_full_group(sigma_results, all_labels=graph.all_labels)
-
-    # Decompose into components.
+    # Pre-compute sizes / dense_baseline up-front so the bail-handler can use
+    # them without redoing graph work.
     size_map = _build_size_map(input_parts, shapes)
     sizes = tuple(size_map[lbl] for lbl in graph.all_labels)
-    components = decompose_into_components(
-        detected_group=detected,
-        v_labels=graph.free_labels,
-        w_labels=graph.summed_labels,
-        sizes=sizes,
-    )
-
-    component_costs = run_ladder_per_component(
-        components,
-        partition_budget=partition_budget,
-    )
     dense_baseline = math.prod(sizes) if sizes else 1
+
+    try:
+        wreath_elements = list(
+            enumerate_wreath(
+                identical_groups=identical_groups_all,
+                per_op_symmetry=tuple(
+                    _per_op_symmetry_for_wreath(s) for s in per_op_symmetries
+                ),
+                axis_ranks=axis_ranks,
+                u_offsets=u_offsets,
+            )
+        )
+
+        sigma_results = run_sigma_loop(graph, matrix_data, tuple(wreath_elements))
+        detected = build_full_group(sigma_results, all_labels=graph.all_labels)
+
+        # Decompose into components.
+        components = decompose_into_components(
+            detected_group=detected,
+            v_labels=graph.free_labels,
+            w_labels=graph.summed_labels,
+            sizes=sizes,
+        )
+
+        component_costs = run_ladder_per_component(
+            components,
+            partition_budget=partition_budget,
+        )
+    except _DiminoBudgetExceeded as exc:
+        fallback_total = num_ops * dense_baseline
+        reason = (
+            f"dimino_budget exceeded ({exc.seen_count} > {exc.budget}); "
+            f"auto-inferred symmetry group is too large to enumerate exactly"
+        )
+        warnings.warn(
+            CostFallbackWarning(
+                f"accumulation: {reason} — charging dense cost {fallback_total} "
+                f"= {num_ops} × {dense_baseline}. Raise via "
+                f"flopscope.configure(dimino_budget=...) to attempt exact counting."
+            ),
+            stacklevel=4,
+        )
+        return AccumulationCost(
+            total=fallback_total,
+            mu=None,
+            alpha=None,
+            m_total=1,
+            dense_baseline=dense_baseline,
+            num_terms=num_ops,
+            per_component=(),
+            fallback_used=True,
+            unavailable_components=(),
+            unavailable_reason=reason,
+        )
+
     return aggregate_einsum(
         component_costs=component_costs,
         num_terms=num_ops,
