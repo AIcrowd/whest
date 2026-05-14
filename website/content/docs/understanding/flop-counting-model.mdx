@@ -10,13 +10,11 @@ title: "FLOP Counting Model"
 - How symmetry savings and per-operation weights modify costs
 - How the FLOP multiplier and namespaces interact with the cost model
 
-## Convention: FMA = 1 operation
+## Default convention: FMA = 1 operation (configurable)
 
-This codebase counts a fused multiply-add (a * b + c) as a **single operation**.
-Hardware FMA units execute this in one instruction; the common textbook
-convention of counting it as 2 (one multiply + one add) is **not** used here.
-All cost formulae reflect this: a matrix multiply of dimensions
-(m, k) x (k, n) costs m*k*n operations, not 2*m*k*n.
+By default, flopscope counts a fused multiply-add (`a * b + c`) as a **single operation**. Hardware FMA units execute this in one instruction; the common textbook convention of counting it as 2 (one multiply + one add) is not the default.
+
+For the textbook convention, set `flops.configure(fma_cost=2)`. The current value is readable via `flops.fma_cost()`. All cost formulas throughout flopscope consult this setting uniformly — no surface diverges.
 
 ## Why FLOPs instead of wall-clock time
 
@@ -46,14 +44,16 @@ model instead.
 
 | Category | Formula | Example |
 |----------|---------|---------|
-| **Einsum** | Per-step: product of all index dims | `'ij,jk->ik'` → 3 × 4 × 5 = 60 |
 | **Unary** (exp, log, sqrt, ...) | $\text\{numel\}(\text\{output\})$ | shape (256, 256) → 65,536 |
 | **Binary** (add, multiply, ...) | $\text\{numel\}(\text\{output\})$ | shape (256, 256) → 65,536 |
-| **Reduction** (sum, mean, max, ...) | $\text\{numel\}(\text\{input\})$ | shape (256, 256) → 65,536 |
 | **SVD** | $m \cdot n \cdot k$ | (256, 256, k=10) → 655,360 |
 | **Solve** | $n^3$ | (256, 256) solve → 16,777,216 |
 | **Dot / Matmul** | Same as einsum | (256, 256) @ (256, 256) → 256³ |
 | **Free ops** | 0 | zeros, reshape, etc. |
+
+**Einsum.** flopscope's charge for `fnp.einsum(...)` is path-independent and orbit-aware: one event per unique multiplication across operands, plus one event per unique accumulation per output cell. For unsymmetric inputs, this reduces to the familiar dense formulas (`m*k*n` for `'ij,jk->ik'`, etc.). For inputs with declared or detected symmetry, both event counts drop. See [Symmetry-aware FLOP counting](/docs/understanding/symmetry-detection/) for the mental model and worked examples.
+
+**Reductions.** flopscope's charge for `fnp.sum`, `fnp.prod`, `fnp.max`, `fnp.min`, `fnp.mean`, and friends is `(unique input entries − unique output cells) + extra ops`. The `− unique output cells` term is the off-by-one fix from issue #56: `sum((10,))` charges 9, not 10. `fnp.median` / `fnp.percentile` / `fnp.quantile` use a separate selection-style cost surface. See [Symmetry-aware FLOP counting](/docs/understanding/symmetry-detection/) for details.
 
 ### Sorting & search
 
