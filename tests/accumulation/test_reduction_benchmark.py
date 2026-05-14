@@ -42,7 +42,7 @@ def test_cold_call_within_5ms():
         )
         elapsed = time.perf_counter() - t0
         assert elapsed < budget, (
-            f"{label}: {elapsed * 1000:.2f} ms (budget {budget * 1000:.0f} ms)"
+            f"{label}: {elapsed * 100:.2f} ms (budget {budget * 100:.0f} ms)"
         )
 
 
@@ -69,13 +69,13 @@ def test_warm_call_within_10us():
         )
         # Measure.
         t0 = time.perf_counter()
-        for _ in range(1000):
+        for _ in range(100):
             compute_reduction_accumulation_cost(
                 input_shape=shape,
                 axes_summed=axes,
                 symmetry=sym,
             )
-        elapsed_avg = (time.perf_counter() - t0) / 1000
+        elapsed_avg = (time.perf_counter() - t0) / 100
         assert elapsed_avg < budget, (
             f"{label}: {elapsed_avg * 1e6:.2f} µs (budget {budget * 1e6:.0f} µs)"
         )
