@@ -1554,7 +1554,81 @@ else:
         raise UnsupportedFunctionError("cumulative_sum", min_version="2.1")
 
 
-median = _counted_reduction(_np.median, "median")
+def _tier2_reduction_cost(a, axis, dense_per_output_cost: int) -> int:
+    """Tier-2 reduction cost for non-ufunc reductions.
+
+    Returns num_output_orbits × dense_per_output_cost. When *a* has no
+    symmetry, num_output_orbits == num_output_elems and the cost equals
+    the dense baseline.
+    """
+    from flopscope._accumulation._reduction import (
+        _normalize_axis,
+        output_discounted_reduction_cost,
+    )
+
+    sym = _symmetry_of(a)
+    axes_summed = _normalize_axis(axis, a.ndim)
+    return output_discounted_reduction_cost(
+        input_shape=tuple(a.shape),
+        axes_summed=axes_summed,
+        symmetry=sym,
+        dense_per_output_cost=dense_per_output_cost,
+    )
+
+
+@_counted_wrapper
+def median(
+    a: ArrayLike,
+    axis: int | None = None,
+    out: FlopscopeArray | None = None,
+    keepdims: bool = False,
+    **kwargs: Any,
+) -> FlopscopeArray:
+    """Counted version of np.median.
+
+    Cost = num_output_orbits × axis_dim (Tier-2 partition-based model).
+    """
+    import math as _math
+
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    sym = _symmetry_of(a)
+
+    # Dense per-output cost for partition-based median: axis_dim (one pass).
+    if axis is None:
+        axis_dim = _math.prod(a.shape) if a.shape else 1
+    elif isinstance(axis, int):
+        axis_dim = a.shape[axis]
+    else:
+        axis_dim = _math.prod(a.shape[ax] for ax in axis)
+
+    cost = _tier2_reduction_cost(a, axis, dense_per_output_cost=axis_dim)
+
+    out_sym = (
+        reduce_group(sym, ndim=a.ndim, axis=axis, keepdims=keepdims)
+        if sym is not None
+        else None
+    )
+    out_stripped = _to_base_ndarray(out) if out is not None else None
+    with budget.deduct(
+        "median",
+        flop_cost=cost,
+        subscripts=None,
+        shapes=(a.shape,),
+    ):
+        result = _np.median(
+            _to_base_ndarray(a),
+            axis=axis,
+            out=out_stripped,
+            keepdims=keepdims,
+            **kwargs,
+        )
+    return _wrap_result(result, out=out, symmetry=out_sym)
+
+
+median.__signature__ = _inspect.signature(_np.median)  # pyright: ignore[reportFunctionMemberAccess]
+
 nanargmax = _counted_reduction(_np.nanargmax, "nanargmax")
 nanargmin = _counted_reduction(_np.nanargmin, "nanargmin")
 nancumprod = _counted_reduction(_np.nancumprod, "nancumprod")

@@ -265,7 +265,6 @@ _REDUCTION_NUMEL = [
     "nanmin",
     "nanprod",
     "nansum",
-    "median",
     "nanmedian",
     # std/var also cost numel(input) per sheet
     # (mean is excluded: it charges +1 divide for the scalar output orbit)
@@ -295,6 +294,15 @@ def test_mean_charges_sum_plus_one_divide(we):
     a = numpy.random.rand(10, 10)
     cost = _cost_of(we.mean, a)
     assert cost == 100, f"mean: expected sum_cost(99) + 1 divide = 100, got {cost}"
+
+
+def test_median_tier2_cost(we):
+    # Task 10: median uses Tier-2 model: num_output_orbits × axis_dim.
+    # Full reduction of (10,10) dense: axis_dim = prod(shape) = 100,
+    # scalar output → 1 orbit. Cost = 1 * 100 = 100.
+    a = numpy.random.rand(10, 10)
+    cost = _cost_of(we.median, a)
+    assert cost == 100, f"median: expected Tier-2 cost=100, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["percentile", "nanpercentile"])

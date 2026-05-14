@@ -57,3 +57,15 @@ def test_mean_on_symmetric_tensor_uses_orbit_count_for_divides():
     # num_output_orbits = n(n+1)/2 = 10 for the (n,n) S_2 output
     expected = sum_cost + 4 * 5 // 2
     assert _flops_used(bc) == expected
+
+
+def test_median_on_symmetric_tensor_uses_tier2_discount():
+    n = 4
+    T = fps.as_symmetric(fnp.zeros((n, n, n)), symmetry=(0, 1, 2))
+    with fps.BudgetContext(flop_budget=10**12, quiet=True) as bc:
+        fnp.median(T, axis=2)
+    # Output is (n, n) S_2-symmetric → n(n+1)/2 output orbits.
+    # dense_per_output for median ≈ axis_dim (one partition pass).
+    expected_min = (n * (n + 1) // 2) * n  # lower bound
+    assert _flops_used(bc) >= expected_min
+    assert _flops_used(bc) < n * n * n  # cheaper than dense
