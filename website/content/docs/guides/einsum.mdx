@@ -25,21 +25,21 @@ with flops.BudgetContext(flop_budget=10**8) as budget:
     B = fnp.ones((256, 256))
     x = fnp.ones((256,))
 
-    # Matrix-vector multiply: cost = m × k
-    y = fnp.einsum('ij,j->i', A, x)           # 256 × 256 = 65,536 FLOPs
+    # Matrix-vector multiply
+    y = fnp.einsum('ij,j->i', A, x)           # 131,072 FLOPs
 
-    # Matrix multiply: cost = m × k × n
-    C = fnp.einsum('ij,jk->ik', A, B)         # 256 × 256 × 256 = 16,777,216 FLOPs
+    # Matrix multiply
+    C = fnp.einsum('ij,jk->ik', A, B)         # 33,554,432 FLOPs
 
-    # Outer product: cost = i × j
-    outer = fnp.einsum('i,j->ij', x, x)       # 256 × 256 = 65,536 FLOPs
+    # Outer product
+    outer = fnp.einsum('i,j->ij', x, x)       # 65,792 FLOPs
 
-    # Trace: cost = i
+    # Trace
     tr = fnp.einsum('ii->', A)                 # 256 FLOPs
 
-    # Batched matmul: cost = b × m × k × n
+    # Batched matmul
     batch = fnp.ones((4, 256, 256))
-    out = fnp.einsum('bij,bjk->bik', batch, batch)  # 4 × 256 × 256 × 256 FLOPs
+    out = fnp.einsum('bij,bjk->bik', batch, batch)  # 134,217,728 FLOPs
 
     print(budget.summary())
 ```
@@ -48,18 +48,19 @@ with flops.BudgetContext(flop_budget=10**8) as budget:
 
 The cost of an einsum is the sum of per-step costs along the optimal contraction path. Every einsum — even a simple two-operand one — goes through the [opt_einsum path optimizer](/docs/api/) (a symmetry-aware fork of [opt_einsum](https://github.com/dgasmith/opt_einsum)).
 
-For each pairwise step:
+For each pairwise contraction step the cost decomposes into a multiplicative term `μ` and an accumulation term `α`:
 
 ```
-cost = product of all index dimensions
+cost = μ + α
 ```
 
-Each FMA (fused multiply-add) counts as 1 operation, so the cost is
-simply the product of all index dimensions with no factor-of-2.
+where `μ` is the product of all index dimensions (the FMAs you'd issue) and `α` charges the accumulation across the contracted axes. Each FMA counts as 1 operation; the factor-of-2 you see for dense matmul comes from `α ≈ μ`, not from double-counting FMAs.
 
 For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 - Indices: i=256, j=256, k=256
-- Cost: 256 x 256 x 256 = 16,777,216
+- μ = 256 × 256 × 256 = 16,777,216
+- α = 16,777,216
+- Cost: 33,554,432
 
 For multi-operand einsums (3+ tensors), Flopscope automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
@@ -153,12 +154,24 @@ The printed table gives you the contraction order, naive-vs-optimized FLOP count
 
 For per-step debugging, call `print(info.format_table(verbose=True))`. The verbose view adds indented rows with the merged operand subset, the intermediate output shape, and the running cumulative cost.
 
-`flops.einsum_cost()` returns the same cost that `einsum()` would deduct — one source of truth:
+### Inspecting what gets charged
+
+If you want to see the exact FLOP cost flopscope will charge for an einsum (without actually running it), call `flops.einsum_accumulation_cost`:
 
 ```python
-cost = flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-print(f"Matmul cost: {cost:,}")  # 16,777,216
+import numpy as np
+import flopscope as flops
+
+A = np.zeros((4, 4))
+B = np.zeros((4, 4))
+
+cost = flops.einsum_accumulation_cost('ij,jk->ik', A, B)
+print(cost.total)  # 128
 ```
+
+The cost is path-independent: `flops.einsum_accumulation_cost(...).total` matches `info.optimized_cost` from `fnp.einsum_path(...)`, and both equal the FLOPs that `BudgetContext` will charge when you actually call `fnp.einsum(...)`. Repeated calls hit an LRU cache and return in microseconds — see `flops.einsum_cache_info()` and `flops.einsum_clear_caches()` if you need to reset between cold-call benchmarks.
+
+For inputs with declared symmetry, the returned total reflects the orbit-aware savings — see [Symmetry-aware FLOP counting](/docs/understanding/symmetry-detection/) for the mental model.
 
 ## Custom contraction paths
 
