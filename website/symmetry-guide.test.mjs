@@ -235,8 +235,8 @@ print(json.dumps({
     broadcast_has_symmetry: true,
     unary_c3_order: 3,
     unary_d4_order: 8,
-    repeated_einsum_cost: 30,
-    distinct_einsum_cost: 45,
+    repeated_einsum_cost: 60,
+    distinct_einsum_cost: 90,
     repeated_einsum_type: 'SymmetricTensor',
     distinct_einsum_type: 'SymmetricTensor',
   });

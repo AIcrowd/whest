@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Any
+from typing import Any, cast
 
 import numpy as _np
 
@@ -15,25 +15,6 @@ from flopscope._pointwise import _prepare_symmetric_out, _validate_result_symmet
 from flopscope._symmetric import SymmetricTensor
 from flopscope._symmetry_utils import normalize_symmetry_input, validate_symmetry_group
 from flopscope._validation import maybe_check_nan_inf, require_budget
-
-
-def _symmetry_fingerprint(operands, input_parts):
-    """Build a hashable symmetry fingerprint for cache keying.
-
-    For each operand, captures None (no symmetry) or a tuple of
-    (axes, generator_array_forms) per SymmetryGroup. This fully
-    determines the symmetry structure without referencing tensor values.
-    """
-    parts = []
-    for op, _chars in zip(operands, input_parts, strict=False):
-        if not isinstance(op, SymmetricTensor) or op.symmetry is None:
-            parts.append(None)
-            continue
-        group = op.symmetry
-        axes = group.axes
-        gens = tuple(tuple(gen.array_form) for gen in group.generators)
-        parts.append(((axes, gens),))
-    return tuple(parts)
 
 
 def _identity_pattern(operands):
@@ -57,54 +38,18 @@ def _identity_pattern(operands):
 
 
 def _make_path_cache(maxsize):
-    """Create a new lru_cache-wrapped path computation function."""
+    """Create a new lru_cache-wrapped path computation function.
+
+    The cache key includes ``fma_cost`` because per-step ``flop_count`` values
+    on the returned ``PathInfo`` are computed under the active FMA convention
+    at build time. Without this, toggling ``flopscope.configure(fma_cost=...)``
+    would not invalidate cached PathInfos and would return stale per-step
+    counts. The arg itself is unused inside the body — the path builder reads
+    the setting transparently via ``_helpers.flop_count``.
+    """
 
     @functools.lru_cache(maxsize=maxsize)
-    def _compute(
-        subscripts,
-        shapes,
-        optimize,
-        symmetry_fingerprint,
-        identity_pattern,
-        use_inner_symmetry=True,
-    ):
-        from flopscope._perm_group import _PermutationCompat as Permutation
-
-        input_parts = subscripts.split("->")[0].split(",")
-        output_str = subscripts.split("->")[1] if "->" in subscripts else ""
-
-        perm_groups = []
-        for fp_entry, chars in zip(symmetry_fingerprint, input_parts, strict=False):
-            if fp_entry is None:
-                perm_groups.append(None)
-                continue
-            groups = []
-            for axes, gen_arrays in fp_entry:
-                gens = [Permutation(list(g)) for g in gen_arrays]
-                group = SymmetryGroup(*gens, axes=axes)
-                labels = tuple(chars[ax] for ax in axes)
-                group._labels = labels
-                groups.append(group)
-            perm_groups.append(groups if groups else None)
-
-        # Build dummy operands for oracle (only shapes + identity matter)
-        dummy_ops = [_np.empty(s) for s in shapes]
-        # Re-alias dummies to match the identity_pattern
-        if identity_pattern is not None:
-            for group in identity_pattern:
-                canonical = dummy_ops[group[0]]
-                for pos in group[1:]:
-                    dummy_ops[pos] = canonical
-
-        from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
-
-        oracle = SubgraphSymmetryOracle(
-            operands=dummy_ops,
-            subscript_parts=input_parts,
-            per_op_groups=perm_groups,
-            output_chars=output_str,
-        )
-
+    def _compute(subscripts, shapes, optimize, fma_cost):  # noqa: ARG001
         from flopscope._opt_einsum import contract_path as _contract_path
 
         _path, path_info = _contract_path(
@@ -112,7 +57,6 @@ def _make_path_cache(maxsize):
             *shapes,
             shapes=True,
             optimize=optimize if not isinstance(optimize, tuple) else list(optimize),
-            symmetry_oracle=oracle,
         )
         return path_info
 
@@ -199,7 +143,7 @@ def _normalize_optimize(optimize):
 
 
 def _parse_einsum_parts(subscripts: str, operands):
-    from flopscope._opt_einsum._parser import parse_einsum_input
+    from flopscope._opt_einsum import parse_einsum_input
 
     input_subscripts, output_subscript, _ = parse_einsum_input((subscripts, *operands))
     canonical_subscripts = f"{input_subscripts}->{output_subscript}"
@@ -207,21 +151,18 @@ def _parse_einsum_parts(subscripts: str, operands):
 
 
 def _get_path_info(subscripts: str, operands, optimize):
+    from flopscope._cost_model import fma_cost
+
     canonical_subscripts, input_parts, output_subscript = _parse_einsum_parts(
         subscripts,
         operands,
     )
     shapes = tuple(tuple(op.shape) for op in operands)
-    sym_fp = _symmetry_fingerprint(operands, input_parts)
-    id_pat = _identity_pattern(operands)
-    inner_sym = bool(get_setting("use_inner_symmetry"))
     path_info = _path_cache(
         canonical_subscripts,
         shapes,
         _normalize_optimize(optimize),
-        sym_fp,
-        id_pat,
-        inner_sym,
+        fma_cost(),
     )
     return canonical_subscripts, input_parts, output_subscript, shapes, path_info
 
@@ -261,13 +202,6 @@ def _relabel_group_to_output(
     return validate_symmetry_group(remapped, ndim=len(output_subscript))
 
 
-def _remap_inferred_group(group, output_subscript: str):
-    labels = getattr(group, "_labels", None)
-    if group is None or labels is None:
-        return None
-    return _relabel_group_to_output(group, tuple(labels), output_subscript)
-
-
 def _infer_pathless_output_symmetry(operands, input_parts, output_subscript: str):
     if len(operands) != 1:
         return None
@@ -286,19 +220,9 @@ def _resolve_output_symmetry(
     operands,
     input_parts,
     output_subscript: str,
-    path_info,
 ):
     if symmetry is not None:
         return normalize_symmetry_input(symmetry, ndim=len(output_subscript))
-    inferred = _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
-    if inferred is not None:
-        return inferred
-    if path_info.steps:
-        inferred = _remap_inferred_group(
-            path_info.steps[-1].output_group, output_subscript
-        )
-        if inferred is not None:
-            return inferred
     return _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
 
 
@@ -318,13 +242,17 @@ def einsum(
     the cost is automatically reduced. If ``symmetry`` is provided and the output passes validation, a ``SymmetricTensor`` is returned.
 
     All contractions go through opt_einsum's ``contract_path`` to find an
-    optimal pairwise decomposition. The FLOP cost uses opt_einsum's cost
-    model where FMA = 1 operation (see ``_cost_model.FMA_COST``).
+    optimal pairwise decomposition. The charged FLOP cost comes from the
+    path-independent symmetry-aware accumulation total
+    (``path_info.accumulation.total``); per-step ``flop_count`` values on
+    each ``StepInfo`` use flopscope's FMA convention via ``fma_cost()``
+    (default 1 op per FMA, configurable to 2 via
+    ``flopscope.configure(fma_cost=2)``).
 
     Contraction paths are cached in a module-level LRU cache keyed on
-    (subscripts, shapes, optimizer, symmetry structure, operand identity).
-    Repeated calls with the same inputs skip path recomputation entirely.
-    See ``clear_einsum_cache()`` and ``einsum_cache_info()``.
+    (subscripts, shapes, optimizer, fma_cost). Repeated calls with the same
+    inputs skip path recomputation entirely. See ``clear_einsum_cache()``
+    and ``einsum_cache_info()``.
 
     Parameters
     ----------
@@ -372,12 +300,27 @@ def einsum(
             optimize,
         )
     )
+
+    accumulation_cost = _get_accumulation_cost(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=tuple(input_parts),
+        output_subscript=output_subscript,
+        shapes=shapes,
+        operands=tuple(operands),
+    )
+
+    from flopscope._accumulation._path_info import FlopscopePathInfo
+
+    path_info = FlopscopePathInfo.from_inner(
+        inner=path_info,
+        accumulation=accumulation_cost,
+    )
+
     target_symmetry = _resolve_output_symmetry(
         symmetry=symmetry,
         operands=operands,
         input_parts=input_parts,
         output_subscript=output_subscript,
-        path_info=path_info,
     )
     effective_out_symmetry = target_symmetry
     if effective_out_symmetry is None and isinstance(out, SymmetricTensor):
@@ -386,7 +329,7 @@ def einsum(
 
     with budget.deduct(
         "einsum",
-        flop_cost=path_info.optimized_cost,
+        flop_cost=accumulation_cost.total,
         subscripts=canonical_subscripts,
         shapes=tuple(shapes),
     ):
@@ -446,14 +389,75 @@ def einsum_path(
     budget = require_budget()
     with budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=()):
         pass
-    _canonical_subscripts, _input_parts, _output_subscript, _shapes, path_info = (
+    canonical_subscripts, input_parts, output_subscript, shapes, path_info = (
         _get_path_info(
             subscripts,
             operands,
             optimize,
         )
     )
+
+    accumulation_cost = _get_accumulation_cost(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=tuple(input_parts),
+        output_subscript=output_subscript,
+        shapes=shapes,
+        operands=tuple(operands),
+    )
+
+    from flopscope._accumulation._path_info import FlopscopePathInfo
+
+    path_info = FlopscopePathInfo.from_inner(
+        inner=path_info,
+        accumulation=accumulation_cost,
+    )
+
     return list(path_info.path), path_info
+
+
+# ── Accumulation cost helper + cache ─────────────────────────────────
+
+
+from flopscope._accumulation._cache import (  # noqa: E402, F401
+    _accumulation_cache,
+    get_accumulation_cost_cached,
+)
+from flopscope._accumulation._cache import (  # noqa: E402
+    rebuild_accumulation_cache as _rebuild_accumulation_cache_fn,
+)
+from flopscope._accumulation._public import (  # noqa: E402
+    _accumulation_fingerprint,
+    _identity_pattern,
+)
+
+
+def _get_accumulation_cost(
+    *,
+    canonical_subscripts: str,
+    input_parts: tuple,
+    output_subscript: str,
+    shapes: tuple,
+    operands: tuple,
+):
+    """Cached accumulation-cost lookup for einsum() / einsum_path()."""
+    # Resolve partition_budget to the active setting BEFORE cache lookup so
+    # the cache key reflects the budget used; otherwise stale entries from a
+    # prior setting value can leak across calls.
+    partition_budget = cast(int, get_setting("partition_budget"))
+    return get_accumulation_cost_cached(
+        canonical_subscripts=canonical_subscripts,
+        input_parts=tuple(input_parts),
+        output_subscript=output_subscript,
+        shapes=shapes,
+        sym_fingerprint=_accumulation_fingerprint(operands),
+        identity_pattern=_identity_pattern(operands),
+        partition_budget=partition_budget,
+    )
+
+
+def _rebuild_accumulation_cache():
+    """Rebuild the accumulation cache with the current configured maxsize."""
+    _rebuild_accumulation_cache_fn(cast(int, get_setting("einsum_path_cache_size")))
 
 
 import sys as _sys  # noqa: E402

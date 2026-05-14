@@ -3,7 +3,11 @@
 from collections.abc import Collection, Iterable
 from typing import Any, overload
 
-from ._typing import ArrayIndexType, ArrayType
+from flopscope._cost_model import fma_cost
+
+# Inline type aliases (formerly from ._typing, deleted in Task 7+8).
+ArrayIndexType = frozenset  # frozenset[str]
+ArrayType = object  # Any
 
 __all__ = ["compute_size_by_dict", "find_contraction", "flop_count"]
 
@@ -138,11 +142,12 @@ def flop_count(
 
     """
     overall_size = compute_size_by_dict(idx_contraction, size_dictionary)
-    # FMA (fused multiply-add) counts as 1 op, not 2.
-    # For a 2-operand contraction with inner sum: op_factor = 1 (just the multiply).
+    fma = fma_cost()
+    if fma not in (1, 2):
+        raise ValueError(f"fma_cost must be 1 or 2, got {fma}")
     op_factor = max(1, num_terms - 1)
-    # No +1 for inner — FMA fuses multiply+accumulate into single op.
-
+    if inner and fma == 2:
+        op_factor += 1
     return overall_size * op_factor
 
 
