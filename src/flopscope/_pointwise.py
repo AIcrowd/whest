@@ -1625,7 +1625,7 @@ def median(
             keepdims=keepdims,
             **kwargs,
         )
-    return _wrap_result(result, out=out, symmetry=out_sym)
+    return _wrap_result(result, out=out, symmetry=out_sym)  # type: ignore[return-value]
 
 
 median.__signature__ = _inspect.signature(_np.median)  # pyright: ignore[reportFunctionMemberAccess]
@@ -1697,7 +1697,7 @@ def percentile(
             keepdims=keepdims,
             **kwargs,
         )
-    return _wrap_result(result, out=out, symmetry=out_sym)
+    return _wrap_result(result, out=out, symmetry=out_sym)  # type: ignore[return-value]
 
 
 percentile.__signature__ = _inspect.signature(_np.percentile)  # pyright: ignore[reportFunctionMemberAccess]
@@ -1754,7 +1754,7 @@ def quantile(
             keepdims=keepdims,
             **kwargs,
         )
-    return _wrap_result(result, out=out, symmetry=out_sym)
+    return _wrap_result(result, out=out, symmetry=out_sym)  # type: ignore[return-value]
 
 
 quantile.__signature__ = _inspect.signature(_np.quantile)  # pyright: ignore[reportFunctionMemberAccess]
