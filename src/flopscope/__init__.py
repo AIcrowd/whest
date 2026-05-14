@@ -41,8 +41,7 @@ from flopscope._version_check import check_numpy_version as _check_numpy_version
 
 _check_numpy_version(__numpy_supported__)
 
-# --- Budget and diagnostics ---
-# --- Symmetry-aware einsum accumulation cost ---
+# --- Symmetry-aware accumulation cost (einsum + reduction) ---
 from flopscope._accumulation import (  # noqa: F401,E402
     AccumulationCost,
     ComponentCost,
@@ -50,6 +49,8 @@ from flopscope._accumulation import (  # noqa: F401,E402
     einsum_accumulation_cost,
     reduction_accumulation_cost,
 )
+
+# --- Budget and diagnostics ---
 from flopscope._budget import (  # noqa: F401,E402
     BudgetContext,
     OpRecord,
@@ -59,6 +60,7 @@ from flopscope._budget import (  # noqa: F401,E402
     namespace,
 )
 from flopscope._config import configure  # noqa: F401,E402
+from flopscope._cost_model import fma_cost  # noqa: F401,E402
 from flopscope._display import budget_live, budget_summary  # noqa: F401,E402
 
 # --- Array type (flopscope-specific) ---
@@ -89,6 +91,43 @@ from flopscope.errors import (  # noqa: F401,E402
     TimeExhaustedError,
     UnsupportedFunctionError,
 )
+
+
+def einsum_clear_caches() -> None:
+    """Clear all flopscope einsum-related LRU caches.
+
+    Clears both the einsum path cache (consulted by ``fnp.einsum`` and
+    ``fnp.einsum_path``) and the einsum accumulation-cost cache (consulted
+    by ``fnp.einsum`` and ``flopscope.einsum_accumulation_cost``).
+
+    Useful when benchmarking cold-call latency. ``fnp.clear_einsum_cache``
+    still exists and clears only the path cache.
+    """
+    from flopscope._accumulation._cache import _accumulation_cache
+    from flopscope._einsum import _path_cache
+
+    _path_cache.cache_clear()
+    _accumulation_cache.cache_clear()
+
+
+def einsum_cache_info() -> dict:
+    """Return cache statistics for the einsum path + accumulation caches.
+
+    Returns
+    -------
+    dict
+        ``{"path": CacheInfo, "accumulation": CacheInfo}`` where each value
+        is a standard ``functools.lru_cache`` info tuple with ``hits``,
+        ``misses``, ``maxsize``, and ``currsize``.
+    """
+    from flopscope._accumulation._cache import _accumulation_cache
+    from flopscope._einsum import _path_cache
+
+    return {
+        "path": _path_cache.cache_info(),
+        "accumulation": _accumulation_cache.cache_info(),
+    }
+
 
 _LAZY_SUBMODULES = frozenset({"numpy", "accounting", "stats"})
 
@@ -124,6 +163,9 @@ __all__ = [
     "budget_summary_dict",
     "configure",
     "einsum_accumulation_cost",
+    "einsum_cache_info",
+    "einsum_clear_caches",
+    "fma_cost",
     "is_symmetric",
     "namespace",
     "numpy",

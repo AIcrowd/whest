@@ -65,6 +65,16 @@
 
 ### Added
 
+- `flopscope.fma_cost()` — top-level re-export of the FMA-convention reader
+  (was `flopscope._cost_model.fma_cost`). Returns the current value of the
+  `fma_cost` setting (1 or 2).
+- `flopscope.einsum_clear_caches()` — clears the einsum path cache and the
+  einsum accumulation-cost cache together. Useful for cold-call benchmarks.
+  (The narrower `fnp.clear_einsum_cache()` continues to clear only the path
+  cache.)
+- `flopscope.einsum_cache_info()` — returns
+  `{"path": CacheInfo, "accumulation": CacheInfo}` so callers can inspect
+  both einsum caches in one call.
 - `flopscope.einsum_accumulation_cost(subscripts, *operands, partition_budget=None)`
   — public inspection function returning the new `AccumulationCost` decomposition
   (path-independent, per-component breakdown, regime trace).
