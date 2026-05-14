@@ -62,6 +62,7 @@ def test_str_shows_flopscope_optimized_cost():
     info.optimized_cost = 128 (α/M) but str(info) showed 64 (upstream).
     """
     import numpy as np
+
     import flopscope as flops
     import flopscope.numpy as fnp
 
