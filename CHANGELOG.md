@@ -29,6 +29,32 @@
   - Per-step `path_info.steps[i].flop_count` reverts to dense (no symmetry
     adjustment per step).
 
+- **Reduction cost model rewritten** to the orbit-mapping model. Tier 1
+  (`np.ufunc.reduce` ops — sum, prod, max, min, all, any, bitwise_or/and/xor,
+  logical_or/and):
+  ```
+  cost = op_factor × (α - num_output_orbits) + extra_ops
+  ```
+  where α is the per-output-orbit input-orbit count summed across output
+  orbits. The `α - num_output_orbits` correction fixes #56's off-by-one
+  (dense `sum(n)` charges `n - 1`, was `n`). For symmetric inputs the new
+  model charges more than the legacy `unique_elements_for_shape` formula —
+  see #56 for the architectural shift.
+- **`np.median`, `np.percentile`, `np.quantile`** now use a Tier-2
+  output-discounted formula:
+  ```
+  cost = num_output_orbits × dense_per_output_cost
+  ```
+  For median/percentile/quantile, `dense_per_output_cost = axis_dim` (one
+  partition pass per output cell).
+- **`np.mean`** charges `sum_cost + num_output_orbits` (one divide per
+  output orbit; orbit-shared output values share the divisor).
+- `flopscope._flops.analytical_reduction_cost` body replaced with a
+  delegating call to `compute_reduction_accumulation_cost`. Signature
+  unchanged; numbers change.
+- `flopscope.accounting.reduction_cost` returns different numbers for both
+  dense and symmetric inputs (via the body change above).
+
 ### Fixed
 
 - `flopscope.numpy.einsum_path` cache now keys on `fma_cost()` in addition
@@ -55,6 +81,16 @@
   textbook / opt_einsum convention.
 - `flopscope._cost_model.fma_cost()` function replaces the
   `FMA_COST` constant. The constant is removed.
+- `flopscope.reduction_accumulation_cost(a, axis=None, *, op_factor=1, extra_ops=0)`
+  — public inspection function returning an `AccumulationCost` for a
+  reduction. Parallel to `einsum_accumulation_cost`.
+- Internal `_accumulation/_reduction.py`: `compute_reduction_accumulation_cost`
+  orchestrator, `output_discounted_reduction_cost` (Tier 2), and
+  `_normalize_axis` / `_num_output_orbits` helpers.
+- `_accumulation/_cache.py`: `_reduction_cache` + `get_reduction_cost_cached`
+  (LRU 4,096).
+- `_accumulation/_cost.py:aggregate_reduction` body implemented (was a
+  signature-locked `NotImplementedError`).
 
 ### Removed
 
