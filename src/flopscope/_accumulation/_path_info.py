@@ -52,11 +52,42 @@ class FlopscopePathInfo:
         return getattr(self._inner, name)
 
     def __str__(self) -> str:
-        """Return the full formatted table (delegates to inner PathInfo's format_table)."""
+        """Return the full formatted table.
+
+        Overrides the inner upstream PathInfo's ``naive_cost`` and ``optimized_cost``
+        to match ``self.optimized_cost`` while rendering, so the table's
+        "(flopscope)" cost rows are consistent with the wrapper's attribute. The
+        α/M cost is path-independent — naive and optimized are the same number,
+        speedup is 1.000x by construction. Use ``self.accumulation.describe()``
+        for the symmetric-vs-dense breakdown.
+        """
         fmt = getattr(self._inner, "format_table", None)
-        if fmt is not None:
+        if fmt is None:
+            return self.__repr__()
+
+        flopscope_cost = self.optimized_cost
+        original_naive = getattr(self._inner, "naive_cost", None)
+        original_opt = getattr(self._inner, "optimized_cost", None)
+        try:
+            # Best-effort override — if the inner uses __slots__ or is frozen,
+            # fall back to returning the un-overridden table.
+            try:
+                self._inner.naive_cost = flopscope_cost
+                self._inner.optimized_cost = flopscope_cost
+            except (AttributeError, TypeError):
+                return fmt()
             return fmt()
-        return self.__repr__()
+        finally:
+            if original_naive is not None:
+                try:
+                    self._inner.naive_cost = original_naive
+                except (AttributeError, TypeError):
+                    pass
+            if original_opt is not None:
+                try:
+                    self._inner.optimized_cost = original_opt
+                except (AttributeError, TypeError):
+                    pass
 
     def __repr__(self) -> str:
         return (

@@ -53,3 +53,33 @@ def test_path_info_falls_back_to_inner_when_no_accumulation():
 
     fpi = FlopscopePathInfo.from_inner(inner=_FakeInner(), accumulation=None)
     assert fpi.optimized_cost == 99
+
+
+def test_str_shows_flopscope_optimized_cost():
+    """str(info) must render the α/M optimized_cost, not the upstream one.
+
+    Regression for the bug surfaced during PR #91 docs review where
+    info.optimized_cost = 128 (α/M) but str(info) showed 64 (upstream).
+    """
+    import numpy as np
+    import flopscope as flops
+    import flopscope.numpy as fnp
+
+    A = np.zeros((4, 4))
+    B = np.zeros((4, 4))
+
+    with flops.BudgetContext(flop_budget=10**12):
+        _, info = fnp.einsum_path("ij,jk->ik", A, B)
+
+    assert info.optimized_cost == 128, f"setup precondition violated: optimized_cost={info.optimized_cost}"
+
+    rendered = str(info)
+    # The (flopscope) cost rows must show 128, NOT 64 (the upstream value).
+    assert "128" in rendered, f"expected 128 in str(info); got:\n{rendered}"
+    # And the upstream value 64 must not appear *in the cost rows* — it can
+    # legitimately appear in the per-step flops column for the trivial path
+    # (one step, 64 entries). We check by grepping the header rows only:
+    header_section = rendered.split("---", 1)[0]
+    assert "64" not in header_section, (
+        f"upstream value 64 leaked into the header; got:\n{header_section}"
+    )
