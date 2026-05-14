@@ -129,6 +129,86 @@ def einsum_cache_info() -> dict:
     }
 
 
+def reduction_clear_cache() -> None:
+    """Clear the reduction accumulation-cost cache.
+
+    Consulted by ``flopscope.reduction_accumulation_cost`` and the
+    ``np.ufunc.reduce`` family wrappers (``fnp.sum``, ``fnp.mean``,
+    ``fnp.median``, etc.).
+    """
+    from flopscope._accumulation._cache import _reduction_cache
+
+    _reduction_cache.cache_clear()
+
+
+def reduction_cache_info():
+    """Return cache statistics for the reduction accumulation-cost cache.
+
+    Returns a standard ``functools.lru_cache`` info tuple with ``hits``,
+    ``misses``, ``maxsize``, and ``currsize``.
+    """
+    from flopscope._accumulation._cache import _reduction_cache
+
+    return _reduction_cache.cache_info()
+
+
+def clear_cache() -> None:
+    """Clear all flopscope LRU caches (einsum + reduction).
+
+    Convenience aggregate over :func:`einsum_clear_caches` and
+    :func:`reduction_clear_cache`. Use the per-domain variants if you
+    only need to invalidate one cache.
+    """
+    einsum_clear_caches()
+    reduction_clear_cache()
+
+
+def tier2_reduction_cost(a, axis=None, *, dense_per_output_cost=None):
+    """Cost for selection-style reductions (median, percentile, quantile).
+
+    Returns ``num_output_orbits × dense_per_output_cost`` — one partition
+    pass per unique output cell. Under symmetry, orbit-shared output
+    cells share the partition pass; ``num_output_orbits`` is computed
+    from the input's declared symmetry.
+
+    Parameters
+    ----------
+    a : numpy.ndarray or SymmetricTensor
+        Input array. ``SymmetricTensor`` inputs contribute their declared
+        symmetry to the orbit count.
+    axis : int, tuple of int, or None
+        Axes being reduced. ``None`` (default) reduces all axes.
+    dense_per_output_cost : int, optional
+        The dense per-output cost. If ``None`` (the default), it is set
+        to the product of the reduced axes' lengths — i.e., one
+        partition pass per output cell, which is how ``fnp.median``,
+        ``fnp.percentile``, and ``fnp.quantile`` are charged. Pass an
+        explicit value to model a custom Tier-2 selection cost.
+
+    Returns
+    -------
+    int
+        Total flops charged.
+    """
+    import math as _math
+
+    import numpy as _np
+
+    from flopscope._pointwise import _tier2_reduction_cost
+
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+
+    if dense_per_output_cost is None:
+        if axis is None:
+            dense_per_output_cost = _math.prod(a.shape) if a.shape else 1
+        else:
+            axes = (axis,) if isinstance(axis, int) else tuple(axis)
+            dense_per_output_cost = _math.prod(a.shape[i] for i in axes)
+
+    return _tier2_reduction_cost(a, axis, dense_per_output_cost)
+
+
 _LAZY_SUBMODULES = frozenset({"numpy", "accounting", "stats"})
 
 __all__ = [
@@ -161,6 +241,7 @@ __all__ = [
     "budget_reset",
     "budget_summary",
     "budget_summary_dict",
+    "clear_cache",
     "configure",
     "einsum_accumulation_cost",
     "einsum_cache_info",
@@ -170,8 +251,11 @@ __all__ = [
     "namespace",
     "numpy",
     "reduction_accumulation_cost",
+    "reduction_cache_info",
+    "reduction_clear_cache",
     "stats",
     "symmetrize",
+    "tier2_reduction_cost",
 ]
 
 

@@ -75,6 +75,16 @@
 - `flopscope.einsum_cache_info()` — returns
   `{"path": CacheInfo, "accumulation": CacheInfo}` so callers can inspect
   both einsum caches in one call.
+- `flopscope.reduction_clear_cache()` and `flopscope.reduction_cache_info()`
+  — same pattern for the reduction accumulation-cost cache used by
+  `fnp.sum` / `fnp.mean` / `fnp.median` / etc.
+- `flopscope.clear_cache()` — convenience aggregate that clears both
+  einsum and reduction caches in one call.
+- `flopscope.tier2_reduction_cost(a, axis=None, *, dense_per_output_cost=None)`
+  — public inspection function for selection-style reductions
+  (`np.median` / `np.percentile` / `np.quantile`). Hides the
+  `op_factor=0, extra_ops=…` invocation pattern; `dense_per_output_cost`
+  defaults to the product of the reduced axes' lengths.
 - `flopscope.einsum_accumulation_cost(subscripts, *operands, partition_budget=None)`
   — public inspection function returning the new `AccumulationCost` decomposition
   (path-independent, per-component breakdown, regime trace).
