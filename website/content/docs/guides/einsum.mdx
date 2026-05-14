@@ -108,12 +108,6 @@ import flopscope as flops
 import flopscope.numpy as fnp
 
 n = 10
-T = flops.as_symmetric(fnp.ones((n, n, n)), symmetric_axes=(0, 1, 2))
-A = fnp.random.randn(n, n)
-B = fnp.random.randn(n, n)
-C = fnp.random.randn(n, n)
-
-n = 10
 T = flops.as_symmetric(fnp.ones((n, n, n)), symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1, 2)))
 A = fnp.random.randn(n, n)
 B = fnp.random.randn(n, n)
@@ -133,24 +127,25 @@ print(f"Optimizer used: {info.optimizer_used}")
 Path: [(0, 1), (0, 2), (0, 1)]
   Complete contraction:  ijk,ai,bj,ck->abc
       Naive cost (flopscope):  3,000,000
-  Optimized cost (flopscope):  25,500
-                     Speedup:  117.647x
+  Optimized cost (flopscope):  30,000
+                     Speedup:  100.000x
+                     Savings:  99.0%
        Largest intermediate:  1,000 elements
                 Index sizes:  a=b=c=i=j=k=10
                   Optimizer:  optimal
---------------------------------------------------------------------------------------------------------------------------------------------
-step  contract  subscript                                flops     dense_flops   savings  blas      unique/total  symmetry (inputs → output)
---------------------------------------------------------------------------------------------------------------------------------------------
-   0  (0, 1)    ai,ijk->ajk                              5,500          10,000    45.0%  SYMM      V:550/1,000   - × S3{i,j,k} → S2{j,k}
-   1  (0, 2)    ajk,bj->akb                             10,000          10,000     0.0%  TDOT      -             S2{j,k} × - → -
-   2  (0, 1)    akb,ck->abc                             10,000          10,000     0.0%  TDOT      -             -
+------------------------------------------------------------------------------------
+step  contract  subscript                                flops  blas
+------------------------------------------------------------------------------------
+   0  (0, 1)    ai,ijk->ajk                             10,000  GEMM
+   1  (0, 2)    ajk,bj->akb                             10,000  TDOT
+   2  (0, 1)    akb,ck->abc                             10,000  TDOT
 Naive cost:     3,000,000
-Optimized cost: 25,500
-Speedup:        117.6x
+Optimized cost: 4,000,000
+Speedup:        100.0x
 Optimizer used: optimal
 ```
 
-The printed table gives you the contraction order, naive-vs-optimized FLOP counts, largest intermediate, grouped index sizes, and one row per pairwise contraction step. Each step shows the chosen contract tuple, dense baseline, savings, BLAS tag, and any symmetry that survived into the intermediate.
+The printed table gives you the contraction order, naive-vs-optimized FLOP counts, savings, largest intermediate, grouped index sizes, and one row per pairwise contraction step. Each step shows the chosen contract tuple, subscript, per-step FLOPs, and BLAS tag.
 
 For per-step debugging, call `print(info.format_table(verbose=True))`. The verbose view adds indented rows with the merged operand subset, the intermediate output shape, and the running cumulative cost.
 
